@@ -64,6 +64,25 @@ def _expect(rho, psi):
     return float(np.real(np.conj(psi) @ rho @ psi))
 
 
+# Contract v2 (echo/contracts.js on main 80d685f): outcome keys carry `keyQubits`, the qubit behind
+# each key character left to right. The gate builds the key from the ORACLE's bits through that
+# mapping and then checks the probability against the oracle, so a wrong keyQubits goes red here
+# (metadata the gate validates, not metadata it trusts).
+def _key(r, bits_by_qubit):
+    return "".join(str(bits_by_qubit[q]) for q in r["keyQubits"])
+
+
+def _bloch(r, prefix="receiver"):
+    o = r["observables"]
+    return [o[f"{prefix}BlochX"], o[f"{prefix}BlochY"], o[f"{prefix}BlochZ"]]
+
+
+def _ket_bloch(psi):
+    rho = np.outer(psi, np.conj(psi))
+    return [float(np.real(rho[0, 1] + rho[1, 0])), float(np.real(1j * (rho[0, 1] - rho[1, 0]))),
+            float(np.real(rho[0, 0] - rho[1, 1]))]
+
+
 # ------------------------------------------------------------------- C1 correction rule
 def test_c1_rule_matches_textbook():
     for (m0, m1), (x, z) in TEXTBOOK_RULE.items():
@@ -87,9 +106,9 @@ def test_c2_branch_fidelity_equals_oracle_all_branches_all_corrections(name, thp
             assert r["fidelity"] == pytest.approx(po.corrected_fidelity(bob, ax, az, th, ph), abs=EXACT), \
                 (name, m0, m1, ax, az)
             assert r["measurementBits"] == {"m0": m0, "m1": m1}
-            assert r["probabilities"][f"m0={m0},m1={m1}"] == pytest.approx(p, abs=EXACT)
-            assert r["details"]["sourceFidelityAfterMeasurement"] == pytest.approx(_expect(q0rho.data, psi), abs=EXACT)
-            assert r["details"]["choiceFollowsRule"] is ((ax, az) == TEXTBOOK_RULE[(m0, m1)])
+            assert r["probabilities"][_key(r, {0: m0, 1: m1})] == pytest.approx(p, abs=EXACT)
+            assert r["observables"]["sourceFidelityAfterMeasurement"] == pytest.approx(_expect(q0rho.data, psi), abs=EXACT)
+            assert (r["parameters"]["applyX"], r["parameters"]["applyZ"]) == (ax, az)  # reports the choice it graded
 
 
 @pytest.mark.parametrize("name,thph", ALL, ids=IDS)
@@ -99,9 +118,11 @@ def test_c2_live_commit_applies_textbook_rule_to_its_own_bits(name, thph):
         r = teleportation.live_commit(name, seed=seed)
         bits = (r["measurementBits"]["m0"], r["measurementBits"]["m1"])
         seen.add(bits)
-        x, z = TEXTBOOK_RULE[bits]
-        assert r["details"]["appliedCorrections"] == {"applyX": x, "applyZ": z}
+        # v2 dropped details.appliedCorrections; the corrections are proven by the physics instead:
+        # the receiver's Bloch vector must be the ORACLE's |psi>, which on a generic (Haar) state no
+        # wrong correction can produce.
         assert r["fidelity"] >= 0.999999
+        assert _bloch(r) == pytest.approx(_ket_bloch(po.ket(*thph)), abs=EXACT), bits
     assert seen == set(TEXTBOOK_RULE)  # all four branches reached
 
 
@@ -112,7 +133,7 @@ def test_c2_deferred_and_withheld_equal_oracle(name, thph):
     assert teleportation.verify_deferred(name)["fidelity"] == pytest.approx(_expect(bob.data, po.ket(th, ph)), abs=EXACT)
     w = teleportation.corrections_withheld(name)
     assert w["fidelity"] == pytest.approx(0.5, abs=EXACT)
-    assert w["details"]["receiverBlochVector"] == pytest.approx([0, 0, 0], abs=EXACT)
+    assert _bloch(w) == pytest.approx([0, 0, 0], abs=EXACT)
 
 
 # ------------------------------------------------------------------- C5 endianness on REAL sampled counts
@@ -127,7 +148,7 @@ def test_c5_product_branch_labels_match_real_sampled_shots(state, basis):
         m0, m1 = po.bits_from_counts_key(key)
         bob_bit = int(key.replace(" ", "")[0])  # c2, the highest clbit, prints first
         branches.add((m0, m1))
-        bv = teleportation.teleport_branch(state, m0, m1, False, False)["details"]["receiverBlochVector"]
+        bv = _bloch(teleportation.teleport_branch(state, m0, m1, False, False))
         comp = bv[2] if basis == "Z" else bv[0]
         assert abs(abs(comp) - 1) < 1e-9, (key, bv)  # Bob is a definite eigenstate in this basis
         assert (0 if comp > 0 else 1) == bob_bit, (key, n, bv)
@@ -139,7 +160,8 @@ def test_c5_backend_parser_on_real_sampled_keys(m0, m1):
     # q0 -> c0, q1 -> c1, exactly as qollab_job's Bell circuit maps them.
     raw = po.sample_counts(po.endianness_fixture(m0, m1), shots=64)
     s = qollab_job.interpret_counts(raw, backend_name="local BasicSimulator", shots_requested=64)
-    assert s["summary"]["qubitOnes"] == {"q0": 64 * m0, "q1": 64 * m1}
+    ones = {f"q{q}": sum(n for k, n in s["counts"].items() if k[s["keyQubits"].index(q)] == "1") for q in (0, 1)}
+    assert ones == {"q0": 64 * m0, "q1": 64 * m1}
 
 
 # ------------------------------------------------------------------- C2 cloning
@@ -150,22 +172,29 @@ def test_c2_cloning_equals_oracle_and_reports_its_input(name, thph):
     psi = po.ket(th, ph)
     f_src, f_copy = po.copy_fidelities(sv, psi)
     r = cloning.run_calibration(name)
-    d = r["details"]
-    assert d["sourceFidelity"] == pytest.approx(f_src, abs=EXACT)
-    assert d["copyFidelity"] == pytest.approx(f_copy, abs=EXACT)
-    assert d["sourcePurity"] == pytest.approx(float(np.real(partial_trace(sv, [1]).purity())), abs=EXACT)
-    assert d["copyPurity"] == pytest.approx(float(np.real(partial_trace(sv, [0]).purity())), abs=EXACT)
+    d = r["observables"]
+    assert d["fidelityQ0WithInput"] == pytest.approx(f_src, abs=EXACT)
+    assert d["fidelityQ1WithInput"] == pytest.approx(f_copy, abs=EXACT)
+    assert d["purityQ0"] == pytest.approx(float(np.real(partial_trace(sv, [1]).purity())), abs=EXACT)
+    assert d["purityQ1"] == pytest.approx(float(np.real(partial_trace(sv, [0]).purity())), abs=EXACT)
     assert d["jointFidelityWithTwoCopies"] == pytest.approx(_fid_pure(sv.data, np.kron(psi, psi)), abs=EXACT)
+    probs = sv.probabilities()  # oracle statevector, index = q0 + 2*q1
+    for i, pr in enumerate(probs):
+        assert r["probabilities"][_key(r, {0: i & 1, 1: i >> 1})] == pytest.approx(float(pr), abs=EXACT)
     assert r["parameters"]["state"] == name  # report 0001 null 3: the input identity is reported
 
 
 def test_c2_cloning_results_distinguish_equal_purity_states():
     # |+>, |->, |+i> all give purity 0.5; the result must still tell them apart (report 0001 null 3).
     rs = {n: cloning.run_calibration(n) for n in ("plus", "minus", "phase")}
-    assert len({r["details"]["sourcePurity"] for r in rs.values()}) == 1
-    assert len({json.dumps(r["details"]["amplitudes"], sort_keys=True) for r in rs.values()}) == 3
-    assert rs["minus"]["details"]["jointFidelityWithTwoCopies"] == pytest.approx(0.0, abs=EXACT)
-    assert rs["phase"]["details"]["jointFidelityWithTwoCopies"] == pytest.approx(0.25, abs=EXACT)
+    # v2 carries no amplitudes and the three share one probability table, so what tells them apart is
+    # the reported input and the joint fidelity (0.5 / 0 / 0.25).
+    assert len({r["observables"]["purityQ0"] for r in rs.values()}) == 1
+    assert len({json.dumps(r["probabilities"], sort_keys=True) for r in rs.values()}) == 1
+    assert {n: r["parameters"]["state"] for n, r in rs.items()} == {n: n for n in rs}
+    assert rs["plus"]["observables"]["jointFidelityWithTwoCopies"] == pytest.approx(0.5, abs=EXACT)
+    assert rs["minus"]["observables"]["jointFidelityWithTwoCopies"] == pytest.approx(0.0, abs=EXACT)
+    assert rs["phase"]["observables"]["jointFidelityWithTwoCopies"] == pytest.approx(0.25, abs=EXACT)
 
 
 # ------------------------------------------------------------------- C2 no-signalling (exact, not sampled)
@@ -174,10 +203,11 @@ def test_c2_receiver_marginal_is_exact_half(gate):
     r = entanglement.bell_signalling(gate)
     assert r["engine"] == "exact_qiskit_local" and "counts" not in r
     want = po.bob_rho(po.alice_acts(po.bell_pair(), gate, [0]), 1)
-    assert r["details"]["receiverMarginal"]["0"] == pytest.approx(float(np.real(want[0, 0])), abs=1e-9)
-    assert r["details"]["receiverMarginal"]["1"] == pytest.approx(float(np.real(want[1, 1])), abs=1e-9)
-    assert r["details"]["zBasisAgreement"] == pytest.approx(po.joint_same_probability(gate, "Z"), abs=1e-9)
-    assert r["details"]["xBasisAgreement"] == pytest.approx(po.joint_same_probability(gate, "X"), abs=1e-9)
+    assert r["keyQubits"] == [1]  # the receiver-only view
+    assert r["probabilities"]["0"] == pytest.approx(float(np.real(want[0, 0])), abs=1e-9)
+    assert r["probabilities"]["1"] == pytest.approx(float(np.real(want[1, 1])), abs=1e-9)
+    assert r["observables"]["zBasisAgreement"] == pytest.approx(po.joint_same_probability(gate, "Z"), abs=1e-9)
+    assert r["observables"]["xBasisAgreement"] == pytest.approx(po.joint_same_probability(gate, "X"), abs=1e-9)
 
 
 def test_c2_receiver_marginal_is_computed_by_partial_trace_not_shots():
@@ -200,7 +230,8 @@ def test_c3_python_guard_refuses_second_job():
 
 
 # ------------------------------------------------------------------- Pyodide safety and plain types
-PYODIDE_OK = {"qiskit", "qiskit.quantum_info", "numpy", "math", "random", "numbers", "__future__"}
+# `sys` is a builtin module compiled into every CPython, Pyodide included (platform smoke.py uses it).
+PYODIDE_OK = {"qiskit", "qiskit.quantum_info", "numpy", "math", "random", "numbers", "__future__", "sys"}
 
 
 def test_imports_are_pyodide_safe_in_every_module():
@@ -291,6 +322,7 @@ def test_mistake_does_not_show_fact_only_when_fidelity_is_one(monkeypatch):
                 says_hidden = any("does not show" in f for f in r["facts"])
                 if 0.9 < r["fidelity"] < 0.999999:
                     seen_high_wrong = True
-                assert says_hidden == (not r["details"]["choiceFollowsRule"] and r["fidelity"] > 0.999999), \
+                follows = (ax, az) == TEXTBOOK_RULE[(m0, m1)]  # the oracle's table, not the product's flag
+                assert says_hidden == (not follows and r["fidelity"] > 0.999999), \
                     (name, m0, m1, ax, az, r["fidelity"])
     assert seen_high_wrong  # positive control: the dangerous band was actually exercised
