@@ -14,6 +14,9 @@
     transform: translate(-50%, -50%); color: #24405a; font: 14px ui-monospace, monospace; }
   #provenance { position: fixed; right: 6px; bottom: 4px; z-index: 99; color: #ffe14d; background: #000;
     padding: 2px 6px; font: 12px ui-monospace, monospace; }
+  /* Harness only: hide the stand-in ending button while the dialog covers it (CSS, so it is
+     visible again synchronously when close() returns focus to it). */
+  #ui[data-declassified-open="true"] #harness-opener { visibility: hidden; }
 </style>
 </head>
 <body>

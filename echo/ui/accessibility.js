@@ -74,3 +74,9 @@ export function el(tag, className, text) {
   if (text !== undefined) node.textContent = text;
   return node;
 }
+
+// Data keeps kets as ASCII `|x>`; on screen they are `|x⟩` (U+27E9), which reads as a ket, not as
+// "greater than". Applied at display time only, so the data stays greppable and unchanged.
+export function displayKets(text) {
+  return String(text).replace(/\|([^|<>\s]{1,8})>/g, '|$1⟩');
+}

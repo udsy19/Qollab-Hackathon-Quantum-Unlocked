@@ -33,6 +33,8 @@ const ket = (s) => s.replace(/\|([^|<>\s]{1,8})>/g, '|$1⟩');
 const norm = (s) => s.replace(/\s+/g, ' ').trim();
 const fmt = (x) => String(Number(x.toFixed(6)));
 const ASCII_KET = /\|[^|<>\s]{1,8}>/;
+// A score is a number shown to the player; the phrase "no score" is not one.
+const SCORE = /score\s*[:=]?\s*\d|\b[0-3]\s*(\/|of|out of)\s*3\b|\bpoints?\b|correct answers/i;
 
 // ---------------------------------------------------------------- static server (this gate's own port)
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.json': 'application/json' };
@@ -172,7 +174,8 @@ try {
   check('journal: no number outside an engine-labelled group', loose.length === 0, loose.join(' | '));
   check('journal: bits carry BIT_LABELS (SOURCE READOUT m0 / LOCAL BELL-HALF READOUT m1)', (journal.match(/SOURCE READOUT m0/g) || []).length >= 3 && (journal.match(/LOCAL BELL-HALF READOUT m1/g) || []).length >= 3);
   const nr = data.RUN_JOURNAL?.notRecorded ?? '\u0000';
-  const backendIdx = journal.indexOf(data.RUN_JOURNAL?.sections?.backend ?? '\u0000');
+  // innerText applies CSS text-transform, so headings are matched case-insensitively.
+  const backendIdx = journal.toLowerCase().indexOf((data.RUN_JOURNAL?.sections?.backend ?? '\u0000').toLowerCase());
   check('journal: absent backend job reads "not recorded"', backendIdx >= 0 && journal.slice(backendIdx).includes(nr), journal.slice(-300));
   // m0=1, m1=0 in both sample dry runs: the rule is Z only (X iff m1=1, Z iff m0=1).
   const rules = [...journal.matchAll(/Rule for these bits[^\n]*\n\s*([^\n]+)/g)].map((x) => x[1].trim());
@@ -226,7 +229,7 @@ try {
   check('teach-back: all 3 questions answered', qSeen.size === 3, qSeen.size);
   const tbText = await panelText();
   check('teach-back: the 3 §4.5 questions shown verbatim', tbText.length > 0 && data.TEACHBACK.every((q) => tbText.includes(q.question)));
-  check('teach-back: no score shown', tbText.length > 0 && !/score|\b[0-3]\s*(\/|of|out of)\s*3\b|points?\b|correct answers/i.test(tbText), tbText.match(/score|\b[0-3]\s*(\/|of|out of)\s*3\b/i)?.[0]);
+  check('teach-back: no score shown', tbText.length > 0 && !SCORE.test(tbText), tbText.match(SCORE)?.[0]);
   check('teach-back: no ASCII ket on screen', !ASCII_KET.test(tbText));
   await shot('06-teachback.png');
 

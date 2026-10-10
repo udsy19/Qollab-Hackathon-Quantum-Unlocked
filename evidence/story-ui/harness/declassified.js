@@ -34,7 +34,7 @@ export const SAMPLE = {
     { bits: exact('teleportation', tele, 3, { parameters: { theta: 1.137, phi: 0.44 }, measurementBits: { m0: 1, m1: 0 } }),
       result: exact('teleportation', tele, 3, { parameters: { theta: 1.137, phi: 0.44, applyX: false, applyZ: true }, measurementBits: { m0: 1, m1: 0 }, fidelity: 1 }) },
   ],
-  commit: exact('teleportation', tele, 3, { parameters: {}, measurementBits: { m0: 1, m1: 1 }, fidelity: 1 }),
+  commit: exact('teleportation', tele, 3, { parameters: { applyX: true, applyZ: true }, measurementBits: { m0: 1, m1: 1 }, fidelity: 1 }),
   backend: null,
 };
 // A record with holes: no relay readings, no dry runs, a commit without its fidelity, an invalid clone.
@@ -59,6 +59,7 @@ const opener = document.createElement('button');
 opener.className = 'echo-button';
 opener.textContent = 'Open Declassified';
 opener.style.cssText = 'position:absolute;left:40px;top:40px;pointer-events:auto';
+opener.id = 'harness-opener';
 root.append(opener);
 const declassified = mountDeclassified(root, { menu, onEvent: (name) => log.push(['event', name]) });
 opener.addEventListener('click', () => declassified.open(SAMPLE));

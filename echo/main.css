@@ -491,3 +491,257 @@
 .echo-controls dt {
   text-align: right;
 }
+
+/* ==== declassified ==== */
+/* Layer 3 (vision §6.1). A full-screen dialog: header, a wrapping tab row, and one panel that
+   scrolls on its own (focusable), so 200% text never clips at 1024×640. */
+.echo-declass {
+  position: absolute;
+  inset: 0;
+  z-index: 30;
+  display: flex;
+  padding: clamp(8px, 2.5vh, 32px) clamp(8px, 2.5vw, 40px);
+  background: rgba(2, 6, 12, 0.8);
+  pointer-events: auto;
+  transition: opacity var(--echo-fade), visibility 0s;
+}
+.echo-declass[data-visible="false"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--echo-fade), visibility 0s linear var(--echo-fade);
+}
+.echo-declass__frame {
+  display: flex;
+  flex-direction: column;
+  width: min(62em, 100%);
+  height: 100%;
+  margin: 0 auto;
+  background: var(--echo-panel);
+  border: 1px solid var(--echo-outline);
+  border-radius: 2px;
+}
+.echo-declass__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4em 1em;
+  padding: 0.6em 1em 0.4em;
+}
+.echo-declass__title {
+  color: var(--echo-cyan);
+  font-family: var(--echo-display);
+  font-size: 1.2em;
+  letter-spacing: 0.3em;
+}
+.echo-declass__close {
+  min-height: 2.2em;
+  font-size: 0.8em;
+}
+.echo-declass__tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3em;
+  padding: 0 1em;
+  border-bottom: 1px solid var(--echo-outline);
+}
+.echo-declass__tab {
+  padding: 0.35em 0.8em;
+  border: 1px solid transparent;
+  border-bottom: 0;
+  background: transparent;
+  color: var(--echo-muted);
+  font: inherit;
+  font-family: var(--echo-display);
+  font-size: 0.8em;
+  letter-spacing: 0.12em;
+  cursor: pointer;
+  transition: color var(--echo-fade), background-color var(--echo-fade);
+}
+/* Selected is not colour alone: it gains a border, a fill and a leading marker. */
+.echo-declass__tab[aria-selected="true"] {
+  border-color: var(--echo-outline);
+  background: rgba(92, 225, 255, 0.12);
+  color: var(--echo-text);
+}
+.echo-declass__tab[aria-selected="true"]::before {
+  content: "\25B8\00A0";
+  color: var(--echo-cyan);
+}
+.echo-declass__body {
+  display: flex;
+  flex: 1 1 auto;
+  min-height: 0;
+}
+.echo-declass__panel {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 0.8em 1em 1.2em;
+  overflow-wrap: anywhere;
+  transition: opacity var(--echo-fade);
+}
+.echo-declass__panel[hidden] {
+  display: none;
+}
+.echo-ui .echo-declass__panel:focus,
+.echo-ui .echo-declass__tab:focus {
+  outline: 3px solid var(--echo-focus);
+  outline-offset: -3px;
+}
+.echo-declass__lead {
+  margin-bottom: 0.8em;
+  color: var(--echo-muted);
+}
+.echo-declass__section {
+  margin-bottom: 1em;
+}
+.echo-declass__h3 {
+  margin: 0 0 0.35em;
+  color: var(--echo-cyan);
+  font-family: var(--echo-display);
+  font-size: 0.9em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.echo-declass__question .echo-declass__h3 {
+  color: var(--echo-text);
+  font-size: 1em;
+  letter-spacing: 0.02em;
+  text-transform: none;
+}
+.echo-declass__section p + p {
+  margin-top: 0.4em;
+}
+.echo-declass__group {
+  margin: 0 0 0.6em;
+  padding: 0.4em 0.7em;
+  border-left: 2px solid var(--echo-cyan);
+  background: rgba(92, 225, 255, 0.05);
+}
+.echo-declass__group[data-engine="documented_preview"] { border-left-color: var(--echo-muted); }
+.echo-declass__group[data-engine="qollab_selected_backend"] { border-left-color: var(--echo-amber); }
+.echo-declass__grouphead {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.2em 1em;
+  margin-bottom: 0.25em;
+}
+.echo-declass__grouptitle {
+  font-weight: 700;
+}
+.echo-declass__engine {
+  color: var(--echo-cyan);
+  font-family: var(--echo-mono);
+  font-size: 0.8em;
+  letter-spacing: 0.05em;
+}
+.echo-declass__readings,
+.echo-declass__myth {
+  display: grid;
+  grid-template-columns: minmax(8em, 18em) minmax(0, 1fr);
+  gap: 0.15em 1em;
+  margin: 0;
+}
+.echo-declass__readings dt,
+.echo-declass__myth dt {
+  color: var(--echo-muted);
+}
+.echo-declass__readings dd,
+.echo-declass__myth dd {
+  margin: 0;
+}
+/* Proportional type with tabular figures: the system monospace fonts draw the ket bracket ⟩
+   (U+27E9) almost like ")", so anything that can hold a ket stays out of --echo-mono. */
+.echo-declass__readings dd,
+.echo-declass__expected {
+  font-variant-numeric: tabular-nums;
+}
+.echo-declass__none {
+  color: var(--echo-muted);
+  font-style: italic;
+}
+.echo-declass__gates {
+  font-family: var(--echo-mono);
+  font-size: 0.9em;
+}
+.echo-declass__expected {
+  margin: 0;
+  padding-left: 1.2em;
+}
+.echo-declass__note {
+  margin-top: 0.5em;
+  color: var(--echo-muted);
+  font-size: 0.9em;
+}
+.echo-declass__question {
+  margin-bottom: 1.2em;
+}
+.echo-declass__choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4em;
+}
+.echo-declass__choice {
+  justify-content: flex-start;
+  width: 100%;
+  min-height: 2.4em;
+  font-family: var(--echo-font);
+  letter-spacing: 0;
+  text-align: left;
+  text-transform: none;
+}
+.echo-declass__choice > span:last-child {
+  min-width: 0;
+}
+.echo-declass__letter {
+  color: var(--echo-muted);
+  font-family: var(--echo-mono);
+}
+.echo-declass__choice[data-result="right"] { border-color: var(--echo-ok); }
+.echo-declass__choice[data-result="wrong"] { border-color: var(--echo-error); }
+.echo-declass__choice[data-result="right"] .echo-declass__mark { color: var(--echo-ok); }
+.echo-declass__choice[data-result="wrong"] .echo-declass__mark { color: var(--echo-error); }
+.echo-declass__feedback:not(:empty) {
+  margin-top: 0.5em;
+  padding: 0.4em 0.7em;
+  border-left: 2px solid var(--echo-outline);
+}
+.echo-declass__feedback[data-result="right"] { border-left-color: var(--echo-ok); }
+.echo-declass__feedback[data-result="wrong"] { border-left-color: var(--echo-error); }
+.echo-declass__verdict {
+  font-weight: 700;
+}
+.echo-declass__credits {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: center;
+}
+.echo-declass__credit {
+  margin: 0 auto 0.8em;
+  max-width: 34em;
+}
+.echo-declass__credit--title {
+  color: var(--echo-cyan);
+  font-family: var(--echo-display);
+  font-size: 1.5em;
+  letter-spacing: 0.25em;
+}
+.echo-declass__credit--team {
+  font-size: 1.1em;
+  font-weight: 700;
+}
+.echo-declass__credit--support,
+.echo-declass__credit--thanks {
+  color: var(--echo-amber);
+}
+.echo-declass__credit--license,
+.echo-declass__credit--libraries,
+.echo-declass__credit--assets {
+  color: var(--echo-muted);
+  font-size: 0.9em;
+}

@@ -1,0 +1,399 @@
+{
+  "provenance": {
+    "version": "declassified r1",
+    "hash": "1fd445b6c328",
+    "files": [
+      "echo/main.css",
+      "echo/ui/accessibility.js",
+      "echo/ui/menu.js",
+      "echo/ui/declassified.js",
+      "echo/data/teachback.js"
+    ]
+  },
+  "keys": [
+    "Escape (control)",
+    "Escape (resume)",
+    "Enter (open Declassified)",
+    "ArrowRight (→ THE COPY)",
+    "ArrowRight (→ THE CONNECTION)",
+    "ArrowRight (→ THE TRANSFER)",
+    "ArrowRight (→ teach-back)",
+    "Tab",
+    "Tab",
+    "Enter (choose \"Quantum states cannot be store…\")",
+    "Tab",
+    "Enter (choose \"No machine can perfectly copy …\")",
+    "Tab",
+    "Enter (choose \"The booth needed more power.…\")",
+    "Tab",
+    "Enter (choose \"The entangled pair was too old…\")",
+    "Tab",
+    "Enter (choose \"Entanglement delivers the mess…\")",
+    "Tab",
+    "Enter (choose \"The receiver's results alone s…\")",
+    "Tab",
+    "Enter (choose \"The receiver corrections: X if…\")",
+    "Tab",
+    "Enter (choose \"They carried the quantum state…\")",
+    "Tab",
+    "Enter (choose \"They told the vault the passwo…\")",
+    "ArrowRight (→ credits)",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "Escape (in Declassified)",
+    "Escape (after close: pause allowed again)",
+    "Escape (resume)",
+    "Home",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowRight",
+    "Home",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowRight"
+  ],
+  "checks": [
+    {
+      "name": "control: Esc opens pause in a started game",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "open: isOpen() is true",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "open: a visible modal dialog named Declassified",
+      "ok": true,
+      "detail": "{\"modal\":\"true\",\"visible\":true}"
+    },
+    {
+      "name": "open: focus moved into the dialog with a visible ring",
+      "ok": true,
+      "detail": "{\"tag\":\"BUTTON\",\"role\":\"tab\",\"text\":\"JOURNAL\",\"inDialog\":true,\"outlineStyle\":\"solid\",\"outlineWidth\":3,\"outlineColor\":\"rgb(255, 225, 77)\"}"
+    },
+    {
+      "name": "tabs: journal, the 3 §4.5 tabs, teach-back, credits, in that order",
+      "ok": true,
+      "detail": "[\"JOURNAL\",\"THE COPY\",\"THE CONNECTION\",\"THE TRANSFER\",\"TEACH-BACK\",\"CREDITS\"]"
+    },
+    {
+      "name": "journal: every value in the run record is shown",
+      "ok": true,
+      "detail": "missing "
+    },
+    {
+      "name": "journal: one engine-labelled group per recorded result, in record order",
+      "ok": true,
+      "detail": "[\"exact_qiskit_local\",\"exact_qiskit_local\",\"exact_qiskit_local\",\"exact_qiskit_local\",\"exact_qiskit_local\",\"exact_qiskit_local\",\"exact_qiskit_local\",\"exact_qiskit_local\",\"exact_qiskit_local\"]"
+    },
+    {
+      "name": "journal: each group shows its engine label text",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "journal: every engine kind in vision §8.4 has a label",
+      "ok": true,
+      "detail": "exact_qiskit_local,qollab_selected_backend,documented_preview"
+    },
+    {
+      "name": "journal: no number outside an engine-labelled group",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "journal: bits carry BIT_LABELS (SOURCE READOUT m0 / LOCAL BELL-HALF READOUT m1)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "journal: absent backend job reads \"not recorded\"",
+      "ok": true,
+      "detail": " 1, Z if m0 = 1)\nZ\nFidelity with the test state\n1\nDry-run result\n✓ passed\nTHE TRANSFER · THE ONE COMMIT\n\nEXACT · local Qiskit statevector\n\nSOURCE READOUT m0\n1\nLOCAL BELL-HALF READOUT m1\n1\nYou applied\nX then Z\nFidelity with the original state (simulation check)\n1\nBACKEND CHECK · ONE JOB\n\nnot recorded"
+    },
+    {
+      "name": "journal: dry-run rule line reads Z only for m0=1, m1=0 (both dry runs)",
+      "ok": true,
+      "detail": "[\"Z\",\"Z\"]"
+    },
+    {
+      "name": "journal: no ASCII ket on screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "tab THE COPY: ArrowRight focuses and selects it, ring visible",
+      "ok": true,
+      "detail": "{\"tag\":\"BUTTON\",\"role\":\"tab\",\"text\":\"THE COPY\",\"inDialog\":true,\"outlineStyle\":\"solid\",\"outlineWidth\":3,\"outlineColor\":\"rgb(255, 225, 77)\"}"
+    },
+    {
+      "name": "tab THE COPY: every data line shown whole, kets as |x⟩",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "tab THE COPY: no ASCII ket on screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "tab THE CONNECTION: ArrowRight focuses and selects it, ring visible",
+      "ok": true,
+      "detail": "{\"tag\":\"BUTTON\",\"role\":\"tab\",\"text\":\"THE CONNECTION\",\"inDialog\":true,\"outlineStyle\":\"solid\",\"outlineWidth\":3,\"outlineColor\":\"rgb(255, 225, 77)\"}"
+    },
+    {
+      "name": "tab THE CONNECTION: every data line shown whole, kets as |x⟩",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "tab THE CONNECTION: no ASCII ket on screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "tab THE TRANSFER: ArrowRight focuses and selects it, ring visible",
+      "ok": true,
+      "detail": "{\"tag\":\"BUTTON\",\"role\":\"tab\",\"text\":\"THE TRANSFER\",\"inDialog\":true,\"outlineStyle\":\"solid\",\"outlineWidth\":3,\"outlineColor\":\"rgb(255, 225, 77)\"}"
+    },
+    {
+      "name": "tab THE TRANSFER: every data line shown whole, kets as |x⟩",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "tab THE TRANSFER: no ASCII ket on screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "provenance note shown on a science tab",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teach-back: all 9 choices reached by Tab, each showed its why and a right/not-quite mark",
+      "ok": true,
+      "detail": "9/9"
+    },
+    {
+      "name": "teach-back: all 3 questions answered",
+      "ok": true,
+      "detail": "3"
+    },
+    {
+      "name": "teach-back: the 3 §4.5 questions shown verbatim",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teach-back: no score shown",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teach-back: no ASCII ket on screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "credits: owner-ruled team line, verbatim",
+      "ok": true,
+      "detail": "ECHO: ONE OF ONE\nTeam The Quantubians (NYU Tandon School of Engineering): Udaya (captain), George, Harman, Epa\nThis effort is supported by Qollab & IonQ\nCode: MIT License, udsy19 and contributors\nBuil"
+    },
+    {
+      "name": "credits: license line names udsy19 and contributors and MIT",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "credits: \"This effort is supported by Qollab & IonQ\"",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "credits: no email address anywhere in the dialog",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "credits: every CREDITS row from the data is shown",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "credits: opening the credits tab fired OPEN_CREDITS once",
+      "ok": true,
+      "detail": "[\"OPEN_CREDITS\"]"
+    },
+    {
+      "name": "focus: trapped and visible over 48 Tab/Shift+Tab presses",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "esc: pause did not open while Declassified owned Esc",
+      "ok": true,
+      "detail": "{\"pause\":false,\"open\":false,\"focusOpener\":true,\"events\":[\"OPEN_CREDITS\"]}"
+    },
+    {
+      "name": "esc: Declassified closed and focus returned to the opener",
+      "ok": true,
+      "detail": "{\"pause\":false,\"open\":false,\"focusOpener\":true,\"events\":[\"OPEN_CREDITS\"]}"
+    },
+    {
+      "name": "esc: after close, Esc opens pause again (pause re-allowed)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sparse: relay, dry runs, commit fidelity and backend each read \"not recorded\" (≥4)",
+      "ok": true,
+      "detail": "6 in: What you actually did this run. Every number names the engine that produced it.\n\nTHE COPY · BOOTH TESTS\n\nnot recorded (the result failed its contract check)\n\nTHE CONNECTION · RELAY READINGS\n\nnot recorded\n\nTHE TRANSFER · DRY RUNS\n\nnot recorded\n\nTHE TRANSFER · THE ONE COMMIT\n\nEXACT · local Qiskit statevector\n\nSOURCE READOUT m0\n0\nLOCAL BELL-HALF READOUT m1\n1\nYou applied\nnot recorded\nFidelity with the"
+    },
+    {
+      "name": "sparse: invalid result shown as not recorded (contract check), engine not invented",
+      "ok": true,
+      "detail": "What you actually did this run. Every number names the engine that produced it.\n\nTHE COPY · BOOTH TESTS\n\nnot recorded (the result failed its contract check)\n\nTHE CONNECTION · RELAY READINGS\n\nnot recorded\n\nTHE TRANSFER · DRY RUNS\n\nnot recorded\n\nTHE TRANSFER · THE ONE COMMIT\n\nEXACT · local Qiskit stat"
+    },
+    {
+      "name": "sparse: no NaN / undefined / null / default 0.5 on screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "sparse: commit bits still shown (m0 = 0, m1 = 1)",
+      "ok": true,
+      "detail": "INGS\n\nnot recorded\n\nTHE TRANSFER · DRY RUNS\n\nnot recorded\n\nTHE TRANSFER · THE ONE COMMIT\n\nEXACT · local Qiskit statevector\n\nSOURCE READOUT m0\n0\nLOCAL BELL-HALF READOUT m1\n1\nYou applied\nnot recorded\nFidelity with the original state (simulation check)\nnot recorded\nBACKEND CHECK · ONE JOB\n\nnot recorded"
+    },
+    {
+      "name": "motion off (control): the dialog animates (some transition > 0)",
+      "ok": true,
+      "detail": "[\"0.2s, 0s\",\"0.2s, 0.2s\",\"0.2s\",\"0.2s, 0.2s\"]"
+    },
+    {
+      "name": "reduced motion: every transition is 0s and no animation runs",
+      "ok": true,
+      "detail": "{\"durations\":[\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\",\"0s\"],\"animations\":[\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\",\"none\"]}"
+    },
+    {
+      "name": "200% 1280×720 tab JOURNAL: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1280×720 tab THE COPY: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1280×720 tab THE CONNECTION: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1280×720 tab THE TRANSFER: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1280×720 tab TEACH-BACK: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1280×720 tab CREDITS: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1024×640 tab JOURNAL: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1024×640 tab THE COPY: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1024×640 tab THE CONNECTION: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1024×640 tab THE TRANSFER: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1024×640 tab TEACH-BACK: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% 1024×640 tab CREDITS: no clipping (font 32px)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "failed": 0,
+  "errors": []
+}
