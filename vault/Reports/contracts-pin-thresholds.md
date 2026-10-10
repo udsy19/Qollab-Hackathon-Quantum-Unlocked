@@ -34,7 +34,7 @@ its citation, and is never read from the module:
 
 It also adds two behaviour probes:
 
-- **Circuit order:** Qiskit's ry→rz X-error fidelity is accepted and the rz→ry value 0.828… is refused.
+- **Circuit order:** Qiskit's ry→rz X-error fidelity is accepted and the rz→ry value 0.823332 is refused.
 - **Effective verdict floor:** a correct choice passes at F = 1 and at 0.9999995, and does not pass at 0.99999 or 0.9.
 
 After the fix:
@@ -62,5 +62,6 @@ After the fix:
   A result reaches the verdict only after two guards: the 1e-6 cross-check and the generic-state guard. So a wrong
   choice always scores ≤ 0.9 and a right one always scores ≥ 1 − 1e-6. The exported values are pinned.
   Combining the 0.9 literal with a loosened cross-check (0.2) is RED.
+- **The cross-check tolerance is unpinned.** Loosened alone to 0.2, it is caught only by the circuit-order probe (gap 0.149); not owner-ruled.
 - **The pin is the enabling step.** On the 0.9 copy, a `pin()` sabotaged to always pass leaves the gate GREEN.
   No other check would catch a lone `FIDELITY_PASS` drift.
