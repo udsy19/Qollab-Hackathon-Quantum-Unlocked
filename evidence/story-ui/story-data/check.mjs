@@ -302,7 +302,7 @@ const LINE_CLAIMS = {
   extra_Z: { text: [/\bm0 = 0\b/, /\bZ was on\b/], holds: r => r.m0 === 0 && r.z === 1 && r.phaseFlipLeft, flip: 'Z' },
 }
 // Lines that are not chosen by (bits, plan): they are judged elsewhere or are not branch claims.
-const NOT_BRANCH = ['blind_spot', 'commit_locked', 'already_committed']
+const NOT_BRANCH = ['blind_spot', 'commit_locked', 'trivial_pass', 'already_committed']
 const TF = objectives.FAILURES?.teleportation ?? {}
 for (const k of Object.keys(TF)) {
   check(k in LINE_CLAIMS || NOT_BRANCH.includes(k), `objectives.FAILURES.teleportation.${k}`, 'a failure line this gate has no claim record for cannot be judged')
@@ -312,7 +312,9 @@ const CASES = objectives.TELEPORT_FAILURE_CASES
 check(CASES && typeof CASES === 'object', 'objectives.TELEPORT_FAILURE_CASES', 'missing: which lines each (bits, plan) shows must be data')
 const exactState = { X: /\bleft bit-flipped\b/i, Z: /\bleft phase-flipped\b/i }
 for (const r of TRUTH) {
-  const key = `${r.m0}${r.m1}:${r.x}${r.z}`
+  // Built from the named fields of the Qiskit row, never from a bitstring.
+  const onOff = (v) => (v ? 'on' : 'off')
+  const key = `m0=${r.m0},m1=${r.m1}|X=${onOff(r.x)},Z=${onOff(r.z)}`
   const w = `objectives.TELEPORT_FAILURE_CASES['${key}']`
   const sel = CASES?.[key]
   check(Array.isArray(sel), w, 'every one of the 16 (bits, plan) cases needs an entry')

@@ -165,17 +165,19 @@ export const FAILURES = Object.freeze({
   },
 })
 
-// Which FAILURES.teleportation lines a dry run shows, keyed 'm0m1:XZ': the two measured bits, then
-// the receiver plan's X and Z switches (1 = on). A correct plan shows none. A plan with both
-// corrections wrong shows two lines, one per wrong switch. Each line is worded to be true whatever
-// the other bit and switch are: evidence/story-ui/data-fixes/branch-truth.md checks all 16 in Qiskit.
-// `blind_spot` is not listed: the terminal adds it when a listed failure still scores high
-// fidelity on that particular test state.
+// Which FAILURES.teleportation lines a dry run shows, for each pair of measured bits and receiver
+// plan. Every key names its bits, 'm0=<source readout>,m1=<local Bell-half readout>|X=<on|off>,Z=<on|off>',
+// so it cannot be read in Qiskit's c1c0 bitstring order by mistake: build it from
+// measurementBits.m0 and .m1 by name, never from a bitstring. A correct plan shows none. A plan with
+// both corrections wrong shows two lines, one per wrong switch. Each line is worded to be true
+// whatever the other bit and switch are: evidence/story-ui/data-fixes/branch-truth.md checks all 16
+// in Qiskit. `blind_spot` is not listed: the terminal adds it when a listed failure still scores
+// high fidelity on that particular test state.
 export const TELEPORT_FAILURE_CASES = Object.freeze({
-  '00:00': [], '00:01': ['extra_Z'], '00:10': ['extra_X'], '00:11': ['extra_X', 'extra_Z'],
-  '01:00': ['missing_X'], '01:01': ['missing_X', 'extra_Z'], '01:10': [], '01:11': ['extra_Z'],
-  '10:00': ['missing_Z'], '10:01': [], '10:10': ['extra_X', 'missing_Z'], '10:11': ['extra_X'],
-  '11:00': ['missing_X', 'missing_Z'], '11:01': ['missing_X'], '11:10': ['missing_Z'], '11:11': [],
+  'm0=0,m1=0|X=off,Z=off': [], 'm0=0,m1=0|X=off,Z=on': ['extra_Z'], 'm0=0,m1=0|X=on,Z=off': ['extra_X'], 'm0=0,m1=0|X=on,Z=on': ['extra_X', 'extra_Z'],
+  'm0=0,m1=1|X=off,Z=off': ['missing_X'], 'm0=0,m1=1|X=off,Z=on': ['missing_X', 'extra_Z'], 'm0=0,m1=1|X=on,Z=off': [], 'm0=0,m1=1|X=on,Z=on': ['extra_Z'],
+  'm0=1,m1=0|X=off,Z=off': ['missing_Z'], 'm0=1,m1=0|X=off,Z=on': [], 'm0=1,m1=0|X=on,Z=off': ['extra_X', 'missing_Z'], 'm0=1,m1=0|X=on,Z=on': ['extra_X'],
+  'm0=1,m1=1|X=off,Z=off': ['missing_X', 'missing_Z'], 'm0=1,m1=1|X=off,Z=on': ['missing_X'], 'm0=1,m1=1|X=on,Z=off': ['missing_Z'], 'm0=1,m1=1|X=on,Z=on': [],
 })
 
 // Labels that say which column of HUD this lives in follow §6.1/§6.3.
