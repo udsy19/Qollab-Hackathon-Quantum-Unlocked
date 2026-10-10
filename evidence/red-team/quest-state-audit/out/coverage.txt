@@ -1,0 +1,22 @@
+GAME-STATES            baseline=PASS  went red under: S1, S14
+GAME-EDGES             baseline=FAIL  went red under: L-TABLES_GAME
+GAME-EXTRA             baseline=FAIL  went red under: L-TABLES_GAME
+CONTRACT-STATES        baseline=PASS  went red under: S2, S6
+CONTRACT-EDGES         baseline=FAIL  went red under: L-TABLES_CONTRACT
+CONTRACT-EXTRA         baseline=PASS  went red under: S2, S3, S6, S7, S9
+PARITY                 baseline=FAIL  went red under: L-TABLES_GAME, L-TABLES_CONTRACT
+GAME-NOSKIP            baseline=PASS  went red under: S4, S5, S14
+GAME-ENDING-ENTRY      baseline=PASS  went red under: S5
+GAME-COMMIT-ONCE       baseline=PASS  went red under: S8b, S14
+CONTRACT-NOSKIP        baseline=PASS  went red under: S3, S6, S7
+CONTRACT-ENDING-ENTRY  baseline=PASS  went red under: S3, S7
+CONTRACT-COMMIT-ONCE   baseline=PASS  went red under: S9
+TOKEN-ELSEWHERE        baseline=PASS  went red under: S10
+TOKEN-LATCH            baseline=FAIL  went red under: L-LATCH
+ERR-COMMIT             baseline=PASS  went red under: S11, S12, S14
+DRY-RULE               baseline=PASS  went red under: S12
+DRY-00                 baseline=FAIL  went red under: L-BITS00
+FRESH                  baseline=FAIL  went red under: L-FRESH
+ACK                    baseline=FAIL  went red under: L-ACK
+PLAYTHROUGH            baseline=PASS  went red under: S12, S13, S14
+21 checks, 0 never red under sabotage

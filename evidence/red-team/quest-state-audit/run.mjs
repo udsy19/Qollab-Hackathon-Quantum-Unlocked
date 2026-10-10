@@ -12,8 +12,11 @@ import { pathToFileURL } from 'node:url';
 import { writeFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { EXPECTED, MUST_VISIT_BEFORE_ENDING, DOC_STATES } from './expected.mjs';
-import { blochState, teleportFidelity, physicsRule } from './oracle.mjs';
+import { blochState, teleportFidelity, physicsRule, naiveCloneFidelity } from './oracle.mjs';
 
+// Any uncaught error is "no verdict", never a red (law 7): exit 2.
+process.on('uncaughtException', (e) => { console.error(`REFUSED: harness crashed: ${e.stack}`); process.exit(2); });
+process.on('unhandledRejection', (e) => { console.error(`REFUSED: harness crashed: ${e?.stack ?? e}`); process.exit(2); });
 const arg = (k) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : undefined; };
 const GAME = arg('--game'); const CONTRACTS = arg('--contracts'); const JSON_OUT = arg('--json');
 if (!GAME || !CONTRACTS) { console.error('usage: node run.mjs --game <dir> --contracts <dir>'); process.exit(2); }
@@ -33,15 +36,17 @@ const rand = () => { seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 2
 const freshGeneric = () => ({ theta: Math.acos(1 - 2 * rand()), phi: 2 * Math.PI * rand() });
 
 // ---------------------------------------------------------------- machine adapters
-// Gameplay: the real createQuestMachine on the real bus. ACK_HOOK is the positive-control API
-// used ONLY so a fixed machine can still be walked; the red assertion in check ACK does not use it.
+// Gameplay: the real createQuestMachine on the real bus. The result-panel hooks below are called
+// used ONLY so a fixed machine can still be walked (noteResultShown = this harness's positive-control
+// fix; resultPanelShown = the name on lane/gameplay/gameplay-contracts-migration). Check ACK uses neither.
 function gameplayMachine() {
   const bus = busMod.createEventBus({ onError: () => {} });
   const m = stateMod.createQuestMachine(bus);
   return {
     get state() { return m.state; },
-    send: (ev) => { m.noteResultShown?.(); return m.send(ev).ok; },
-    sendRaw: (ev) => m.send(ev).ok,
+    // A module that THROWS on an unknown event name (contracts.js design) is refusing it.
+    send: (ev) => { m.noteResultShown?.(); m.resultPanelShown?.(); try { return m.send(ev).ok; } catch { return false; } },
+    sendRaw: (ev) => { try { return m.send(ev).ok; } catch { return false; } },
     reset: m.reset ? () => m.reset() : null,
   };
 }
@@ -73,7 +78,7 @@ function explore(make, events) {
       const m = make();
       for (const p of paths[s]) m.send(p);
       if (m.state !== s) throw new Error(`replay of path to ${s} landed in ${m.state}`);
-      const ok = m.sendRaw(ev);
+      const ok = m.send(ev); // as a real UI would: result panel shown first (ACK grades the raw path)
       obs[s][ev] = ok ? m.state : null;
       if (ok && !(m.state in paths)) { paths[m.state] = [...paths[s], ev]; queue.push(m.state); }
     }
@@ -291,7 +296,7 @@ check('PLAYTHROUGH', 'V§9.2 legal path, results through missionRules; CLAUDE.md
   // BOOT -> TITLE by whichever event the module names (the NAME is graded by GAME-EDGES, not here).
   step(Object.keys(G.obs.BOOT ?? {}).find((k) => G.obs.BOOT[k] === 'TITLE') ?? 'BOOT_COMPLETE');
   for (const e of ['START', 'SKIP', 'OPEN_CLONE_BOOTH']) step(e);
-  res(cloneResult('zero', 1)); res(cloneResult('plus', 0.75)); step('EXPLANATION_READ'); step('EXIT_BOOTH'); step('REACH_RELAY');
+  res(cloneResult('zero', naiveCloneFidelity(0, 0))); res(cloneResult('plus', naiveCloneFidelity(Math.PI / 2, 0))); step('EXPLANATION_READ'); step('EXIT_BOOTH'); step('REACH_RELAY');
   res(bellResult('I')); res(bellResult('X')); step('VIEW_RECEIVER_MARGINAL'); step('OPEN_ROOFTOP'); step('REPAIR_CLASSICAL_LINK'); step('RUN_DRY_TEST');
   res(teleResult('calibration_1', 1, 1, true, true));
   tokenHandovers++; res(teleResult(TOKEN, 0, 1, true, false));

@@ -67,3 +67,11 @@ export function physicsRule(m0, m1) {
   if (ok.length !== 1) throw new Error(`oracle: ${ok.length} perfect corrections for m0=${m0} m1=${m1}`);
   return ok[0];
 }
+
+// Naive CNOT "copier" on psi = a|0> + b|1>: output a|00> + b|11>. Returns |<psi psi|out>|^2
+// (V§7.2): 1 on basis states, 1/2 on |+>.
+export function naiveCloneFidelity(theta, phi) {
+  const [a, b] = blochState(theta, phi);
+  const ov = add(mul(mul(conj(a), conj(a)), a), mul(mul(conj(b), conj(b)), b));
+  return ov.re * ov.re + ov.im * ov.im;
+}
