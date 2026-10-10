@@ -1,0 +1,6 @@
+provenance {"version":"terminals r1","hash":"2590d27ced6c"}
+FAIL  booth: opens with focus inside the terminal
+FAIL  driver reached the end (tabTo: no focusable control matching /^\|0⟩$/ (focused: events: —
+terminals r1 · sha256 2590d27ced6c))
+
+2 checks, 2 failed

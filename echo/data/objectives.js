@@ -161,6 +161,7 @@ export const FAILURES = Object.freeze({
     no_corrections: 'No corrections set. Without the two bits the receiver cannot know which fix to apply.',
     blind_spot: 'On this test state that mistake happens to look harmless. It would fail on most others.',
     commit_locked: 'Commit locked. Pass a dry run first: the token can be measured only once.',
+    trivial_pass: 'm0 = 0 and m1 = 0 need no correction, so this run does not test the rule. Measure a fresh state.',
     already_committed: 'Transfer complete. The source was measured; there is nothing left to send.',
   },
 })
@@ -202,7 +203,24 @@ export const HUD = Object.freeze({
 })
 
 // Terminal copy. Layouts follow §6.4 and §6.5; ui/terminal.js decides placement.
+// `common` is shared chrome: engine labels (§8.4 EngineKind, §12.3), busy and error states.
 export const TERMINALS = Object.freeze({
+  common: {
+    close: 'CLOSE',
+    closeKey: 'ESC',
+    engineLabel: 'ENGINE',
+    engines: {
+      exact_qiskit_local: 'EXACT LOCAL QISKIT',
+      qollab_selected_backend: 'SELECTED BACKEND (SAMPLED)',
+      documented_preview: 'DOCUMENTED PREVIEW, NOT A LIVE CALCULATION',
+    },
+    exact: 'EXACT',
+    calibrating: { text: 'CALIBRATING', src: '§12.3' },
+    moduleError: 'SCIENTIFIC MODULE ERROR. Nothing was measured and nothing was used up.',
+    refused: 'RESULT REFUSED. The quantum module sent data in the wrong shape, so no numbers are shown.',
+    retry: 'RETRY',
+    result: 'RESULT',
+  },
   copy_booth: {
     title: { text: 'PALISADE / DUPLICATION UNIT / MAINTENANCE OVERRIDE', src: '§6.4' },
     inputLabel: 'TEST INPUT',
@@ -217,6 +235,11 @@ export const TERMINALS = Object.freeze({
     skipDemo: 'SKIP DEMONSTRATION',
     choiceVoltage: 'INCREASE VOLTAGE',
     choiceReroute: 'REROUTE, DO NOT DUPLICATE',
+    whyA: 'OUTPUT A ALONE',
+    whyB: 'OUTPUT B ALONE',
+    purity: 'PURITY',
+    whyIdeal: 'A true independent copy of |+> would have purity 1 in each output.',
+    joint: 'JOINT OUTPUT',
     learning: { text: 'CNOT copies a known computational-basis bit, but not an arbitrary unknown qubit.', src: '§4.2' },
   },
   relay_core: {
@@ -229,6 +252,14 @@ export const TERMINALS = Object.freeze({
     comparedNote: 'Needs both logs, brought together by an ordinary message.',
     statusReady: { text: 'ENTANGLEMENT READY', src: '§4.3' },
     statusClassical: 'CLASSICAL LINK: OFFLINE',
+    agreeZ: 'Z-BASIS RESULTS AGREE',
+    agreeX: 'X-BASIS RESULTS AGREE',
+  },
+  classical_socket: {
+    title: 'LEGACY DATA LINK / JUNCTION PANEL',
+    junction: 'PATCH JUNCTION {n}',
+    patched: 'PATCHED',
+    dark: 'DARK',
   },
   teleport_terminal: {
     title: { text: 'ECHO // TRANSMISSION CONSOLE', src: '§6.5' },
@@ -241,8 +272,15 @@ export const TERMINALS = Object.freeze({
     slotLocal: 'LOCAL BELL HALF',
     slotRemote: 'REMOTE BELL HALF',
     measure: { text: 'EXECUTE BELL MEASUREMENT ON TEST STATE', src: '§6.5' },
-    m0Label: 'm0  SOURCE READOUT',
-    m1Label: 'm1  LOCAL BELL-HALF READOUT',
+    testState: 'FRESH CALIBRATION STATE',
+    m0Label: 'SOURCE READOUT m0',
+    m1Label: 'LOCAL BELL-HALF READOUT m1',
+    toggleX: 'X ON THE RECEIVER',
+    toggleZ: 'Z ON THE RECEIVER',
+    on: 'ON',
+    off: 'OFF',
+    dryPass: 'DRY RUN PASSED',
+    dryFail: 'DRY RUN FAILED',
     planTitle: { text: 'RECEIVER CORRECTION PLAN', src: '§6.5' },
     planRowTemplate: 'IF m0 = {m0}, m1 = {m1}:  X [{x}]  Z [{z}]',
     verify: { text: 'VERIFY DRY RUN', src: '§6.5' },
@@ -250,5 +288,6 @@ export const TERMINALS = Object.freeze({
     commit: { text: 'COMMIT ONE-WAY TRANSFER', src: '§4.4' },
     receiverRecovered: { text: 'STATE RECOVERED', src: '§4.4' },
     vaultAccepted: 'VAULT: AUTHORIZATION ACCEPTED',
+    committing: 'TRANSFER IN PROGRESS',
   },
 })
