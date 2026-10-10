@@ -295,20 +295,6 @@ def test_a_commit_that_raises_does_not_consume_the_token(monkeypatch, where):
         teleportation.live_commit(seed=9)
 
 
-# ------------------------------------------------------------------ ruling 5: the m1 label
-def test_every_fact_naming_m1_uses_the_owner_label():
-    label = "LOCAL BELL-HALF READOUT m1"
-    results = [fn() for _, fn in bridge_calls()]
-    named = 0
-    for r in results:
-        for fact in r["facts"]:
-            if re.search(r"\bm1\b", fact):
-                named += 1
-                assert label in fact, fact
-            assert "local bell-half readout)" not in fact.lower()
-    assert named > 100  # the label is checked on the facts that actually carry m1, not on none
-
-
 # ------------------------------------------------------------------ ruling 6: backend experiment value
 def test_selected_backend_job_is_labelled_backend_verification():
     r = qollab_job.interpret_counts({"00": 128, "11": 128}, "fake", shots_requested=256)
@@ -329,3 +315,32 @@ def test_relay_receiver_panel_is_exact_and_labelled_exact(gate, G):
     assert r["probabilities"] == pytest.approx({"0": rho_receiver[0, 0].real, "1": rho_receiver[1, 1].real}, abs=1e-12)
     receiver_fact = next(f for f in r["facts"] if f.startswith("Receiver alone"))
     assert "EXACT" in receiver_fact and "not sampled" in receiver_fact
+
+
+# ------------------------------------------------------------------ review follow-ups
+def test_every_string_naming_m1_uses_the_owner_label_including_circuit_descriptions():
+    # Ruling 5: wherever m1 is named on screen (facts and circuitDescription), it is the owner's label.
+    named = 0
+    for _, fn in bridge_calls():
+        r = fn()
+        for text in [r["circuitDescription"], *r["facts"]]:
+            bare = len(re.findall(r"\bm1\b", text))
+            named += bare
+            assert bare == text.count("LOCAL BELL-HALF READOUT m1"), text
+            assert "local bell-half readout)" not in text.lower()
+    assert named > 100  # checked on the strings that actually carry m1, not on none
+
+
+@pytest.mark.parametrize("bad", [1.5, True, "7"])
+def test_a_seed_that_is_not_an_integer_is_refused_before_anything_is_measured(bad):
+    with pytest.raises(ValueError, match="seed"):
+        teleportation.live_commit(seed=bad)
+    with pytest.raises(ValueError, match="seed"):
+        teleportation.bell_measurement("calibration", seed=bad)
+    assert teleportation.live_commit(seed=1)["fidelity"] >= 0.999999  # the refusal consumed nothing
+
+
+@pytest.mark.parametrize("bad", ["false", 1, None])
+def test_correction_flags_must_be_booleans(bad):
+    with pytest.raises(ValueError, match="applyX"):
+        teleportation.teleport_branch("bloch_a", 0, 1, bad, False)
