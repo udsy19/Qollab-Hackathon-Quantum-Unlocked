@@ -14,8 +14,9 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (9)
+## Notes here (10)
 
+- [[Reports/contracts-commit-result|Contracts: the one story commit gets a validator (validateCommitResult, STORYTOKENID)]]
 - [[Reports/contracts-fidelity-band|Fidelity cross-check: tolerance = band, plus a rounding epsilon]]
 - [[Reports/contracts-moments-and-land|Contracts: MOMENT events, a countdown that holds at 00:00, and a contracts-only landing branch]]
 - [[Reports/contracts-pin-thresholds|Contract gate pins the owner-ruled constants]]
