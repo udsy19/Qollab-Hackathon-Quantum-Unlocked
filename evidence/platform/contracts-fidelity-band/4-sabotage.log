@@ -1,0 +1,73 @@
+ok   RED   (expected RED ,  32 FAIL lines)  delete a transition (LINK_REPAIRED → RUN_DRY_TEST)
+ok   RED   (expected RED ,   3 FAIL lines)  misspell a state in QUEST_STATE_LIST
+ok   RED   (expected RED ,   1 FAIL lines)  loosen probability tolerance to 1e-6
+ok   RED   (expected RED ,   1 FAIL lines)  tighten probability tolerance to 1e-12
+ok   RED   (expected RED ,   8 FAIL lines)  strict tables stop throwing on a misspelt name
+ok   RED   (expected RED ,   3 FAIL lines)  transition() stops throwing on an unknown event
+ok   RED   (expected RED , 438 FAIL lines)  refused transition resets state instead of keeping it
+ok   RED   (expected RED ,   1 FAIL lines)  add an unexplained edge TITLE --SKIP--> CREDITS
+ok   RED   (expected RED ,   3 FAIL lines)  delete the DECLASSIFIED → CREDITS addition
+ok   RED   (expected RED ,   2 FAIL lines)  allow commit twice (TELEPORT_COMMITTED --COMMIT_TRANSFER-->)
+ok   RED   (expected RED ,   3 FAIL lines)  allow counts under exact_qiskit_local and documented_preview
+ok   RED   (expected RED ,   1 FAIL lines)  allow counts under documented_preview only (v1 rule)
+ok   RED   (expected RED ,   1 FAIL lines)  allow probabilities under qollab_selected_backend
+ok   RED   (expected RED ,   3 FAIL lines)  measurementBits accept anything
+ok   RED   (expected RED ,   1 FAIL lines)  unknown result fields accepted
+ok   RED   (expected RED ,   1 FAIL lines)  probability keys not checked against keyQubits
+ok   RED   (expected RED ,   1 FAIL lines)  fidelity upper bound removed
+ok   RED   (expected RED ,   2 FAIL lines)  empty facts accepted
+ok   RED   (expected RED ,   1 FAIL lines)  rebind copy_booth to the wrong state/event
+ok   RED   (expected RED ,  23 FAIL lines)  delete the ENDING --RESTART--> TITLE edge
+ok   RED   (expected RED ,   1 FAIL lines)  RESET_STATE drifts to BOOT
+ok   RED   (expected RED ,   1 FAIL lines)  OPEN_ROOFTOP fired by story-ui instead of a gameplay world trigger
+ok   RED   (expected RED ,   1 FAIL lines)  Mission 2 allowed as a documented preview
+ok   RED   (expected RED ,   1 FAIL lines)  Mission 2 receiver q1 not required in keyQubits
+ok   RED   (expected RED ,   2 FAIL lines)  backend_verification shots not pinned to 256
+ok   RED   (expected RED ,   1 FAIL lines)  measurementBits allowed on any experiment
+ok   RED   (expected RED ,   2 FAIL lines)  marginal reads the key from the wrong end
+ok   RED   (expected RED ,  10 FAIL lines)  allow X when m1=0 (expectedCorrections)
+ok   RED   (expected RED ,  20 FAIL lines)  swap the correction rule (X iff m0, Z iff m1)
+ok   RED   (expected RED ,  74 FAIL lines)  fidelity cross-check removed (a forged success is accepted)
+ok   RED   (expected RED ,  35 FAIL lines)  physics cross-check swaps x and z
+ok   RED   (expected RED ,   1 FAIL lines)  phase 1 may report fidelity before the choice
+ok   RED   (expected RED ,   1 FAIL lines)  phase 2 bits not compared with the request
+ok   RED   (expected RED ,   4 FAIL lines)  makeCorrectionRequest swaps m0 and m1
+ok   RED   (expected RED ,   4 FAIL lines)  a 00 pass unlocks COMMIT
+ok   RED   (expected RED ,   4 FAIL lines)  non-generic states accepted (|0>, |+>)
+ok   RED   (expected RED ,   1 FAIL lines)  a captions on/off setting accepted
+ok   RED   (expected RED ,   1 FAIL lines)  textScale may reach 250
+ok   RED   (expected RED ,   1 FAIL lines)  engine enum checked with `in` (inherited names pass)
+ok   RED   (expected RED ,   1 FAIL lines)  transition() event checked with `in` (inherited names refused, not thrown)
+ok   RED   (expected RED ,   2 FAIL lines)  dry-run parameters.m0/m1 may contradict measurementBits
+ok   RED   (expected RED ,  15 FAIL lines)  verdict ignores the rule AND passes at fidelity 0.5
+ok   RED   (expected RED ,   1 FAIL lines)  FIDELITY_PASS 0.999999 -> 0.5 (was a v2 null)
+ok   RED   (expected RED ,   1 FAIL lines)  FIDELITY_PASS 0.999999 -> 0.9 (consult 5 reproduction)
+ok   RED   (expected RED ,   1 FAIL lines)  FIDELITY_PASS 0.999999 -> 0.99999
+ok   RED   (expected RED ,   4 FAIL lines)  FIDELITY_PASS tightened to 1 (no Qiskit run reaches exactly 1 reliably)
+ok   RED   (expected RED ,   3 FAIL lines)  BACKEND_SHOTS 256 -> 1024
+ok   RED   (expected RED ,   2 FAIL lines)  BIT_LABELS m0/m1 swapped
+ok   RED   (expected RED ,   1 FAIL lines)  BIT_LABELS.m1 back to the superseded 'RELAY READOUT m1'
+ok   RED   (expected RED ,   2 FAIL lines)  TELEPORT_TEST_STATE phi 0.44 -> 0.4
+ok   RED   (expected RED ,  35 FAIL lines)  test-state circuit order rz then ry (Bloch loses phi)
+ok   RED   (expected RED ,   2 FAIL lines)  backend job experiment id renamed
+ok   RED   (expected RED ,   1 FAIL lines)  GENERIC_MAX_WRONG_FIDELITY 0.9 -> 0.95 (design value, pinned)
+ok   RED   (expected RED ,  14 FAIL lines)  verdict literal 0.9 AND cross-check tolerance 0.2 (export untouched)
+ok   RED   (expected RED ,  10 FAIL lines)  cross-check tolerance 1e-6 -> 1e-1 (supervisor's consult-6 null)
+ok   RED   (expected RED ,   7 FAIL lines)  cross-check tolerance 1e-6 -> 1e-2
+ok   RED   (expected RED ,   4 FAIL lines)  cross-check tolerance 1e-6 -> 1e-5
+ok   RED   (expected RED ,   1 FAIL lines)  cross-check tolerance 1e-6 -> 2e-6 (PIN only: no forged probe sits between 2e-6 and 1e-5)
+ok   RED   (expected RED ,   4 FAIL lines)  cross-check tolerance tightened 1e-6 -> 1e-9 (refuses a correct F = 0.999999)
+ok   RED   (expected RED ,   2 FAIL lines)  cross-check drops the epsilon (the reports/0006 equality defect)
+ok   RED   (expected RED ,   1 FAIL lines)  verdict drops the epsilon (F = 0.999999 - 1e-15 refused)
+ok   RED   (expected RED ,   1 FAIL lines)  FIDELITY_EPSILON 1e-12 -> 1e-9
+ok   RED   (expected RED ,   3 FAIL lines)  FIDELITY_EPSILON 1e-12 -> 0
+ok   RED   (expected RED ,   2 FAIL lines)  verdict epsilon sign flipped (+ instead of -)
+ok   NULL  (expected NULL,   0 FAIL lines)  verdict ignores the rule (Qiskit fidelity alone gates the pass)
+ok   NULL  (expected NULL,   0 FAIL lines)  verdict uses a literal 0.9 instead of FIDELITY_PASS (export still 0.999999)
+ok   NULL  (expected NULL,   0 FAIL lines)  verdict floor >= becomes > (strict)
+ok   NULL  (expected NULL,   0 FAIL lines)  ANIMATION_END moved to story-ui (an inferred source, not owner-ruled)
+ok   NULL  (expected NULL,   0 FAIL lines)  default volume 80 -> 50 (defaults are not pinned, only validated)
+ok   NULL  (expected NULL,   0 FAIL lines)  rename a §9.3 world-change id
+ok   RED   (expected RED ,   1 FAIL lines)  rebind teleport_terminal to another VALID state/event pair (not in §9.4)
+ok   NULL  (expected NULL,   0 FAIL lines)  drop the Map-specific hint from describe()
+sabotage: 72 cases (65 expected red, 7 declared nulls), 0 mismatch(es)

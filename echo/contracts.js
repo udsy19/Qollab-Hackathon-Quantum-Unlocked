@@ -334,7 +334,12 @@ export function marginalProbabilities(result, qubit) {
 export const TELEPORT_TEST_STATE = Object.freeze({ theta: 1.137, phi: 0.44 })  // §10.5, circuit order
 export const FIDELITY_PASS = 0.999999                 // §7.4 ideal-validation threshold
 export const GENERIC_MAX_WRONG_FIDELITY = 0.9          // every wrong choice must visibly fail
+// The cross-check accepts exactly what the §7.4 band accepts: tolerance = the band width 1 - 0.999999.
+// Every fidelity comparison adds FIDELITY_EPSILON, because in doubles 1 - 0.999999 = 1e-6 + 2.9e-17:
+// without it a correct F = 0.999999 was refused (gate-independence law 12). 1e-12 exceeds the measured
+// analytic/Qiskit disagreement (4.7e-13 over the oracle fixtures) and is 1e6 below the band.
 export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6
+export const FIDELITY_EPSILON = 1e-12
 export const BIT_LABELS = Object.freeze({ m0: 'SOURCE READOUT m0', m1: 'LOCAL BELL-HALF READOUT m1' })
 
 export function expectedCorrections(m0, m1) {
@@ -433,7 +438,7 @@ export function validateTeleportCorrectionResult(req, res) {
   for (const k of ['applyX', 'applyZ']) if (res.parameters[k] !== req[k]) err(`phase-2 result parameters.${k} ${describe(res.parameters[k])} is not the requested ${req[k]}`)
   if (!isFiniteNumber(res.fidelity)) { err('phase-2 result must report fidelity'); return errors }
   const want = expectedFidelity(req)
-  if (Math.abs(res.fidelity - want) > FIDELITY_CROSSCHECK_TOLERANCE) {
+  if (Math.abs(res.fidelity - want) > FIDELITY_CROSSCHECK_TOLERANCE + FIDELITY_EPSILON) {
     err(`phase-2 result fidelity ${res.fidelity} disagrees with the physics of this branch and choice (expected ${want.toFixed(9)})`)
   }
   return errors
@@ -445,7 +450,7 @@ export function dryRunVerdict(req, res) {
   const errors = validateTeleportCorrectionResult(req, res)
   if (errors.length) return { passed: false, unlocksCommit: false, expected: null, errors }
   const expected = expectedCorrections(req.m0, req.m1)
-  const passed = expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS
+  const passed = expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS - FIDELITY_EPSILON
   return { passed, unlocksCommit: passed && (req.m0 === 1 || req.m1 === 1), expected, errors }
 }
 

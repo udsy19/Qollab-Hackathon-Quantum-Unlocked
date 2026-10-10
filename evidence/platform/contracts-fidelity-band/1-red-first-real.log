@@ -1,0 +1,19 @@
+· states
+· loud failure on a wrong name
+· transitions: vision edges present, nothing unexplained added
+· invalid events are refused, state unchanged
+· happy path, replayed through transition()
+  trace: BOOT → TITLE → OPENING → FREE_ROAM_ALLEY → CLONE_INTRO → CLONE_BASIS_PASSED → CLONE_SUPERPOSITION_FAILED → CLONE_UNDERSTOOD → RELAY_UNLOCKED → RELAY_INTRO → RELAY_BELL_CREATED → RELAY_SEND_FAILED → RELAY_UNDERSTOOD → ROOFTOP_UNLOCKED → LINK_REPAIRED → TELEPORT_DRY_RUN → TELEPORT_DRY_RUN_PASSED → TELEPORT_COMMITTED → ENDING → DECLASSIFIED → CREDITS
+· who fires each quest event (owner 2026-10-10 "13 lane design questions" #6)
+· every §9.1 state reachable from BOOT through transition()
+· interactables
+· world changes keyed by the §9.3 states
+· ExperimentResult validator
+· ExperimentResult.marginalProbabilities (the only sanctioned way to read one qubit out of a key)
+· teleport dry run, two phases (owner 2026-10-10 "red-team physics ambiguities" #2: bits first, corrections second)
+· UI root and settings (overseer relay from story-ui, 2026-10-10)
+· owner-ruled values, pinned from the ruling text (never read back from the module)
+  FAIL  PIN FIDELITY_EPSILON must be 1e-12 (derived: float rounding allowance, above the oracle/analytic disagreement and 1e6 below the band); got undefined
+  FAIL  PIN verdict floor FIDELITY_PASS 0.999999 (vision §7.4): correct choice at F=0.999999 passes (got false)
+  FAIL  PIN verdict floor FIDELITY_PASS 0.999999 (vision §7.4): correct choice at F=0.999998999999999 passes (got false)
+contract-check: RED — 1129/1132 checks passed (contracts: /Users/udsy/agent-org/lanes/platform/wt/contracts-fidelity-band/echo/contracts.js)

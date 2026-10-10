@@ -198,9 +198,12 @@ The dry run is therefore two bridge calls. Each one is checked by its own valida
   `GENERIC_MAX_WRONG_FIDELITY` (0.9). On |0> a spurious Z is only a global phase, so a wrong choice would "pass"
   (owner, 13 questions #7). `TELEPORT_TEST_STATE` is the §10.5 state `{theta: 1.137, phi: 0.44}`.
 - **Cross-check, not fabrication.** `validateTeleportCorrectionResult` refuses a fidelity that disagrees by more than
-  1e-6 with the physics of the branch. Bob holds `X^(m1 xor applyX) Z^(m0 xor applyZ)|psi>`, so F is 1, x², z² or y²
+  `FIDELITY_CROSSCHECK_TOLERANCE` (1e-6, the §7.4 band width) + `FIDELITY_EPSILON` (1e-12, float rounding) with the physics of the branch. Bob holds `X^(m1 xor applyX) Z^(m0 xor applyZ)|psi>`, so F is 1, x², z² or y²
   of the Bloch vector. This catches an engine that reports success on a wrong choice. JS never displays the value.
-- `passed` needs the rule **and** `fidelity >= FIDELITY_PASS` (0.999999, §7.4). `unlocksCommit` is a pass on bits
+- `passed` needs the rule **and** `fidelity >= FIDELITY_PASS - FIDELITY_EPSILON` (0.999999, §7.4). A correct F of exactly
+  0.999999 passes; before contracts-fidelity-band the cross-check refused it by 2.9e-17 of rounding.
+  **Migration:** new export `FIDELITY_EPSILON = 1e-12`; no existing value moved. A consumer comparing a fidelity to
+  `FIDELITY_PASS` itself should subtract it too, or better, read `dryRunVerdict().passed`. `unlocksCommit` is a pass on bits
   other than 00, so the player really applied X and/or Z (overseer ruling, gameplay consult 3 #2). Fire
   `CORRECT_CALIBRATION` only when `unlocksCommit`. On a failed or 00 pass, retry on a fresh state (13 questions #11).
 - `validateTeleportCorrectionResult` checks a result against the bits in its **request**. Build every phase-2

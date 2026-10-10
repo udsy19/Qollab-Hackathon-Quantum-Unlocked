@@ -1,0 +1,23 @@
+· states
+· loud failure on a wrong name
+· transitions: vision edges present, nothing unexplained added
+· invalid events are refused, state unchanged
+· happy path, replayed through transition()
+  trace: BOOT → TITLE → OPENING → FREE_ROAM_ALLEY → CLONE_INTRO → CLONE_BASIS_PASSED → CLONE_SUPERPOSITION_FAILED → CLONE_UNDERSTOOD → RELAY_UNLOCKED → RELAY_INTRO → RELAY_BELL_CREATED → RELAY_SEND_FAILED → RELAY_UNDERSTOOD → ROOFTOP_UNLOCKED → LINK_REPAIRED → TELEPORT_DRY_RUN → TELEPORT_DRY_RUN_PASSED → TELEPORT_COMMITTED → ENDING → DECLASSIFIED → CREDITS
+· who fires each quest event (owner 2026-10-10 "13 lane design questions" #6)
+· every §9.1 state reachable from BOOT through transition()
+· interactables
+· world changes keyed by the §9.3 states
+· ExperimentResult validator
+· ExperimentResult.marginalProbabilities (the only sanctioned way to read one qubit out of a key)
+· teleport dry run, two phases (owner 2026-10-10 "red-team physics ambiguities" #2: bits first, corrections second)
+· UI root and settings (overseer relay from story-ui, 2026-10-10)
+· owner-ruled values, pinned from the ruling text (never read back from the module)
+  FAIL  PIN FIDELITY_CROSSCHECK_TOLERANCE must be 0.000001 (derived: the §7.4 pass band width 1 - 0.999999 (a wider cross-check accepts forged fidelities; a narrower one refuses correct ones)); got 0.01
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.00001 above Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.00001 below Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.001 above Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.001 below Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged right-choice fidelity 0.00001 below Qiskit's 1 (got [])
+  FAIL  cross-check refuses a forged right-choice fidelity 0.001 below Qiskit's 1 (got [])
+contract-check: RED — 1125/1132 checks passed (contracts: /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.pF14k3YUkS/c1e-2.js)
