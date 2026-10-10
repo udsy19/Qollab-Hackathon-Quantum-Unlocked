@@ -15,3 +15,7 @@ vault/_log/usage-hook.err
 vault/_log/*.lock
 vault/.loop-blocks
 graphify-out/
+
+# never commit API keys
+*.env
+ionq.env

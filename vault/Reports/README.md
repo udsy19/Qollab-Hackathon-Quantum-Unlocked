@@ -16,8 +16,8 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 
 ## Notes here (3)
 
-- [[Reports/quest-core-adversarial-review|Quest core: adversarial review (gameplay integration @ d5ec620)]]
-- [[Reports/quest-state-machine-contract|Quest state machine contract (echo/game) — what the world and the UI code against]]
+- [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
+- [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
 ## Below this folder

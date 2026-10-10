@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **36 notes** over 10 folders.
+Measured 2026-10-10: **37 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -77,8 +77,8 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 Folder README: [[Reports/README]]
 
 - [[Reports/README|Reports/]]
-- [[Reports/quest-core-adversarial-review|Quest core: adversarial review (gameplay integration @ d5ec620)]]
-- [[Reports/quest-state-machine-contract|Quest state machine contract (echo/game) — what the world and the UI code against]]
+- [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
+- [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
 ## `Reports/audits/`
@@ -106,6 +106,7 @@ One note per work session, from `Templates/session.md`: what changed, with commi
 Folder README: [[Sessions/README]]
 
 - [[Sessions/2026-10-09-agent-org-setup|2026-10-09 — agent-org-setup]]
+- [[Sessions/2026-10-10-contracts-v2|2026-10-10 — contracts-v2]]
 - [[Sessions/README|Sessions/]]
 
 ## `Templates/`
