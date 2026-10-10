@@ -19,3 +19,4 @@ graphify-out/
 # never commit API keys
 *.env
 ionq.env
+.claude/scheduled_tasks.lock

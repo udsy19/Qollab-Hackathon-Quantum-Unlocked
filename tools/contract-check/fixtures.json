@@ -59,9 +59,9 @@
     "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
     "qubits": 3,
     "parameters": {
-     "stateId": "plus",
-     "correctionX": false,
-     "correctionZ": true
+     "state": "plus",
+     "applyX": false,
+     "applyZ": true
     },
     "fidelity": 1.0000000000000002,
     "measurementBits": {
@@ -272,9 +272,9 @@
     "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
     "qubits": 3,
     "parameters": {
-     "stateId": "plus",
-     "correctionX": false,
-     "correctionZ": true
+     "state": "plus",
+     "applyX": false,
+     "applyZ": true
     },
     "fidelity": 1.0000000000000002,
     "measurementBits": {
@@ -295,9 +295,9 @@
     "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
     "qubits": 3,
     "parameters": {
-     "stateId": "plus",
-     "correctionX": false,
-     "correctionZ": true
+     "state": "plus",
+     "applyX": false,
+     "applyZ": true
     },
     "fidelity": 1.0000000000000002,
     "measurementBits": {
@@ -318,9 +318,9 @@
     "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
     "qubits": 3,
     "parameters": {
-     "stateId": "plus",
-     "correctionX": false,
-     "correctionZ": true
+     "state": "plus",
+     "applyX": false,
+     "applyZ": true
     },
     "fidelity": 1.0000000000000002,
     "measurementBits": {
@@ -422,9 +422,9 @@
     "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
     "qubits": 3,
     "parameters": {
-     "stateId": "plus",
-     "correctionX": false,
-     "correctionZ": true
+     "state": "plus",
+     "applyX": false,
+     "applyZ": true
     },
     "fidelity": 1.0000000000000002,
     "measurementBits": {
@@ -598,9 +598,9 @@
     "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
     "qubits": 3,
     "parameters": {
-     "stateId": "plus",
-     "correctionX": false,
-     "correctionZ": true
+     "state": "plus",
+     "applyX": false,
+     "applyZ": true
     },
     "fidelity": 1.5,
     "measurementBits": {
