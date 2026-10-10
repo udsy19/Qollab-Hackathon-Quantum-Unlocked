@@ -1,0 +1,5 @@
+const ws = new WebSocket('wss://x')
+const es = new EventSource('/e')
+const w = new Worker('w.js')
+const s = new SharedWorker('w.js')
+navigator.serviceWorker.register('sw.js')

@@ -1,0 +1,39 @@
+mutation                                             edit? harness
+drop rule file-count                                 yes   CAUGHT by: file-count-101, file-count-hidden
+drop rule file-size                                  yes   CAUGHT by: file-size-2000001
+drop rule html-document-tag                          yes   CAUGHT by: html-document-tag
+drop rule html-script                                yes   CAUGHT by: html-script
+drop rule html-stylesheet                            yes   CAUGHT by: html-stylesheet
+drop rule entry-main                                 yes   CAUGHT by: entry-main-missing
+drop rule entry-index                                yes   CAUGHT by: entry-index-missing
+drop rule storage                                    yes   CAUGHT by: storage
+drop rule network-write                              yes   CAUGHT by: network-write
+drop rule network-api                                yes   CAUGHT by: network-write, network-api
+drop rule import-specifier                           yes   CAUGHT by: import-specifier, hardcoded-backend
+drop rule import-unresolved                          yes   CAUGHT by: import-unresolved
+drop rule backend-run-count                          yes   CAUGHT by: backend-run-count
+drop rule backend-run-python                         yes   CAUGHT by: backend-run-python
+drop rule hardcoded-backend                          yes   CAUGHT by: hardcoded-backend
+drop rule hardcoded-secret                           yes   CAUGHT by: hardcoded-secret
+MAX_FILES 100 -> 101                                 yes   CAUGHT by: file-count-101, file-count-hidden
+MAX_BYTES 2e6 -> 2e6+1                               yes   CAUGHT by: file-size-2000001
+walk skips dotfiles                                  yes   CAUGHT by: file-count-hidden
+zero-files refusal removed                           yes   CAUGHT by: zero-files
+tokenizer failure: refuse() removed (handler remains) yes   NULL, equivalent mutant (declared)
+tokenizer failure: refuse() AND crash handler removed yes   CAUGHT by: unterminated-string
+JS comments not masked                               yes   CAUGHT by: clean
+JS block comments not masked                         yes   CAUGHT by: clean
+Python # comments not masked                         yes   CAUGHT by: clean
+Python triple quotes off                             yes   CAUGHT by: clean
+regex literals not recognised                        yes   CAUGHT by: clean
+template ${} expressions not rescanned               yes   CAUGHT by: backend-run-count
+HTML comments not masked                             yes   CAUGHT by: clean, limitations
+IonQ prose treated as backend id                     yes   CAUGHT by: clean
+three/addons accepted nowhere                        yes   CAUGHT by: clean
+https URLs not accepted                              yes   CAUGHT by: clean
+relative imports not resolved                        yes   CAUGHT by: import-unresolved
+backend.run bracket form ignored                     yes   CAUGHT by: backend-run-count
+"inside a string literal" tag removed                yes   CAUGHT by: storage
+entry-main/index checks swapped to always-present    yes   CAUGHT by: entry-main-missing
+fetch non-literal method info removed                yes   CAUGHT by: limitations
+37 mutations, 0 null/refused

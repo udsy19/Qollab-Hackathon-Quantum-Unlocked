@@ -1,0 +1,35 @@
+plant applied (X/Z rule swapped in a disposable copy)
+· states
+· loud failure on a wrong name
+· transitions: vision edges present, nothing unexplained added
+· invalid events are refused, state unchanged
+· happy path, replayed through transition()
+  trace: BOOT → TITLE → OPENING → FREE_ROAM_ALLEY → CLONE_INTRO → CLONE_BASIS_PASSED → CLONE_SUPERPOSITION_FAILED → CLONE_UNDERSTOOD → RELAY_UNLOCKED → RELAY_INTRO → RELAY_BELL_CREATED → RELAY_SEND_FAILED → RELAY_UNDERSTOOD → ROOFTOP_UNLOCKED → LINK_REPAIRED → TELEPORT_DRY_RUN → TELEPORT_DRY_RUN_PASSED → TELEPORT_COMMITTED → ENDING → DECLASSIFIED → CREDITS
+· who fires each quest event (owner 2026-10-10 "13 lane design questions" #6)
+· every §9.1 state reachable from BOOT through transition()
+· interactables
+· world changes keyed by the §9.3 states
+· ExperimentResult validator
+· ExperimentResult.marginalProbabilities (the only sanctioned way to read one qubit out of a key)
+· teleport dry run, two phases (owner 2026-10-10 "red-team physics ambiguities" #2: bits first, corrections second)
+  FAIL  expectedCorrections(0, 1) = §7.1 {"applyX":true,"applyZ":false} (got {"applyX":false,"applyZ":true})
+  FAIL  expectedCorrections(1, 0) = §7.1 {"applyX":false,"applyZ":true} (got {"applyX":true,"applyZ":false})
+  FAIL  verdict.passed === Qiskit (true): test state ry(1.137) rz(0.44) m0=0 m1=1 X=true Z=false F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":false,"applyZ":true},"errors":[]})
+  FAIL  verdict.unlocksCommit only on a correct non-00 pass (owner gameplay consult 3 #2): test state ry(1.137) rz(0.44) m0=0 m1=1 X=true Z=false F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":false,"applyZ":true},"errors":[]})
+  FAIL  verdict.passed === Qiskit (true): test state ry(1.137) rz(0.44) m0=1 m1=0 X=false Z=true F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":true,"applyZ":false},"errors":[]})
+  FAIL  verdict.unlocksCommit only on a correct non-00 pass (owner gameplay consult 3 #2): test state ry(1.137) rz(0.44) m0=1 m1=0 X=false Z=true F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":true,"applyZ":false},"errors":[]})
+  FAIL  verdict.passed === Qiskit (true): random generic #1 m0=0 m1=1 X=true Z=false F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":false,"applyZ":true},"errors":[]})
+  FAIL  verdict.unlocksCommit only on a correct non-00 pass (owner gameplay consult 3 #2): random generic #1 m0=0 m1=1 X=true Z=false F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":false,"applyZ":true},"errors":[]})
+  FAIL  verdict.passed === Qiskit (true): random generic #1 m0=1 m1=0 X=false Z=true F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":true,"applyZ":false},"errors":[]})
+  FAIL  verdict.unlocksCommit only on a correct non-00 pass (owner gameplay consult 3 #2): random generic #1 m0=1 m1=0 X=false Z=true F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":true,"applyZ":false},"errors":[]})
+  FAIL  verdict.passed === Qiskit (true): random generic #2 m0=0 m1=1 X=true Z=false F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":false,"applyZ":true},"errors":[]})
+  FAIL  verdict.unlocksCommit only on a correct non-00 pass (owner gameplay consult 3 #2): random generic #2 m0=0 m1=1 X=true Z=false F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":false,"applyZ":true},"errors":[]})
+  FAIL  verdict.passed === Qiskit (true): random generic #2 m0=1 m1=0 X=false Z=true F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":true,"applyZ":false},"errors":[]})
+  FAIL  verdict.unlocksCommit only on a correct non-00 pass (owner gameplay consult 3 #2): random generic #2 m0=1 m1=0 X=false Z=true F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":true,"applyZ":false},"errors":[]})
+  FAIL  verdict.passed === Qiskit (true): random generic #3 m0=0 m1=1 X=true Z=false F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":false,"applyZ":true},"errors":[]})
+  FAIL  verdict.unlocksCommit only on a correct non-00 pass (owner gameplay consult 3 #2): random generic #3 m0=0 m1=1 X=true Z=false F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":false,"applyZ":true},"errors":[]})
+  FAIL  verdict.passed === Qiskit (true): random generic #3 m0=1 m1=0 X=false Z=true F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":true,"applyZ":false},"errors":[]})
+  FAIL  verdict.unlocksCommit only on a correct non-00 pass (owner gameplay consult 3 #2): random generic #3 m0=1 m1=0 X=false Z=true F=1 (got {"passed":false,"unlocksCommit":false,"expected":{"applyX":true,"applyZ":false},"errors":[]})
+· UI root and settings (overseer relay from story-ui, 2026-10-10)
+contract-check: RED — 1069/1087 checks passed (contracts: /tmp/pc-unzX/contracts.js)
+exit=1

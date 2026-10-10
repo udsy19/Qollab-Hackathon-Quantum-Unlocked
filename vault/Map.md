@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **40 notes** over 10 folders.
+Measured 2026-10-10: **45 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -79,10 +79,14 @@ Folder README: [[Reports/README]]
 
 - [[Reports/README|Reports/]]
 - [[Reports/contract-conformance|Quantum bridge results vs the platform's ExperimentResult validator]]
+- [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
 - [[Reports/ionq-sim-rehearsal|IonQ simulator rehearsal of the one selected-backend job (off Qollab)]]
 - [[Reports/pyodide-bridge|The quantum bridge running in Pyodide (local runner)]]
+- [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/quantum-engine-g1|Quantum engine G1: cloning, no-signalling and teleportation measured in local Qiskit]]
 - [[Reports/quantum-physics-review|Quantum physics review: the engine's numbers check out, four gaps in what the tests can see]]
+- [[Reports/quantum-vs-contracts-v2|Quantum engine and bridge.js vs contracts v2 and the platform gates]]
+- [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
 ## `Reports/audits/`
 
@@ -110,6 +114,7 @@ One note per work session, from `Templates/session.md`: what changed, with commi
 Folder README: [[Sessions/README]]
 
 - [[Sessions/2026-10-09-agent-org-setup|2026-10-09 — agent-org-setup]]
+- [[Sessions/2026-10-10-contracts-v2|2026-10-10 — contracts-v2]]
 - [[Sessions/README|Sessions/]]
 
 ## `Templates/`

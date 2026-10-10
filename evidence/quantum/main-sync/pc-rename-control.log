@@ -1,0 +1,7 @@
+control: merged results with ONLY experiment bell_verification -> backend_verification renamed
+181 calls graded, 1 rejected
+exit=1
+REJECT qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=300)
+         backend_verification parameters.shots must be the 256 requested, got number 300
+ok     qollab_job.run_bell_verification_once(FakeSelectedBackend())
+

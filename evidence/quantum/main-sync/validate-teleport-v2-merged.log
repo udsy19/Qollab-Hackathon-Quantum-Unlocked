@@ -1,0 +1,115 @@
+REJECT probe bell_measurement(theta=, phi=)
+         engine has no v2 entry point: TypeError: bell_measurement() got an unexpected keyword argument 'theta'
+REJECT phase-1 bloch_a
+         phase-1 result parameters.theta nothing is not the requested 1.137
+         phase-1 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=0 m1=0 X=false Z=false
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=0 m1=0 X=false Z=true
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=0 m1=0 X=true Z=false
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=0 m1=0 X=true Z=true
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=0 m1=1 X=false Z=false
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=0 m1=1 X=false Z=true
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=0 m1=1 X=true Z=false
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=0 m1=1 X=true Z=true
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=1 m1=0 X=false Z=false
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=1 m1=0 X=false Z=true
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=1 m1=0 X=true Z=false
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=1 m1=0 X=true Z=true
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=1 m1=1 X=false Z=false
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=1 m1=1 X=false Z=true
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=1 m1=1 X=true Z=false
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-2 bloch_a m0=1 m1=1 X=true Z=true
+         phase-2 result parameters.theta nothing is not the requested 1.137
+         phase-2 result parameters.phi nothing is not the requested 0.44
+REJECT phase-1 bloch_b
+         phase-1 result parameters.theta nothing is not the requested 2.3
+         phase-1 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=0 m1=0 X=false Z=false
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=0 m1=0 X=false Z=true
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=0 m1=0 X=true Z=false
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=0 m1=0 X=true Z=true
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=0 m1=1 X=false Z=false
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=0 m1=1 X=false Z=true
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=0 m1=1 X=true Z=false
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=0 m1=1 X=true Z=true
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=1 m1=0 X=false Z=false
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=1 m1=0 X=false Z=true
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=1 m1=0 X=true Z=false
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=1 m1=0 X=true Z=true
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=1 m1=1 X=false Z=false
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=1 m1=1 X=false Z=true
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=1 m1=1 X=true Z=false
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+REJECT phase-2 bloch_b m0=1 m1=1 X=true Z=true
+         phase-2 result parameters.theta nothing is not the requested 2.3
+         phase-2 result parameters.phi nothing is not the requested -1.9
+
+| phase | distinct error | count |
+|---|---|---|
+| probe probe bell_measurement(theta=, phi=) | engine has no v2 entry point: TypeError: bell_measurement() got an unexpected keyword argument 'theta' | 1 |
+| phase-1 | phase-1 result parameters.theta nothing is not the requested <n> | 2 |
+| phase-1 | phase-1 result parameters.phi nothing is not the requested <n> | 2 |
+| phase-2 | phase-2 result parameters.theta nothing is not the requested <n> | 32 |
+| phase-2 | phase-2 result parameters.phi nothing is not the requested <n> | 32 |
+
+35 results graded, 35 rejected
+exit=1

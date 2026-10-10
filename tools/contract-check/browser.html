@@ -1,0 +1,98 @@
+<!doctype html>
+<!-- Throwaway proof that echo/contracts.js loads as a native ES module in a browser (no bundler).
+     Serve the repo root on your own port:  python3 -m http.server <port>
+     then open  http://localhost:<port>/tools/contract-check/browser.html -->
+<html lang="en">
+<meta charset="utf-8">
+<title>echo/contracts.js — browser load check</title>
+<style>
+  body { background: #070b12; color: #cfe3ff; font: 14px/1.45 ui-monospace, Menlo, monospace; margin: 24px; }
+  h1 { font-size: 16px; color: #7ff3ff; } .ok { color: #6dffa8; } .bad { color: #ff6d6d; } .dim { color: #7b8aa3; }
+  pre { white-space: pre-wrap; margin: 0 0 14px; }
+  .term { border: 1px solid #2a4a66; padding: 12px 16px; margin: 0 0 18px; max-width: 980px; background: #0b1320; }
+  .bits { color: #ffd36d; font-size: 16px; } .amber { color: #ffb347; }
+</style>
+<h1>echo/contracts.js loaded as an ES module</h1>
+<div class="term"><h1>TELEPORT TERMINAL: two-phase dry run (Qiskit 2.5.2 data, contract-validated)</h1><pre id="dry">loading…</pre></div>
+<pre id="out">loading…</pre>
+<script type="module">
+import * as C from '../../echo/contracts.js'
+
+const out = []
+const line = (cls, text) => out.push(`<span class="${cls}">${text.replace(/</g, '&lt;')}</span>`)
+
+// Provenance: the hash of the bytes this page actually served, to compare with `shasum -a 256`.
+const bytes = await (await fetch('../../echo/contracts.js', { cache: 'no-store' })).arrayBuffer()
+const hash = [...new Uint8Array(await crypto.subtle.digest('SHA-256', bytes))].map(b => b.toString(16).padStart(2, '0')).join('')
+line('dim', `sha256(echo/contracts.js as served) = ${hash}`)
+line('dim', `userAgent = ${navigator.userAgent}`)
+
+const HAPPY = ['BOOT_COMPLETE', 'START', 'FINISHED', 'OPEN_CLONE_BOOTH', 'BASIS_DEMO_OK', 'SUPERPOSITION_DEMO_FAILED',
+  'EXPLANATION_READ', 'EXIT_BOOTH', 'REACH_RELAY', 'PREPARE_BELL_PAIR', 'ATTEMPT_NO_SIGNALLING', 'VIEW_RECEIVER_MARGINAL',
+  'OPEN_ROOFTOP', 'REPAIR_CLASSICAL_LINK', 'RUN_DRY_TEST', 'CORRECT_CALIBRATION', 'COMMIT_TRANSFER', 'ANIMATION_END',
+  'OPEN_SCIENCE', 'OPEN_CREDITS']
+let s = C.INITIAL_STATE
+line('', '\nHappy path through transition():')
+for (const ev of HAPPY) {
+  const r = C.transition(s, ev)
+  line(r.ok ? 'ok' : 'bad', `  ${s.padEnd(27)} --${ev}--> ${r.state}`)
+  s = r.state
+}
+line(s === 'CREDITS' ? 'ok' : 'bad', `ended at ${s}`)
+
+line('', '\nRefused (right name, wrong time):')
+const dbl = C.transition('TELEPORT_COMMITTED', 'COMMIT_TRANSFER')
+line(dbl.ok ? 'bad' : 'ok', `  transition('TELEPORT_COMMITTED', 'COMMIT_TRANSFER') → ${JSON.stringify(dbl)}`)
+
+line('', '\nLoud (wrong name):')
+for (const [label, f] of [["QUEST_STATES.CLONE_UNDERSTOD", () => C.QUEST_STATES.CLONE_UNDERSTOD],
+  ["transition('TITLE', 'STRAT')", () => C.transition('TITLE', 'STRAT')]]) {
+  try { f(); line('bad', `  ${label} did NOT throw`) } catch (e) { line('ok', `  ${label} threw: ${e.message.slice(0, 90)}`) }
+}
+
+line('', '\nRestart (ENDING offers RESTART; owner 2026-10-10):')
+const rs = C.transition('ENDING', 'RESTART')
+line(rs.state === C.RESET_STATE ? 'ok' : 'bad', `  transition('ENDING', 'RESTART') → ${rs.state}; RESET_STATE = ${C.RESET_STATE}`)
+line('', `  DECLASSIFIED --CLOSE_SCIENCE--> ${C.transition('DECLASSIFIED', 'CLOSE_SCIENCE').state}`)
+
+line('', '\nvalidateExperimentResult:')
+const good = { experiment: 'bell_signalling', engine: 'exact_qiskit_local', circuitDescription: 'H(q0); CX(q0,q1); X(q0)',
+  qubits: 2, parameters: { senderGate: 'X' }, probabilities: { 0: 0.5, 1: 0.5 }, keyQubits: [1],
+  facts: ['Receiver-only data: 50% / 50%. No decodable message.'] }
+const bad = { ...good, counts: { 0: 128, 1: 128 }, measurementBits: { m0: 2, m1: 0 } }
+line(C.validateExperimentResult(good).length === 0 ? 'ok' : 'bad', `  good → ${JSON.stringify(C.validateExperimentResult(good))}`)
+for (const e of C.validateExperimentResult(bad)) line('ok', `  bad  → ${e}`)
+line('ok', `  Map  → ${C.validateExperimentResult(new Map(Object.entries(good)))[0]}`)
+
+document.getElementById('out').innerHTML = out.join('\n')
+
+// ---- the two-phase dry run, on rows Qiskit computed (tools/contract-check/teleport_oracle.py)
+const D = []
+const say = (cls, text) => D.push(`<span class="${cls}">${text.replace(/</g, '&lt;')}</span>`)
+const T = await (await fetch('teleport-fixtures.json', { cache: 'no-store' })).json()
+const ex = T.example
+say('dim', `Qiskit ${T.qiskit}; calibration state ry(${ex.bitsRequest.theta}) then rz(${ex.bitsRequest.phi}) on q0 (TELEPORT_TEST_STATE)`)
+say('', `PHASE 1  request ${JSON.stringify(ex.bitsRequest)}  → validateTeleportBitsResult: ${JSON.stringify(C.validateTeleportBitsResult(ex.bitsRequest, ex.bitsResult))}`)
+const { m0, m1 } = ex.bitsResult.measurementBits
+say('bits', `\n  ${C.BIT_LABELS.m0} = ${m0}      ${C.BIT_LABELS.m1} = ${m1}`)
+say('amber', '  (two classical bits, sent over the amber link; the player has not chosen yet)\n')
+say('', 'PHASE 2  the player picks X/Z. All four choices, each one sent as its own request:')
+for (const c of ex.corrections) {
+  const req = C.makeCorrectionRequest(ex.bitsRequest, ex.bitsResult, { applyX: c.request.applyX, applyZ: c.request.applyZ })
+  const v = C.dryRunVerdict(req, c.result)
+  const choice = `X ${req.applyX ? 'ON ' : 'OFF'}  Z ${req.applyZ ? 'ON ' : 'OFF'}`
+  say(v.passed ? 'ok' : 'bad', `  ${choice}  → Qiskit fidelity ${c.result.fidelity.toFixed(6)}  ${v.passed ? 'PASS' : 'fail'}${v.unlocksCommit ? '  · unlocks COMMIT' : ''}  errors ${JSON.stringify(v.errors)}`)
+}
+const rule = C.expectedCorrections(m0, m1)
+say('dim', `\n  rule (§7.1): X iff m1 = 1, Z iff m0 = 1 → X ${rule.applyX ? 'ON' : 'OFF'}, Z ${rule.applyZ ? 'ON' : 'OFF'}`)
+const forged = { ...ex.corrections[0].result, fidelity: 1 }
+say('ok', `  forged success on a wrong choice is refused: ${C.validateTeleportCorrectionResult(ex.corrections[0].request, forged)[0]}`)
+try { C.makeCorrectionRequest(ex.bitsRequest, { ...ex.bitsResult, measurementBits: undefined }, { applyX: true, applyZ: false }); say('bad', '  corrections without bits were accepted') }
+catch (e) { say('ok', `  corrections before bits are impossible: ${e.message.slice(0, 110)}`) }
+const fresh = C.randomGenericState()
+say('dim', `  next calibration state (randomGenericState): theta=${fresh.theta.toFixed(6)} phi=${fresh.phi.toFixed(6)} → ${JSON.stringify(C.validateTeleportBitsRequest(fresh))}`)
+say('dim', `  settings: UI_ROOT_ID="${C.UI_ROOT_ID}", DEFAULT_SETTINGS ${JSON.stringify(C.DEFAULT_SETTINGS)} → ${JSON.stringify(C.validateSettings(C.DEFAULT_SETTINGS))}`)
+document.getElementById('dry').innerHTML = D.join('\n')
+document.title = 'contracts: loaded'
+</script>
+</html>
