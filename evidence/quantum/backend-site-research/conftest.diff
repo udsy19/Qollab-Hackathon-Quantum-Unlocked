@@ -1,0 +1,18 @@
+--- conftest.base.py	2026-10-10 00:36:10
++++ conftest.py	2026-10-10 00:36:23
+@@ -94,11 +94,11 @@
+     yield ("qollab_job.interpret_counts(DRIFTED_COUNTS, shots_requested=256)",  # total drifts from the request
+            lambda: qollab_job.interpret_counts(dict(DRIFTED_COUNTS), FakeSelectedBackend.name, shots_requested=256))
+ 
+-    def once():
+-        qollab_job._job_submitted = False  # a fresh run: the one job is still available
+-        return qollab_job.run_backend_verification_once(FakeSelectedBackend())
++    def submitted():  # bridge.js submits the job; Python reads the counts it got back
++        job = FakeSelectedBackend().run(qollab_job.build_backend_verification_circuit(), shots=256)
++        return qollab_job.interpret_backend_counts(job.result().get_counts(), FakeSelectedBackend(), 256)
+ 
+-    yield "qollab_job.run_backend_verification_once(FakeSelectedBackend())", once
++    yield "qollab_job.interpret_backend_counts(<FakeSelectedBackend job counts>)", submitted
+ 
+ 
+ BRIDGE_CALL_COUNT = 7 + 3 + 7 * (2 + 16 + 4 + 1) + 3 * (1 + 16 + 1 + 1) + 2 + 3  # by hand from the loops above

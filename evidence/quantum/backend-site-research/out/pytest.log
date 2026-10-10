@@ -1,0 +1,8 @@
+pytest on disposable copies, HEAD 2f103eb (merged lane/quantum/integration 807cc39), .venv python 3.13 / qiskit 2.5.2
+HEAD unmodified: 595 passed in 7.23s
+HEAD tests vs proposed qollab_job.py (expected red: they call the removed guard): 246 failed, 349 passed in 79.90s (0:01:19)
+proposed tests vs proposed qollab_job.py: 594 passed in 10.60s
+sabotage (Python backend.run added inside interpret_backend_counts):
+FAILED echo/tests/test_qollab_job.py::test_python_never_submits_a_job - asser...
+FAILED echo/tests/test_qollab_job.py::test_counts_of_the_submitted_circuit_name_the_backend_and_follow_the_con
+2 failed, 592 passed in 10.15s

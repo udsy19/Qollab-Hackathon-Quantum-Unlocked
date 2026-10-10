@@ -1,0 +1,45 @@
+--- bridge.base.js	2026-10-10 00:29:47
++++ bridge.js	2026-10-10 00:30:15
+@@ -119,13 +119,36 @@
+   commit = null;
+ }
+ 
+-// The one selected-backend job (§8.4, §8.6, §10.7). IonQ accepts one job per run, so the promise
+-// is memoised for the life of the page, failure included: Python's guard in qollab_job.py counts a
+-// failed submission as spent, and so does this. On failure it rejects with §8.6's wording.
++// The one selected-backend job (§8.4, §8.6, §10.7), and the game's ONLY `backend.run` (owner
++// ruling: one guarded site, this file). Python builds the circuit and reads the counts; JS submits,
++// through the runtime's backend proxy (`run` -> `run.callPromisingKwargs`, the route Qollab documents
++// for JS projects), where the local runner's job counter can see it. On IonQ, Qollab's own one-job
++// check sits on its network layer and refuses a second job from either language.
++// The promise is memoised for the life of the page, failure included: IonQ may count a failed
++// submission as the run's one job. On failure it rejects with §8.6's wording.
++const UNAVAILABLE = 'Quantum backend verification unavailable; educational circuit validated locally';
+ let verification = null;
+ export function verifySelectedBackendOnce() {
+-  if (!verification) verification = callEngine(
+-    'Quantum backend verification unavailable; educational circuit validated locally',
+-    qollabJob.run_backend_verification_once, [backend]);
++  if (!verification) verification = submitOnce();
+   return verification;
+ }
++
++async function submitOnce() {
++  const shots = qollabJob.DEFAULT_SHOTS;
++  let counts;
++  try {
++    const circuit = await qollabJob.build_backend_verification_circuit.callPromising();
++    const job = await backend.run(circuit, { shots });
++    circuit.destroy();
++    const result = await job.result();
++    counts = result.get_counts();
++    result.destroy();
++  } catch (err) {
++    throw new ScientificModuleError(UNAVAILABLE, [lastLine(err)], err);
++  }
++  try {
++    return await callEngine(UNAVAILABLE, qollabJob.interpret_backend_counts, [counts, backend, shots]);
++  } finally {
++    counts.destroy();
++  }
++}

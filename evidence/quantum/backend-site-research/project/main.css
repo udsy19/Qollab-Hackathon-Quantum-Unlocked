@@ -1,0 +1,4 @@
+body { font: 14px/1.4 ui-monospace, Menlo, monospace; background: #0b1020; color: #e6ecff; margin: 16px; }
+h1 { font-size: 18px; } small { color: #ffb86b; } code { color: #8be9fd; }
+td { padding: 4px 10px; border-bottom: 1px solid #2a3355; vertical-align: top; } td:first-child { color: #9aa4c7; }
+pre { white-space: pre-wrap; font-size: 11px; color: #b8c0e0; max-height: 520px; overflow: auto; }

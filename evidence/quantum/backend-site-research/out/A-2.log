@@ -1,0 +1,17 @@
+assembled /private/tmp/bs-run-HtRJGd (A, token bs-A-2-20261010T005057-14130)
+PASS  served build token matches the one just written  — bs-A-2-20261010T005057-14130
+PASS  harness main.js ran to the end without error  — done
+PASS  runner's own JS-side counter: exactly 1 backend.run  — {"jobs":1,"refusedByRunner":0}
+PASS  runner refused nothing (IonQ one-job mock)  — 0
+PASS  Python-side spy (BasicSimulator.run): exactly 1 job  — 1
+PASS  verify asked twice: the second call is the same promise  — true
+PASS  submitted circuit is the Bell circuit  — {"name":"echo_backend_verification","ops":["h","cx","measure","measure"]}
+PASS  submitted with shots=256  — {"shots":256}
+PASS  raw keys: only 00/11, all shots  — {"11":120,"00":136}
+PASS  verify #1 delivered a result  — verified
+PASS  delivered result re-validates in Node from the contract bytes  — []
+PASS  experiment backend_verification · engine qollab_selected_backend  — ["backend_verification","qollab_selected_backend"]
+PASS  delivered counts decode to q0 == q1 on every shot, matching the raw readout  — {"counts":{"11":120,"00":136},"keyQubits":[1,0],"ones":{"q0":120,"q1":120},"rawQ":{"q0":120,"q1":120}}
+PASS  the fact line names the backend the runtime reported  — basic_simulator
+A-2: 14/14 checks passed · runner JS counter 1 · python spy 1
+run.sh A-2 (A) → exit 0
