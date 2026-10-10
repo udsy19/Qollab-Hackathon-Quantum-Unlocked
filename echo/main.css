@@ -1,0 +1,493 @@
+/* ECHO: ONE OF ONE — the only stylesheet Qollab loads. One section per module, headed
+   "==== <module> ====". Every UI size is in em of the UI root, so the text-scale setting
+   (--echo-text-scale, 1–2) scales the whole interface at once. */
+
+/* ==== tokens and base ==== */
+:root {
+  --echo-panel: rgba(6, 13, 24, 0.92);
+  --echo-outline: rgba(120, 196, 255, 0.45);
+  --echo-text: #e8f1ff;
+  --echo-muted: #a9bbcf;
+  --echo-cyan: #5ce1ff;
+  --echo-amber: #ffb84d;
+  --echo-ok: #7dffb0;
+  --echo-error: #ff7a7a;
+  --echo-focus: #ffe14d;
+  --echo-font: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --echo-display: "Bahnschrift", "DIN Alternate", "DIN Condensed", "Arial Narrow", var(--echo-font);
+  --echo-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --echo-fade: 200ms;
+}
+
+/* Show/hide pattern for every [data-visible] element: visibility flips at once when showing,
+   so focus() works on the first frame, and only after the fade when hiding. */
+
+.echo-ui {
+  --echo-text-scale: 1;
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-rows: auto 1fr auto auto;
+  grid-template-areas: "top" "middle" "dialogue" "bottom";
+  gap: 0.5em;
+  padding: clamp(12px, 2.5vh, 32px) clamp(12px, 2.5vw, 40px);
+  box-sizing: border-box;
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--echo-text);
+  font-family: var(--echo-font);
+  font-size: calc(16px * var(--echo-text-scale));
+  line-height: 1.4;
+}
+
+.echo-ui *,
+.echo-ui *::before,
+.echo-ui *::after {
+  box-sizing: border-box;
+}
+
+/* Zero-specificity reset, so component margins below always win. */
+:where(.echo-ui) :where(p, h1, h2, dl, dd) {
+  margin: 0;
+}
+
+.echo-panel,
+.echo-hud__objective,
+.echo-hud__timer,
+.echo-hud__capsule,
+.echo-hud__prompt,
+.echo-hud__tooltip,
+.echo-dialogue,
+.echo-menu__panel:not(.echo-title) {
+  background: var(--echo-panel);
+  border: 1px solid var(--echo-outline);
+  border-radius: 2px;
+}
+
+.echo-key {
+  display: inline-block;
+  min-width: 1.8em;
+  padding: 0.1em 0.45em;
+  border: 1px solid var(--echo-cyan);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  color: var(--echo-cyan);
+  font-family: var(--echo-mono);
+  font-size: 0.85em;
+  font-weight: 700;
+  text-align: center;
+}
+
+.echo-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* Status never rests on colour alone: every state also carries a glyph and a word. */
+.echo-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+}
+.echo-status__glyph {
+  font-family: var(--echo-mono);
+  font-weight: 700;
+}
+.echo-status[data-status="inactive"] { color: var(--echo-muted); }
+.echo-status[data-status="available"] { color: var(--echo-cyan); }
+.echo-status[data-status="complete"] { color: var(--echo-ok); }
+.echo-status[data-status="error"] { color: var(--echo-error); border-color: var(--echo-error); }
+
+/* Keyboard focus is always visible: a high-contrast ring plus a pointer glyph on buttons. */
+.echo-ui button:focus,
+.echo-ui input:focus,
+.echo-ui select:focus {
+  outline: 3px solid var(--echo-focus);
+  outline-offset: 3px;
+}
+
+.echo-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  min-height: 2.6em;
+  padding: 0.45em 1.2em 0.45em 1.6em;
+  border: 1px solid var(--echo-outline);
+  border-radius: 2px;
+  background: rgba(14, 30, 52, 0.95);
+  color: var(--echo-text);
+  font: inherit;
+  font-family: var(--echo-display);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background-color var(--echo-fade), border-color var(--echo-fade);
+}
+.echo-button::before {
+  content: "▸";
+  position: absolute;
+  left: 0.5em;
+  color: var(--echo-focus);
+  opacity: 0;
+}
+.echo-button:hover {
+  border-color: var(--echo-cyan);
+}
+.echo-button:focus {
+  border-color: var(--echo-focus);
+  background: rgba(36, 52, 22, 0.95);
+}
+.echo-button:focus::before {
+  opacity: 1;
+}
+
+/* Reduced motion: no transitions, no animations, anywhere in the UI. Information stays. */
+.echo-ui[data-reduced-motion="on"],
+.echo-ui[data-reduced-motion="on"] *,
+.echo-ui[data-reduced-motion="on"] *::before,
+.echo-ui[data-reduced-motion="on"] *::after {
+  transition: none !important;
+  animation: none !important;
+}
+
+/* ==== hud ==== */
+/* The HUD box is transparent to layout: its rows sit in the UI root's grid areas, so the
+   dialogue always lands between them and nothing overlaps at 200% text. */
+.echo-hud {
+  display: contents;
+}
+
+.echo-hud__top,
+.echo-hud__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75em;
+  min-width: 0;
+  transition: opacity var(--echo-fade), visibility 0s;
+}
+.echo-hud__top { grid-area: top; flex-wrap: nowrap; }
+.echo-hud__bottom { grid-area: bottom; align-items: flex-end; }
+
+.echo-hud[data-visible="false"] > * {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity var(--echo-fade), visibility 0s linear var(--echo-fade);
+}
+
+.echo-hud__objective {
+  flex: 0 1 26em;
+  max-width: 34em;
+  min-width: 0;
+  padding: 0.6em 0.9em;
+  overflow-wrap: anywhere;
+}
+.echo-hud__brand {
+  color: var(--echo-cyan);
+  font-family: var(--echo-display);
+  font-size: 0.8em;
+  letter-spacing: 0.22em;
+}
+.echo-hud__objnum {
+  margin-top: 0.5em;
+  color: var(--echo-amber);
+  font-family: var(--echo-display);
+  font-size: 0.8em;
+  letter-spacing: 0.18em;
+}
+.echo-hud__objtext {
+  font-family: var(--echo-display);
+  font-size: 1.1em;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.echo-hud__timer {
+  display: flex;
+  flex: 0 0 auto;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-left: auto;
+  padding: 0.6em 0.9em;
+  text-align: right;
+}
+.echo-hud__timerlabel {
+  color: var(--echo-amber);
+  font-family: var(--echo-display);
+  font-size: 0.8em;
+  letter-spacing: 0.18em;
+}
+.echo-hud__timervalue {
+  font-family: var(--echo-mono);
+  font-size: 1.4em;
+  font-variant-numeric: tabular-nums;
+}
+
+.echo-hud__capsule {
+  padding: 0.5em 0.9em;
+  font-family: var(--echo-display);
+  font-size: 0.95em;
+  letter-spacing: 0.14em;
+}
+
+.echo-hud__prompt {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6em;
+  margin-left: auto;
+  padding: 0.5em 0.9em;
+  font-family: var(--echo-display);
+  letter-spacing: 0.14em;
+  transition: opacity var(--echo-fade), transform var(--echo-fade), visibility 0s;
+}
+.echo-hud__prompt .echo-key {
+  animation: echo-key-pulse 2.4s ease-in-out infinite;
+}
+.echo-hud__prompt[data-visible="false"],
+.echo-hud__tooltip[data-visible="false"] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.25em);
+  transition: opacity var(--echo-fade), transform var(--echo-fade), visibility 0s linear var(--echo-fade);
+}
+
+.echo-hud__tooltip {
+  grid-area: middle;
+  align-self: end;
+  justify-self: center;
+  max-width: 100%;
+  padding: 0.5em 1em;
+  font-family: var(--echo-display);
+  letter-spacing: 0.1em;
+  text-align: center;
+  overflow-wrap: anywhere;
+  transition: opacity var(--echo-fade), transform var(--echo-fade), visibility 0s;
+}
+
+@keyframes echo-key-pulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(92, 225, 255, 0); }
+  50% { box-shadow: 0 0 0.6em 0 rgba(92, 225, 255, 0.45); }
+}
+
+/* ==== dialogue ==== */
+.echo-dialogue {
+  grid-area: dialogue;
+  justify-self: center;
+  position: relative;
+  width: min(44em, 100%);
+  padding: 0.75em 1.1em 0.6em;
+  border-left: 3px solid var(--echo-cyan);
+  pointer-events: auto;
+  transition: opacity var(--echo-fade), transform var(--echo-fade), visibility 0s;
+}
+.echo-dialogue[data-visible="false"] {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(0.4em);
+  transition: opacity var(--echo-fade), transform var(--echo-fade), visibility 0s linear var(--echo-fade);
+}
+.echo-ui[data-subtitles="off"] .echo-dialogue {
+  display: none;
+}
+
+.echo-dialogue__speaker {
+  color: var(--echo-cyan);
+  font-family: var(--echo-display);
+  font-size: 0.85em;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.echo-dialogue[data-speaker="mica"] { border-left-color: var(--echo-amber); }
+.echo-dialogue[data-speaker="mica"] .echo-dialogue__speaker { color: var(--echo-amber); }
+.echo-dialogue[data-speaker="mirror"] { border-left-color: var(--echo-error); }
+.echo-dialogue[data-speaker="mirror"] .echo-dialogue__speaker { color: var(--echo-error); }
+
+/* Exactly two lines of room; dialogue.js paginates so the text never needs a third. */
+.echo-dialogue__text {
+  min-height: 2.9em;
+  font-size: 1.15em;
+  line-height: 1.45em;
+  overflow-wrap: anywhere;
+}
+
+.echo-dialogue__footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75em;
+  margin-top: 0.35em;
+}
+.echo-dialogue__page {
+  color: var(--echo-muted);
+  font-family: var(--echo-mono);
+  font-size: 0.8em;
+}
+.echo-dialogue__next {
+  min-height: 2.2em;
+  padding: 0.2em 0.8em 0.2em 1.4em;
+  font-size: 0.8em;
+}
+
+/* ==== menu ==== */
+.echo-menu {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  padding: clamp(12px, 3vh, 40px);
+  overflow-y: auto;
+  background: rgba(2, 6, 12, 0.72);
+  pointer-events: auto;
+  transition: opacity var(--echo-fade), visibility 0s;
+}
+.echo-menu[data-visible="false"] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--echo-fade), visibility 0s linear var(--echo-fade);
+}
+.echo-menu[data-screen="title"] {
+  background:
+    repeating-linear-gradient(0deg, rgba(92, 225, 255, 0.035) 0 1px, transparent 1px 4px),
+    radial-gradient(ellipse at 50% 120%, rgba(255, 184, 77, 0.18), transparent 60%),
+    linear-gradient(180deg, rgba(2, 6, 12, 0.55), rgba(2, 6, 12, 0.92));
+}
+
+.echo-menu__panel {
+  /* margin:auto centres without clipping the top when a 200% panel is taller than the screen. */
+  margin: auto;
+  width: min(30em, 100%);
+  padding: 1.5em 1.75em;
+}
+.echo-menu__panel[hidden] {
+  display: none;
+}
+.echo-menu__title {
+  margin-bottom: 1em;
+  color: var(--echo-cyan);
+  font-family: var(--echo-display);
+  font-size: 1.3em;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+.echo-menu__list {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.6em;
+}
+.echo-menu__list .echo-button {
+  justify-content: flex-start;
+}
+
+.echo-title {
+  width: min(40em, 100%);
+  padding: 0;
+  text-align: center;
+}
+.echo-title__kicker {
+  color: var(--echo-muted);
+  font-family: var(--echo-mono);
+  font-size: 0.85em;
+  letter-spacing: 0.3em;
+}
+.echo-title__logo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0.3em 0 0.8em;
+  font-family: var(--echo-display);
+  font-size: 1em;
+  font-weight: 700;
+  line-height: 1;
+}
+/* The logo is art, not reading text: it follows text scale but is capped by the viewport. */
+.echo-title__echo {
+  color: var(--echo-text);
+  font-size: min(8em, 15vw, 20vh);
+  letter-spacing: 0.3em;
+  padding-left: 0.3em;
+  text-shadow: 0 0 0.3em rgba(92, 225, 255, 0.55);
+}
+.echo-title__sub {
+  margin-top: 0.4em;
+  color: var(--echo-amber);
+  font-size: 1.6em;
+  letter-spacing: 0.6em;
+  padding-left: 0.6em;
+}
+.echo-title .echo-menu__list {
+  width: min(18em, 100%);
+  margin: 0 auto;
+}
+.echo-title__credit {
+  margin-top: 1.25em;
+  color: var(--echo-muted);
+  font-size: 0.8em;
+  letter-spacing: 0.08em;
+}
+
+.echo-settings {
+  display: grid;
+  gap: 0.9em;
+  margin-bottom: 1.25em;
+}
+.echo-settings__row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5em 1em;
+}
+.echo-settings__label {
+  flex: 1 1 8em;
+  font-family: var(--echo-display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.echo-settings__value {
+  min-width: 3.5em;
+  font-family: var(--echo-mono);
+  text-align: right;
+}
+.echo-toggle {
+  width: 1.4em;
+  height: 1.4em;
+  margin: 0;
+  accent-color: var(--echo-cyan);
+}
+.echo-range {
+  flex: 1 1 8em;
+  min-width: 0;
+  height: 1.6em;
+  accent-color: var(--echo-cyan);
+}
+.echo-select {
+  min-height: 2.2em;
+  padding: 0.2em 0.6em;
+  border: 1px solid var(--echo-outline);
+  border-radius: 2px;
+  background: rgba(14, 30, 52, 0.95);
+  color: var(--echo-text);
+  font: inherit;
+}
+
+.echo-controls {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.6em 1.2em;
+  align-items: center;
+  margin-bottom: 1.25em;
+}
+.echo-controls dt {
+  text-align: right;
+}

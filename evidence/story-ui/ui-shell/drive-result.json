@@ -1,0 +1,204 @@
+{
+  "url": "http://127.0.0.1:8742/evidence/story-ui/harness/shell.html",
+  "provenance": {
+    "version": "ui-shell r3",
+    "hash": "43726d2831e7"
+  },
+  "keys": [
+    "Tab",
+    "Tab",
+    "Tab",
+    "Enter",
+    "Enter (skip reveal)",
+    "Enter (next page)",
+    "Enter (skip reveal)",
+    "--- pause/settings ---",
+    "Escape",
+    "Tab",
+    "Tab",
+    "Tab",
+    "Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "(focus reset to Resume for a known sequence)",
+    "Tab",
+    "Enter",
+    "Tab",
+    "Tab",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowRight",
+    "Escape (back to pause)",
+    "Escape (resume)",
+    "--- walk every page of the long beat at 200% ---",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "--- reduced motion by keyboard ---",
+    "Escape",
+    "Tab",
+    "Enter",
+    "Tab",
+    "Space",
+    "Escape (back)",
+    "Escape (resume)"
+  ],
+  "checks": [
+    {
+      "name": "title: Start has focus on load",
+      "ok": true,
+      "detail": "{\"tag\":\"BUTTON\",\"text\":\"Start\",\"id\":\"\",\"outline\":\"solid 3px rgb(255, 225, 77)\",\"inMenu\":true}"
+    },
+    {
+      "name": "title: focus ring is a 3px solid outline",
+      "ok": true,
+      "detail": "solid 3px rgb(255, 225, 77)"
+    },
+    {
+      "name": "title: Tab wraps inside the menu (Start→Settings→Controls→Start)",
+      "ok": true,
+      "detail": "Start"
+    },
+    {
+      "name": "hud: top row reads brand/objective/countdown",
+      "ok": true,
+      "detail": "ECHO // DISTRICT 09 OBJECTIVE 02 RESTORE THE ENTANGLEMENT RELAY GRID SHUTDOWN 08:42"
+    },
+    {
+      "name": "hud: bottom row reads capsule + prompt",
+      "ok": true,
+      "detail": "◆ Q-SOURCE: PRESERVED E INTERACT"
+    },
+    {
+      "name": "hud: capsule state carries a glyph, not only colour",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hud 100%: geometry clean",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dialogue: reveal was in progress, Enter skipped to the full caption",
+      "ok": true,
+      "detail": "6 → 161"
+    },
+    {
+      "name": "dialogue 100%: page 1 is ≤2 lines",
+      "ok": true,
+      "detail": "{\"lines\":2,\"page\":\"1/2\",\"text\":\"A copied bit and a copied qubit are not the same thing. The duplicator matched the basis values for |0> and |1>, but for |+> it produced one correlated two-qubit\"}"
+    },
+    {
+      "name": "dialogue 100%: long beat split into ≥2 pages",
+      "ok": true,
+      "detail": "1/2"
+    },
+    {
+      "name": "dialogue 100%: page 2 is ≤2 lines",
+      "ok": true,
+      "detail": "{\"lines\":2,\"page\":\"2/2\",\"text\":\"state, not two independent copies. Inspect the science panel to see the reduced state of each slot.\"}"
+    },
+    {
+      "name": "pause: Esc opens pause with Resume focused",
+      "ok": true,
+      "detail": "{\"tag\":\"BUTTON\",\"text\":\"Resume\",\"id\":\"\",\"outline\":\"solid 3px rgb(255, 225, 77)\",\"inMenu\":true}"
+    },
+    {
+      "name": "pause: 6×Tab keeps focus inside the menu",
+      "ok": true,
+      "detail": "Controls"
+    },
+    {
+      "name": "pause: Shift+Tab keeps focus inside the menu",
+      "ok": true,
+      "detail": "Settings"
+    },
+    {
+      "name": "settings: opened from pause, Subtitles focused",
+      "ok": true,
+      "detail": "{\"tag\":\"INPUT\",\"text\":\"subtitles\",\"id\":\"echo-set-subtitles\",\"outline\":\"solid 3px rgb(255, 225, 77)\",\"inMenu\":true}"
+    },
+    {
+      "name": "settings: text size range reachable by Tab",
+      "ok": true,
+      "detail": "echo-set-textScale"
+    },
+    {
+      "name": "settings: ArrowRight×4 sets text scale 200",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "settings 200%: geometry clean",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "settings: Esc returns to pause with Settings focused",
+      "ok": true,
+      "detail": "Settings"
+    },
+    {
+      "name": "pause: Esc resumes (menu closed)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dialogue 200%: every page ≤2 lines",
+      "ok": true,
+      "detail": "1/2:2 2/2:2"
+    },
+    {
+      "name": "dialogue 200%: pages rejoin to the exact beat text (no word lost)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dialogue 200%: caption font is 2× the 100% size (18.4px → 36.8px)",
+      "ok": true,
+      "detail": "36.8px"
+    },
+    {
+      "name": "hud+dialogue 200%: nothing leaves the viewport, overflows or overlaps",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "motion off: transitions are non-zero (control)",
+      "ok": true,
+      "detail": "{\"dialogue\":\"0.2s, 0.2s, 0s\",\"prompt\":\"0.2s, 0.2s, 0s\",\"menu\":\"0.2s, 0s\",\"button\":\"0.2s, 0.2s\",\"hudTop\":\"0.2s, 0s\",\"promptKeyAnimation\":\"echo-key-pulse\"}"
+    },
+    {
+      "name": "settings: Space on Reduced motion sets data-reduced-motion=on",
+      "ok": true,
+      "detail": "on"
+    },
+    {
+      "name": "reduced motion: every UI transition computes to 0s",
+      "ok": true,
+      "detail": "{\"dialogue\":\"0s\",\"prompt\":\"0s\",\"menu\":\"0s\",\"button\":\"0s\",\"hudTop\":\"0s\",\"promptKeyAnimation\":\"none\"}"
+    },
+    {
+      "name": "reduced motion: prompt pulse animation is none",
+      "ok": true,
+      "detail": "none"
+    },
+    {
+      "name": "title 200%: nothing leaves the viewport or overflows",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "failed": 0,
+  "errors": []
+}
