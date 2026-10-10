@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **38 notes** over 10 folders.
+Measured 2026-10-10: **39 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -79,6 +79,7 @@ Folder README: [[Reports/README]]
 
 - [[Reports/README|Reports/]]
 - [[Reports/contract-conformance|Quantum bridge results vs the platform's ExperimentResult validator]]
+- [[Reports/pyodide-bridge|The quantum bridge running in Pyodide (local runner)]]
 - [[Reports/quantum-engine-g1|Quantum engine G1: cloning, no-signalling and teleportation measured in local Qiskit]]
 - [[Reports/quantum-physics-review|Quantum physics review: the engine's numbers check out, four gaps in what the tests can see]]
 
