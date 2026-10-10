@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **49 notes** over 10 folders.
+Measured 2026-10-10: **50 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -107,6 +107,7 @@ What exists outside this repo — competitor teardowns, library evaluations and 
 Folder README: [[Research/README]]
 
 - [[Research/README|Research/]]
+- [[Research/backend-run-site|Where the one selected-backend backend.run lives: JS, in echo/quantum/bridge.js]]
 - [[Research/qollab-backend-from-js-projects|Reaching Qollab's selected backend from a JS/Qiskit project, and reading its counts]]
 - [[Research/qollab-platform-and-submission|Qollab platform, runtime and hackathon submission: what a judge sees and does]]
 

@@ -14,8 +14,9 @@ What exists outside this repo — competitor teardowns, library evaluations and 
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (2)
+## Notes here (3)
 
+- [[Research/backend-run-site|Where the one selected-backend backend.run lives: JS, in echo/quantum/bridge.js]]
 - [[Research/qollab-backend-from-js-projects|Reaching Qollab's selected backend from a JS/Qiskit project, and reading its counts]]
 - [[Research/qollab-platform-and-submission|Qollab platform, runtime and hackathon submission: what a judge sees and does]]
 
