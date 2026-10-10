@@ -135,6 +135,11 @@ const injectedSetTimeout = async function (fn, ms) {
 
 // ---- backend proxy [rt ft()] + runner job counter --------------------------
 let jobCount = 0;
+// [rt] jsworker `self.fetch`: IonQ requests are rewritten through Qollab's proxy
+// only while the run flag W is set, and W is cleared when main.js returns. A job
+// sent after Done. therefore goes out unproxied. That it then FAILS is inferred
+// (not observed); the IonQ mock refuses it so the runner cannot hide the case.
+let mainReturned = false;
 function wrapBackend(pyBackend) {
   return new Proxy(pyBackend, {
     get(target, key, receiver) {
@@ -142,6 +147,10 @@ function wrapBackend(pyBackend) {
       if (key !== 'run') return value;
       return async function (...args) {
         jobCount += 1;
+        if (BACKEND_MODE === 'ionq-mock' && mainReturned) {
+          H({ event: 'job', count: jobCount, refused: true, msg: `runner: REFUSED backend.run #${jobCount} (IonQ one-job mock): sent after main.js returned; Qollab's IonQ proxy rewrite is off by then` });
+          throw new Error('IonQ job sent after main.js returned (Qollab proxy rewrite off)');
+        }
         if (BACKEND_MODE === 'ionq-mock' && jobCount > 1) {
           H({ event: 'job', count: jobCount, refused: true, msg: `runner: REFUSED backend.run #${jobCount} (IonQ one-job mock): ${ONE_JOB_MESSAGE}` });
           throw new Error(ONE_JOB_MESSAGE);
@@ -158,7 +167,11 @@ function wrapBackend(pyBackend) {
           get(t, k, r) {
             const v = Reflect.get(t, k, r);
             if (k === 'status') return async () => (await v.callPromising()).toString();
-            if (k === 'result') return async () => v.callPromising();
+            if (k === 'result') return async () => {
+              const r = await v.callPromising();
+              H({ event: 'job-settled' }); // runner instrument: the job's result came back
+              return r;
+            };
             return v;
           },
         });
@@ -308,6 +321,7 @@ async function start(project) {
       fallback: (name) => bareImport(py, name),
     });
     await mainFn(projectConsole, null, injectedSetTimeout, require, backend, entry.exports, entry);
+    mainReturned = true;
     H({ event: 'system', msg: 'Done.' });
     H({ event: 'done' });
   } catch (err) {
