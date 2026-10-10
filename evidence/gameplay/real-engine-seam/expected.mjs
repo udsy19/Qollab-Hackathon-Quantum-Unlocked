@@ -10,6 +10,10 @@ const ruleX = (m1) => m1 === 1;
 const ruleZ = (m0) => m0 === 1;
 
 export function expectedFor(row, questState) {
+  // §8.4 / §12.3: a documented_preview is a non-authoritative fallback. Owner ruling (red-team #4)
+  // makes Mission 2 EXACT only, and the dry run is local Qiskit feedback (qollab-runtime rule); the
+  // docs do not say whether a preview may advance Mission 1.
+  if (row.engine === 'documented_preview') return row.mission === 'cloning' ? undefined : null;
   switch (row.mission) {
     case 'cloning':
       // §7.2: basis states copy (the deceptive beginning, BASIS_DEMO_OK); any non-basis state is

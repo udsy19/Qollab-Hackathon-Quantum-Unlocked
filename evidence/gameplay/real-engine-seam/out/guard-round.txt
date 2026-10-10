@@ -1,0 +1,7 @@
+baseline                             GREEN  failed checks: -
+gp-threshold-0.9                     RED    failed checks: G2-gameplay-refuses-perturbed, G3-gameplay-commit-refuses-perturbed
+gp-no-fidelity-check                 RED    failed checks: G2-gameplay-refuses-perturbed, G3-gameplay-commit-refuses-perturbed
+gp-no-rule-check                     RED    failed checks: G1b-gameplay-refuses-wrong-with-F1
+v2-threshold-0.9                     GREEN  failed checks: -
+v2-no-crosscheck                     GREEN  failed checks: -
+v2-threshold-0.9-and-no-crosscheck   RED    failed checks: G2-v2-refuses-perturbed

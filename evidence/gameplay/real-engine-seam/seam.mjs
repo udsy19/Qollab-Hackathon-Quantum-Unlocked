@@ -10,10 +10,9 @@
 //   on-v2+shim on-v2, with results passed through rename() below: names only, no number changes.
 //              It is a DIAGNOSTIC of what is left once the names agree, not a proposed adapter.
 // Exit: 0 every graded row matches the docs · 1 at least one does not · 2 could not run.
-import { readFileSync, writeFileSync, mkdirSync, cpSync, mkdtempSync } from 'node:fs';
+import { writeFileSync, mkdirSync } from 'node:fs';
+import { load, readRows, rename, machineAt, ACK, bus } from './lib.mjs';
 import { join, resolve } from 'node:path';
-import { tmpdir } from 'node:os';
-import { pathToFileURL } from 'node:url';
 import { expectedFor, STATES_FOR } from './expected.mjs';
 
 const arg = (k, d) => { const i = process.argv.indexOf(k); return i > 0 ? process.argv[i + 1] : d; };
@@ -23,64 +22,15 @@ const RESULTS = resolve(arg('--results', 'out/results.jsonl'));
 const OUT = resolve(arg('--out', 'out'));
 mkdirSync(OUT, { recursive: true });
 
-async function load(contractsPath, label) {
-  const dir = mkdtempSync(join(tmpdir(), `seam-${label}-`));
-  cpSync(join(GAMEPLAY, 'echo/game'), join(dir, 'echo/game'), { recursive: true });
-  cpSync(contractsPath, join(dir, 'echo/contracts.js'));
-  const url = (f) => pathToFileURL(join(dir, 'echo', f)).href;
-  return {
-    label,
-    contracts: await import(url('contracts.js')),
-    state: await import(url('game/state.js')),
-    rules: await import(url('game/missionRules.js')),
-  };
-}
-
 let rows;
 try {
-  rows = readFileSync(RESULTS, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
+  rows = readRows(RESULTS);
 } catch (e) { console.error(`cannot read ${RESULTS}: ${e.message}`); process.exit(2); }
 if (!rows.length) { console.error('zero rows: refusing to grade nothing'); process.exit(2); }
 
-const v1 = await load(join(GAMEPLAY, 'echo/contracts.js'), 'v1');
-const v2 = await load(join(MAIN, 'echo/contracts.js'), 'v2');
+const v1 = await load(GAMEPLAY, join(GAMEPLAY, 'echo/contracts.js'), 'v1');
+const v2 = await load(GAMEPLAY, join(MAIN, 'echo/contracts.js'), 'v2');
 const V2 = v2.contracts;
-
-// Names only. Every value comes from the engine's own result (commit: the bits the engine measured,
-// and the rule its circuitDescription says it applied).
-function rename(row) {
-  const r = structuredClone(row.result);
-  const p = r.parameters;
-  if (row.mission === 'cloning' && r.observables?.jointFidelityWithTwoCopies !== undefined) r.fidelity = r.observables.jointFidelityWithTwoCopies;
-  if ('applyX' in p) p.correctionX = p.applyX;
-  if ('applyZ' in p) p.correctionZ = p.applyZ;
-  if ('state' in p) p.stateId = p.state;
-  if (row.mission === 'commit') {
-    p.stateId = 'story_token';
-    p.correctionX = r.measurementBits.m1 === 1;
-    p.correctionZ = r.measurementBits.m0 === 1;
-  }
-  return r;
-}
-
-// Canonical §9.2 path; acknowledgements are sent after resultPanelShown() (owner ruling 13).
-const PATH = ['BOOT_COMPLETE', 'START', 'SKIP', 'OPEN_CLONE_BOOTH', 'BASIS_DEMO_OK', 'SUPERPOSITION_DEMO_FAILED',
-  'EXPLANATION_READ', 'EXIT_BOOTH', 'REACH_RELAY', 'PREPARE_BELL_PAIR', 'ATTEMPT_NO_SIGNALLING',
-  'VIEW_RECEIVER_MARGINAL', 'OPEN_ROOFTOP', 'REPAIR_CLASSICAL_LINK', 'RUN_DRY_TEST', 'CORRECT_CALIBRATION'];
-const ACK = new Set(['EXPLANATION_READ', 'VIEW_RECEIVER_MARGINAL']);
-const bus = { emit() {}, on() { return () => {}; } };
-
-function machineAt(G, target) {
-  const m = G.state.createQuestMachine(bus);
-  for (const ev of PATH) {
-    if (m.state === target) break;
-    if (ACK.has(ev)) m.resultPanelShown();
-    const r = m.send(ev);
-    if (!r.ok) throw new Error(`driving to ${target}: ${ev} refused in ${m.state}: ${r.reason}`);
-  }
-  if (m.state !== target) throw new Error(`could not drive to ${target}, stopped in ${m.state}`);
-  return m;
-}
 
 async function runOn(G, row, questState, result) {
   const m = machineAt(G, questState);
