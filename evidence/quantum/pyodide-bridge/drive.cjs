@@ -55,7 +55,7 @@ const blochMax2 = (theta, phi) => Math.max((Math.sin(theta) * Math.cos(phi)) ** 
 const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= tol;
 
 (async () => {
-  const { validateExperimentResult } = await import(pathToFileURL(path.join(dest, 'echo', 'contracts.js')).href);
+  const { validateExperimentResult, validateCommitResult, FIDELITY_PASS, FIDELITY_EPSILON } = await import(pathToFileURL(path.join(dest, 'echo', 'contracts.js')).href);
   const assembly = JSON.parse(fs.readFileSync(path.join(dest, 'ASSEMBLY.json'), 'utf8'));
   const puppeteer = loadPuppeteer();
   fs.mkdirSync(out, { recursive: true });
@@ -116,7 +116,8 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
   check('Python ran in Pyodide (sys.platform emscripten)', dump.platform.sysPlatform === 'emscripten', dump.platform);
   check('Qiskit 2.x loaded', /^2\./.test(dump.platform.qiskit), dump.platform.qiskit);
   for (const c of dump.calls) {
-    c.nodeVerdict = c.ok ? validateExperimentResult(c.result) : null;
+    // A story commit is also held to validateCommitResult (review 0013 B1: experiment-only hid the seam).
+    c.nodeVerdict = c.ok ? [...validateExperimentResult(c.result), ...(/^commit#/.test(c.label) ? validateCommitResult(c.result) : [])] : null;
     // Universal invariant: anything handed on must be valid when re-checked from the bytes.
     if (c.ok && !c.hook) check(`${c.label}: delivered value re-validates in Node`, c.nodeVerdict.length === 0 && !c.shape.isMap && c.shape.factsIsArray && !c.shape.proxyFields.length, c.nodeVerdict.length ? c.nodeVerdict : c.shape);
   }
@@ -141,6 +142,12 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
     for (const c of dry.filter((c) => !follows(c)))
       check(`${c.label}: engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics`, !c.ok && c.error.name === 'ScientificModuleError' && (c.error.errors || []).some((e) => /disagrees with the physics/.test(e)), c.ok ? `delivered F=${c.result.fidelity}` : c.error);
     for (const c of dry.filter(follows)) check(`${c.label}: the truthful branch is still delivered`, c.ok, c.ok ? c.result.fidelity : c.error);
+    // The commit lie lands AFTER Python consumed the token: refused, reported consumed, never re-measured.
+    const commits = ['commit#1', 'commit#2', 'commit#3 after settle'].map(by);
+    check('commit: a rule-breaking commit returned by Python → refused, tokenConsumed true, "consumed" said', commits[0] && !commits[0].ok && commits[0].error.name === 'ScientificModuleError' && commits[0].error.tokenConsumed === true && /consumed/.test(commits[0].error.message) && (commits[0].error.errors || []).some((e) => /break the rule/.test(e)), commits[0]?.error ?? commits[0]?.result);
+    check('commit: later calls get the SAME refusal (latched consumed, no retry offered)', commits.every((c) => c && !c.ok && c.error.tokenConsumed === true && c.error.message === commits[0].error.message), commits.map((c) => c && (c.ok ? 'delivered' : c.error.tokenConsumed)));
+    check('commit after RESTART: re-armed, measured once more, and the lie refused again', by('commit#4 after RESTART') && !by('commit#4 after RESTART').ok && by('commit#4 after RESTART').error.tokenConsumed === true, by('commit#4 after RESTART')?.error);
+    check('spy: Python saw exactly 2 live_commit calls (one per story, none for the refused retries) and 1 reset', s.commitCalls === 2 && s.resetCalls === 1, s);
     check('verify: old name "bell_verification" → LOUD §8.6 ScientificModuleError, nothing passed on', v.first?.status === 'rejected' && v.first.name === 'ScientificModuleError' && /verification unavailable/.test(v.first.message) && (v.first.errors || []).some((e) => /bell_verification/.test(e)), v.first);
   } else {
     for (const c of dump.calls) check(`${c.label}: adapter returned a result`, c.ok, c.ok ? `${c.ms} ms` : c.error);
@@ -149,6 +156,11 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
     check('cloning(plus): each output purity 0.5 (entangled, not two copies)', near(plus.observables?.purityQ0, 0.5) && near(plus.observables?.purityQ1, 0.5), plus.observables);
     const zero = r('cloning(zero)');
     check('cloning(zero): basis state copies (purities 1)', near(zero.observables?.purityQ0, 1) && near(zero.observables?.purityQ1, 1), zero.observables);
+    // Mission 1's rules read the top-level fidelity (review 0013 B2); closed form |<psi psi|out>|^2.
+    for (const [name, want] of [['zero', 1], ['one', 1], ['plus', 0.5]]) {
+      const res = r(`cloning(${name})`);
+      check(`cloning(${name}): top-level fidelity = ${want} and on the right side of FIDELITY_PASS`, near(res.fidelity, want) && (want === 1 ? res.fidelity >= FIDELITY_PASS - FIDELITY_EPSILON : res.fidelity < FIDELITY_PASS), res.fidelity);
+    }
     for (const g of ['I', 'X', 'Z']) {
       const rel = r(`relay(${g})`);
       check(`relay(${g}): receiver marginal exactly 0.5/0.5, keyQubits [1]`, near(rel.probabilities?.['0'], 0.5) && near(rel.probabilities?.['1'], 0.5) && JSON.stringify(rel.keyQubits) === '[1]', rel.probabilities);
@@ -175,6 +187,8 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
     const c1 = r('commit#1');
     const cb = c1.measurementBits || {};
     check('commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)', near(c1.fidelity, 1, 1e-9) && [0, 1].includes(cb.m0) && [0, 1].includes(cb.m1) && c1.parameters?.theta === undefined, { fidelity: c1.fidelity, bits: cb, parameters: c1.parameters });
+    const ce = by('commit#1')?.ok ? validateCommitResult(c1) : ['not delivered'];
+    check('commit: re-validates in Node with validateCommitResult (stateId story_token, rule X iff m1 / Z iff m0, F band)', ce.length === 0 && c1.parameters?.stateId === 'story_token' && c1.parameters?.applyX === (cb.m1 === 1) && c1.parameters?.applyZ === (cb.m0 === 1), { errors: ce, parameters: c1.parameters, bits: cb });
     check('commit: the second and a later call get the SAME recorded result (no second teleport)', dump.commit.sameRecordedObject === true, dump.commit);
     check('commit: Python itself refuses a second live_commit (TokenAlreadyConsumed)', dump.commit.pythonSecondCommit?.refused === true, dump.commit.pythonSecondCommit);
     const c4 = r('commit#4 after RESTART');

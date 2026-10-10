@@ -14,6 +14,10 @@ const SABOTAGES = {
   // The branch call loses the measured angles: Python is no longer told which state was measured.
   'no-theta-passthrough': [[/req\.applyZ, req\.theta, req\.phi\]/, 'req.applyZ]']],
   'no-latch': [[/if \(commit\) return commit;/, '']],
+  // Review 0013 B1/S1, each reverted alone: the commit judged by validateExperimentResult only, and a
+  // commit refused after Python returned unlatched as if nothing had been measured.
+  'commit-experiment-validator': [[/teleportation\.live_commit, \[\], validateCommitResult\)/, 'teleportation.live_commit, [])']],
+  'commit-unlatch-consumed': [[/if \(!consumed && commit === attempt\) commit = null;/, 'if (commit === attempt) commit = null;']],
   'restart-no-python': [[/await teleportation\.reset_story_token\.callPromising\(\);/, '']],
   // RESTART also forgets the backend job: a second job per run (forbidden on IonQ).
   'restart-resets-memo': [[/  commit = null;\n\}/, '  commit = null;\n  verification = null;\n}']],

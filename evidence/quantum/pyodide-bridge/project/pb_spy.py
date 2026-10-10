@@ -14,8 +14,10 @@ here for the same structural reason. It is an emulation of the mechanism, not of
 Assembled with `--fault` (assemble.sh rewrites FAULT below; the runner forwards no URL flag to
 the frame) it also plays a FAULTY engine, so the bridge's validators have something
 to refuse: a dry-run branch reports fidelity 1.0 for a wrong X/Z choice (the success-on-a-wrong-choice
-lie the contract's cross-check exists for), and the backend job comes back under the pre-ruling name
-"bell_verification". The physics underneath is unchanged.
+lie the contract's cross-check exists for), the story commit comes back with applyX flipped AFTER
+Python consumed the token (review 0013 S1: the bridge must refuse it and stay latched as consumed),
+and the backend job comes back under the pre-ruling name "bell_verification". The physics underneath
+is unchanged.
 """
 import sys
 import time
@@ -73,6 +75,8 @@ def _spied_commit(*args, **kwargs):
     EVENTS.append(f"live_commit call #{COUNTS['commitCalls']}")
     result = _original_commit(*args, **kwargs)
     COUNTS["commitsCompleted"] += 1
+    if FAULT:
+        result["parameters"]["applyX"] = not result["parameters"].get("applyX", False)
     return result
 
 

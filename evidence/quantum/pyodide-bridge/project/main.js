@@ -4,7 +4,7 @@
 // in Node from the contract bytes.
 import * as spy from 'pb_spy';
 import * as bridge from './quantum/bridge.js';
-import { validateExperimentResult } from './contracts.js';
+import { validateExperimentResult, validateCommitResult } from './contracts.js';
 
 const BUILD = '__BUILD_TOKEN__';
 const tBody = performance.now(); // ms since the frame started: Pyodide + Qiskit + module imports
@@ -25,7 +25,9 @@ function describe(value) {
 }
 
 // `hook`: a call that returns no ExperimentResult (RESTART), so there is nothing to validate.
-async function call(label, fn, { hook = false } = {}) {
+// `validate`: the story commit is also held to platform's validateCommitResult (review 0013 B1).
+const commitVerdict = (r) => [...validateExperimentResult(r), ...validateCommitResult(r)];
+async function call(label, fn, { hook = false, validate = validateExperimentResult } = {}) {
   const t0 = performance.now();
   const rec = { label, hook };
   try {
@@ -33,12 +35,12 @@ async function call(label, fn, { hook = false } = {}) {
     rec.ms = +(performance.now() - t0).toFixed(1);
     rec.ok = true;
     rec.shape = describe(value);
-    rec.pageVerdict = hook ? [] : validateExperimentResult(value);
+    rec.pageVerdict = hook ? [] : validate(value);
     rec.result = value;
   } catch (err) {
     rec.ms = +(performance.now() - t0).toFixed(1);
     rec.ok = false;
-    rec.error = { name: err?.name, message: String(err?.message ?? err), errors: err?.errors ?? null };
+    rec.error = { name: err?.name, message: String(err?.message ?? err), errors: err?.errors ?? null, tokenConsumed: err?.tokenConsumed };
   }
   calls.push(rec);
   row(rec);
@@ -84,9 +86,9 @@ for (const [x, z] of [[false, false], [true, false], [false, true], [true, true]
 // Python must refuse a second live_commit even past the JS latch.
 const c1p = (async () => bridge.commitTransfer())();
 const c2p = (async () => bridge.commitTransfer())();
-const commit1 = await call('commit#1', () => c1p);
-const commit2 = await call('commit#2', () => c2p);
-const commit3 = await call('commit#3 after settle', () => bridge.commitTransfer());
+const commit1 = await call('commit#1', () => c1p, { validate: commitVerdict });
+const commit2 = await call('commit#2', () => c2p, { validate: commitVerdict });
+const commit3 = await call('commit#3 after settle', () => bridge.commitTransfer(), { validate: commitVerdict });
 const pythonSecondCommit = plainOf(await spy.direct_second_commit.callPromising());
 
 // The one selected-backend job, asked for twice.
@@ -100,7 +102,7 @@ const r1Verdict = r1?.status === 'verified' ? validateExperimentResult(r1.result
 
 // RESTART (the ending screen): the token is re-armed, the backend job is NOT.
 await call('RESTART: resetStoryToken()', async () => { await bridge.resetStoryToken(); return { restarted: true }; }, { hook: true });
-const commit4 = await call('commit#4 after RESTART', () => bridge.commitTransfer());
+const commit4 = await call('commit#4 after RESTART', () => bridge.commitTransfer(), { validate: commitVerdict });
 const v3 = (() => { try { return bridge.verifySelectedBackendOnce(); } catch (e) { return Promise.reject(e); } })();
 const r3 = await settle(v3);
 
@@ -135,4 +137,8 @@ $('verify-line').textContent = `verifySelectedBackendOnce ×2 → ${r1.status}` 
   `spy: backend.run attempts ${dump.spy.counts.backendRunAttempts}, completed ${dump.spy.counts.backendRunCompleted}, ` +
   `qollab_job calls ${dump.spy.counts.verificationCalls}` + (r1.message ? ` · ${r1.name}: ${r1.message}` : '');
 $('platform-line').textContent = `Python ${dump.platform.python} on ${dump.platform.sysPlatform} · Qiskit ${dump.platform.qiskit} · main.js body at ${dump.timing.msFrameStartToMainBody} ms`;
+const c1 = commit1.result;
+$('commit-line').textContent = commit1.ok
+  ? `commitTransfer → validateCommitResult: ${commit1.pageVerdict.length ? 'REJECTED ' + commit1.pageVerdict.join('; ') : 'ACCEPTED'} · parameters ${JSON.stringify(c1.parameters)} · m0=${c1.measurementBits.m0} m1=${c1.measurementBits.m1} · F=${c1.fidelity}`
+  : `commitTransfer → refused: ${commit1.error.message} · tokenConsumed: ${commit1.error.tokenConsumed}`;
 $('status').textContent = 'harness finished';

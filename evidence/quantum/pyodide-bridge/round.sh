@@ -32,5 +32,8 @@ for s in bare-toJs no-toJs no-memo plain-call no-theta-passthrough no-latch rest
   row "sab-$s" conformant 1 --python-from "$PY" --sabotage "$s"
 done
 row sab-swallow-validator fault 1 --python-from "$PY" --sabotage swallow-validator --fault
+for s in commit-experiment-validator commit-unlatch-consumed; do
+  row "sab-$s" fault 1 --python-from "$PY" --sabotage "$s" --fault
+done
 rm -f "$OLD_BRIDGE"
 mv "$SUM.tmp" "$SUM"; cat "$SUM"
