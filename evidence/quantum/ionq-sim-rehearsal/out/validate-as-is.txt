@@ -1,0 +1,23 @@
+# validate.mjs, contracts.js from lane/platform/integration 43be7d9, input out/replay/results.jsonl as produced
+REJECT replay-synth-bell-aria-1 [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]
+         experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification"
+         engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification"
+REJECT replay-synth-bell-ideal [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]
+         experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification"
+         engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification"
+REJECT replay-synth-control-forte-1 [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]
+         experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification"
+         engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification"
+REJECT replay-synth-control-ideal [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]
+         experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification"
+         engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification"
+
+| function | calls | rejected | distinct errors (count) |
+|---|---|---|---|
+| `replay-synth-bell-aria-1 [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator ` | 1 | 1 | experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification" (1)<br>engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification" (1) |
+| `replay-synth-bell-ideal [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator ` | 1 | 1 | experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification" (1)<br>engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification" (1) |
+| `replay-synth-control-forte-1 [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator ` | 1 | 1 | experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification" (1)<br>engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification" (1) |
+| `replay-synth-control-ideal [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator ` | 1 | 1 | experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification" (1)<br>engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification" (1) |
+
+4 calls graded, 4 rejected
+exit=1

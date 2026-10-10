@@ -1,0 +1,4 @@
+sabotage bare-toJs applied to /private/tmp/pb-run-SIl1HP/echo/quantum/bridge.js
+assembled /private/tmp/pb-run-SIl1HP (python lane/quantum/contract-conformance, sabotage bare-toJs, token pb-sab-bare-toJs-20261009T235516-25108)
+NO VERDICT: run did not finish within 300 s
+run.sh sab-bare-toJs → exit 2

@@ -1,0 +1,64 @@
+assembled /private/tmp/pb-run-akbtbf (python lane/quantum/contract-conformance, sabotage none, token pb-final-1-20261009T235432-1686)
+PASS  main.js (harness) ran to the end without error  — page load → done in 10.8s
+PASS  served build token matches the one just written  — pb-final-1-20261009T235432-1686
+PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.004}
+PASS  Qiskit 2.x loaded  — 2.5.2
+PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  cloning(zero): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  cloning(one): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  cloning(bloch_a): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  relay(I): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  relay(X): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  relay(Z): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  calibration(bloch_a): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  dryRun(bloch_a, m0=1, m1=0, X=true, Z=false): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  dryRun(bloch_a, m0=1, m1=0, X=false, Z=true): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  dryRun(bloch_a, m0=1, m1=0, X=true, Z=true): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  commit#1(bloch_b): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  commit#2(bloch_b): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  commit#3 after settle: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  cloning(plus): adapter returned a result  — 5.2 ms
+PASS  cloning(plus): adapter returned a result  — 3.1 ms
+PASS  cloning(plus): adapter returned a result  — 1.1 ms
+PASS  cloning(zero): adapter returned a result  — 0.9 ms
+PASS  cloning(one): adapter returned a result  — 2.1 ms
+PASS  cloning(bloch_a): adapter returned a result  — 2.2 ms
+PASS  relay(I): adapter returned a result  — 2.7 ms
+PASS  relay(X): adapter returned a result  — 1.1 ms
+PASS  relay(Z): adapter returned a result  — 0.8 ms
+PASS  calibration(bloch_a): adapter returned a result  — 0.6 ms
+PASS  dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): adapter returned a result  — 2.2 ms
+PASS  dryRun(bloch_a, m0=1, m1=0, X=true, Z=false): adapter returned a result  — 1.9 ms
+PASS  dryRun(bloch_a, m0=1, m1=0, X=false, Z=true): adapter returned a result  — 1.4 ms
+PASS  dryRun(bloch_a, m0=1, m1=0, X=true, Z=true): adapter returned a result  — 1.5 ms
+PASS  dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): adapter returned a result  — 1.3 ms
+PASS  commit#1(bloch_b): adapter returned a result  — 2.4 ms
+PASS  commit#2(bloch_b): adapter returned a result  — 0 ms
+PASS  commit#3 after settle: adapter returned a result  — 0 ms
+PASS  cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]  — {"10":0,"11":0.5,"00":0.5,"01":0}
+PASS  cloning(plus): each output purity 0.5 (entangled, not two copies)  — {"purityQ0":0.5,"purityQ1":0.5,"fidelityQ0WithInput":0.5,"fidelityQ1WithInput":0.5,"jointFidelityWithTwoCopies":0.5}
+PASS  cloning(zero): basis state copies (purities 1)  — {"purityQ0":1,"purityQ1":1,"fidelityQ0WithInput":1,"fidelityQ1WithInput":1,"jointFidelityWithTwoCopies":1}
+PASS  relay(I): receiver marginal exactly 0.5/0.5, keyQubits [1]  — {"0":0.5,"1":0.5}
+PASS  relay(X): receiver marginal exactly 0.5/0.5, keyQubits [1]  — {"0":0.5,"1":0.5}
+PASS  relay(Z): receiver marginal exactly 0.5/0.5, keyQubits [1]  — {"0":0.5,"1":0.5}
+PASS  calibration: bits m0, m1 each 0 or 1  — {"m0":1,"m1":0}
+PASS  dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): fidelity = 0.176668 (closed form)  — 0.1766676593
+PASS  dryRun(bloch_a, m0=1, m1=0, X=true, Z=false): fidelity = 0.149373 (closed form)  — 0.1493725989
+PASS  dryRun(bloch_a, m0=1, m1=0, X=false, Z=true): fidelity = 1.000000 (closed form)  — 1
+PASS  dryRun(bloch_a, m0=1, m1=0, X=true, Z=true): fidelity = 0.673960 (closed form)  — 0.6739597419
+PASS  dryRun(bloch_a,1,0,no correction): fidelity = cos²(1.137)  — {"got":0.1766676593,"want":0.17666765925030334}
+PASS  commit: receiver fidelity 1 after the rule on live bits  — {"fidelity":1,"bits":{"m0":0,"m1":1}}
+PASS  commit: a second call returns the SAME promise (token consumed once)  — {"samePromise":true,"sameObjectAfterSettle":true}
+PASS  commit: a call after it settled returns the same recorded object  — {"samePromise":true,"sameObjectAfterSettle":true}
+PASS  verify ×2: the second call returns the SAME promise  — true
+PASS  verify ×2: both callers get the same value  — true
+PASS  spy: exactly 1 entry into qollab_job.run_bell_verification_once  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1}
+PASS  spy: exactly 1 backend.run attempted  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1}
+PASS  spy: that backend.run completed (stack entered via callPromising)  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1}
+PASS  rejected: ScientificModuleError with §8.6 wording + reasons, no result passed on  — {"status":"rejected","name":"ScientificModuleError","message":"Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\"","errors":["experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\""]}
+final-1: 61/61 checks passed · runner's own JS-side backend.run counter: 0
+run.sh final-1 → exit 0

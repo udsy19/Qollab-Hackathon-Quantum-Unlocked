@@ -1,0 +1,73 @@
+{
+  "label": "SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only",
+  "provenance": "synthetic",
+  "circuit": "control",
+  "noise_model": "forte-1",
+  "shots": 256,
+  "qiskit_ionq": "1.1.1",
+  "submit_payload": {
+    "type": "ionq.circuit.v1",
+    "backend": "simulator",
+    "shots": 256,
+    "name": "echo_asymmetric_control",
+    "input": {
+      "gateset": "qis",
+      "qubits": 2,
+      "circuit": [
+        {
+          "gate": "x",
+          "targets": [
+            0
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "shots": "256",
+      "sampler_seed": "None",
+      "qiskit_header": "H4sIAD26yWoC/12OzQrCMBAGX6XkLBJ79FVKWTZxaQO7+a2HKr67SYWg3sJ8M0ueSkhC3qFw2Iq6DuNpUAsHgwxxxUIV6bOu0EO6G9cdj9I2RXYNgGUXoS07Czb4LQdWVbGZFijuQa2ZJmUrHOe5LVwvAaMh/tp0nT6vy2Glvz71/vjJT596n3ovhAUEY6Rbk3TjrzfMWt2p8QAAAA==",
+      "user_agent": "qiskit-ionq/1.1.1 (qiskit/2.5.2) os/Darwin (python/3.13.0)"
+    },
+    "noise": {
+      "model": "forte-1",
+      "seed": null
+    }
+  },
+  "responses": {
+    "submit_job": [
+      {
+        "id": "synthetic-0000",
+        "status": "submitted"
+      }
+    ],
+    "retrieve_job": [
+      {
+        "id": "synthetic-0000",
+        "status": "completed",
+        "metadata": {
+          "shots": "256",
+          "sampler_seed": "None",
+          "qiskit_header": "H4sIAD26yWoC/12OzQrCMBAGX6XkLBJ79FVKWTZxaQO7+a2HKr67SYWg3sJ8M0ueSkhC3qFw2Iq6DuNpUAsHgwxxxUIV6bOu0EO6G9cdj9I2RXYNgGUXoS07Czb4LQdWVbGZFijuQa2ZJmUrHOe5LVwvAaMh/tp0nT6vy2Glvz71/vjJT596n3ovhAUEY6Rbk3TjrzfMWt2p8QAAAA==",
+          "user_agent": "qiskit-ionq/1.1.1 (qiskit/2.5.2) os/Darwin (python/3.13.0)"
+        },
+        "stats": {
+          "qubits": 2,
+          "circuits": 1
+        },
+        "results": {
+          "probabilities": {
+            "url": "/v0.4/jobs/synthetic-0000/results/probabilities"
+          }
+        }
+      }
+    ],
+    "get_results": [
+      {
+        "1": 0.97,
+        "0": 0.01,
+        "3": 0.015,
+        "2": 0.005
+      }
+    ]
+  }
+}

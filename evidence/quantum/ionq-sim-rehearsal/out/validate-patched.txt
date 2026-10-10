@@ -1,0 +1,15 @@
+# same validator; a COPY of results.jsonl with only experiment bell_verification -> backend_verification (sed); diff lines: 4
+ok     replay-synth-bell-aria-1 [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]
+ok     replay-synth-bell-ideal [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]
+ok     replay-synth-control-forte-1 [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]
+ok     replay-synth-control-ideal [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]
+
+| function | calls | rejected | distinct errors (count) |
+|---|---|---|---|
+| `replay-synth-bell-aria-1 [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator ` | 1 | 0 | — |
+| `replay-synth-bell-ideal [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator ` | 1 | 0 | — |
+| `replay-synth-control-forte-1 [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator ` | 1 | 0 | — |
+| `replay-synth-control-ideal [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator ` | 1 | 0 | — |
+
+4 calls graded, 0 rejected
+exit=0

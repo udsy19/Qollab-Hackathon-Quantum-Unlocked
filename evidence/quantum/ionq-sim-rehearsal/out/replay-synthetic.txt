@@ -1,0 +1,36 @@
+== replay-synth-bell-aria-1  [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]  timing {'submit_s': 0.0047, 'submit_to_counts_s': 0.005, 'note': 'replay: no network, local time only'}
+  PASS  counts non-empty  (total=255)
+  PASS  parameters.shots is the 256 requested  (256)
+  PASS  bell noisy: 0.80 <= correlated fraction < 1  (245/255 = 0.9608)
+  PASS  bell: both 00 and 11 seen  ({'00': 125, '11': 120, '01': 5, '10': 5})
+  PASS  second verification in the same run refused, no 2nd submit  (submits before=1 after=1)
+  PASS  exactly one job submitted  (1)
+  6 checks, 0 failed
+exit=0
+== replay-synth-bell-ideal  [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]  timing {'submit_s': 0.004, 'submit_to_counts_s': 0.0051, 'note': 'replay: no network, local time only'}
+  PASS  counts non-empty  (total=256)
+  PASS  parameters.shots is the 256 requested  (256)
+  PASS  bell ideal: correlated fraction == 1  (256/256)
+  PASS  bell ideal: total == shots requested  (256)
+  PASS  bell: both 00 and 11 seen  ({'00': 129, '11': 127})
+  PASS  second verification in the same run refused, no 2nd submit  (submits before=1 after=1)
+  PASS  exactly one job submitted  (1)
+  7 checks, 0 failed
+exit=0
+== replay-synth-control-forte-1  [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]  timing {'submit_s': 0.0044, 'submit_to_counts_s': 0.0046, 'note': 'replay: no network, local time only'}
+  PASS  counts non-empty  (total=256)
+  PASS  parameters.shots is the 256 requested  (256)
+  PASS  control: dominant key decodes to q0=1, q1=0  (key '01', keyQubits [1, 0] -> {1: 0, 0: 1})
+  PASS  control: qiskit-ionq raw key has clbit 0 rightmost  (raw dominant '01')
+  PASS  exactly one job submitted  (1)
+  5 checks, 0 failed
+exit=0
+== replay-synth-control-ideal  [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]  timing {'submit_s': 0.0048, 'submit_to_counts_s': 0.0053, 'note': 'replay: no network, local time only'}
+  PASS  counts non-empty  (total=256)
+  PASS  parameters.shots is the 256 requested  (256)
+  PASS  control: dominant key decodes to q0=1, q1=0  (key '01', keyQubits [1, 0] -> {1: 0, 0: 1})
+  PASS  control: qiskit-ionq raw key has clbit 0 rightmost  (raw dominant '01')
+  PASS  control ideal: every shot reads q0=1, q1=0  ({'01': 256})
+  PASS  exactly one job submitted  (1)
+  6 checks, 0 failed
+exit=0

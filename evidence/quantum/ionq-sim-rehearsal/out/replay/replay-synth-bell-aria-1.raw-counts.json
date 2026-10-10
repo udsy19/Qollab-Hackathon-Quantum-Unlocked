@@ -1,0 +1,9 @@
+{
+  "label": "SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only",
+  "raw_get_counts": {
+    "00": 125,
+    "11": 120,
+    "01": 5,
+    "10": 5
+  }
+}
