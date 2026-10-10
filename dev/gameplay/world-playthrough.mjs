@@ -1,5 +1,5 @@
 // Headless playthrough of the gameplay harness through REAL input (keyboard + mouse drag), with
-// screenshots. Usage: node dev/gameplay/playthrough.mjs [outDir]   (server must be on :8612)
+// screenshots. Usage: node dev/gameplay/world-playthrough.mjs [outDir]   (server must be on :8612)
 // Default outDir is a scratch dir; publishing to evidence/gameplay/ is a deliberate, separate act.
 // Provenance: the expected BUILD token is read from echo/game/app.js bytes on disk, the served one from
 // the page; a mismatch aborts (exit 2). Exit 0 = every check passed, 1 = a check failed.
@@ -12,8 +12,8 @@ const require = createRequire(path.join(execSync('npm root -g').toString().trim(
 const puppeteer = require('puppeteer');
 
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
-const OUT = path.resolve(process.argv[2] ?? path.join(process.env.TMPDIR ?? '/tmp', 'echo-playthrough'));
-const URL_ = 'http://127.0.0.1:8612/dev/gameplay/harness.html';
+const OUT = path.resolve(process.argv.slice(2).find((a) => !a.startsWith('--')) ?? path.join(process.env.TMPDIR ?? '/tmp', 'echo-playthrough'));
+const URL_ = 'http://127.0.0.1:8612/dev/gameplay/world.html';
 fs.mkdirSync(OUT, { recursive: true });
 const expected = /BUILD = '([^']+)'/.exec(fs.readFileSync(path.join(ROOT, 'echo/game/app.js'), 'utf8'))[1];
 
@@ -48,6 +48,10 @@ const dbg = () => page.evaluate(() => { const d = window.__echo.debug; return { 
 const shot = async (name) => { await sleep(120); await page.screenshot({ path: path.join(OUT, `${name}.png`) }); };
 const promptVisible = () => page.evaluate(() => !document.getElementById('prompt').hidden);
 const SENS = 0.0026;
+// --falsify: after each check, break the mechanism it checks in this (disposable) page and require the
+// check to flip; then restore. A sabotage that does not flip the check is a FAIL.
+const FALSIFY = process.argv.includes('--falsify');
+const setCollider = (id, enabled) => page.evaluate((i, e) => { for (const c of window.__echo.debug.colliders) if (c.id === i) c.enabled = e; }, id, enabled);
 
 // Turn with the arrow keys (keyboard camera, 600 px-equivalent/s): the mouse is checked separately,
 // because under pointer lock a synthetic cursor jump back to centre would count as a turn.
@@ -65,7 +69,7 @@ async function turnTo(yawTarget) {
     await sleep(40);
   }
 }
-async function walkTo(x, z, { tol = 0.25, sprint = false, frames } = {}) {
+async function walkTo(x, z, { tol = 0.25, sprint = false } = {}) {
   for (let i = 0; i < 80; i++) {
     const { player } = await dbg();
     const dx = x - player.x;
@@ -78,7 +82,6 @@ async function walkTo(x, z, { tol = 0.25, sprint = false, frames } = {}) {
     await sleep(Math.min(300, Math.max(60, (d / 3.1) * 1000 * 0.6)));
     await page.keyboard.up('KeyW');
     if (sprint) await page.keyboard.up('ShiftLeft');
-    if (frames) await page.screenshot({ path: path.join(frames.dir, `f${String(frames.n++).padStart(4, '0')}.png`) });
   }
   await sleep(250);
   return (await dbg()).player;
@@ -124,10 +127,26 @@ await shot('02-alley-start');
 const frames = path.join(OUT, 'walk-frames');
 fs.rmSync(frames, { recursive: true, force: true });
 fs.mkdirSync(frames);
-const framesObj = { dir: frames, n: 0 };
-await walkTo(1.5, -6, { frames: framesObj });
-await walkTo(2.6, -11.5, { frames: framesObj });
-await walkTo(3.6, -11.5, { tol: 0.2, frames: framesObj });
+// CDP screencast of the walk (frames written as they arrive; stitched to walk.mp4 with ffmpeg).
+const cdp = await page.createCDPSession();
+let nFrames = 0;
+cdp.on('Page.screencastFrame', async ({ data, sessionId }) => {
+  fs.writeFileSync(path.join(frames, `f${String(nFrames++).padStart(4, '0')}.jpg`), Buffer.from(data, 'base64'));
+  await cdp.send('Page.screencastFrameAck', { sessionId }).catch(() => {});
+});
+await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 80, maxWidth: 1280, maxHeight: 720, everyNthFrame: 1 });
+const walkStart = Date.now();
+await walkTo(1.5, -6, { sprint: true });
+await walkTo(2.6, -11.5);
+await walkTo(3.6, -11.5, { tol: 0.2 });
+await sleep(600);
+await cdp.send('Page.stopScreencast');
+const walkSecs = (Date.now() - walkStart) / 1000;
+await sleep(200);
+try {
+  execSync(`ffmpeg -loglevel error -y -framerate ${Math.max(1, nFrames / walkSecs).toFixed(2)} -i ${frames}/f%04d.jpg -c:v libx264 -pix_fmt yuv420p -vf scale=1280:-2 ${path.join(OUT, 'walk.mp4')}`);
+  console.log(`walk video: ${nFrames} frames over ${walkSecs.toFixed(1)} s → walk.mp4`);
+} catch (e) { console.log(`walk video FAILED: ${e.message}`); }
 let s = await dbg();
 check('prompt at booth when near + facing', s.focus === 'copy_booth' && await promptVisible(), JSON.stringify(s.player));
 await shot('03-booth-prompt');
@@ -139,12 +158,32 @@ s = await dbg();
 const dAnchor = Math.hypot(3.9 - s.player.x, -11.5 - s.player.z);
 check('no prompt behind pylon (in range, facing)', s.focus === null && !(await promptVisible()), `dist=${dAnchor.toFixed(2)} heading=${s.player.heading.toFixed(2)}`);
 await shot('04-no-prompt-behind-pylon');
+if (FALSIFY) {
+  await setCollider('booth_pylon', false);
+  await sleep(150);
+  const f = await dbg();
+  check('SABOTAGE pylon collider off → same spot now prompts', f.focus === 'copy_booth', `focus=${f.focus}`);
+  await setCollider('booth_pylon', true);
+  await sleep(150);
+  check('restore pylon → no prompt again', (await dbg()).focus === null);
+}
 
 // --- Door A blocks before the clone mission
 await walkTo(0, -22);
 let p = await pushInto(0, 1500);
 check('door A blocks before CLONE_UNDERSTOOD', p.z > -26.0, `z=${p.z.toFixed(2)}`);
 await shot('05-door-closed');
+if (FALSIFY) {
+  await setCollider('door_alley', false);
+  const q = await pushInto(0, 900);
+  check('SABOTAGE door A collider off → player passes the door line', q.z < -26.3, `z=${q.z.toFixed(2)}`);
+  // Walkable guard: with EVERY collider off, the player still cannot leave the floor rects.
+  await page.evaluate(() => { window.__saved = window.__echo.debug.colliders.map((c) => c.enabled); window.__echo.debug.colliders.forEach((c) => { c.enabled = false; }); });
+  const w = await pushInto(Math.PI / 2, 2500); // face -X, toward the west alley wall at x=-6
+  check('all colliders off → walkable guard still holds the map edge', w.x >= -6.01 || (w.z < -26 && w.x >= -2.51), `x=${w.x.toFixed(2)} z=${w.z.toFixed(2)}`);
+  await walkTo(0, -22);
+  await page.evaluate(() => window.__echo.debug.colliders.forEach((c, i) => { c.enabled = window.__saved[i]; }));
+}
 
 // --- Clone mission through the stub terminal
 await walkTo(2.6, -11.5);
@@ -173,7 +212,7 @@ check('door B blocks before RELAY_UNDERSTOOD', p.x < 9.2, `x=${p.x.toFixed(2)}`)
 await walkTo(3, -45);
 await walkTo(0, -47.5, { tol: 0.2 });
 s = await dbg();
-check('prompt at relay core', s.focus === 'relay_core' && await promptVisible());
+check('prompt at relay core', s.focus === 'relay_core' && await promptVisible(), JSON.stringify(s.player));
 await shot('08-relay-prompt');
 await pressE();
 await terminal(['PREPARE_BELL_PAIR']);

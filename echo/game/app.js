@@ -8,7 +8,7 @@ import { createFollowCamera } from './camera.js';
 import { createInteractions } from './interactions.js';
 
 // Read back from the served page to prove which build a screenshot came from.
-export const BUILD = 'wc-0001-d';
+export const BUILD = 'wc-0001-f';
 
 const FIXED_DT = 1 / 60;
 const MAX_STEPS = 6;
@@ -169,6 +169,8 @@ export function startGame({ root, quantum, ui } = {}) {
       get camera() { const p = view.camera.position; return { x: p.x, y: p.y, z: p.z, yaw: follow.yaw, pulledIn: follow.pulledIn }; },
       doors: () => world.doors.map((d) => ({ id: d.id, open: d.open, t: d.t })),
       anchors: () => Object.keys(world.anchors),
+      // Live collider list, exposed so a harness can sabotage a disposable page and prove its checks bite.
+      colliders: world.colliders,
     },
     dispose() {
       cancelAnimationFrame(raf);
