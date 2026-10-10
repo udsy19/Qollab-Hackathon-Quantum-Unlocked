@@ -76,3 +76,61 @@ Controls design waits on the iframe `sandbox`/`allow` facts cited from Qollab's 
 - 2026-10-10 consult 6: 2026-10-10 consult 6: The `contracts-pin-thresholds` worker I decided in consult 5 never started. `lane.log` has no start line and there is no branch. The 04:05 loop restart adopted only the two running workers.
 
 Lesson: an AGENT block is not a dispatch. At every consult, check `lane.log` for "agent <name> start" for each worker I dispatched last time, and re-emit any that is missing. I re-dispatched it in consult 6.
+
+- 2026-10-10 consult 7: 2026-10-10 consult 7: I merged `contracts-pin-thresholds` after re-running it on a `git archive` extract:
+- real contracts GREEN 1117/1117;
+- `FIDELITY_PASS` 0.9 RED, with a FAIL line naming the pin and the ruling;
+- merge-tree clean.
+
+My own extra mutation found the null the worker had predicted: `FIDELITY_CROSSCHECK_TOLERANCE` 1e-6 → 1e-1 stays GREEN 1117/1117. The equality defect is also real: F = 0.999999 exactly is refused, because the guard equals the band (law 12).
+
+Lesson: pinning ruled values is not enough. Every tolerance that guards a ruled value needs its own pin, derived from a measured number (analytic/Qiskit agreement 4.7e-13). I dispatched `contracts-fidelity-band`.
+
+- 2026-10-10 consult 7: 2026-10-10 consult 7: Qollab runtime facts, read by `g0-input-diagnostic` from Qollab's shipped JS (chunk `/_nuxt/BWPMdZ7B.js`, class `Ol`). Still to be verified in its final report:
+- the preview iframe is `sandbox="allow-scripts"` only: no pointer lock, no modals, opaque origin, and nothing focuses it;
+- once `main.js` resolves (`Done.`), the parent drops console output, and the IonQ fetch proxy in the worker is switched off.
+
+Design consequences, decided from QOLLAB_DEPLOYMENT.md and vision §8:
+- (1) Controls must not use pointer lock. Use click-to-focus plus drag-to-orbit, with a visible focus prompt.
+- (2) `main.js` must stay pending until the one `backend.run` has settled. Otherwise an IonQ job after `Done.` cannot reach Qollab's proxy.
+
+Both bind the integration shell and must be relayed to gameplay.
+
+- 2026-10-10 consult 8: 2026-10-10 consult 8: I merged `contracts-fidelity-band` after my own extract run: GREEN 1132/1132, tol 1e-1 RED (11 FAIL lines), and my extra ε 1e-12→1e-3 mutation RED on both the PIN and a behavioural forged probe.
+
+I refused to LAND it. `main...branch` would carry the G0 smoke product files (`echo/main.js`, `main.css`, `quantum/smoke.py`, `requirements.txt`), and the ruling holds integrated product code off main until `cross_lane_check` passes.
+
+Lesson: since `contracts-v2`, every platform branch descends from integration, which carries the G0 product files. "Land the contract files early" therefore needs a contracts-only branch cut from main (or a cherry-pick). Check `git diff --stat main...<branch> -- echo/` before any LAND.
+
+- 2026-10-10 consult 9: 2026-10-10 consult 9: I merged `integration-shell` after my own `git archive` run:
+- assembler fixtures GREEN 8/8;
+- contract-check GREEN on the branch's gate;
+- merge-tree clean;
+- branch-only caps RED only on unresolved quantum imports, which is expected. The shell is graded on the assembled tree.
+
+I merged it knowing that `main.js` still resolves before the click-to-verify job, so on Qollab the IonQ proxy is off by then. The keep-alive lives on `g0-input-diagnostic` (adae31b, older base): require a rebase onto integration before merging it.
+
+Lesson: two platform workers both editing `main.js` from different bases guarantees a conflict. Serialise `main.js` edits: one `main.js` worker at a time.
+
+- 2026-10-10 consult 9: 2026-10-10 consult 9: Decided under autonomous mode: `echo/tests/` stays in the repo, but the release assembler excludes it from the Qollab upload, as it does `QOLLAB_SMOKE_TEST.md`. Grounds:
+- QOLLAB_DEPLOYMENT.md 100-file cap;
+- report 0004 (d): tests in the upload load pytest and ~10 packages on every Run.
+
+The README documents running them locally. Relay to quantum.
+
+- 2026-10-10 consult 9: 2026-10-10 consult 9: Red-team quest-state Q7/Q8 are already satisfied by contracts v2:
+- `ENDING.RESTART→TITLE` (contracts.js:58);
+- `DECLASSIFIED→ENDING`;
+- the one boot name is `BOOT_COMPLETE`.
+
+The overseer's MOMENT-events and countdown-hold relay was NOT yet in `contracts.js` (grep, consult 9). Dispatched `contracts-moments-and-land`, which also builds the contracts-only landing branch cut from main.
+
+- 2026-10-10 consult 10: 2026-10-10 consult 10: I merged `readme-and-video-draft` on these grounds:
+- merge-tree clean;
+- the `echo/` diff is `README.md` only;
+- my own caps run on the extract was GREEN with 9 files;
+- the rendered PNG makes no unrecorded Qollab, IonQ or publish claim.
+
+My own reading of the PNG found a defect the worker's claim audit missed: the Controls row says "Mouse (click to capture, or drag)". That implies pointer lock, which Qollab's `sandbox="allow-scripts"` iframe forbids (consult 7 finding).
+
+Lesson: the player-facing text must be audited against the runtime facts as well as the code. The final README pass must say "drag to look" and remove the dangling text that the hidden placeholders leave behind.

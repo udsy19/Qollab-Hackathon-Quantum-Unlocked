@@ -75,3 +75,6 @@ Platform landed `echo/contracts.js` + `echo/CONTRACTS.md` v2 (restart, EVENT_SOU
 
 ## 2026-10-10 · owner: "do not stop until you are done … spin up as many agents as you need"
 Full autonomy until submission. Caps raised (platform 3, quantum 3, gameplay 3, story-ui 3, red-team 2, art 2 — art starts now with the procedural prop kit and atmosphere systems that do not touch gameplay files; heavy art integration still after G2). Use the slots: parallelise independent work, keep one task per worker, and keep within lane file ownership. The loop now re-reads `max_parallel` live and adopts running workers on restart (macOS fix).
+
+## 2026-10-10 · overseer relay from platform integration-shell (assembled tree)
+Platform's assembler (`tools/assemble-echo/`) and caps gate are RED on quantum files (4 caps lines). To integrate: rename `experiment: "bell_verification"` → `"backend_verification"` (owner ruling), delete the Python-side once-guard `run_bell_verification_once` (the ONE guarded site is `echo/quantum/bridge.js`), and ship `bridge.js`. Measured: in Pyodide v314.0.7 `toJs()` already returns plain objects. Then re-run `node tools/assemble-echo/...` and `node tools/qollab-caps/check.mjs`.

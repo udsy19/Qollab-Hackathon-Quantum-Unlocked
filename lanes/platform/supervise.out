@@ -42,3 +42,30 @@
 2026-10-10 04:05 === CONSULT 6: supervisor planning (5 reports, 0 images, 69798 chars)
 2026-10-10 04:06 LEARN: 2026-10-10 consult 6: The `contracts-pin-thresholds` worker I decided in consult 5 never started. `lane.log` has no start line and there is no branch. The 04:05
 2026-10-10 04:06 agent contracts-pin-thresholds (opus) start on lane/platform/integration
+2026-10-10 04:12 agent contracts-pin-thresholds finished rc=0 report=present
+2026-10-10 04:12 === CONSULT 7: supervisor planning (7 reports, 0 images, 71001 chars)
+2026-10-10 04:13 LEARN: 2026-10-10 consult 7: I merged `contracts-pin-thresholds` after re-running it on a `git archive` extract: - real contracts GREEN 1117/1117; - `FIDELITY_PASS` 0.
+2026-10-10 04:13 LEARN: 2026-10-10 consult 7: Qollab runtime facts, read by `g0-input-diagnostic` from Qollab's shipped JS (chunk `/_nuxt/BWPMdZ7B.js`, class `Ol`). Still to be verifie
+2026-10-10 04:13 hubs regenerated after MERGE lane/platform/contracts-pin-thresholds into lane/platform/integration (consult 7)
+2026-10-10 04:13 MERGE lane/platform/contracts-pin-thresholds ok
+2026-10-10 04:13 agent contracts-fidelity-band (opus) start on lane/platform/integration
+2026-10-10 04:18 agent contracts-fidelity-band finished rc=0 report=present
+2026-10-10 04:18 === CONSULT 8: supervisor planning (8 reports, 6 images, 72999 chars)
+2026-10-10 04:19 LEARN: 2026-10-10 consult 8: I merged `contracts-fidelity-band` after my own extract run: GREEN 1132/1132, tol 1e-1 RED (11 FAIL lines), and my extra ε 1e-12→1e-3 muta
+2026-10-10 04:19 hubs regenerated after MERGE lane/platform/contracts-fidelity-band into lane/platform/integration (consult 8)
+2026-10-10 04:19 MERGE lane/platform/contracts-fidelity-band ok
+2026-10-10 04:19 agent readme-and-video-draft (opus) start on lane/platform/integration
+2026-10-10 04:21 agent integration-shell finished rc=0 report=present
+2026-10-10 04:21 === CONSULT 9: supervisor planning (8 reports, 0 images, 77604 chars)
+2026-10-10 04:23 LEARN: 2026-10-10 consult 9: I merged `integration-shell` after my own `git archive` run: - assembler fixtures GREEN 8/8; - contract-check GREEN on the branch's gate; 
+2026-10-10 04:23 LEARN: 2026-10-10 consult 9: Decided under autonomous mode: `echo/tests/` stays in the repo, but the release assembler excludes it from the Qollab upload, as it does `
+2026-10-10 04:23 LEARN: 2026-10-10 consult 9: Red-team quest-state Q7/Q8 are already satisfied by contracts v2: - `ENDING.RESTART→TITLE` (contracts.js:58); - `DECLASSIFIED→ENDING`; - t
+2026-10-10 04:23 hubs regenerated after MERGE lane/platform/integration-shell into lane/platform/integration (consult 9)
+2026-10-10 04:23 MERGE lane/platform/integration-shell ok
+2026-10-10 04:23 agent contracts-moments-and-land (opus) start on lane/platform/integration
+2026-10-10 04:24 agent readme-and-video-draft finished rc=0 report=present
+2026-10-10 04:24 === CONSULT 10: supervisor planning (9 reports, 1 images, 79881 chars)
+2026-10-10 04:25 LEARN: 2026-10-10 consult 10: I merged `readme-and-video-draft` on these grounds: - merge-tree clean; - the `echo/` diff is `README.md` only; - my own caps run on the 
+2026-10-10 04:25 hubs regenerated after MERGE lane/platform/readme-and-video-draft into lane/platform/integration (consult 10)
+2026-10-10 04:25 MERGE lane/platform/readme-and-video-draft ok
+2026-10-10 04:25 agent release-upload-manifest (opus) start on lane/platform/integration

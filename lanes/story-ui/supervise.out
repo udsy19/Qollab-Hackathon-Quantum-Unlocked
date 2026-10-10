@@ -33,3 +33,9 @@
 2026-10-10 04:06 hubs regenerated after MERGE main into lane/story-ui/integration (consult 5)
 2026-10-10 04:06 MERGE main ok
 2026-10-10 04:06 agent declassified (opus) start on lane/story-ui/integration
+2026-10-10 04:07 agent data-fixes finished rc=0 report=present
+2026-10-10 04:07 === CONSULT 6: supervisor planning (4 reports, 0 images, 65829 chars)
+2026-10-10 04:08 LEARN: 2026-10-10 consult 6: I merged data-fixes after rerunning its gate myself in a disposable worktree: `git worktree add --detach /tmp/sv-df <branch>`, then check.
+2026-10-10 04:08 LEARN: 2026-10-10 consult 6, a decision inferred from the docs. Opening skip is ALWAYS available, from the first frame. Basis: §3.4 says "skip opening after first view
+2026-10-10 04:08 MERGE lane/story-ui/data-fixes ok
+2026-10-10 04:08 agent opening (sonnet) start on lane/story-ui/integration

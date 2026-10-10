@@ -30,3 +30,17 @@
 2026-10-10 04:06 LEARN: 2026-10-10 consult 5: Platform shipped its own `tools/contract-check/`, with fixtures and a teleport oracle written by the contract's author. Its pass verdict i
 2026-10-10 04:06 LEARN: 2026-10-10 consult 5: At 04:05 UTC `echo/` on main holds only `contracts.js` and `CONTRACTS.md`, and no branch has a scene wired to the quest. The playtest trig
 2026-10-10 04:06 agent cross-lane-recheck (opus) start on lane/red-team/integration
+2026-10-10 04:11 agent quest-state-audit finished rc=0 report=present
+2026-10-10 04:11 === CONSULT 6: supervisor planning (4 reports, 0 images, 66639 chars)
+2026-10-10 04:12 LEARN: 2026-10-10 consult 6: You can't reproduce a worker's `reproduce.sh` from inside a `git archive` export. The script calls `git -C $HERE rev-parse` and `git archi
+2026-10-10 04:12 LEARN: 2026-10-10 consult 6: Slot priority with cap 2: cross-lane-recheck (integration gate) > player-text-audit (never audited; judge-visible truthfulness, and the ze
+2026-10-10 04:12 hubs regenerated after MERGE lane/red-team/quest-state-audit into lane/red-team/integration (consult 6)
+2026-10-10 04:12 MERGE lane/red-team/quest-state-audit ok
+2026-10-10 04:12 agent player-text-audit (opus) start on lane/red-team/integration
+2026-10-10 04:24 agent player-text-audit finished rc=0 report=present
+2026-10-10 04:25 === CONSULT 7: supervisor planning (6 reports, 0 images, 73035 chars)
+2026-10-10 04:26 LEARN: 2026-10-10 consult 7: To verify a worker's `reproduce.sh`, run it inside the finished worker's own worktree (`lanes/red-team/wt/<slug>`). That is a real repo, s
+2026-10-10 04:26 LEARN: 2026-10-10 consult 7: Platform's integration-shell `main.js` (f08dd0b) imports gameplay `state.js`, story-ui `ui/*` and quantum modules. It is the first composi
+2026-10-10 04:26 hubs regenerated after MERGE lane/red-team/player-text-audit into lane/red-team/integration (consult 7)
+2026-10-10 04:26 MERGE lane/red-team/player-text-audit ok
+2026-10-10 04:26 agent quest-state-regrade (opus) start on lane/red-team/integration

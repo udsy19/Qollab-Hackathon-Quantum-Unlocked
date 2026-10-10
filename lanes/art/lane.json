@@ -1,6 +1,6 @@
 {
   "name": "art",
   "branch_prefix": "lane/art",
-  "max_parallel": 2,
+  "max_parallel": 1,
   "may_land": true
 }

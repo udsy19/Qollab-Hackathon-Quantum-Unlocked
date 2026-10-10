@@ -55,3 +55,11 @@ Lesson: at every consult, compare the plan's "in flight" list with the running/q
 - 2026-10-10 consult 5: 2026-10-10 consult 5: On the overseer's notice that "contracts v2 is on main", check with `git merge-base --is-ancestor main lane/story-ui/integration`. Do not assume the lane already has it. At consult 5 it exited 1, with the lane 74 files behind main.
 
 Rule: emit MERGE branch=main before dispatching, and every new brief starts with an ancestor check plus `git merge main`. Workers started before the merge (here terminals-c4) must show v2 conformance before I merge them: the bits-first dry run, the `ExperimentResult` shape from `echo/contracts.js`, and passing `node tools/contract-check/check.mjs` and `node tools/qollab-caps/check.mjs`.
+
+- 2026-10-10 consult 6: 2026-10-10 consult 6: I merged data-fixes after rerunning its gate myself in a disposable worktree: `git worktree add --detach /tmp/sv-df <branch>`, then check.mjs → GREEN with 11655 checks. I also checked its 16-row table against the closed form. Before correction the receiver holds X^m1 Z^m0·ψ. After a plan (x, z) it holds X^(x⊕m1) Z^(z⊕m0)·ψ. On ry(1.137) the leftover-Z fidelity is cos²(1.137) ≈ 0.177.
+
+Lesson: judge teleport copy per switch. A line about one switch must never imply anything about the other, which is how `missing_X` was false in the 4 both-wrong cases that my consult-3 read missed. Use the closed form as the supervisor's quick check.
+
+- 2026-10-10 consult 6: 2026-10-10 consult 6, a decision inferred from the docs. Opening skip is ALWAYS available, from the first frame. Basis: §3.4 says "skip opening after first view", but QOLLAB_DEPLOYMENT and the runtime rules say there is no persistence and the interpreter is fresh every Run. So every run is a first view, and a first-view gate would make the opening unskippable for judges, against §6 line 371 and the §12 "Skip cinematic" smoke test.
+
+The opening fires `onShot` A–D for the gameplay camera. Story-ui owns only the captions, the card and Skip, never the camera.

@@ -41,3 +41,27 @@
 2026-10-10 04:05 === CONSULT 7: supervisor planning (6 reports, 0 images, 73005 chars)
 2026-10-10 04:06 LEARN: 2026-10-10 consult 7: Lane integration was 10 commits behind main, including contracts v2 at 80d685f. A `merge-tree` of main into integration conflicts only in 
 2026-10-10 04:06 agent main-sync (opus) start on lane/quantum/integration
+2026-10-10 04:11 agent ionq-sim-rehearsal finished rc=0 report=present
+2026-10-10 04:11 === CONSULT 8: supervisor planning (7 reports, 0 images, 74202 chars)
+2026-10-10 04:12 LEARN: 2026-10-10 consult 8: Merged ionq-sim-rehearsal after re-running its keyless replays (4/4 exit 0) and its `sabotage.sh` (6 red, 4 predicted nulls) on the dispos
+2026-10-10 04:12 LEARN: 2026-10-10 consult 8: To save G1 time, I based bridge-rewire on `lane/quantum/quantum-hardening` (tip 10925be) rather than on integration. Its API was already f
+2026-10-10 04:12 hubs regenerated after MERGE lane/quantum/ionq-sim-rehearsal into lane/quantum/integration (consult 8)
+2026-10-10 04:13 MERGE lane/quantum/ionq-sim-rehearsal ok
+2026-10-10 04:13 agent bridge-rewire (opus) start on lane/quantum/quantum-hardening
+2026-10-10 04:13 agent main-sync finished rc=0 report=present
+2026-10-10 04:13 === CONSULT 9: supervisor planning (8 reports, 0 images, 75449 chars)
+2026-10-10 04:13 LEARN: 2026-10-10 consult 9: I did not merge main-sync (7c72712) directly. I re-ran it on the disposable worktree `/tmp/q9ms`: contract-check GREEN 1087/1087; caps RED
+2026-10-10 04:13 LEARN: 2026-10-10 consult 9: contract-check grades `echo/contracts.js` only; it never runs the engine or bridge.js (main-sync finding). Engine conformance has to be me
+2026-10-10 04:13 agent integration-catchup (sonnet) start on lane/quantum/integration
+2026-10-10 04:14 agent integration-catchup finished rc=0 report=present
+2026-10-10 04:14 === CONSULT 10: supervisor planning (9 reports, 0 images, 75762 chars)
+2026-10-10 04:15 LEARN: 2026-10-10 consult 10: I merged integration-catchup (bdb6261, a fast-forward over bfcfbc3) after re-running it on the disposable worktree `/tmp/q10ic`. Results 
+2026-10-10 04:15 MERGE lane/quantum/integration-catchup ok
+2026-10-10 04:18 agent quantum-hardening finished rc=0 report=present
+2026-10-10 04:18 === CONSULT 11: supervisor planning (9 reports, 0 images, 88575 chars)
+2026-10-10 04:26 LEARN: 2026-10-10 consult 11: I merged quantum-hardening (4db9aba) after re-running it on the disposable worktree `/tmp/q11h` (integration f7efb92 with hardening merge
+2026-10-10 04:26 LEARN: 2026-10-10 consult 11: Row 3 is a conflict between the ruling's wording and the documented route. The ruling says "one guarded backend.run site (bridge.js)". Th
+2026-10-10 04:26 hubs regenerated after MERGE lane/quantum/quantum-hardening into lane/quantum/integration (consult 11)
+2026-10-10 04:26 MERGE lane/quantum/quantum-hardening ok
+2026-10-10 04:26 agent tests-caps-clean (opus) start on lane/quantum/integration
+2026-10-10 04:26 agent backend-site-research (opus) start on lane/quantum/integration

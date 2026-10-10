@@ -32,3 +32,18 @@
 2026-10-10 04:04 === CONSULT 5: supervisor planning (4 reports, 0 images, 62805 chars)
 2026-10-10 04:05 adopted running agent gameplay-commit-fault-exit (pid 32587)
 2026-10-10 04:05 === CONSULT 6: supervisor planning (4 reports, 0 images, 61848 chars)
+2026-10-10 04:07 LEARN: 2026-10-10 consult 6: World-controller finished at 1a89bfb without rebasing onto integration. It still carries `quest:enter` in eventBus.js and state.js, and `m
+2026-10-10 04:07 LEARN: 2026-10-10 consult 6: Contracts v2 landed on main (2133d8a/80d685f), but `lane/gameplay/integration` did not yet contain main (checked with `git merge-base --is
+2026-10-10 04:07 agent gameplay-world-v2-port (opus) start on lane/gameplay/gameplay-world-controller
+2026-10-10 04:07 agent gameplay-real-engine-seam (opus) start on lane/gameplay/integration
+2026-10-10 04:08 agent gameplay-commit-fault-exit finished rc=0 report=present
+2026-10-10 04:08 === CONSULT 7: supervisor planning (5 reports, 2 images, 68796 chars)
+2026-10-10 04:08 LEARN: 2026-10-10 consult 7: I merged gameplay-commit-fault-exit at 323bb8d. - My re-run in `/tmp/sv7` gave 56/56, exit 0. - PNG 1 shows the measured_refused latch wit
+2026-10-10 04:08 MERGE lane/gameplay/gameplay-commit-fault-exit ok
+2026-10-10 04:16 agent gameplay-real-engine-seam finished rc=0 report=present
+2026-10-10 04:16 === CONSULT 8: supervisor planning (7 reports, 1 images, 69854 chars)
+2026-10-10 04:17 LEARN: 2026-10-10 consult 8: I merged gameplay-real-engine-seam at 762c615, which is evidence plus a vault report with no product code. Its main finding: gameplay's gr
+2026-10-10 04:17 LEARN: 2026-10-10 consult 8: The acceptance check for any gameplay change to `missionRules.js` is `node evidence/gameplay/real-engine-seam/seam.mjs`: 44/44 must-advanc
+2026-10-10 04:17 LEARN: 2026-10-10 consult 8: I left two slots idle on purpose while world-v2-port rewrites `echo/game`. Every queued gameplay task (real-result rules, integration play
+2026-10-10 04:17 hubs regenerated after MERGE lane/gameplay/gameplay-real-engine-seam into lane/gameplay/integration (consult 8)
+2026-10-10 04:17 MERGE lane/gameplay/gameplay-real-engine-seam ok

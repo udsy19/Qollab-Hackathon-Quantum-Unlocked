@@ -22,3 +22,36 @@ Two items are still open: the contract additions (`experiment:'bell_verification
 - 2026-10-10 consult 6: 2026-10-10 consult 6: I merged pyodide-bridge after re-running it myself on disposable worktree `/tmp/q6pb`, port 5193 (set `PB_PORT`/`PB_OUT` so it never collides), with `run.sh <tag> conformant --python-from lane/quantum/integration`. The green run was 61/61, exit 0, and the `no-memo` sabotage was 58/61, exit 1. Platform added `backend_verification` to `EXPERIMENTS` at `lane/platform/integration` 43be7d9 (`contracts.js:151`), so the only remaining rejection is our own `"bell_verification"` string, which quantum-hardening renames. The bridge is wired to the pre-hardening Python API, so a bridge-rewire worker must follow the hardening merge before G1 can be shown with a resolving `verifySelectedBackendOnce`.
 
 - 2026-10-10 consult 7: 2026-10-10 consult 7: Lane integration was 10 commits behind main, including contracts v2 at 80d685f. A `merge-tree` of main into integration conflicts only in the generated hubs (`vault/Map.md`, `vault/Reports/README.md`). Resolve those by regenerating with `vault-hubs.mjs`. quantum-hardening also lacks main, but it conformed to v2 through `lane/platform/integration` (0893403). Merge it only after main-sync, and re-run `tools/contract-check` on the merged result.
+
+- 2026-10-10 consult 8: 2026-10-10 consult 8: Merged ionq-sim-rehearsal after re-running its keyless replays (4/4 exit 0) and its `sabotage.sh` (6 red, 4 predicted nulls) on the disposable worktree `/tmp/q8ir`. `merge-tree` was clean.
+- `~/.config/echo/ionq.env` is absent on this host. Per the owner's ruling, skip the step and do not ask for the key; the live IonQ simulator rehearsal stays optional and is not a G1 blocker.
+- Durable physics/test fact: a Bell (00/11) run cannot detect a bit-order bug, because the outcomes are symmetric. Only an asymmetric control (X on q0) can. So the one Qollab job proves only that the backend works; endianness is proven locally.
+- qiskit-ionq rounds p×shots on noisy sims (255 of 256 counts were seen), so validators must not demand sum == shots for noisy runs.
+
+- 2026-10-10 consult 8: 2026-10-10 consult 8: To save G1 time, I based bridge-rewire on `lane/quantum/quantum-hardening` (tip 10925be) rather than on integration. Its API was already final per the code: `bell_measurement` returns theta/phi, plus `live_commit(seed)` and `reset_story_token`. This is safe because bridge-rewire edits only `bridge.js` and evidence, never `.py`, and must merge hardening's final tip before its last run. Merge order: main-sync → hardening → bridge-rewire.
+
+- 2026-10-10 consult 9: 2026-10-10 consult 9: I did not merge main-sync (7c72712) directly. I re-ran it on the disposable worktree `/tmp/q9ms`: contract-check GREEN 1087/1087; caps RED with 6 findings (entry-index, entry-main, backend-run-python, hardcoded-backend, hardcoded-secret); pytest 452 passed and 1 failed (`test_contract_conformance`, `bell_verification`). Those numbers match its report. But `merge-tree` into integration conflicts in `vault/Map.md` and `vault/Reports/README.md`, because it was cut at d9b42d0 before ionq-sim-rehearsal plus bfcfbc3. The rule: any branch cut before the latest hub regeneration will conflict in the hubs. Have a short worker merge it onto current integration and regenerate the hubs, rather than risk a conflicted MERGE. Every brief from now on says "merge current integration and regenerate hubs before your final report".
+
+- 2026-10-10 consult 9: 2026-10-10 consult 9: contract-check grades `echo/contracts.js` only; it never runs the engine or bridge.js (main-sync finding). Engine conformance has to be measured with contracts.js's exported validators (`validate.mjs`, `validate_teleport_v2.mjs`) and in the Pyodide runner. A green contract-check is never evidence that quantum output conforms. Remaining gap rows the hardening tip does not close: 3 (Python `backend.run` site), 4–5 (caps-flagged test literals), 7 (shots must be 256 in parameters, with drift in facts), and 9–11 (bridge.js). Rows 1–2 belong to platform (`main.js` and `index.html` are not on main), so qollab-caps cannot go fully green on a quantum branch until platform lands them.
+
+- 2026-10-10 consult 10: 2026-10-10 consult 10: I merged integration-catchup (bdb6261, a fast-forward over bfcfbc3) after re-running it on the disposable worktree `/tmp/q10ic`. Results matched the worker's report exactly:
+- contract-check: GREEN 1087/1087.
+- caps: RED, 6 failures across 5 rules.
+- pytest: 452 passed, 1 failed (`bell_verification`).
+- hubs `--check`: 0.
+
+New fact: integration now commits a regenerated `vault/Index.md` (the brief ordered it), so a branch cut earlier can conflict in Index.md as well as in Map.md and the Reports hub. Resolve all three by regenerating (`vault-hubs.mjs`, `gen-subject-index.py`) and confirm with `--check` exit 0.
+
+Quick judge recipe: `git merge-base --is-ancestor integration <branch>` plus an empty `git diff <source-branch> <branch> -- echo/` proves a catch-up merge changed no product code.
+
+- 2026-10-10 consult 11: 2026-10-10 consult 11: I merged quantum-hardening (4db9aba) after re-running it on the disposable worktree `/tmp/q11h` (integration f7efb92 with hardening merged in, exit 0):
+- pytest: 595 passed.
+- contract-check: GREEN, 1087/1087.
+- Sabotage round (`ECHO_CONTRACTS_JS=<tree>/echo/contracts.js python evidence/quantum/hardening/sabotage.py echo`): 42 mutations, 38 red, 4 nulls, 0 refused.
+- caps: RED with 6 findings.
+The branch was not a descendant of integration, but `merge-tree` exited 0, so I did not need a catch-up worker. Gap rows 6, 7 and 8 are closed. Row 7 is closed because `interpret_counts` pins `parameters.shots` to the requested count and records any drift in `facts`. Still open:
+- row 3: the Python `backend.run` at `qollab_job.py:169`, which bridge-rewire keeps;
+- rows 4–5: `test_qollab_job.py:91,207`;
+- rows 1–2: platform.
+
+- 2026-10-10 consult 11: 2026-10-10 consult 11: Row 3 is a conflict between the ruling's wording and the documented route. The ruling says "one guarded backend.run site (bridge.js)". The documented Qollab route is Python `backend.run` through `callPromising(backend)`, and the caps rule `backend-run-python` forbids it. I have not decided this by assumption: the research worker backend-site-research settles it with doc citations plus a runner proof. Option A moves the call into bridge.js. Option B keeps the Python route and asks platform for a narrow caps exemption plus a runner counter for Python-side runs. Until then, a green caps run on a quantum branch can be red only on entry-index, entry-main and backend-run-python.

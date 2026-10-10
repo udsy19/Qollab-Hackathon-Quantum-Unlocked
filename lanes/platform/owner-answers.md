@@ -82,3 +82,6 @@ The owner keeps an IonQ API key in `~/.config/echo/ionq.env` (outside the repo, 
 
 ## 2026-10-10 · owner: "do not stop until you are done … spin up as many agents as you need"
 Full autonomy until submission. Caps raised (platform 3, quantum 3, gameplay 3, story-ui 3, red-team 2, art 2 — art starts now with the procedural prop kit and atmosphere systems that do not touch gameplay files; heavy art integration still after G2). Use the slots: parallelise independent work, keep one task per worker, and keep within lane file ownership. The loop now re-reads `max_parallel` live and adopts running workers on restart (macOS fix).
+
+## 2026-10-10 · overseer relay from red-team quest-state-audit
+Contract gaps (Q7/Q8 LOW): `echo/contracts.js` lacks DECLASSIFIED→ENDING and RESTART on ENDING — both were owner rulings (13 lane questions, items 1 and 12). Add them. Also `BOOTED` vs `BOOT_COMPLETE` naming must be one name (contract's).

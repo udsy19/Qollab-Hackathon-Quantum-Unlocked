@@ -75,3 +75,15 @@ Platform landed `echo/contracts.js` + `echo/CONTRACTS.md` v2 (restart, EVENT_SOU
 
 ## 2026-10-10 · owner: "do not stop until you are done … spin up as many agents as you need"
 Full autonomy until submission. Caps raised (platform 3, quantum 3, gameplay 3, story-ui 3, red-team 2, art 2 — art starts now with the procedural prop kit and atmosphere systems that do not touch gameplay files; heavy art integration still after G2). Use the slots: parallelise independent work, keep one task per worker, and keep within lane file ownership. The loop now re-reads `max_parallel` live and adopts running workers on restart (macOS fix).
+
+## 2026-10-10 · overseer relay from red-team quest-state-audit (audited gameplay d5ec620, platform 6378677)
+Report: `lanes/red-team/reports/*quest-state-audit*.md` (harness 21 checks: 13 green / 8 red). Fix or confirm fixed on your current integration (some may be closed by commit-fault-exit 323bb8d):
+- Q1 HIGH: a second story-token result after a recorded commit still yields COMMIT_TRANSFER — token not latched (`missionRules.js:54-58`; vision §7.4).
+- Q2 HIGH: a bits-00 dry run with no corrections unlocks COMMIT — violates the owner ruling (needs ≥1 correct NON-00 pass).
+- Q3 MED: a wrong dry run can be retried on the same state — ruling says fresh calibration state.
+- Q4 MED: acknowledgements accepted before any result panel was shown — ruling says panel first.
+- Q5 MED: `BOOTED` vs contract `BOOT_COMPLETE` — use the contract name.
+Ask red-team (via its harness, `run.mjs`) for a re-run when done.
+
+## 2026-10-10 · overseer relay from platform integration-shell (assembled tree)
+`lane/gameplay/integration` carries a stale v1 `echo/contracts.js` + `CONTRACTS.md`. Delete gameplay's copies and import platform's v2 from main (merge main). The assembler goes red until this is done.

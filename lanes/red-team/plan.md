@@ -1,49 +1,54 @@
 **Lane:** red-team. We write reports only and make no product edits. Plan row 7.
 
-**Goal:** Run three independent checks on ECHO: ONE OF ONE and report each, with evidence, to the lane that owns the fix.
-1. **Physics audit.** Check Prompt 6 and vision §7 against the real code and tests: every claim, the four (m0,m1) pairs, endianness, the one-`backend.run` limit, and misleading labels.
-2. **Blind playtests.** Newcomers play the newest integrated build in the local runner. We record where they get stuck and whether they can answer the teach-back questions.
-3. **Rubric score.** Score each of the four traits with evidence. The weights are unknown, so there is no weighted total.
+**Goal:** Run three independent checks on ECHO and report each, with evidence, to the lane that owns the fix.
+1. Physics audit of Prompt 6 and vision §7 against the real code and tests.
+2. Blind playtests in the local runner.
+3. Rubric score for each of the four traits, reported separately, never as a weighted total.
 
-**Approach:** Ground truth comes from the independent oracle, never from a lane's own code (law 4). The spec is a hypothesis (law 5). All sabotage runs on disposable `git archive` exports (law 10). Every audit is pinned to named SHAs. Results are labelled "local runner"; nothing is claimed for Qollab unless `owner-answers.md` records it.
+**Approach:**
+- Ground truth comes from the independent oracle (law 4). The spec is treated as a hypothesis (law 5).
+- All sabotage runs on disposable `git archive` exports (law 10).
+- Every audit is pinned to named SHAs.
+- Results are labelled "local runner". Nothing is claimed for Qollab unless `owner-answers.md` records it.
 
 **Done:**
-- `physics-oracle-audit` (0001): MERGED in consult 2. 523 passed, sabotage exit 0.
-- `rubric-research` (0001): MERGED in consult 3. The rubric is four trait names with no weights, and the novelty bar can zero two traits.
-- `physics-code-audit` (0002): MERGED in consult 4.
-  - The physics is correct.
-  - BLOCKER: the contract shape is broken across lanes (12/13 checks fail).
-  - C3: there are 2 `backend.run` sites.
-  - C4: the token is re-measured on every call.
-  - Gameplay's fidelity check is a null.
+- physics-oracle-audit (0001): MERGED c2.
+- rubric-research (0001): MERGED c3.
+- physics-code-audit (0002): MERGED c4.
+- quest-state-audit (0003): MERGED c6. Findings Q1–Q11.
+- player-text-audit (0006): MERGED c7. Reproduced at story-ui 320613e: 9 findings (3 HIGH / 4 MED / 2 LOW), 58/58 sabotage, branch truth 16/16.
+  - Findings for story-ui: T1 no EXACT label; T2 a Subtitles-off toggle that breaks "captions always on"; T3 no terminal/Declassified/credits UI yet; T4 the credit-line dash; T5 a TODO_OWNER line; T6 voiced misconceptions; T7 no fidelity gloss; T8 failure keys are `m0m1`, the reverse of Qiskit's order (integration hazard); T9 import BIT_LABELS.
+  - Story-ui must fix these and show screenshots of the EXACT panel, the bits-then-X/Z switches and the credits.
 
-**Branch state at consult 5 (git, 04:05 UTC):**
-- main 6cc19a6 carries contracts v2 (80d685f) plus `tools/contract-check` and `tools/qollab-caps`.
-- quantum d9b42d0 (pyodide-bridge merged).
-- gameplay c49a922 (gameplay-contracts-migration merged).
-- platform 43be7d9.
-- story-ui 842da9f (story-data).
-- art: empty.
-- `echo/` on main is still only `contracts.js` and `CONTRACTS.md`. There is no playable game on any branch yet.
+**Branch state at c7 (04:25 UTC):**
+
+| branch | tip | what it holds |
+|---|---|---|
+| main | 99dfc54 | contracts only |
+| gameplay | 7c4741b | migration + commit-fault RESTART + real-engine seam merged; FSM/logic only, no world/controller (world-controller and world-v2-port are unmerged) |
+| platform | f08dd0b | integration-shell `main.js` imports the quest machine, ui/*, quantum and THREE; README/video draft |
+| quantum | f7efb92 | `bridge.js` exists |
+| story-ui | 320613e | |
+
+No branch has a player controller and terminals wired to the scene, so the playtest trigger is still unmet. Platform's shell is the first composite that can be assembled.
 
 **Running:**
-- `quest-state-audit` (checkpoint 1 is in). It is a PARTIAL: it has the expected table and the suspected gaps, and the harness is next. I'll judge it on the final report.
-- `cross-lane-recheck` (dispatched now). It re-runs the 0002 harness and contract v2's own `tools/contract-check` at the pinned tips above. It says which of the 0002 findings are closed or open, and it runs a sabotage round on the v2 checker itself (law 6: the board is a system under test).
+- cross-lane-recheck (c5): checkpointed PARTIAL, 5/13 failing.
+- quest-state-regrade (c7): the 0003 harness on gameplay 7c4741b + platform f08dd0b.
 
-**Queued (red-team cap is 2):**
-- `player-text-audit` against story-ui 842da9f: the m1 label, EXACT receiver panel, no FTL/cloning/"certified random"/matter-teleport wording, the attribution line, and credits. Dispatch when a slot frees up.
-
-**Playtest gate:** I dispatch 1–2 `blind-playtest` workers, each on its own port, when a branch has `echo/main.js` with the quest state machine wired to a scene and terminals. If only a partial slice exists by Sat ~12:00 ET, I playtest it anyway and label it PARTIAL.
+**Queued:**
+1. `shell-boot-smoke` (PARTIAL playtest precursor): assemble platform f08dd0b + gameplay + story-ui + quantum into a disposable export, serve it in the local runner on its own port, take screenshots of the title and the first interactions, and report where it breaks. Dispatch when a slot frees if no controller branch has merged; otherwise go straight to a blind playtest.
+2. `blind-playtest` ×1–2 once gameplay world-controller is merged and the platform shell imports it.
+3. `story-ui-text-recheck` after story-ui pushes T1–T9 fixes: `reproduce.sh <ref>`.
 
 **Next:**
-- `rubric-score` after the first playtest, scored per trait.
-- Re-run the physics audit when `echo/quantum` changes materially.
+- rubric-score after the first playtest.
+- Re-run the physics audit when `echo/quantum` changes materially (`bridge.js` is new and cross-lane-recheck covers it).
 - Re-run the playtests after G3 and before the Sun 14:00 freeze.
-- Route the page-copy gaps to platform: run steps, the verbatim attribution line, MIT, the novelty claim and the browser list.
-- Merge main into lane/red-team/integration so contracts v2 and the tools are on our base. Until then, workers merge main into their own branch first.
+- Route the platform README/page copy to a text audit (README is outside 0006's scope: attribution, MIT, theme, novelty claim).
 
 **Risks:**
-- The graybox is late; G2 is Sat 17:00, otherwise the one-room cut.
-- Impact needs measured teach-back outcomes.
-- A lane could self-certify conformance with a v2 checker that has its own nulls.
-- Re-audits could churn while lanes move fast; pinned SHAs handle that.
+- The graybox is late; G2 is Sat 17:00, else the one-room cut applies.
+- Impact needs measured teach-back.
+- A lane could self-certify with its own checker.
+- Cap 2 is a bottleneck.

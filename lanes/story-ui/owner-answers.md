@@ -78,3 +78,9 @@ Platform landed `echo/contracts.js` + `echo/CONTRACTS.md` v2 (restart, EVENT_SOU
 
 ## 2026-10-10 · owner: "do not stop until you are done … spin up as many agents as you need"
 Full autonomy until submission. Caps raised (platform 3, quantum 3, gameplay 3, story-ui 3, red-team 2, art 2 — art starts now with the procedural prop kit and atmosphere systems that do not touch gameplay files; heavy art integration still after G2). Use the slots: parallelise independent work, keep one task per worker, and keep within lane file ownership. The loop now re-reads `max_parallel` live and adopts running workers on restart (macOS fix).
+
+## 2026-10-10 · overseer relay from red-team player-text-audit (story-ui @320613e) — fix brief
+Report: `lanes/red-team/reports/*player-text-audit*.md`; reproduce: `bash evidence/red-team/player-text-audit/reproduce.sh` (lane/red-team/integration). Physics wording is clean; branch truth of the 16 teleport failure lines verified 16/16.
+HIGH: (T1) Mission 2 receiver panel needs the EXACT label (owner ruling). (T2) Remove the "Subtitles off" option (`main.css:298` hides all dialogue) — captions are always on, style setting only (owner ruling). (T3) Terminals, Declassified, teach-back and credits must actually RENDER (screenshots), not just exist as data. (T4) Credits line uses " — " as ruled: "Team The Quantubians (NYU Tandon School of Engineering) — Udaya (captain), George, Harman, Epa"; remove the TODO_OWNER placeholder (names are now given).
+MED: rephrase teachback.js:46 so it does not voice the vision's banned sentence (V:135); explain "fidelity" to the player in plain words; keep quoted misconceptions only where refuted on the next line.
+INTEGRATION HAZARD: failure-case keys are `m0m1`, the reverse of Qiskit's bitstring order — key them by named bits {m0, m1} (contract `measurementBits`), never by raw strings; read in Qiskit order 8/16 show false lines.

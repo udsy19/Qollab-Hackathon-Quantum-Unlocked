@@ -1,0 +1,1 @@
+You were interrupted — your process exits whenever you end your turn. Continue your brief from where you stopped, running every command in the FOREGROUND. Do not stop until /Users/udsy/agent-org/lanes/gameplay/reports/0006-gameplay-real-engine-seam.md is written.

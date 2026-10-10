@@ -1,4 +1,4 @@
-**Lane story-ui plan, consult 5 (Sat 2026-10-10 ~00:05 ET / 04:05 UTC, T+5h)**
+**Lane story-ui plan, consult 6 (Sat 2026-10-10 ~00:10 ET / 04:10 UTC, T+5h)**
 
 **Goal:** the story and interface from vision §4 and §6:
 - a skippable opening
@@ -13,37 +13,46 @@
 This is Plan rows 5 (G2, Sat 17:00 ET) and 6 (G3, Sun 05:00 ET).
 
 **State, checked from git this consult:**
-- **main has contracts v2** (`2133d8a`/`80d685f`), but `lane/story-ui/integration` does NOT yet contain main (`merge-base --is-ancestor` → 1; 74 files behind). → I am merging main into the lane integration branch now, and every new worker is based on it.
-- `terminals-c4` is running. It has 1 commit (`ac82f4a`: data copy, harness, stub engine, drive gate red on the skeleton). It is based on the pre-v2 integration branch, so it must conform to v2 before I merge it: the two-phase teleport dry run (bits first, then corrections), the `ExperimentResult` shape from `echo/contracts.js`, and the UI root/settings. Its report will be judged on that.
-- `data-fixes` is running. It has 3 commits (`b52954b` → `8cf12cb` → `9127f62`): a branch-truth gate run in Qiskit over all 16 (bits, plan) cases, the ruled credits, the bit labels, the test-rig dry run, the 00:00 hold and the 00 dry-run beat. Sabotage: 48 cases, 43 red, 4 old nulls, 1 refused. The final report is pending; I judge it when it arrives.
-- The cap is now 3, with 1 free slot. I am using it for `declassified`.
+- main is merged into the lane at `8f3f9a8`, so contracts v2 is in the lane. `git diff lane...main` is empty.
+- **data-fixes was judged and is being MERGED this consult.**
+  - I ran its gate myself in a disposable worktree at `e61a537` (`node evidence/story-ui/story-data/check.mjs`): GREEN, with 11655 checks and the one disclosed `TODO_OWNER` (the assets credit, which waits on the art lane).
+  - I read the 16-row branch-truth table against X^(x⊕m1)Z^(z⊕m0). Every line is true on every case that shows it, and each line speaks only about its own switch. The fidelities agree with cos²(1.137) ≈ 0.177.
+  - `git merge-tree` is clean against integration.
+  - The credits line matches the ruling.
+- `terminals-c4` is running. It is based on the pre-v2 integration branch, so it must show v2 conformance before I merge it: the bits-first dry run, the `ExperimentResult` shape from `echo/contracts.js`, `tools/contract-check/check.mjs` and `tools/qollab-caps/check.mjs`. It must also consume `TELEPORT_FAILURE_CASES`, so after this merge it must merge the lane integration branch.
+- `declassified` is running (port 8771).
+- The free slot (cap 3) goes to `opening` (port 8781).
 
 **Approach (unchanged):**
 - `echo/ui/` modules use `mount(root, deps)`, and data ships as JS in `echo/data/`.
 - Each CSS area gets a delimited section of `main.css`. Harnesses live in `evidence/story-ui/harness/`, with one port per worker.
-- Contracts are imported from `echo/contracts.js` (v2 on main).
+- Contracts come from `echo/contracts.js`.
 - Kets are ASCII in the data and become ⟩ at display time.
 - The engine label is always visible.
 
 **Done:**
-- ui-shell (merged, consult 2)
-- story-data (merged, consult 3)
+- ui-shell (c2)
+- story-data (c3)
+- data-fixes (c6)
 
 **In flight:**
 - `terminals-c4` (G2 critical path)
-- `data-fixes`
-- `declassified` (new: journal, Declassified tabs, teach-back, credits screen; port 8771)
+- `declassified`
+- `opening` (new)
 
 **Next, in order, as slots free:**
-1. `shell-polish`: sentence-boundary pages, ⟩ at display time, the select font, the 1024/1366 @200% null. It goes after the terminals merge, because of the `main.css` hot spot.
-2. `opening`: a skippable Shot A–D caption player.
-3. `integration`: mount into platform `main.js` / gameplay, swap the stub for `echo/quantum/bridge.js` once quantum lands it, and play a graybox in the local runner. Target about Sat 12:00 ET.
-4. An a11y pass at 3 viewports × 200%, with accesslint.
+1. `shell-polish`: sentence-boundary pages, ⟩ at display time, the select font, the 1024/1366 @200% null. It goes after the terminals merge.
+2. `integration`: mount everything into platform `main.js` / gameplay, swap the stub for `echo/quantum/bridge.js` once it lands, and play a graybox in the local runner. Target about Sat 12:00 ET.
+3. An a11y pass at 3 viewports × 200%, with accesslint.
+
+**Gameplay asks to relay** (via the plan and owner-answers):
+- `MOMENTS.teleport_dry_run_00`, `MOMENTS.countdown_zero` / `HUD.countdownHeld` and `TELEPORT_FAILURE_CASES` now exist.
+- The opening needs shot hooks for the camera.
 
 **Risks:**
-- `terminals-c4` was built on pre-v2 contracts and may need a rebase/conform round.
-- `bridge.js` is not landed (quantum).
-- Every worker appends to `main.css`. Each section is delimited, and I merge in order: data-fixes → terminals → declassified.
+- `terminals-c4` needs a conform round.
+- `bridge.js` has not landed.
+- `main.css` is a hot spot. Merge order: terminals → declassified → opening, and each later one rebases.
 - G2 is Sat 17:00.
 
-**Per-consult check (from LEARN c4):** compare the in-flight list with the running list and each branch's commits, and re-dispatch anything that is missing.
+**Per-consult check:** compare the in-flight list with the running list and each branch's commits, and re-dispatch anything missing.
