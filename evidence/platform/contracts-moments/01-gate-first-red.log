@@ -1,0 +1,54 @@
+· states
+· loud failure on a wrong name
+· transitions: vision edges present, nothing unexplained added
+· invalid events are refused, state unchanged
+· happy path, replayed through transition()
+  trace: BOOT → TITLE → OPENING → FREE_ROAM_ALLEY → CLONE_INTRO → CLONE_BASIS_PASSED → CLONE_SUPERPOSITION_FAILED → CLONE_UNDERSTOOD → RELAY_UNLOCKED → RELAY_INTRO → RELAY_BELL_CREATED → RELAY_SEND_FAILED → RELAY_UNDERSTOOD → ROOFTOP_UNLOCKED → LINK_REPAIRED → TELEPORT_DRY_RUN → TELEPORT_DRY_RUN_PASSED → TELEPORT_COMMITTED → ENDING → DECLASSIFIED → CREDITS
+· who fires each quest event (owner 2026-10-10 "13 lane design questions" #6)
+  FAIL  EVENT_SOURCES covers exactly the 23 quest events and the 6 moments (got 23)
+· MOMENT events (overseer relay 2026-10-10): fired by gameplay, consumed by story-ui, never a state change
+  FAIL  MOMENT_EVENTS is exported and frozen
+  FAIL  MOMENT_EVENTS.<misspelt> throws instead of returning undefined
+  FAIL  MOMENT_EVENTS is exactly ["clone_increase_voltage","relay_bay_cable","teleport_commit_locked","teleport_dry_run_failed","teleport_dry_run_00","countdown_zero"] (got [])
+  FAIL  MOMENT_EVENTS.clone_increase_voltage === 'clone_increase_voltage' (overseer relay 2026-10-10)
+  FAIL  EVENT_SOURCES.clone_increase_voltage is fired by gameplay (moment) and consumed by story-ui (got undefined)
+  FAIL  MOMENT_EVENTS.relay_bay_cable === 'relay_bay_cable' (overseer relay 2026-10-10)
+  FAIL  EVENT_SOURCES.relay_bay_cable is fired by gameplay (moment) and consumed by story-ui (got undefined)
+  FAIL  MOMENT_EVENTS.teleport_commit_locked === 'teleport_commit_locked' (overseer relay 2026-10-10)
+  FAIL  EVENT_SOURCES.teleport_commit_locked is fired by gameplay (moment) and consumed by story-ui (got undefined)
+  FAIL  MOMENT_EVENTS.teleport_dry_run_failed === 'teleport_dry_run_failed' (overseer relay 2026-10-10)
+  FAIL  EVENT_SOURCES.teleport_dry_run_failed is fired by gameplay (moment) and consumed by story-ui (got undefined)
+  FAIL  MOMENT_EVENTS.teleport_dry_run_00 === 'teleport_dry_run_00' (story-ui data/story.js MOMENTS (owner ruling: 00 does not unlock COMMIT))
+  FAIL  EVENT_SOURCES.teleport_dry_run_00 is fired by gameplay (moment) and consumed by story-ui (got undefined)
+  FAIL  MOMENT_EVENTS.countdown_zero === 'countdown_zero' (story-ui data/story.js MOMENTS; overseer relay: the countdown holds at 00:00)
+  FAIL  EVENT_SOURCES.countdown_zero is fired by gameplay (countdown) and consumed by story-ui (got undefined)
+· countdown: holds at 00:00, never negative, never a game-over (overseer relay 2026-10-10; vision §1 anti-goals, §9.3)
+  FAIL  countdownRemaining is exported
+  FAIL  PIN COUNTDOWN_START_SECONDS must be 720 (platform design value (not owner-ruled): 12:00, above §6.3's 08:42 shown at the relay); got undefined
+  FAIL  COUNTDOWN_START_SECONDS exceeds §6.3's relay reading 08:42 = 522 s (got undefined)
+  FAIL  countdownRemaining(720, 0) = 720 (got {"threw":"not exported"})
+  FAIL  negative elapsed clamps to the start, never above it (got {"threw":"not exported"})
+  FAIL  fractional elapsed rounds the display up to whole seconds remaining: 720 - 100.7 → 619 (got {"threw":"not exported"})
+  FAIL  never negative (nor -0) for any elapsed time (bad: [[0,{"threw":"not exported"}],[0.5,{"threw":"not exported"}],[1,{"threw":"not exported"}],[59.9,{"threw":"not exported"}],[360,{"threw":"not exported"}],[719,{"threw":"not exported"}],[719.999,{"threw":"not exported"}],[720,{"threw":"not exported"}],[720.001,{"threw":"not exported"}],[721,{"threw":"not exported"}],[1440,{"threw":"not exported"}],[1000000,{"threw":"not exported"}],[1000000000000,{"threw":"not exported"}],[null,{"threw":"not exported"}]])
+  FAIL  always whole seconds (bad: [[0,{"threw":"not exported"}],[0.5,{"threw":"not exported"}],[1,{"threw":"not exported"}],[59.9,{"threw":"not exported"}],[360,{"threw":"not exported"}],[719,{"threw":"not exported"}],[719.999,{"threw":"not exported"}],[720,{"threw":"not exported"}],[720.001,{"threw":"not exported"}],[721,{"threw":"not exported"}],[1440,{"threw":"not exported"}],[1000000,{"threw":"not exported"}],[1000000000000,{"threw":"not exported"}],[null,{"threw":"not exported"}]])
+  FAIL  holds at 00:00 at elapsed 720 (got {"threw":"not exported"})
+  FAIL  holds at 00:00 at elapsed 721 (got {"threw":"not exported"})
+  FAIL  holds at 00:00 at elapsed 1000000 (got {"threw":"not exported"})
+  FAIL  holds at 00:00 at elapsed Infinity (got {"threw":"not exported"})
+  FAIL  shows 00:01, not 00:00, until the start has fully elapsed (got {"threw":"not exported"})
+  FAIL  countdownRemaining(720, NaN) throws (a bug at the call site, not a silent 0) (got {"threw":"not exported"})
+  FAIL  countdownRemaining(720, 10) throws (a bug at the call site, not a silent 0) (got {"threw":"not exported"})
+  FAIL  countdownRemaining(720, undefined) throws (a bug at the call site, not a silent 0) (got {"threw":"not exported"})
+  FAIL  countdownRemaining(NaN, 0) throws (a bug at the call site, not a silent 0) (got {"threw":"not exported"})
+  FAIL  countdownRemaining(-1, 0) throws (a bug at the call site, not a silent 0) (got {"threw":"not exported"})
+  FAIL  countdownRemaining(Infinity, 0) throws (a bug at the call site, not a silent 0) (got {"threw":"not exported"})
+  FAIL  the countdown fires exactly one event, and it is the moment countdown_zero (a caption, not a transition)
+· every §9.1 state reachable from BOOT through transition()
+· interactables
+· world changes keyed by the §9.3 states
+· ExperimentResult validator
+· ExperimentResult.marginalProbabilities (the only sanctioned way to read one qubit out of a key)
+· teleport dry run, two phases (owner 2026-10-10 "red-team physics ambiguities" #2: bits first, corrections second)
+· UI root and settings (overseer relay from story-ui, 2026-10-10)
+· owner-ruled values, pinned from the ruling text (never read back from the module)
+contract-check: RED — 1169/1205 checks passed (contracts: /Users/udsy/agent-org/lanes/platform/wt/contracts-moments-and-land/echo/contracts.js)

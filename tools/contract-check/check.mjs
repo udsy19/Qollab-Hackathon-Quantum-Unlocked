@@ -28,6 +28,11 @@ function ok(cond, msg) {
 // Strict enums throw on a missing key by design; the check must record that as a FAIL, not crash.
 const get = (obj, k) => (obj && Object.hasOwn(obj, k) ? obj[k] : undefined)
 function refuse(msg) { console.log(`REFUSED: ${msg}`); process.exit(2) }
+const call = (f, ...a) => { try { return typeof f === 'function' ? f(...a) : { threw: 'not exported' } } catch (e) { return { threw: e.message } } }
+const show = v => (typeof v === 'number' ? String(v) : JSON.stringify(v))
+function pin(name, got, want, ruling) {
+  ok(JSON.stringify(got) === JSON.stringify(want), `PIN ${name} must be ${show(want)} (${ruling}); got ${show(got)}`)
+}
 
 // ---------------------------------------------------------------- ground truth from the vision
 const vision = readFileSync(resolve(ROOT, 'ECHO_MASTER_VISION.md'), 'utf8')
@@ -59,6 +64,20 @@ const ADDITIONS = [
 ]
 const EXPECTED_EDGES = [...VISION_EDGES, ...ADDITIONS.map(a => a.slice(0, 3))]
 const EXPECTED_EVENTS = [...new Set(EXPECTED_EDGES.map(e => e[1]))]
+
+// MOMENT events: reactions that are not state changes, fired by gameplay and consumed by story-ui.
+// Typed from their sources, never read from the module: the first four are the overseer relay
+// (owner-answers.md 2026-10-10 "new contract names"); the last two are the keys story-ui's
+// echo/data/story.js MOMENTS already consumes (lane/story-ui/integration), so gameplay fires the
+// names story-ui listens for. Each: [id, lane, via, consumer].
+const EXPECTED_MOMENTS = [
+  ['clone_increase_voltage', 'gameplay', 'moment', 'story-ui', 'overseer relay 2026-10-10'],
+  ['relay_bay_cable', 'gameplay', 'moment', 'story-ui', 'overseer relay 2026-10-10'],
+  ['teleport_commit_locked', 'gameplay', 'moment', 'story-ui', 'overseer relay 2026-10-10'],
+  ['teleport_dry_run_failed', 'gameplay', 'moment', 'story-ui', 'overseer relay 2026-10-10'],
+  ['teleport_dry_run_00', 'gameplay', 'moment', 'story-ui', 'story-ui data/story.js MOMENTS (owner ruling: 00 does not unlock COMMIT)'],
+  ['countdown_zero', 'gameplay', 'countdown', 'story-ui', 'story-ui data/story.js MOMENTS; overseer relay: the countdown holds at 00:00'],
+]
 
 // ---------------------------------------------------------------- the module under test
 let C
@@ -155,7 +174,8 @@ for (const ev of EXPECTED_EVENTS) {
   ok(s && ['platform', 'gameplay', 'story-ui'].includes(s.lane) && typeof s.via === 'string' && s.via.length > 0,
     `EVENT_SOURCES.${ev} names a lane and a trigger (got ${JSON.stringify(s)})`)
 }
-ok(Object.keys(SRC).length === EXPECTED_EVENTS.length, `EVENT_SOURCES covers exactly the ${EXPECTED_EVENTS.length} events`)
+ok(Object.keys(SRC).length === EXPECTED_EVENTS.length + EXPECTED_MOMENTS.length,
+  `EVENT_SOURCES covers exactly the ${EXPECTED_EVENTS.length} quest events and the ${EXPECTED_MOMENTS.length} moments (got ${Object.keys(SRC).length})`)
 // Ruled by the owner, typed here from owner-answers.md, not read from the module.
 for (const [ev, lane, via] of [['OPEN_ROOFTOP', 'gameplay', 'world_trigger'], ['EXIT_BOOTH', 'gameplay', 'world_trigger'],
   ['EXPLANATION_READ', 'story-ui', 'terminal_acknowledgement'], ['VIEW_RECEIVER_MARGINAL', 'story-ui', 'terminal_acknowledgement']]) {
@@ -166,6 +186,67 @@ for (const [id, b] of Object.entries(C.INTERACTABLE_BINDINGS || {})) {
   const s = get(SRC, b.action)
   ok(s?.lane === 'gameplay' && s?.via === 'interactable', `${b.action} (interactable ${id}) is fired by gameplay on E (got ${JSON.stringify(s)})`)
 }
+
+console.log('· MOMENT events (overseer relay 2026-10-10): fired by gameplay, consumed by story-ui, never a state change')
+ok(C.MOMENT_EVENTS && Object.isFrozen(C.MOMENT_EVENTS), 'MOMENT_EVENTS is exported and frozen')
+{
+  let threw = false
+  try { void C.MOMENT_EVENTS.teleport_dry_run_fail } catch { threw = true }
+  ok(Boolean(C.MOMENT_EVENTS) && threw, 'MOMENT_EVENTS.<misspelt> throws instead of returning undefined')
+}
+const momentList = Object.keys(C.MOMENT_EVENTS || {})
+ok(JSON.stringify([...momentList].sort()) === JSON.stringify(EXPECTED_MOMENTS.map(m => m[0]).sort()),
+  `MOMENT_EVENTS is exactly ${JSON.stringify(EXPECTED_MOMENTS.map(m => m[0]))} (got ${JSON.stringify(momentList)})`)
+for (const [id, lane, via, consumer, why] of EXPECTED_MOMENTS) {
+  ok(get(C.MOMENT_EVENTS, id) === id, `MOMENT_EVENTS.${id} === '${id}' (${why})`)
+  const s = get(SRC, id)
+  ok(s?.lane === lane && s?.via === via && s?.consumer === consumer,
+    `EVENT_SOURCES.${id} is fired by ${lane} (${via}) and consumed by ${consumer} (got ${JSON.stringify(s)})`)
+  ok(!Object.hasOwn(C.QUEST_EVENTS || {}, id), `${id} is not a quest event`)
+  // A moment never moves the quest: transition() must reject it as an unknown event in every state.
+  let accepted = 0
+  for (const st of VISION_STATES) { try { tr(st, id); accepted++ } catch { /* refused: correct */ } }
+  ok(accepted === 0, `transition(<any §9.1 state>, '${id}') throws: a moment is not a state change (accepted in ${accepted} states)`)
+}
+// Quest events carry no consumer: only moments are routed to a consumer lane.
+for (const ev of EXPECTED_EVENTS) ok(get(SRC, ev)?.consumer === undefined, `EVENT_SOURCES.${ev} (quest event) has no consumer field`)
+
+console.log('· countdown: holds at 00:00, never negative, never a game-over (overseer relay 2026-10-10; vision §1 anti-goals, §9.3)')
+const CD = C.countdownRemaining
+ok(typeof CD === 'function', 'countdownRemaining is exported')
+// Not owner-ruled: a platform design value. Vision §6.3 shows GRID SHUTDOWN 08:42 at the relay (mission 2),
+// so the start must exceed 522 s; 12:00 leaves room for the opening and mission 1 before it.
+pin('COUNTDOWN_START_SECONDS', C.COUNTDOWN_START_SECONDS, 720,
+  'platform design value (not owner-ruled): 12:00, above §6.3\'s 08:42 shown at the relay')
+ok(C.COUNTDOWN_START_SECONDS > 8 * 60 + 42, `COUNTDOWN_START_SECONDS exceeds §6.3's relay reading 08:42 = 522 s (got ${C.COUNTDOWN_START_SECONDS})`)
+const START = 720  // typed, not read back
+const cd = (...a) => call(CD, ...a)
+ok(cd(START, 0) === START, `countdownRemaining(${START}, 0) = ${START} (got ${JSON.stringify(cd(START, 0))})`)
+ok(cd(START, -5) === START, `negative elapsed clamps to the start, never above it (got ${JSON.stringify(cd(START, -5))})`)
+ok(cd(START, 100.7) === 620, `fractional elapsed rounds the display up to whole seconds remaining: 720 - 100.7 = 619.3 → 620 (got ${JSON.stringify(cd(START, 100.7))})`)
+let prev = Infinity, monotone = true, negative = [], nonInt = []
+for (const e of [0, 0.5, 1, 59.9, 360, 719, 719.999, 720, 720.001, 721, 1440, 1e6, 1e12, Infinity]) {
+  const r = cd(START, e)
+  if (!(typeof r === 'number' && r >= 0) || Object.is(r, -0)) negative.push([e, r])
+  if (!Number.isInteger(r)) nonInt.push([e, r])
+  if (r > prev) monotone = false
+  prev = r
+}
+ok(negative.length === 0, `never negative (nor -0) for any elapsed time (bad: ${JSON.stringify(negative)})`)
+ok(nonInt.length === 0, `always whole seconds (bad: ${JSON.stringify(nonInt)})`)
+ok(monotone, 'never counts back up as elapsed time grows')
+for (const e of [720, 721, 1e6, Infinity]) ok(cd(START, e) === 0, `holds at 00:00 at elapsed ${e} (got ${JSON.stringify(cd(START, e))})`)
+ok(cd(START, 719.5) === 1, `shows 00:01, not 00:00, until the start has fully elapsed (got ${JSON.stringify(cd(START, 719.5))})`)
+for (const bad of [[START, NaN], [START, '10'], [START, undefined], [NaN, 0], [-1, 0], [Infinity, 0]]) {
+  const r = cd(...bad)
+  ok(typeof CD === 'function' && r && typeof r.threw === 'string', `countdownRemaining(${bad.map(String).join(', ')}) throws (a bug at the call site, not a silent 0) (got ${JSON.stringify(r)})`)
+}
+// Never a game-over: §9.1 (pinned verbatim above) has no failure state, and no quest event is a timer.
+ok(!VISION_STATES.some(st => /GAME_OVER|FAIL_END|TIME_UP|TIMEOUT/.test(st)), '§9.1 has no game-over state')
+ok(!eventList.some(ev => /COUNTDOWN|TIMER|TIMEOUT|TIME_UP|GAME_OVER|EXPIRE/.test(ev)),
+  `no quest event is driven by the countdown (got ${JSON.stringify(eventList.filter(ev => /COUNTDOWN|TIMER|TIMEOUT|TIME_UP|GAME_OVER|EXPIRE/.test(ev)))})`)
+ok(Object.values(C.EVENT_SOURCES || {}).filter(s => s?.via === 'countdown').length === 1 && get(SRC, 'countdown_zero')?.via === 'countdown',
+  'the countdown fires exactly one event, and it is the moment countdown_zero (a caption, not a transition)')
 
 console.log('· every §9.1 state reachable from BOOT through transition()')
 const seen = new Set([C.INITIAL_STATE])
@@ -247,7 +328,6 @@ const RULE = (m0, m1) => ({ applyX: { m0, m1 }[ruleText[1]] === 1, applyZ: { m0,
 // Ground truth 2: Qiskit fidelities for all 16 combinations on four generic states (teleport_oracle.py).
 const T = JSON.parse(readFileSync(resolve(HERE, 'teleport-fixtures.json'), 'utf8'))
 if (T.states.length < 4 || T.states.some(s => s.rows.length !== 16)) refuse('teleport-fixtures.json must hold 16 rows for each of at least 4 states')
-const call = (f, ...a) => { try { return typeof f === 'function' ? f(...a) : { threw: 'not exported' } } catch (e) { return { threw: e.message } } }
 const errs = v => Array.isArray(v) ? v : [`NOT A LIST: ${JSON.stringify(v)}`]
 for (const [m0, m1] of [[0, 0], [0, 1], [1, 0], [1, 1]]) {
   ok(JSON.stringify(call(C.expectedCorrections, m0, m1)) === JSON.stringify(RULE(m0, m1)),
@@ -357,10 +437,6 @@ console.log('· owner-ruled values, pinned from the ruling text (never read back
 // Every expected value below is typed from lanes/platform/owner-answers.md or the vision, with its
 // source. The behavioural checks above cannot see these drift: on generic states the rule and the
 // fidelity floor each imply the other, so FIDELITY_PASS 0.999999 → 0.9 changed no verdict (consult 5).
-const show = v => (typeof v === 'number' ? String(v) : JSON.stringify(v))
-function pin(name, got, want, ruling) {
-  ok(JSON.stringify(got) === JSON.stringify(want), `PIN ${name} must be ${show(want)} (${ruling}); got ${show(got)}`)
-}
 pin('FIDELITY_PASS', C.FIDELITY_PASS, 0.999999,
   'vision §7.4 "receiver reduced-state fidelity ≥0.999999"; owner-answers § overseer relay: "fidelity threshold is ≥0.999999"')
 pin('BACKEND_SHOTS', C.BACKEND_SHOTS, 256, 'owner-answers § 13 lane design questions #9: "the one backend job uses 256 shots"')
@@ -459,6 +535,23 @@ for (const r of ts.rows.filter(r => JSON.stringify({ applyX: r.applyX, applyZ: r
   const got = call(C.dryRunVerdict, req, dryRes({ m0: r.m0, m1: r.m1 }, { applyX: r.applyX, applyZ: r.applyZ }, 1, 'rule probe'))?.passed
   ok(got === false, `PIN verdict requires the ruled correction (X iff m1=1, Z iff m0=1): wrong choice m0=${r.m0} m1=${r.m1} X=${r.applyX} Z=${r.applyZ} at F=1 does not pass (got ${JSON.stringify(got)})`)
 }
+
+console.log('· the export surface is exactly the documented contract')
+// Typed here, not read from the module: a new export is a contract change (CONTRACTS.md migration row
+// + this list). Without it an undeclared name such as COUNTDOWN_GAME_OVER passed green (consult 9 null).
+const EXPECTED_EXPORTS = ['BACKEND_SHOTS', 'BELL_RECEIVER_QUBIT', 'BIT_LABELS', 'BUS_EVENTS', 'CAPTION_STYLES',
+  'COUNTDOWN_START_SECONDS', 'DEFAULT_SETTINGS', 'ENGINE_KINDS', 'EVENT_SOURCES', 'EXPERIMENTS',
+  'FIDELITY_CROSSCHECK_TOLERANCE', 'FIDELITY_EPSILON', 'FIDELITY_PASS', 'GENERIC_MAX_WRONG_FIDELITY', 'INITIAL_STATE',
+  'INTERACTABLE_BINDINGS', 'INTERACTABLE_IDS', 'MOMENT_EVENTS', 'PROBABILITY_TOLERANCE', 'QUALITY_LEVELS',
+  'QUEST_EVENTS', 'QUEST_STATES', 'QUEST_STATE_LIST', 'RESET_STATE', 'TELEPORT_TEST_STATE', 'TRANSITIONS',
+  'UI_HOOKS', 'UI_ROOT_ID', 'WORLD_CHANGES', 'countdownRemaining', 'dryRunVerdict', 'expectedCorrections',
+  'makeCorrectionRequest', 'marginalProbabilities', 'randomGenericState', 'transition', 'validateExperimentResult',
+  'validateSettings', 'validateTeleportBitsRequest', 'validateTeleportBitsResult',
+  'validateTeleportCorrectionRequest', 'validateTeleportCorrectionResult']
+const gotExports = Object.keys(C)
+const extra = gotExports.filter(k => !EXPECTED_EXPORTS.includes(k))
+const missing = EXPECTED_EXPORTS.filter(k => !gotExports.includes(k))
+ok(extra.length === 0 && missing.length === 0, `exports match the contract (extra ${JSON.stringify(extra)}, missing ${JSON.stringify(missing)})`)
 
 const verdict = failures === 0 && checks > 0 ? 'GREEN' : 'RED'
 console.log(`contract-check: ${verdict} — ${checks - failures}/${checks} checks passed (contracts: ${CONTRACTS})`)
