@@ -22,15 +22,16 @@ import * as cloning from 'quantum.cloning';
 import * as qollabJob from 'quantum.qollab_job';
 
 // Visible provenance token: change it, reload, and read it back from the served page.
-const BUILD = 'shell-2026-10-10a';
+const BUILD = 'shell-2026-10-10b';
 
 const $ = (id) => document.getElementById(id);
 $('echo-build').textContent = BUILD;
 $('echo-backend').textContent = String(backend.name);
 console.log(`ECHO build ${BUILD} on backend ${backend.name}`);
 
-// Pyodide turns a Python dict into a JS Map by default; contracts.validateExperimentResult
-// rejects a Map, so every bridge result is converted with plain objects.
+// Pyodide v314.0.7 (Qollab's) already gives a plain object for a Python dict (measured on the local
+// runner, 2026-10-10); older Pyodide gave a Map, which contracts.validateExperimentResult rejects.
+// The converter pins plain objects whatever the default does.
 const toPlain = (proxy) => proxy.toJs({ dict_converter: Object.fromEntries });
 
 // ---- renderer and placeholder room (until gameplay ships scene/ and the controller) ----------
