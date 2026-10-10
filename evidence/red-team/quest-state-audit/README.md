@@ -5,9 +5,13 @@ Red-team harness for the quest machine. It audits **gameplay `d5ec620`** (`echo/
 
 ## Run it
 
+> **Superseded for running (2026-10-10, quest-state-regrade):** `run.mjs` and `sabotage.mjs` here were
+> extended to walk the migrated gameplay API on real engine results (`--results`, `--scenarios`).
+> Run everything through `evidence/red-team/quest-state-regrade/reproduce.sh`, which also re-grades
+> d5ec620 + 6378677 on the extended harness. The 0003 numbers below came from the pre-regrade harness
+> (git 21c6187); they are kept as the record of that round.
+
 ```bash
-bash evidence/red-team/quest-state-audit/reproduce.sh            # fresh git-archive export, then run + sabotage
-bash evidence/red-team/quest-state-audit/reproduce.sh <gp> <pf>  # any other pair of refs
 /path/to/.venv/bin/python -I evidence/red-team/quest-state-audit/crosscheck.py   # oracle vs Qiskit
 ```
 
