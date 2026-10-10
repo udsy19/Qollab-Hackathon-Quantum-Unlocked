@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **45 notes** over 10 folders.
+Measured 2026-10-10: **47 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -84,6 +84,7 @@ Folder README: [[Reports/README]]
 - [[Reports/pyodide-bridge|The quantum bridge running in Pyodide (local runner)]]
 - [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/quantum-engine-g1|Quantum engine G1: cloning, no-signalling and teleportation measured in local Qiskit]]
+- [[Reports/quantum-hardening|Quantum hardening: random generic dry runs, a hidden story token, a once-only commit]]
 - [[Reports/quantum-physics-review|Quantum physics review: the engine's numbers check out, four gaps in what the tests can see]]
 - [[Reports/quantum-vs-contracts-v2|Quantum engine and bridge.js vs contracts v2 and the platform gates]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
@@ -115,6 +116,7 @@ Folder README: [[Sessions/README]]
 
 - [[Sessions/2026-10-09-agent-org-setup|2026-10-09 — agent-org-setup]]
 - [[Sessions/2026-10-10-contracts-v2|2026-10-10 — contracts-v2]]
+- [[Sessions/2026-10-10-quantum-hardening|2026-10-10 — quantum-hardening]]
 - [[Sessions/README|Sessions/]]
 
 ## `Templates/`

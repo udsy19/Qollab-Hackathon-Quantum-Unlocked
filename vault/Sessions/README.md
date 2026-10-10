@@ -14,10 +14,11 @@ One note per work session, from `Templates/session.md`: what changed, with commi
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (2)
+## Notes here (3)
 
 - [[Sessions/2026-10-09-agent-org-setup|2026-10-09 — agent-org-setup]]
 - [[Sessions/2026-10-10-contracts-v2|2026-10-10 — contracts-v2]]
+- [[Sessions/2026-10-10-quantum-hardening|2026-10-10 — quantum-hardening]]
 
 ---
 
