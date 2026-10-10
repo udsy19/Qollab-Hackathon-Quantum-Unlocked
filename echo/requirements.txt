@@ -1,0 +1,5 @@
+# Qiskit is always installed by Qollab. With no Qiskit line here, the runtime adds
+# qiskit>=2.5.2,<3.0.0 and installs its own WebAssembly build of it
+# (https://qollab.xyz/learn/docs/runtime-environment#libraries). Keep this file
+# free of a Qiskit line so that default path is the one used.
+# NumPy comes with Pyodide. No other packages are needed.

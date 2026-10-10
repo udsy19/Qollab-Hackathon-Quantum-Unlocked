@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LOCAL RUNNER — ECHO (not Qollab)</title>
+<style>
+  body { margin: 0; font: 14px/1.4 system-ui, sans-serif; background: #f4f4f6; color: #111; }
+  header { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; padding: 10px 14px; background: #1d1d24; color: #fff; }
+  header strong { background: #ffd166; color: #111; padding: 2px 8px; border-radius: 4px; }
+  header label, header button, header select { font: inherit; }
+  header button { padding: 4px 12px; }
+  #jobs { padding: 2px 8px; border-radius: 4px; background: #333; }
+  #jobs.warn { background: #b26b00; }
+  #jobs.red { background: #c62828; }
+  #problems { color: #c62828; font-weight: 600; padding: 4px 14px; }
+  #frame-wrap { background: #fff; border-bottom: 1px solid #ccc; }
+  iframe { display: block; width: 100%; height: 780px; border: 0; }
+  #console { margin: 0; padding: 10px 14px; height: 240px; overflow: auto; background: #101014; color: #ddd; font: 12px/1.45 ui-monospace, Menlo, monospace; white-space: pre-wrap; }
+  #console .err { color: #ff8a80; } #console .system { color: #8ab4f8; } #console .runner { color: #ffd166; }
+</style>
+</head>
+<body>
+<header>
+  <strong>LOCAL RUNNER — not Qollab</strong>
+  <span id="engine">Pyodide v314.0.7 · Qollab's Qiskit 2.5.2 wasm wheel · runs in this browser</span>
+  <label>Backend
+    <select id="backend">
+      <option value="builtin">Built-in simulator (Qiskit BasicSimulator)</option>
+      <option value="ionq-mock">IonQ one-job mock (BasicSimulator + one-job-per-run guard)</option>
+    </select>
+  </label>
+  <button id="run" type="button">Run</button>
+  <button id="stop" type="button">Stop</button>
+  <span id="jobs" role="status">backend.run calls: 0</span>
+</header>
+<div id="problems" role="alert"></div>
+<div id="frame-wrap"></div>
+<pre id="console" aria-live="polite" aria-label="Run console"></pre>
+<script type="module" src="/host.js"></script>
+</body>
+</html>
