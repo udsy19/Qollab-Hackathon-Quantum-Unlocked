@@ -213,7 +213,7 @@ def test_live_commit_is_one_seeded_sample_with_rule_corrections():
     assert bits["m0"] in (0, 1) and bits["m1"] in (0, 1)
     rule = f"X {'ON' if bits['m1'] else 'OFF'}, Z {'ON' if bits['m0'] else 'OFF'}"
     assert f"the receiver applied {rule}." in a["facts"][0]
-    # The token is generic (test_story_token.py): every wrong correction scores < 0.99, so fidelity 1
+    # The token is generic (test_rulings.py): every wrong correction scores < 0.99, so fidelity 1
     # proves the rule was applied to the live bits.
     assert a["fidelity"] >= 0.999999
     assert a["probabilities"] == {f"{b1}{b0}": pytest.approx(0.25, abs=1e-9) for b0, b1 in BRANCHES}

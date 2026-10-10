@@ -11,7 +11,7 @@ The rooftop dry run is two calls, bits first and corrections second (owner rulin
 - `teleport_branch("calibration", m0, m1, applyX, applyZ, theta=, phi=)`: the branch model for THOSE
   bits and THAT state, passed back explicitly. It projects onto (m0, m1), applies the player's X/Z to
   Bob's conditional state and returns the Qiskit-computed fidelity; on a generic state every wrong
-  choice scores <= 0.81.
+  choice scores <= 0.9 (GENERIC_MAX_WRONG_FIDELITY).
 Then the story:
 - `live_commit()`: the single story-token transfer, one atomic exact call (fresh live bits, the rule
   applied, fidelity). The token is latched as consumed only when the call succeeds;
@@ -53,6 +53,19 @@ def expected_corrections(m0, m1):
 def _check_bits(m0, m1):
     if m0 not in (0, 1) or m1 not in (0, 1) or isinstance(m0, bool) or isinstance(m1, bool):
         raise ValueError(f"m0 and m1 must be 0 or 1, got {m0!r}, {m1!r}")
+
+
+def _check_seed(seed):
+    # The seed is echoed in `parameters`, so it must be exactly the value that seeded the generator.
+    if seed is not None and (isinstance(seed, bool) or not isinstance(seed, int)):
+        raise ValueError(f"seed must be an integer or None, got {seed!r}")
+    return seed
+
+
+def _check_choice(apply_x, apply_z):
+    for name, v in (("applyX", apply_x), ("applyZ", apply_z)):
+        if not isinstance(v, bool):
+            raise ValueError(f"{name} must be true or false, got {v!r}")
 
 
 def _bits_text(m0, m1):
@@ -178,7 +191,7 @@ def bell_measurement(state=CALIBRATION, theta=None, phi=None, seed=None, rng=Non
     """Dry run, step 1 (bits first): Bell measurement on a prepared state, one sampled (m0, m1).
     With state "calibration" and no angles, a fresh generic point is drawn and its angles are
     returned in `parameters`; hand them back to `teleport_branch` unchanged."""
-    rng = rng or random.Random(seed)
+    rng = rng or random.Random(_check_seed(seed))
     if state == CALIBRATION and theta is None and phi is None:
         theta, phi = _draw_calibration_angles(rng)
     gates, label = state_gates(state, theta, phi)
@@ -189,9 +202,9 @@ def bell_measurement(state=CALIBRATION, theta=None, phi=None, seed=None, rng=Non
     return experiment_result(
         experiment="teleportation",
         engine="exact_qiskit_local",
-        circuit_description=f"prepare {label} on q0; {PROTOCOL}; measure q0 -> m0, q1 -> m1",
+        circuit_description=f"prepare {label} on q0; {PROTOCOL}; measure q0 -> {M0_LABEL}, q1 -> {M1_LABEL}",
         qubits=3,
-        parameters=_parameters(state, theta, phi, seed=None if seed is None else int(seed)),
+        parameters=_parameters(state, theta, phi, seed=seed),
         probabilities=probs,
         key_qubits=BRANCH_KEY_QUBITS,
         measurement_bits={"m0": m0, "m1": m1},
@@ -203,8 +216,9 @@ def bell_measurement(state=CALIBRATION, theta=None, phi=None, seed=None, rng=Non
 def teleport_branch(state, m0, m1, apply_x, apply_z, theta=None, phi=None):
     """Dry run, step 2 (corrections second): Bob's state for Bell outcome (m0, m1) after the
     player's X/Z choice, on the state named by (state, theta, phi)."""
+    _check_choice(apply_x, apply_z)
     gates, label = state_gates(state, theta, phi)
-    b = _branch(gates, m0, m1, bool(apply_x), bool(apply_z))
+    b = _branch(gates, m0, m1, apply_x, apply_z)
     rule = expected_corrections(m0, m1)
     follows = rule == {"applyX": bool(apply_x), "applyZ": bool(apply_z)}
     facts = [f"{_bits_text(m0, m1)}: the rule asks for X {_on(rule['applyX'])}, Z {_on(rule['applyZ'])}.",
@@ -218,7 +232,7 @@ def teleport_branch(state, m0, m1, apply_x, apply_z, theta=None, phi=None):
     return experiment_result(
         experiment="teleportation",
         engine="exact_qiskit_local",
-        circuit_description=f"prepare {label} on q0; {PROTOCOL}; project onto m0={m0}, m1={m1}; Bob applies {fix}",
+        circuit_description=f"prepare {label} on q0; {PROTOCOL}; project onto {_bits_text(m0, m1)}; Bob applies {fix}",
         qubits=3,
         parameters=_parameters(state, theta, phi, m0=m0, m1=m1, applyX=bool(apply_x), applyZ=bool(apply_z)),
         probabilities=_branch_probabilities(b["state"])[0],
@@ -238,7 +252,7 @@ def teleport_branch(state, m0, m1, apply_x, apply_z, theta=None, phi=None):
 
 
 def _commit_parameters(seed):
-    return {"state": TOKEN} if seed is None else {"state": TOKEN, "seed": int(seed)}
+    return {"state": TOKEN} if seed is None else {"state": TOKEN, "seed": seed}
 
 
 def live_commit(seed=None, rng=None):
@@ -253,7 +267,7 @@ def live_commit(seed=None, rng=None):
     if _token_consumed:
         raise TokenAlreadyConsumed("The story token was already measured by the final commit in this run. "
                                    "Teleporting it again would mean a second copy existed; restart to play again.")
-    rng = rng or random.Random(seed)
+    rng = rng or random.Random(_check_seed(seed))
     gates, _ = state_gates(TOKEN, story_token=True)
     probs, m0, m1 = _sample(gates, rng)
     rule = expected_corrections(m0, m1)
@@ -261,7 +275,8 @@ def live_commit(seed=None, rng=None):
     result = experiment_result(
         experiment="teleportation",
         engine="exact_qiskit_local",
-        circuit_description=f"prepare the story token on q0; {PROTOCOL}; measure m0, m1; Bob applies X iff m1=1, Z iff m0=1",
+        circuit_description=(f"prepare the story token on q0; {PROTOCOL}; measure {M0_LABEL}, {M1_LABEL}; "
+                             f"Bob applies X iff {M1_LABEL} = 1, Z iff {M0_LABEL} = 1"),
         qubits=3,
         parameters=_commit_parameters(seed),
         probabilities=probs,
