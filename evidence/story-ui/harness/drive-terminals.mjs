@@ -9,8 +9,12 @@
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
+import { pathToFileURL } from 'node:url';
 const require = createRequire('/opt/homebrew/lib/node_modules/@modelcontextprotocol/server-puppeteer/');
 const puppeteer = require('puppeteer');
+// The data's own map and line text: the drive checks the map against its closed form below, then
+// the screen against the map.
+const { TELEPORT_FAILURE_CASES, FAILURES } = await import(pathToFileURL(path.resolve('echo/data/objectives.js')).href);
 
 const port = process.argv[2] || '8761';
 const out = process.argv[3] || 'evidence/story-ui/terminals';
@@ -199,17 +203,22 @@ try {
     if (pressed !== on) await press('Space', `Space (toggle ${name} ${on ? 'ON' : 'OFF'})`);
   }
   const fidelity = {};
+  const onOff = (v) => (v ? 'on' : 'off');
   for (const [m0, m1] of [[0, 0], [0, 1], [1, 0], [1, 1]]) {
-    for (const wrong of [true, false]) {
+    // All four plans per bit pair, the correct one last (so COMMIT unlocks on the last 01 pass).
+    const want = { x: m1 === 1, z: m0 === 1 }; // the rule, from vision §7.1, not from the terminal
+    const plans = [[false, false], [false, true], [true, false], [true, true]]
+      .filter(([x, z]) => !(x === want.x && z === want.z)).concat([[want.x, want.z]]);
+    let firstWrong = true;
+    for (const [x, z] of plans) {
+      const wrong = x !== want.x || z !== want.z;
+      const tag = `m0=${m0},m1=${m1}|X=${onOff(x)},Z=${onOff(z)}`;
       await H(([a, b]) => echoHarness.stub.control.bitsQueue.push([a, b]), [m0, m1]);
       await tabTo(/^EXECUTE BELL MEASUREMENT ON TEST STATE$/);
       await idle();
       const shownM0 = Number(await role('m0')), shownM1 = Number(await role('m1'));
-      check(`teleport ${m0}${m1}: bits shown first (m0, m1) and plan before verify`, shownM0 === m0 && shownM1 === m1 && /SOURCE READOUT m0[\s\S]*LOCAL BELL-HALF READOUT m1/.test(await panelText()), `${shownM0},${shownM1}`);
+      check(`teleport ${tag}: bits shown first (m0, m1) and plan before verify`, shownM0 === m0 && shownM1 === m1 && /SOURCE READOUT m0[\s\S]*LOCAL BELL-HALF READOUT m1/.test(await panelText()), `${shownM0},${shownM1}`);
       if (!wrong && m0 === 0 && m1 === 0) await shot('21-teleport-bits-00.png');
-      // The rule, from vision §7.1, not from the terminal.
-      let x = m1 === 1, z = m0 === 1;
-      if (wrong) { if (m0 === 0 && m1 === 0) x = true; else if (m1 === 1) x = false; else z = !z; }
       await setToggle('X', x);
       await setToggle('Z', z);
       const dryBefore = await calls('teleportDryRun');
@@ -218,21 +227,33 @@ try {
       await press('Enter', 'Enter (double)');
       await H(() => { const b = [...document.querySelectorAll('.echo-terminal button')].find((x) => /^VERIFY DRY RUN$/.test(x.innerText.trim())); b?.click(); });
       await idle();
-      check(`teleport ${m0}${m1} ${wrong ? 'wrong' : 'right'}: double Enter + click on VERIFY makes exactly one engine call`, (await calls('teleportDryRun')) === dryBefore + 1, String((await calls('teleportDryRun')) - dryBefore));
+      check(`teleport ${tag}: double Enter + click on VERIFY makes exactly one engine call`, (await calls('teleportDryRun')) === dryBefore + 1, String((await calls('teleportDryRun')) - dryBefore));
       const stateId = await H(() => echoHarness.stub.results.at(-1).out.parameters.state);
       const expected = await fidOf(stateId, x, z, m0, m1);
       const shown = Number(await role('fidelity'));
       const t = await panelText();
-      fidelity[`${m0}${m1}${wrong ? ' wrong' : ' right'}`] = { x, z, shown, expected: Number(expected.toFixed(6)) };
-      check(`teleport ${m0}${m1} ${wrong ? 'wrong' : 'right'} (X ${x ? 'ON' : 'OFF'}, Z ${z ? 'ON' : 'OFF'}): displayed fidelity ${shown} = closed form ${expected.toFixed(6)}`, Math.abs(shown - expected) < 5e-7);
-      check(`teleport ${m0}${m1} ${wrong ? 'wrong' : 'right'}: ${wrong ? 'fidelity < 1 and a FAILURES.teleportation line' : 'fidelity 1'}`,
-        wrong ? shown < 0.999 && /DRY RUN FAILED/.test(t) && /(was off|but m[01] = 0)/.test(t) : Math.abs(shown - 1) < 1e-6 && /DRY RUN PASSED/.test(t));
-      check(`teleport ${m0}${m1}: engine label visible`, await engineShown());
-      await shot(`22-teleport-${m0}${m1}-${wrong ? 'wrong' : 'right'}.png`);
+      fidelity[tag] = { shown, expected: Number(expected.toFixed(6)) };
+      check(`teleport ${tag}: displayed fidelity ${shown} = closed form ${expected.toFixed(6)}`, Math.abs(shown - expected) < 5e-7);
+      check(`teleport ${tag}: ${wrong ? 'fidelity < 1, DRY RUN FAILED' : 'fidelity 1, DRY RUN PASSED'}`,
+        wrong ? shown < 0.999 && /DRY RUN FAILED/.test(t) : Math.abs(shown - 1) < 1e-6 && /DRY RUN PASSED/.test(t));
+      // Closed form, derived here: after the plan the receiver holds X^(x⊕m1) Z^(z⊕m0)·ψ. A switch is
+      // wrong exactly when its flip is left; "missing" when it was off, "extra" when it was on.
+      const rx = (x ? 1 : 0) ^ m1, rz = (z ? 1 : 0) ^ m0;
+      const fromPhysics = [rx && (x ? 'extra_X' : 'missing_X'), rz && (z ? 'extra_Z' : 'missing_Z')].filter(Boolean).sort();
+      // The data's map, keyed by the bits READ OFF THE SCREEN, by name.
+      const mapKey = `m0=${shownM0},m1=${shownM1}|X=${onOff(x)},Z=${onOff(z)}`;
+      const fromMap = TELEPORT_FAILURE_CASES[mapKey];
+      check(`teleport ${tag}: the data map's lines = the closed form's wrong switches`, Array.isArray(fromMap) && JSON.stringify([...fromMap].sort()) === JSON.stringify(fromPhysics), `map ${JSON.stringify(fromMap)} vs physics ${JSON.stringify(fromPhysics)}`);
+      const whyShown = await H(() => [...document.querySelectorAll('.echo-terminal__why')].map((e) => e.textContent.trim()));
+      const whyWant = fromPhysics.map((k) => FAILURES.teleportation[k]);
+      if (fromPhysics.length && shown > 1 - 1e-6) whyWant.push(FAILURES.teleportation.blind_spot);
+      check(`teleport ${tag}: the failure lines on screen are exactly the lines for this case`, JSON.stringify([...whyShown].sort()) === JSON.stringify([...whyWant].sort()), `shown ${JSON.stringify(whyShown)} want ${JSON.stringify(whyWant)}`);
+      check(`teleport ${tag}: engine label visible`, await engineShown());
+      await shot(`22-teleport-m0${m0}-m1${m1}-X${onOff(x)}-Z${onOff(z)}.png`);
       if (!wrong && m0 === 0 && m1 === 0) {
         check('teleport 00 right: COMMIT stays locked (00 does not test the rule)', (await isDisabled(/^COMMIT ONE-WAY TRANSFER$/)) === true && /do(es)? not test the rule/.test(t));
       }
-      if (m0 === 0 && m1 === 1 && wrong) {
+      if (m0 === 0 && m1 === 1 && wrong && firstWrong) {
         // ESC mid-flow, then reopen: the failed dry run is still on screen.
         await press('Escape', 'Escape (mid-flow)');
         check('teleport: ESC mid-flow closes', await H(() => !echoHarness.terminal.isOpen()));
@@ -241,6 +262,7 @@ try {
         check('teleport: reopened with the dry-run result and bits intact', /DRY RUN FAILED/.test(re) && Number(await role('m1')) === 1);
         await shot('23-teleport-reopen-intact.png');
       }
+      if (wrong) firstWrong = false;
     }
   }
   check('teleport: a correct non-00 dry run unlocks COMMIT', (await isDisabled(/^COMMIT ONE-WAY TRANSFER$/)) === false);

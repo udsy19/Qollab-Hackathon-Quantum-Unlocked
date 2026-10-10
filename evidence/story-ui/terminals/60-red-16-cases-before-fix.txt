@@ -1,0 +1,75 @@
+provenance {"version":"terminals r1","hash":"599f9041ab71"}
+PASS  booth: opens with focus inside the terminal
+PASS  booth: CALIBRATING shown while the engine is pending
+PASS  booth |0⟩: TWO BASIS VALUES MATCHED: YES
+PASS  booth |0⟩: engine label visible
+PASS  booth |1⟩: TWO BASIS VALUES MATCHED: YES
+PASS  booth |+⟩: TWO INDEPENDENT COPIES: NO
+PASS  booth |+⟩: failure says why (FAILURES.cloning.plus_not_copied)
+PASS  booth |+⟩: kets rendered as ⟩, no raw |x> left
+PASS  booth |+⟩: engine label visible
+PASS  booth why: purity 0.5 shown for each output  — PURITY | PURITY
+PASS  booth: INCREASE VOLTAGE explained, not punished
+PASS  booth: EXPLANATION_READ not emitted before the deduction  — BASIS_DEMO_OK,SUPERPOSITION_DEMO_FAILED
+PASS  booth: learning text shown
+PASS  booth: events in §9.2 order  — BASIS_DEMO_OK,SUPERPOSITION_DEMO_FAILED,EXPLANATION_READ
+PASS  booth: every booth event fired while its result panel was on screen  — [{"name":"BASIS_DEMO_OK","resultOnScreen":true},{"name":"SUPERPOSITION_DEMO_FAILED","resultOnScreen":true},{"name":"EXPLANATION_READ","resultOnScreen":true}]
+PASS  booth: ESC with the real pause menu mounted closes the terminal and does NOT open pause
+PASS  booth: ESC closes the terminal
+PASS  booth: ESC emits CLOSE_TERMINAL {id}  — CLOSE_TERMINAL{"id":"copy_booth"}
+PASS  menu control: ESC with no terminal open DOES open pause (so the check above can fail)
+PASS  relay I: receiver-only EXACT P(0)=0.5 P(1)=0.5
+PASS  relay I: per-gate failure line
+PASS  relay I: engine label visible
+PASS  relay X: receiver-only EXACT P(0)=0.5 P(1)=0.5
+PASS  relay X: per-gate failure line
+PASS  relay X: engine label visible
+PASS  relay Z: receiver-only EXACT P(0)=0.5 P(1)=0.5
+PASS  relay Z: per-gate failure line
+PASS  relay Z: engine label visible
+PASS  relay: paired view shows Z/X agreement for the last gate (Z: Z agree 1, X agree 0)
+PASS  relay: ATTEMPT_NO_SIGNALLING and VIEW_RECEIVER_MARGINAL fired with the receiver result on screen  — [{"name":"ATTEMPT_NO_SIGNALLING","resultOnScreen":true},{"name":"VIEW_RECEIVER_MARGINAL","resultOnScreen":true}]
+PASS  relay: events in §9.2 order, each once  — PREPARE_BELL_PAIR,ATTEMPT_NO_SIGNALLING,VIEW_RECEIVER_MARGINAL
+PASS  teleport: COMMIT disabled before any dry run
+PASS  teleport: clicking a locked COMMIT calls nothing and emits nothing
+PASS  teleport m0=0,m1=0|X=off,Z=on: bits shown first (m0, m1) and plan before verify  — 0,0
+PASS  teleport m0=0,m1=0|X=off,Z=on: double Enter + click on VERIFY makes exactly one engine call  — 1
+PASS  teleport m0=0,m1=0|X=off,Z=on: displayed fidelity 0.074848 = closed form 0.074848
+PASS  teleport m0=0,m1=0|X=off,Z=on: fidelity < 1, DRY RUN FAILED
+PASS  teleport m0=0,m1=0|X=off,Z=on: the data map's lines = the closed form's wrong switches  — map ["extra_Z"] vs physics ["extra_Z"]
+PASS  teleport m0=0,m1=0|X=off,Z=on: the failure lines on screen are exactly the lines for this case  — shown ["Z was on but m0 = 0. That Z added a phase flip the bits never called for."] want ["Z was on but m0 = 0. That Z added a phase flip the bits never called for."]
+PASS  teleport m0=0,m1=0|X=off,Z=on: engine label visible
+PASS  teleport m0=0,m1=0|X=on,Z=off: bits shown first (m0, m1) and plan before verify  — 0,0
+PASS  teleport m0=0,m1=0|X=on,Z=off: double Enter + click on VERIFY makes exactly one engine call  — 1
+PASS  teleport m0=0,m1=0|X=on,Z=off: displayed fidelity 0.407108 = closed form 0.407108
+PASS  teleport m0=0,m1=0|X=on,Z=off: fidelity < 1, DRY RUN FAILED
+PASS  teleport m0=0,m1=0|X=on,Z=off: the data map's lines = the closed form's wrong switches  — map ["extra_X"] vs physics ["extra_X"]
+PASS  teleport m0=0,m1=0|X=on,Z=off: the failure lines on screen are exactly the lines for this case  — shown ["X was on but m1 = 0. That X added a bit flip the bits never called for."] want ["X was on but m1 = 0. That X added a bit flip the bits never called for."]
+PASS  teleport m0=0,m1=0|X=on,Z=off: engine label visible
+PASS  teleport m0=0,m1=0|X=on,Z=on: bits shown first (m0, m1) and plan before verify  — 0,0
+PASS  teleport m0=0,m1=0|X=on,Z=on: double Enter + click on VERIFY makes exactly one engine call  — 1
+PASS  teleport m0=0,m1=0|X=on,Z=on: displayed fidelity 0.154713 = closed form 0.154713
+PASS  teleport m0=0,m1=0|X=on,Z=on: fidelity < 1, DRY RUN FAILED
+PASS  teleport m0=0,m1=0|X=on,Z=on: the data map's lines = the closed form's wrong switches  — map ["extra_X","extra_Z"] vs physics ["extra_X","extra_Z"]
+PASS  teleport m0=0,m1=0|X=on,Z=on: the failure lines on screen are exactly the lines for this case  — shown ["X was on but m1 = 0. That X added a bit flip the bits never called for.","Z was on but m0 = 0. That Z added a phase flip the bits never called for."] want ["X was on but m1 = 0. That X added a bit flip the bits never called for.","Z was on but m0 = 0. That Z added a phase flip the bits never called for."]
+PASS  teleport m0=0,m1=0|X=on,Z=on: engine label visible
+PASS  teleport m0=0,m1=0|X=off,Z=off: bits shown first (m0, m1) and plan before verify  — 0,0
+PASS  teleport m0=0,m1=0|X=off,Z=off: double Enter + click on VERIFY makes exactly one engine call  — 1
+PASS  teleport m0=0,m1=0|X=off,Z=off: displayed fidelity 1 = closed form 1.000000
+PASS  teleport m0=0,m1=0|X=off,Z=off: fidelity 1, DRY RUN PASSED
+PASS  teleport m0=0,m1=0|X=off,Z=off: the data map's lines = the closed form's wrong switches  — map [] vs physics []
+PASS  teleport m0=0,m1=0|X=off,Z=off: the failure lines on screen are exactly the lines for this case  — shown [] want []
+PASS  teleport m0=0,m1=0|X=off,Z=off: engine label visible
+PASS  teleport 00 right: COMMIT stays locked (00 does not test the rule)
+PASS  teleport m0=0,m1=1|X=off,Z=off: bits shown first (m0, m1) and plan before verify  — 0,1
+PASS  teleport m0=0,m1=1|X=off,Z=off: double Enter + click on VERIFY makes exactly one engine call  — 1
+FAIL  teleport m0=0,m1=1|X=off,Z=off: displayed fidelity 0 = closed form 0.181681
+FAIL  teleport m0=0,m1=1|X=off,Z=off: fidelity < 1, DRY RUN FAILED
+PASS  teleport m0=0,m1=1|X=off,Z=off: the data map's lines = the closed form's wrong switches  — map ["missing_X"] vs physics ["missing_X"]
+FAIL  teleport m0=0,m1=1|X=off,Z=off: the failure lines on screen are exactly the lines for this case  — shown [] want ["m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone."]
+PASS  teleport m0=0,m1=1|X=off,Z=off: engine label visible
+PASS  teleport: ESC mid-flow closes
+FAIL  driver reached the end (Cannot read properties of undefined (reading 'text'))
+FAIL  no page errors (at abort)  — TypeError: Cannot read properties of undefined (reading 'text')
+
+72 checks, 5 failed

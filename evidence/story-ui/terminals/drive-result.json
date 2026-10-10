@@ -1,5 +1,5 @@
 {
-  "url": "http://127.0.0.1:8761/evidence/story-ui/harness/terminals.html",
+  "url": "http://127.0.0.1:8791/evidence/story-ui/harness/terminals.html",
   "keys": [
     "=== copy_booth (keyboard only) ===",
     "Tab",
@@ -55,8 +55,21 @@
     "Tab",
     "Tab",
     "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
+    "Tab",
+    "Space (toggle Z ON)",
+    "Tab",
+    "Enter (VERIFY DRY RUN)",
+    "Enter (double)",
+    "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
     "Space (toggle X ON)",
     "Tab",
+    "Tab",
+    "Enter (VERIFY DRY RUN)",
+    "Enter (double)",
+    "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
+    "Space (toggle X ON)",
+    "Tab",
+    "Space (toggle Z ON)",
     "Tab",
     "Enter (VERIFY DRY RUN)",
     "Enter (double)",
@@ -72,6 +85,19 @@
     "Enter (double)",
     "Escape (mid-flow)",
     "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
+    "Tab",
+    "Space (toggle Z ON)",
+    "Tab",
+    "Enter (VERIFY DRY RUN)",
+    "Enter (double)",
+    "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
+    "Space (toggle X ON)",
+    "Tab",
+    "Space (toggle Z ON)",
+    "Tab",
+    "Enter (VERIFY DRY RUN)",
+    "Enter (double)",
+    "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
     "Space (toggle X ON)",
     "Tab",
     "Tab",
@@ -83,6 +109,13 @@
     "Enter (VERIFY DRY RUN)",
     "Enter (double)",
     "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
+    "Space (toggle X ON)",
+    "Tab",
+    "Tab",
+    "Enter (VERIFY DRY RUN)",
+    "Enter (double)",
+    "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
+    "Space (toggle X ON)",
     "Tab",
     "Space (toggle Z ON)",
     "Tab",
@@ -91,6 +124,23 @@
     "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
     "Tab",
     "Space (toggle Z ON)",
+    "Tab",
+    "Enter (VERIFY DRY RUN)",
+    "Enter (double)",
+    "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
+    "Tab",
+    "Tab",
+    "Enter (VERIFY DRY RUN)",
+    "Enter (double)",
+    "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
+    "Tab",
+    "Space (toggle Z ON)",
+    "Tab",
+    "Enter (VERIFY DRY RUN)",
+    "Enter (double)",
+    "Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)",
+    "Space (toggle X ON)",
+    "Tab",
     "Tab",
     "Enter (VERIFY DRY RUN)",
     "Enter (double)",
@@ -304,52 +354,142 @@
       "detail": ""
     },
     {
-      "name": "teleport 00: bits shown first (m0, m1) and plan before verify",
+      "name": "teleport m0=0,m1=0|X=off,Z=on: bits shown first (m0, m1) and plan before verify",
       "ok": true,
       "detail": "0,0"
     },
     {
-      "name": "teleport 00 wrong: double Enter + click on VERIFY makes exactly one engine call",
+      "name": "teleport m0=0,m1=0|X=off,Z=on: double Enter + click on VERIFY makes exactly one engine call",
       "ok": true,
       "detail": "1"
     },
     {
-      "name": "teleport 00 wrong (X ON, Z OFF): displayed fidelity 0.338234 = closed form 0.338234",
+      "name": "teleport m0=0,m1=0|X=off,Z=on: displayed fidelity 0.220918 = closed form 0.220918",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 00 wrong: fidelity < 1 and a FAILURES.teleportation line",
+      "name": "teleport m0=0,m1=0|X=off,Z=on: fidelity < 1, DRY RUN FAILED",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 00: engine label visible",
+      "name": "teleport m0=0,m1=0|X=off,Z=on: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"extra_Z\"] vs physics [\"extra_Z\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=off,Z=on: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"Z was on but m0 = 0. That Z added a phase flip the bits never called for.\"] want [\"Z was on but m0 = 0. That Z added a phase flip the bits never called for.\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=off,Z=on: engine label visible",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 00: bits shown first (m0, m1) and plan before verify",
+      "name": "teleport m0=0,m1=0|X=on,Z=off: bits shown first (m0, m1) and plan before verify",
       "ok": true,
       "detail": "0,0"
     },
     {
-      "name": "teleport 00 right: double Enter + click on VERIFY makes exactly one engine call",
+      "name": "teleport m0=0,m1=0|X=on,Z=off: double Enter + click on VERIFY makes exactly one engine call",
       "ok": true,
       "detail": "1"
     },
     {
-      "name": "teleport 00 right (X OFF, Z OFF): displayed fidelity 1 = closed form 1.000000",
+      "name": "teleport m0=0,m1=0|X=on,Z=off: displayed fidelity 0.13921 = closed form 0.139210",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 00 right: fidelity 1",
+      "name": "teleport m0=0,m1=0|X=on,Z=off: fidelity < 1, DRY RUN FAILED",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 00: engine label visible",
+      "name": "teleport m0=0,m1=0|X=on,Z=off: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"extra_X\"] vs physics [\"extra_X\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=on,Z=off: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"X was on but m1 = 0. That X added a bit flip the bits never called for.\"] want [\"X was on but m1 = 0. That X added a bit flip the bits never called for.\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=on,Z=off: engine label visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=on,Z=on: bits shown first (m0, m1) and plan before verify",
+      "ok": true,
+      "detail": "0,0"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=on,Z=on: double Enter + click on VERIFY makes exactly one engine call",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=on,Z=on: displayed fidelity 0.277199 = closed form 0.277199",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=on,Z=on: fidelity < 1, DRY RUN FAILED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=on,Z=on: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"extra_X\",\"extra_Z\"] vs physics [\"extra_X\",\"extra_Z\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=on,Z=on: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"X was on but m1 = 0. That X added a bit flip the bits never called for.\",\"Z was on but m0 = 0. That Z added a phase flip the bits never called for.\"] want [\"X was on but m1 = 0. That X added a bit flip the bits never called for.\",\"Z was on but m0 = 0. That Z added a phase flip the bits never called for.\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=on,Z=on: engine label visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=off,Z=off: bits shown first (m0, m1) and plan before verify",
+      "ok": true,
+      "detail": "0,0"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=off,Z=off: double Enter + click on VERIFY makes exactly one engine call",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=off,Z=off: displayed fidelity 1 = closed form 1.000000",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=off,Z=off: fidelity 1, DRY RUN PASSED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=off,Z=off: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [] vs physics []"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=off,Z=off: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [] want []"
+    },
+    {
+      "name": "teleport m0=0,m1=0|X=off,Z=off: engine label visible",
       "ok": true,
       "detail": ""
     },
@@ -359,27 +499,37 @@
       "detail": ""
     },
     {
-      "name": "teleport 01: bits shown first (m0, m1) and plan before verify",
+      "name": "teleport m0=0,m1=1|X=off,Z=off: bits shown first (m0, m1) and plan before verify",
       "ok": true,
       "detail": "0,1"
     },
     {
-      "name": "teleport 01 wrong: double Enter + click on VERIFY makes exactly one engine call",
+      "name": "teleport m0=0,m1=1|X=off,Z=off: double Enter + click on VERIFY makes exactly one engine call",
       "ok": true,
       "detail": "1"
     },
     {
-      "name": "teleport 01 wrong (X OFF, Z OFF): displayed fidelity 0.180232 = closed form 0.180232",
+      "name": "teleport m0=0,m1=1|X=off,Z=off: displayed fidelity 0.14187 = closed form 0.141870",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 01 wrong: fidelity < 1 and a FAILURES.teleportation line",
+      "name": "teleport m0=0,m1=1|X=off,Z=off: fidelity < 1, DRY RUN FAILED",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 01: engine label visible",
+      "name": "teleport m0=0,m1=1|X=off,Z=off: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"missing_X\"] vs physics [\"missing_X\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=off,Z=off: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.\"] want [\"m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=off,Z=off: engine label visible",
       "ok": true,
       "detail": ""
     },
@@ -394,127 +544,387 @@
       "detail": ""
     },
     {
-      "name": "teleport 01: bits shown first (m0, m1) and plan before verify",
+      "name": "teleport m0=0,m1=1|X=off,Z=on: bits shown first (m0, m1) and plan before verify",
       "ok": true,
       "detail": "0,1"
     },
     {
-      "name": "teleport 01 right: double Enter + click on VERIFY makes exactly one engine call",
+      "name": "teleport m0=0,m1=1|X=off,Z=on: double Enter + click on VERIFY makes exactly one engine call",
       "ok": true,
       "detail": "1"
     },
     {
-      "name": "teleport 01 right (X ON, Z OFF): displayed fidelity 1 = closed form 1.000000",
+      "name": "teleport m0=0,m1=1|X=off,Z=on: displayed fidelity 0.058011 = closed form 0.058011",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 01 right: fidelity 1",
+      "name": "teleport m0=0,m1=1|X=off,Z=on: fidelity < 1, DRY RUN FAILED",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 01: engine label visible",
+      "name": "teleport m0=0,m1=1|X=off,Z=on: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"missing_X\",\"extra_Z\"] vs physics [\"extra_Z\",\"missing_X\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=off,Z=on: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.\",\"Z was on but m0 = 0. That Z added a phase flip the bits never called for.\"] want [\"Z was on but m0 = 0. That Z added a phase flip the bits never called for.\",\"m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=off,Z=on: engine label visible",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 10: bits shown first (m0, m1) and plan before verify",
+      "name": "teleport m0=0,m1=1|X=on,Z=on: bits shown first (m0, m1) and plan before verify",
+      "ok": true,
+      "detail": "0,1"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=on: double Enter + click on VERIFY makes exactly one engine call",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=on: displayed fidelity 0.737157 = closed form 0.737157",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=on: fidelity < 1, DRY RUN FAILED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=on: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"extra_Z\"] vs physics [\"extra_Z\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=on: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"Z was on but m0 = 0. That Z added a phase flip the bits never called for.\"] want [\"Z was on but m0 = 0. That Z added a phase flip the bits never called for.\"]"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=on: engine label visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=off: bits shown first (m0, m1) and plan before verify",
+      "ok": true,
+      "detail": "0,1"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=off: double Enter + click on VERIFY makes exactly one engine call",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=off: displayed fidelity 1 = closed form 1.000000",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=off: fidelity 1, DRY RUN PASSED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=off: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [] vs physics []"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=off: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [] want []"
+    },
+    {
+      "name": "teleport m0=0,m1=1|X=on,Z=off: engine label visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=off,Z=off: bits shown first (m0, m1) and plan before verify",
       "ok": true,
       "detail": "1,0"
     },
     {
-      "name": "teleport 10 wrong: double Enter + click on VERIFY makes exactly one engine call",
+      "name": "teleport m0=1,m1=0|X=off,Z=off: double Enter + click on VERIFY makes exactly one engine call",
       "ok": true,
       "detail": "1"
     },
     {
-      "name": "teleport 10 wrong (X OFF, Z OFF): displayed fidelity 0.461534 = closed form 0.461534",
+      "name": "teleport m0=1,m1=0|X=off,Z=off: displayed fidelity 0.595544 = closed form 0.595544",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 10 wrong: fidelity < 1 and a FAILURES.teleportation line",
+      "name": "teleport m0=1,m1=0|X=off,Z=off: fidelity < 1, DRY RUN FAILED",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 10: engine label visible",
+      "name": "teleport m0=1,m1=0|X=off,Z=off: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"missing_Z\"] vs physics [\"missing_Z\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=off,Z=off: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.\"] want [\"m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=off,Z=off: engine label visible",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 10: bits shown first (m0, m1) and plan before verify",
+      "name": "teleport m0=1,m1=0|X=on,Z=off: bits shown first (m0, m1) and plan before verify",
       "ok": true,
       "detail": "1,0"
     },
     {
-      "name": "teleport 10 right: double Enter + click on VERIFY makes exactly one engine call",
+      "name": "teleport m0=1,m1=0|X=on,Z=off: double Enter + click on VERIFY makes exactly one engine call",
       "ok": true,
       "detail": "1"
     },
     {
-      "name": "teleport 10 right (X OFF, Z ON): displayed fidelity 1 = closed form 1.000000",
+      "name": "teleport m0=1,m1=0|X=on,Z=off: displayed fidelity 0.106258 = closed form 0.106258",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 10 right: fidelity 1",
+      "name": "teleport m0=1,m1=0|X=on,Z=off: fidelity < 1, DRY RUN FAILED",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 10: engine label visible",
+      "name": "teleport m0=1,m1=0|X=on,Z=off: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"extra_X\",\"missing_Z\"] vs physics [\"extra_X\",\"missing_Z\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=on,Z=off: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"X was on but m1 = 0. That X added a bit flip the bits never called for.\",\"m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.\"] want [\"X was on but m1 = 0. That X added a bit flip the bits never called for.\",\"m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=on,Z=off: engine label visible",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 11: bits shown first (m0, m1) and plan before verify",
+      "name": "teleport m0=1,m1=0|X=on,Z=on: bits shown first (m0, m1) and plan before verify",
+      "ok": true,
+      "detail": "1,0"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=on,Z=on: double Enter + click on VERIFY makes exactly one engine call",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=on,Z=on: displayed fidelity 0.65958 = closed form 0.659580",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=on,Z=on: fidelity < 1, DRY RUN FAILED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=on,Z=on: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"extra_X\"] vs physics [\"extra_X\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=on,Z=on: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"X was on but m1 = 0. That X added a bit flip the bits never called for.\"] want [\"X was on but m1 = 0. That X added a bit flip the bits never called for.\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=on,Z=on: engine label visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=off,Z=on: bits shown first (m0, m1) and plan before verify",
+      "ok": true,
+      "detail": "1,0"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=off,Z=on: double Enter + click on VERIFY makes exactly one engine call",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=off,Z=on: displayed fidelity 1 = closed form 1.000000",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=off,Z=on: fidelity 1, DRY RUN PASSED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=off,Z=on: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [] vs physics []"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=off,Z=on: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [] want []"
+    },
+    {
+      "name": "teleport m0=1,m1=0|X=off,Z=on: engine label visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=off,Z=off: bits shown first (m0, m1) and plan before verify",
       "ok": true,
       "detail": "1,1"
     },
     {
-      "name": "teleport 11 wrong: double Enter + click on VERIFY makes exactly one engine call",
+      "name": "teleport m0=1,m1=1|X=off,Z=off: double Enter + click on VERIFY makes exactly one engine call",
       "ok": true,
       "detail": "1"
     },
     {
-      "name": "teleport 11 wrong (X OFF, Z ON): displayed fidelity 0.177526 = closed form 0.177526",
+      "name": "teleport m0=1,m1=1|X=off,Z=off: displayed fidelity 0.232873 = closed form 0.232873",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 11 wrong: fidelity < 1 and a FAILURES.teleportation line",
+      "name": "teleport m0=1,m1=1|X=off,Z=off: fidelity < 1, DRY RUN FAILED",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 11: engine label visible",
+      "name": "teleport m0=1,m1=1|X=off,Z=off: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"missing_X\",\"missing_Z\"] vs physics [\"missing_X\",\"missing_Z\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=off,Z=off: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.\",\"m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.\"] want [\"m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.\",\"m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=off,Z=off: engine label visible",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 11: bits shown first (m0, m1) and plan before verify",
+      "name": "teleport m0=1,m1=1|X=off,Z=on: bits shown first (m0, m1) and plan before verify",
       "ok": true,
       "detail": "1,1"
     },
     {
-      "name": "teleport 11 right: double Enter + click on VERIFY makes exactly one engine call",
+      "name": "teleport m0=1,m1=1|X=off,Z=on: double Enter + click on VERIFY makes exactly one engine call",
       "ok": true,
       "detail": "1"
     },
     {
-      "name": "teleport 11 right (X ON, Z ON): displayed fidelity 1 = closed form 1.000000",
+      "name": "teleport m0=1,m1=1|X=off,Z=on: displayed fidelity 0.607093 = closed form 0.607093",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 11 right: fidelity 1",
+      "name": "teleport m0=1,m1=1|X=off,Z=on: fidelity < 1, DRY RUN FAILED",
       "ok": true,
       "detail": ""
     },
     {
-      "name": "teleport 11: engine label visible",
+      "name": "teleport m0=1,m1=1|X=off,Z=on: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"missing_X\"] vs physics [\"missing_X\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=off,Z=on: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.\"] want [\"m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=off,Z=on: engine label visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=off: bits shown first (m0, m1) and plan before verify",
+      "ok": true,
+      "detail": "1,1"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=off: double Enter + click on VERIFY makes exactly one engine call",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=off: displayed fidelity 0.184199 = closed form 0.184199",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=off: fidelity < 1, DRY RUN FAILED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=off: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [\"missing_Z\"] vs physics [\"missing_Z\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=off: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [\"m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.\"] want [\"m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.\"]"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=off: engine label visible",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=on: bits shown first (m0, m1) and plan before verify",
+      "ok": true,
+      "detail": "1,1"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=on: double Enter + click on VERIFY makes exactly one engine call",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=on: displayed fidelity 1 = closed form 1.000000",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=on: fidelity 1, DRY RUN PASSED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=on: the data map's lines = the closed form's wrong switches",
+      "ok": true,
+      "detail": "map [] vs physics []"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=on: the failure lines on screen are exactly the lines for this case",
+      "ok": true,
+      "detail": "shown [] want []"
+    },
+    {
+      "name": "teleport m0=1,m1=1|X=on,Z=on: engine label visible",
       "ok": true,
       "detail": ""
     },
@@ -707,7 +1117,7 @@
     "CLASSICAL LINK ONLINE",
     "SOURCE",
     "LOCAL BELL HALF",
-    "REMOTE BELL HALF",
+    "RECEIVER BELL HALF",
     "EXECUTE BELL MEASUREMENT ON TEST STATE",
     "FRESH CALIBRATION STATE",
     "COMMIT ONE-WAY TRANSFER",
@@ -715,31 +1125,47 @@
     "0",
     "LOCAL BELL-HALF READOUT m1",
     "RECEIVER CORRECTION PLAN",
-    "IF m0 = 0, m1 = 0:  X [ON]  Z [OFF]",
-    "X ON THE RECEIVER  [ON]",
-    "Z ON THE RECEIVER  [OFF]",
+    "IF m0 = 0, m1 = 0:  X [OFF]  Z [ON]",
+    "X ON THE RECEIVER  [OFF]",
+    "Z ON THE RECEIVER  [ON]",
     "VERIFY DRY RUN",
     "DRY RUN FAILED",
     "Receiver test fidelity",
-    "0.338234",
-    "X was on but m1 = 0. That flip damaged a state that was already right.",
+    "0.220918",
+    "Z was on but m0 = 0. That Z added a phase flip the bits never called for.",
+    "IF m0 = 0, m1 = 0:  X [ON]  Z [OFF]",
+    "X ON THE RECEIVER  [ON]",
+    "Z ON THE RECEIVER  [OFF]",
+    "0.139210",
+    "X was on but m1 = 0. That X added a bit flip the bits never called for.",
+    "IF m0 = 0, m1 = 0:  X [ON]  Z [ON]",
+    "0.277199",
     "IF m0 = 0, m1 = 0:  X [OFF]  Z [OFF]",
-    "X ON THE RECEIVER  [OFF]",
     "DRY RUN PASSED",
     "m0 = 0 and m1 = 0 need no correction, so this run does not test the rule. Measure a fresh state.",
     "1",
     "IF m0 = 0, m1 = 1:  X [OFF]  Z [OFF]",
-    "0.180232",
-    "m1 = 1 but X was off. The receiver state is left bit-flipped.",
-    "No corrections set. Without the two bits the receiver cannot know which fix to apply.",
+    "0.141870",
+    "m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.",
+    "IF m0 = 0, m1 = 1:  X [OFF]  Z [ON]",
+    "0.058011",
+    "IF m0 = 0, m1 = 1:  X [ON]  Z [ON]",
+    "0.737157",
     "IF m0 = 0, m1 = 1:  X [ON]  Z [OFF]",
     "IF m0 = 1, m1 = 0:  X [OFF]  Z [OFF]",
-    "0.461534",
-    "m0 = 1 but Z was off. The receiver state is left phase-flipped.",
+    "0.595544",
+    "m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.",
+    "IF m0 = 1, m1 = 0:  X [ON]  Z [OFF]",
+    "0.106258",
+    "IF m0 = 1, m1 = 0:  X [ON]  Z [ON]",
+    "0.659580",
     "IF m0 = 1, m1 = 0:  X [OFF]  Z [ON]",
-    "Z ON THE RECEIVER  [ON]",
+    "IF m0 = 1, m1 = 1:  X [OFF]  Z [OFF]",
+    "0.232873",
     "IF m0 = 1, m1 = 1:  X [OFF]  Z [ON]",
-    "0.177526",
+    "0.607093",
+    "IF m0 = 1, m1 = 1:  X [ON]  Z [OFF]",
+    "0.184199",
     "IF m0 = 1, m1 = 1:  X [ON]  Z [ON]",
     "SCIENTIFIC MODULE ERROR. No result came back, so nothing is shown and nothing was used up.",
     "commitStoryTransfer: stub: commitStoryTransfer raised (harness-injected Python error)",
@@ -762,7 +1188,6 @@
     "PATCH JUNCTION 3",
     "No signal reaches that junction yet. Patch the one the glow stops at.",
     "PATCHED",
-    "Scan (Q) the roof. Three junctions are dark.",
-    "IF m0 = 1, m1 = 1:  X [OFF]  Z [OFF]"
+    "Scan (Q) the roof. Three junctions are dark."
   ]
 }

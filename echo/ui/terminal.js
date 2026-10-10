@@ -7,7 +7,7 @@
 // in §9.2 order. Acknowledgements are emitted only after the result they acknowledge has painted.
 // Every number shown comes from an engine result that passed validateExperimentResult plus a
 // per-call guard; anything else is refused on screen, never rendered.
-import { TERMINALS, FAILURES, HUD } from '../data/objectives.js';
+import { TERMINALS, FAILURES, HUD, TELEPORT_FAILURE_CASES } from '../data/objectives.js';
 import { QUEST_EVENTS, BUS_EVENTS, INTERACTABLE_IDS, validateExperimentResult } from '../contracts.js';
 import { trapTab, focusableIn, el } from './accessibility.js';
 
@@ -372,16 +372,14 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
 
   // ------------------------------------------------------------------ teleport_terminal (§4.4, §6.5, §7.4)
 
+  // The lines come from the data's 16-case map, never from per-switch logic here: which lines are
+  // true depends on both switches together (evidence/story-ui/data-fixes/branch-truth.md). The key is
+  // built from the bits by name; a Qiskit bitstring is c1c0 and would read them reversed.
   function dryExplanation(dry) {
     const { bits, x, z, fidelity } = dry;
-    const want = ruleFor(bits);
+    const onOff = (v) => (v ? 'on' : 'off');
     const F = FAILURES.teleportation;
-    const out = [];
-    if (want.x && !x) out.push(F.missing_X);
-    if (!want.x && x) out.push(F.extra_X);
-    if (want.z && !z) out.push(F.missing_Z);
-    if (!want.z && z) out.push(F.extra_Z);
-    if (!x && !z && (want.x || want.z)) out.push(F.no_corrections);
+    const out = TELEPORT_FAILURE_CASES[`m0=${bits.m0},m1=${bits.m1}|X=${onOff(x)},Z=${onOff(z)}`].map((k) => F[k]);
     if (out.length && fidelity > ONE) out.push(F.blind_spot);
     return out;
   }
