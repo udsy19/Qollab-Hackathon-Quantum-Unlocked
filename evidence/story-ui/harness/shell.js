@@ -4,9 +4,11 @@
 import { mountHud } from '../../../echo/ui/hud.js';
 import { mountDialogue } from '../../../echo/ui/dialogue.js';
 import { mountMenu } from '../../../echo/ui/menu.js';
+import { STORY, MOMENTS } from '../../../echo/data/story.js';
+import { CAPTION_STYLES, validateSettings } from '../../../echo/contracts.js';
 
-const VERSION = 'ui-shell r3';
-const FILES = ['echo/main.css', 'echo/ui/accessibility.js', 'echo/ui/hud.js', 'echo/ui/dialogue.js', 'echo/ui/menu.js'];
+const VERSION = 'shell-polish r1';
+const FILES = ['echo/main.css', 'echo/ui/accessibility.js', 'echo/ui/hud.js', 'echo/ui/dialogue.js', 'echo/ui/menu.js', 'echo/data/story.js'];
 
 async function servedHash() {
   const parts = await Promise.all(FILES.map((f) => fetch(`../../../${f}`, { cache: 'no-store' }).then((r) => r.arrayBuffer())));
@@ -49,7 +51,9 @@ function startGame() {
 }
 
 hud.setVisible(false);
-window.echoHarness = { hud, dialogue, menu, log, BEATS, startGame };
+// Every spoken beat in the game, for the all-script pagination walk.
+const SCRIPT = [...Object.values(STORY), ...Object.values(MOMENTS)].flat().filter((b) => b && typeof b.text === 'string' && b.speaker);
+window.echoHarness = { hud, dialogue, menu, log, BEATS, SCRIPT, CAPTION_STYLES, validateSettings, startGame };
 
 if (params.get('scene') === 'game') {
   startGame();

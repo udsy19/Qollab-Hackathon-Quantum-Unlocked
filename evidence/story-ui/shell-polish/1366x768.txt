@@ -1,0 +1,49 @@
+provenance {"version":"shell-polish r1","hash":"bd186c0796f7"}
+PASS  title: Start has focus on load  — {"tag":"BUTTON","text":"Start","id":"","outline":"solid 3px rgb(255, 225, 77)","inMenu":true}
+PASS  title: focus ring is a 3px solid outline  — solid 3px rgb(255, 225, 77)
+PASS  title: Tab wraps inside the menu (Start→Settings→Controls→Start)  — Start
+PASS  hud: top row reads brand/objective/countdown  — ECHO // DISTRICT 09 OBJECTIVE 02 RESTORE THE ENTANGLEMENT RELAY GRID SHUTDOWN 08:42
+PASS  hud: bottom row reads capsule + prompt  — ◆ Q-SOURCE: PRESERVED E INTERACT
+PASS  hud: capsule state carries a glyph, not only colour
+PASS  hud 100%: geometry clean
+PASS  dialogue: reveal was in progress, Enter skipped to the full caption  — 6 → 55
+PASS  dialogue 100%: page 1 is ≤2 lines  — {"lines":2,"page":"1/3","text":"A copied bit and a copied qubit are not the same thing."}
+PASS  dialogue 100%: long beat split into ≥2 pages  — 1/3
+PASS  dialogue 100%: page 2 is ≤2 lines  — {"lines":2,"page":"2/3","text":"The duplicator matched the basis values for |0⟩ and |1⟩, but for |+⟩ it produced one correlated two-qubit state, not two independent copies."}
+PASS  pause: Esc opens pause with Resume focused  — {"tag":"BUTTON","text":"Resume","id":"","outline":"solid 3px rgb(255, 225, 77)","inMenu":true}
+PASS  pause: 6×Tab keeps focus inside the menu  — Controls
+PASS  pause: Shift+Tab keeps focus inside the menu  — Settings
+PASS  settings: opened from pause, Caption style focused  — {"tag":"SELECT","text":"StandardHigh contrast","id":"echo-set-captionStyle","outline":"solid 3px rgb(255, 225, 77)","inMenu":true}
+PASS  settings: no Subtitles/captions on-off control exists  — {"labels":["Caption style","Reduced motion","Text size","Quality","Volume"],"toggles":["Reduced motion"],"options":["standard","high-contrast"],"contract":["standard","high-contrast"]}
+PASS  settings: caption-style select offers exactly contracts.CAPTION_STYLES  — {"labels":["Caption style","Reduced motion","Text size","Quality","Volume"],"toggles":["Reduced motion"],"options":["standard","high-contrast"],"contract":["standard","high-contrast"]}
+PASS  settings: select and options use the UI font, not the system font  — {"label":"Bahnschrift, \"DIN Alternate\", \"DIN Condensed\", \"Arial Narrow\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif","select":"Bahnschrift, \"DIN Alternate\", \"DIN Condensed\", \"Arial Narrow\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif","option":"Bahnschrift, \"DIN Alternate\", \"DIN Condensed\", \"Arial Narrow\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif","button":"Bahnschrift, \"DIN Alternate\", \"DIN Condensed\", \"Arial Narrow\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial, sans-serif"}
+PASS  settings: the focused first control shows a 3px focus ring  — solid 3px rgb(255, 225, 77)
+PASS  settings: text size range reachable by Tab  — echo-set-textScale
+PASS  settings: ArrowRight×4 sets text scale 200  — 200
+PASS  settings 200%: geometry clean
+PASS  settings: Esc returns to pause with Settings focused  — Settings
+PASS  pause: Esc resumes (menu closed)
+PASS  dialogue 200%: every page ≤2 lines  — 1/3:2 2/3:2 3/3:2
+PASS  dialogue 200%: pages rejoin to the exact beat text (no word lost)
+PASS  dialogue 200%: a page breaks mid-sentence only when that sentence alone exceeds 2 lines
+PASS  dialogue 200%: no ASCII ket on screen; every |x> shows as |x⟩  — {"ascii":[],"inSource":3,"onScreen":3}
+PASS  script 200%: all 79 beats, every page ≤2 lines
+PASS  script 200%: pages rejoin to the exact script (no word lost)
+PASS  script 200%: no page breaks mid-sentence unless the sentence alone exceeds 2 lines
+PASS  script 200%: no ASCII ket on screen  — {"ascii":[],"inSource":5,"onScreen":5}
+PASS  dialogue 200%: caption font is 2× the 100% size (18.4px → 36.8px)  — 36.8px
+PASS  hud+dialogue 200%: nothing leaves the viewport, overflows or overlaps
+PASS  hud 200%: countdown stays on the objective row (top row does not wrap)  — {"objTop":19,"timerTop":19,"objRight":866,"timerLeft":1022,"tooltip":"Q-SOURCE HOLDS |ψ⟩ · TEST STATE |+⟩"}
+PASS  hud: tooltip shows kets as |x⟩, never ASCII  — Q-SOURCE HOLDS |ψ⟩ · TEST STATE |+⟩
+PASS  hud 200% with tooltip: nothing leaves the viewport, overflows or overlaps
+PASS  dialogue 200%: page 2 opens on a new sentence and shows |0⟩ |1⟩ |+⟩  — {"lines":2,"page":"2/3","text":"The duplicator matched the basis values for |0⟩ and |1⟩, but for |+⟩ it produced one correlated two-qubit state, not two independent copies."}
+PASS  captions always on: setSettings({subtitles:false}) leaves the dialogue displayed  — {"display":"grid","attr":null,"errors":[]}
+PASS  settings: menu.getSettings() passes contracts.validateSettings
+PASS  motion off: transitions are non-zero (control)  — {"dialogue":"0.2s, 0.2s, 0s","prompt":"0.2s, 0.2s, 0s","menu":"0.2s, 0s","button":"0.2s, 0.2s","hudTop":"0.2s, 0s","promptKeyAnimation":"echo-key-pulse"}
+PASS  settings: Space on Reduced motion sets data-reduced-motion=on  — on
+PASS  reduced motion: every UI transition computes to 0s  — {"dialogue":"0s","prompt":"0s","menu":"0s","button":"0s","hudTop":"0s","promptKeyAnimation":"none"}
+PASS  reduced motion: prompt pulse animation is none  — none
+PASS  title 200%: nothing leaves the viewport or overflows
+PASS  no page errors
+
+46 checks, 0 failed

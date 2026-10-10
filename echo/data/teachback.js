@@ -1,5 +1,6 @@
 // echo/data/teachback.js — the learning journal, Declassified tabs (§4.5), the three teach-back
 // questions and the credits. Data only.
+import { FIDELITY_GLOSS } from './objectives.js';
 // A `wrong` field quotes a misconception so the game can correct it; its `why` says what is true.
 // "Expected" numbers are the ideal values from §7; the game shows the computed values next to them
 // and labels where they came from (exact local Qiskit, or the selected backend's sampled counts).
@@ -43,8 +44,9 @@ export const DECLASSIFIED = Object.freeze({
         'Compared logs after I: results always match. After X: they always differ.',
       ],
       misconception: {
-        wrong: 'Entanglement sends the secret instantly.',
-        why: 'An entangled pair is a shared resource, not a channel. Seeing the correlation needs both logs brought together by an ordinary message, which is no faster than any other signal.',
+        // Asked, never asserted: the §2.4 sentence is not voiced even as a myth.
+        wrong: 'Can an entangled pair carry the secret across by itself?',
+        why: 'No. An entangled pair is a shared resource, not a channel. Seeing the correlation needs both logs brought together by an ordinary message, which is no faster than any other signal.',
       },
     },
     {
@@ -59,6 +61,7 @@ export const DECLASSIFIED = Object.freeze({
         'm0 = 1, m1 = 0: Z',
         'm0 = 1, m1 = 1: X then Z',
         'Receiver fidelity with the test state: 1 in every branch, ideal maths.',
+        FIDELITY_GLOSS,
       ],
       verificationNote: "The verification circuit replaces the measurement and the bits with controlled gates (CX(q1, q2), CZ(q0, q2)). That is the deferred-measurement principle, a valid check of the maths. It is not how separated stations work: in the story the corrections ride on two classical bits.",
       misconception: {

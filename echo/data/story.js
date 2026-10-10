@@ -1,5 +1,5 @@
 // echo/data/story.js — every spoken line and title card in ECHO, in play order.
-// Data only. A beat is { speaker, text } and fits two subtitle lines of ~42 characters.
+// Data only. A beat is { speaker, text } and fits two caption lines of ~42 characters.
 // Optional beat fields:
 //   src           the vision section a line is quoted from VERBATIM (absent = new text, owner to review)
 //   direction     a stage direction for gameplay/camera; never shown as a caption

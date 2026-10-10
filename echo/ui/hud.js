@@ -1,6 +1,6 @@
 // Layer 1 HUD (vision §6.1, §6.3): objective upper left, countdown upper right,
 // capsule state lower left, interact prompt lower right, first-context tooltips.
-import { el } from './accessibility.js';
+import { el, displayKets } from './accessibility.js';
 
 // Highlight states from vision §6.2. Each has a glyph so the state never rests on colour alone.
 export const STATUS_GLYPHS = { inactive: '○', available: '◆', complete: '✓', error: '✕' };
@@ -62,7 +62,7 @@ export function mountHud(root, { district = 'ECHO // DISTRICT 09', countdownLabe
     element: hud,
     setObjective(number, text) {
       objNum.textContent = `OBJECTIVE ${String(number).padStart(2, '0')}`;
-      objText.textContent = text;
+      objText.textContent = displayKets(text);
     },
     setCountdown(value) {
       timerValue.textContent = formatCountdown(value);
@@ -71,11 +71,11 @@ export function mountHud(root, { district = 'ECHO // DISTRICT 09', countdownLabe
       const key = STATUS_GLYPHS[status] ? status : 'inactive';
       capsule.dataset.status = key;
       capGlyph.textContent = STATUS_GLYPHS[key];
-      capText.textContent = label;
+      capText.textContent = displayKets(label);
     },
     showPrompt(label = 'INTERACT', key = 'E') {
       promptKey.textContent = key;
-      promptLabel.textContent = label;
+      promptLabel.textContent = displayKets(label);
       prompt.dataset.visible = 'true';
     },
     hidePrompt() {
@@ -84,7 +84,7 @@ export function mountHud(root, { district = 'ECHO // DISTRICT 09', countdownLabe
     // Vision §4.1: e.g. the WASD tooltip for 3 seconds. duration 0 keeps it until hidden.
     showTooltip(text, { duration = 3000 } = {}) {
       clearTimeout(tooltipTimer);
-      tooltip.textContent = text;
+      tooltip.textContent = displayKets(text);
       tooltip.dataset.visible = 'true';
       if (duration > 0) tooltipTimer = setTimeout(api.hideTooltip, duration);
     },
