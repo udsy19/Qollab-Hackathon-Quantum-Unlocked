@@ -1,8 +1,8 @@
-sabotage no-toJs applied to /private/tmp/pb-run-VtWZ1M/echo/quantum/bridge.js
-assembled /private/tmp/pb-run-VtWZ1M (python HEAD, sabotage no-toJs, token pb-sab-no-toJs-20261010T002720-30684)
-PASS  main.js (harness) ran to the end without error  — page load → done in 8.8s
-PASS  served build token matches the one just written  — pb-sab-no-toJs-20261010T002720-30684
-PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.013}
+sabotage no-toJs applied to /private/tmp/pb-run-2in60L/echo/quantum/bridge.js
+assembled /private/tmp/pb-run-2in60L (python HEAD, sabotage no-toJs, token pb-sab-no-toJs-20261010T003152-2449)
+PASS  main.js (harness) ran to the end without error  — page load → done in 22s
+PASS  served build token matches the one just written  — pb-sab-no-toJs-20261010T003152-2449
+PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.022}
 PASS  Qiskit 2.x loaded  — 2.5.2
 PASS  spy fault mode is false (the scenario being graded)  — false
 PASS  dry run: four X/Z choices were tried on one calibration  — ["dryRun(calibration#2, X=false, Z=false)","dryRun(calibration#2, X=true, Z=false)","dryRun(calibration#2, X=false, Z=true)","dryRun(calibration#2, X=true, Z=true)"]
@@ -28,7 +28,7 @@ FAIL  dryRun(calibration#2, X=true, Z=true): adapter returned a result  — {"na
 FAIL  commit#1: adapter returned a result  — {"name":"ScientificModuleError","message":"live commit: result must be a plain object, got a PyProxy object","errors":["result must be a plain object, got a PyProxy object"]}
 FAIL  commit#2: adapter returned a result  — {"name":"ScientificModuleError","message":"live commit: result must be a plain object, got a PyProxy object","errors":["result must be a plain object, got a PyProxy object"]}
 FAIL  commit#3 after settle: adapter returned a result  — {"name":"ScientificModuleError","message":"live commit: quantum.teleportation.TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again.","errors":["quantum.teleportation.TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."]}
-PASS  RESTART: resetStoryToken(): adapter returned a result  — 3 ms
+PASS  RESTART: resetStoryToken(): adapter returned a result  — 5.9 ms
 FAIL  commit#4 after RESTART: adapter returned a result  — {"name":"ScientificModuleError","message":"live commit: result must be a plain object, got a PyProxy object","errors":["result must be a plain object, got a PyProxy object"]}
 FAIL  cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]
 FAIL  cloning(plus): each output purity 0.5 (entangled, not two copies)

@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 8.8s"
+    "detail": "page load → done in 22s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-sab-no-toJs-20261010T002720-30684"
+    "detail": "pb-sab-no-toJs-20261010T003152-2449"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -17,7 +17,7 @@
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.013
+      "coldImportSeconds": 0.022
     }
   },
   {
@@ -277,7 +277,7 @@
   {
     "name": "RESTART: resetStoryToken(): adapter returned a result",
     "ok": true,
-    "detail": "3 ms"
+    "detail": "5.9 ms"
   },
   {
     "name": "commit#4 after RESTART: adapter returned a result",

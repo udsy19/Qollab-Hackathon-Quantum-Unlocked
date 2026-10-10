@@ -1,7 +1,7 @@
-assembled /private/tmp/pb-run-Rb1aPZ (python HEAD, sabotage none, token pb-fault-20261010T002644-20908)
-PASS  main.js (harness) ran to the end without error  — page load → done in 6.9s
-PASS  served build token matches the one just written  — pb-fault-20261010T002644-20908
-PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.008}
+assembled /private/tmp/pb-run-bcdg0e (python HEAD, sabotage none, token pb-fault-20261010T003044-9738)
+PASS  main.js (harness) ran to the end without error  — page load → done in 10.6s
+PASS  served build token matches the one just written  — pb-fault-20261010T003044-9738
+PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.006}
 PASS  Qiskit 2.x loaded  — 2.5.2
 PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
@@ -15,7 +15,8 @@ PASS  relay(Z): delivered value re-validates in Node  — {"isMap":false,"factsI
 PASS  calibration#1: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  calibration#2: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  calibration#3: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
-PASS  dryRun(calibration#1, X=true, Z=false): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  calibration#4: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  dryRun(calibration#1, X=true, Z=true): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  commit#1: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  commit#2: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  commit#3 after settle: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
@@ -26,10 +27,10 @@ PASS  spy: exactly 1 backend.run attempted, and it completed (stack entered via 
 PASS  spy: exactly 1 entry into qollab_job.run_backend_verification_once  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1,"commitCalls":2,"commitsCompleted":2,"resetCalls":1,"branchCalls":4}
 PASS  verify ×2: the second call returns the SAME promise  — true
 PASS  verify after RESTART: still the same promise (one job per run, not per story)  — true
-PASS  dryRun(calibration#1, X=false, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics  — {"name":"ScientificModuleError","message":"teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.544273299)","errors":["phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.544273299)"]}
-PASS  dryRun(calibration#1, X=false, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics  — {"name":"ScientificModuleError","message":"teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.053460080)","errors":["phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.053460080)"]}
-PASS  dryRun(calibration#1, X=true, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics  — {"name":"ScientificModuleError","message":"teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.402266622)","errors":["phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.402266622)"]}
-PASS  dryRun(calibration#1, X=true, Z=false): the truthful branch is still delivered  — 1
+PASS  dryRun(calibration#1, X=false, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics  — {"name":"ScientificModuleError","message":"teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)","errors":["phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)"]}
+PASS  dryRun(calibration#1, X=true, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics  — {"name":"ScientificModuleError","message":"teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)","errors":["phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)"]}
+PASS  dryRun(calibration#1, X=false, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics  — {"name":"ScientificModuleError","message":"teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)","errors":["phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)"]}
+PASS  dryRun(calibration#1, X=true, Z=true): the truthful branch is still delivered  — 1
 PASS  verify: old name "bell_verification" → LOUD §8.6 ScientificModuleError, nothing passed on  — {"status":"rejected","name":"ScientificModuleError","message":"Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"; engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\"","errors":["experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"","engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\""]}
-fault: 32/32 checks passed · runner's own JS-side backend.run counter: 0
+fault: 33/33 checks passed · runner's own JS-side backend.run counter: 0
 run.sh fault → exit 0

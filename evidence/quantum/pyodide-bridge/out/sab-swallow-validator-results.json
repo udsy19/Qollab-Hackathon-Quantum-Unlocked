@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 10s"
+    "detail": "page load → done in 10.5s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-sab-swallow-validator-20261010T002844-6747"
+    "detail": "pb-sab-swallow-validator-20261010T003451-14884"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -17,7 +17,7 @@
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.013
+      "coldImportSeconds": 0.009
     }
   },
   {
@@ -291,8 +291,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 121,
-          "00": 135
+          "11": 117,
+          "00": 139
         },
         "keyQubits": [
           1,

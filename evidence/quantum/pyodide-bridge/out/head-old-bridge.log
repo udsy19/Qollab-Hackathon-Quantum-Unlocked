@@ -1,7 +1,7 @@
-assembled /private/tmp/pb-run-xUkcYR (python HEAD, sabotage none, token pb-head-old-bridge-20261010T002653-5345)
-PASS  main.js (harness) ran to the end without error  — page load → done in 6.5s
-PASS  served build token matches the one just written  — pb-head-old-bridge-20261010T002653-5345
-PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.006}
+assembled /private/tmp/pb-run-Xt3Oiu (python HEAD, sabotage none, token pb-head-old-bridge-20261010T003059-12055)
+PASS  main.js (harness) ran to the end without error  — page load → done in 11.4s
+PASS  served build token matches the one just written  — pb-head-old-bridge-20261010T003059-12055
+PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.008}
 PASS  Qiskit 2.x loaded  — 2.5.2
 PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
@@ -22,22 +22,22 @@ FAIL  spy: exactly 1 backend.run attempted, and it completed (stack entered via 
 FAIL  spy: exactly 1 entry into qollab_job.run_backend_verification_once  — {"backendRunAttempts":0,"backendRunCompleted":0,"verificationCalls":0,"commitCalls":1,"commitsCompleted":1,"resetCalls":0,"branchCalls":0}
 PASS  verify ×2: the second call returns the SAME promise  — true
 PASS  verify after RESTART: still the same promise (one job per run, not per story)  — true
-PASS  cloning(plus): adapter returned a result  — 5.4 ms
-PASS  cloning(plus): adapter returned a result  — 3 ms
-PASS  cloning(plus): adapter returned a result  — 1.3 ms
-PASS  cloning(zero): adapter returned a result  — 0.9 ms
-PASS  cloning(one): adapter returned a result  — 1 ms
-PASS  cloning(bloch_a): adapter returned a result  — 1.4 ms
-PASS  relay(I): adapter returned a result  — 2 ms
-PASS  relay(X): adapter returned a result  — 0.7 ms
-PASS  relay(Z): adapter returned a result  — 0.6 ms
+PASS  cloning(plus): adapter returned a result  — 8.5 ms
+PASS  cloning(plus): adapter returned a result  — 6.7 ms
+PASS  cloning(plus): adapter returned a result  — 2.2 ms
+PASS  cloning(zero): adapter returned a result  — 2 ms
+PASS  cloning(one): adapter returned a result  — 3.4 ms
+PASS  cloning(bloch_a): adapter returned a result  — 3.1 ms
+PASS  relay(I): adapter returned a result  — 3.9 ms
+PASS  relay(X): adapter returned a result  — 2.9 ms
+PASS  relay(Z): adapter returned a result  — 1.3 ms
 FAIL  calibration#1: adapter returned a result  — {"name":"ScientificModuleError","message":"calibration measurement: ValueError: unknown prepared state None; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero'] or 'calibration'","errors":["ValueError: unknown prepared state None; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero'] or 'calibration'"]}
 FAIL  calibration#2: adapter returned a result  — {"name":"ScientificModuleError","message":"calibration measurement: ValueError: unknown prepared state None; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero'] or 'calibration'","errors":["ValueError: unknown prepared state None; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero'] or 'calibration'"]}
 FAIL  dryRun(calibration#2, X=false, Z=false): adapter returned a result  — {"name":"ScientificModuleError","message":"teleport dry run: bits must be { m0: 0|1, m1: 0|1 }, got undefined","errors":["bits must be { m0: 0|1, m1: 0|1 }, got undefined"]}
 FAIL  dryRun(calibration#2, X=true, Z=false): adapter returned a result  — {"name":"ScientificModuleError","message":"teleport dry run: bits must be { m0: 0|1, m1: 0|1 }, got undefined","errors":["bits must be { m0: 0|1, m1: 0|1 }, got undefined"]}
 FAIL  dryRun(calibration#2, X=false, Z=true): adapter returned a result  — {"name":"ScientificModuleError","message":"teleport dry run: bits must be { m0: 0|1, m1: 0|1 }, got undefined","errors":["bits must be { m0: 0|1, m1: 0|1 }, got undefined"]}
 FAIL  dryRun(calibration#2, X=true, Z=true): adapter returned a result  — {"name":"ScientificModuleError","message":"teleport dry run: bits must be { m0: 0|1, m1: 0|1 }, got undefined","errors":["bits must be { m0: 0|1, m1: 0|1 }, got undefined"]}
-PASS  commit#1: adapter returned a result  — 2.8 ms
+PASS  commit#1: adapter returned a result  — 8.2 ms
 PASS  commit#2: adapter returned a result  — 0 ms
 PASS  commit#3 after settle: adapter returned a result  — 0 ms
 FAIL  RESTART: resetStoryToken(): adapter returned a result  — {"name":"TypeError","message":"bridge.resetStoryToken is not a function","errors":null}
@@ -65,7 +65,7 @@ PASS  dryRun(calibration#2, X=true, Z=true): theta/phi round-trip exactly from t
 FAIL  dryRun(calibration#2, X=true, Z=true): fidelity = NaN (closed form on the measured state)
 FAIL  dryRun(calibration#2, X=true, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999
 FAIL  spy: Python teleport_branch received the measured theta/phi on every dry run  — []
-PASS  commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)  — {"fidelity":1,"bits":{"m0":1,"m1":1},"parameters":{"state":"token"}}
+PASS  commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)  — {"fidelity":1,"bits":{"m0":1,"m1":0},"parameters":{"state":"token"}}
 PASS  commit: the second and a later call get the SAME recorded result (no second teleport)  — {"sameRecordedObject":true,"pythonSecondCommit":{"refused":true,"error":"TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."},"afterRestartIsNewObject":false}
 PASS  commit: Python itself refuses a second live_commit (TokenAlreadyConsumed)  — {"refused":true,"error":"TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."}
 FAIL  RESTART: a commit after resetStoryToken succeeds, as a NEW result (fidelity 1)  — {"fidelity":1}

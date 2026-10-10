@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 6.9s"
+    "detail": "page load → done in 10.6s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-fault-20261010T002644-20908"
+    "detail": "pb-fault-20261010T003044-9738"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -17,7 +17,7 @@
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.008
+      "coldImportSeconds": 0.006
     }
   },
   {
@@ -134,7 +134,16 @@
     }
   },
   {
-    "name": "dryRun(calibration#1, X=true, Z=false): delivered value re-validates in Node",
+    "name": "calibration#4: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=true): delivered value re-validates in Node",
     "ok": true,
     "detail": {
       "isMap": false,
@@ -234,9 +243,20 @@
     "ok": true,
     "detail": {
       "name": "ScientificModuleError",
-      "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.544273299)",
+      "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)",
       "errors": [
-        "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.544273299)"
+        "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)"
+      ]
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
+    "ok": true,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)",
+      "errors": [
+        "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)"
       ]
     }
   },
@@ -245,25 +265,14 @@
     "ok": true,
     "detail": {
       "name": "ScientificModuleError",
-      "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.053460080)",
+      "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)",
       "errors": [
-        "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.053460080)"
+        "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)"
       ]
     }
   },
   {
-    "name": "dryRun(calibration#1, X=true, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
-    "ok": true,
-    "detail": {
-      "name": "ScientificModuleError",
-      "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.402266622)",
-      "errors": [
-        "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.402266622)"
-      ]
-    }
-  },
-  {
-    "name": "dryRun(calibration#1, X=true, Z=false): the truthful branch is still delivered",
+    "name": "dryRun(calibration#1, X=true, Z=true): the truthful branch is still delivered",
     "ok": true,
     "detail": 1
   },

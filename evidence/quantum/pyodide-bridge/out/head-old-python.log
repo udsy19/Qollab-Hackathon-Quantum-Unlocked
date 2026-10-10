@@ -1,7 +1,7 @@
-assembled /private/tmp/pb-run-bzyCZd (python lane/quantum/contract-conformance, sabotage none, token pb-head-old-python-20261010T002702-31335)
-PASS  main.js (harness) ran to the end without error  — page load → done in 5.5s
-PASS  served build token matches the one just written  — pb-head-old-python-20261010T002702-31335
-PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.005}
+assembled /private/tmp/pb-run-v9Giv6 (python lane/quantum/contract-conformance, sabotage none, token pb-head-old-python-20261010T003115-10636)
+PASS  main.js (harness) ran to the end without error  — page load → done in 11.8s
+PASS  served build token matches the one just written  — pb-head-old-python-20261010T003115-10636
+PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.006}
 PASS  Qiskit 2.x loaded  — 2.5.2
 PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
@@ -18,15 +18,15 @@ FAIL  spy: exactly 1 backend.run attempted, and it completed (stack entered via 
 FAIL  spy: exactly 1 entry into qollab_job.run_backend_verification_once  — {"backendRunAttempts":0,"backendRunCompleted":0,"verificationCalls":0,"commitCalls":3,"commitsCompleted":0,"resetCalls":0,"branchCalls":0}
 PASS  verify ×2: the second call returns the SAME promise  — true
 PASS  verify after RESTART: still the same promise (one job per run, not per story)  — true
+PASS  cloning(plus): adapter returned a result  — 7.7 ms
 PASS  cloning(plus): adapter returned a result  — 5.6 ms
-PASS  cloning(plus): adapter returned a result  — 3.6 ms
-PASS  cloning(plus): adapter returned a result  — 1.4 ms
-PASS  cloning(zero): adapter returned a result  — 0.9 ms
-PASS  cloning(one): adapter returned a result  — 0.9 ms
-PASS  cloning(bloch_a): adapter returned a result  — 1.2 ms
-PASS  relay(I): adapter returned a result  — 2.4 ms
+PASS  cloning(plus): adapter returned a result  — 3 ms
+PASS  cloning(zero): adapter returned a result  — 2.3 ms
+PASS  cloning(one): adapter returned a result  — 2.6 ms
+PASS  cloning(bloch_a): adapter returned a result  — 1.7 ms
+PASS  relay(I): adapter returned a result  — 3.2 ms
 PASS  relay(X): adapter returned a result  — 1.1 ms
-PASS  relay(Z): adapter returned a result  — 0.7 ms
+PASS  relay(Z): adapter returned a result  — 0.9 ms
 FAIL  calibration#1: adapter returned a result  — {"name":"ScientificModuleError","message":"calibration measurement: ValueError: unknown prepared state 'calibration'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']","errors":["ValueError: unknown prepared state 'calibration'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']"]}
 FAIL  calibration#2: adapter returned a result  — {"name":"ScientificModuleError","message":"calibration measurement: ValueError: unknown prepared state 'calibration'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']","errors":["ValueError: unknown prepared state 'calibration'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']"]}
 FAIL  dryRun(calibration#2, X=false, Z=false): adapter returned a result  — {"name":"ScientificModuleError","message":"teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing","errors":["makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"]}

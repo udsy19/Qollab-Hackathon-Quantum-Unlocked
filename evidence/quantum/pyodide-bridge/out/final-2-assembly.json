@@ -1,14 +1,14 @@
 {
-  "token": "pb-final-2-20261010T002624-18483", "sabotage": "none", "fault": false,
+  "token": "pb-final-2-20261010T003023-4232", "sabotage": "none", "fault": false,
   "runnerRef": "lane/platform/integration@f08dd0b",
   "contractsRef": "lane/platform/integration@f08dd0b",
-  "harnessCommit": "cba4fd6-dirty",
-  "pythonRef": "HEAD@cba4fd6",
+  "harnessCommit": "173ea46-dirty",
+  "pythonRef": "HEAD@173ea46",
   "sha256": {
     "contracts.js": "ecc0ed1d2c9ad162",
     "index.html": "6112169d8d1887b8",
     "main.css": "d93eb501784b286e",
-    "main.js": "5d5253f3c6b20a21",
+    "main.js": "80f86041d64a7217",
     "pb_spy.py": "64f237ced68a9dbb",
     "quantum/__init__.py": "4770b5d0e03c289a",
     "quantum/bridge.js": "3fc88082eed66aa9",

@@ -1,17 +1,17 @@
 {
   "assembly": {
-    "token": "pb-head-old-python-20261010T002702-31335",
+    "token": "pb-head-old-python-20261010T003115-10636",
     "sabotage": "none",
     "fault": false,
     "runnerRef": "lane/platform/integration@f08dd0b",
     "contractsRef": "lane/platform/integration@f08dd0b",
-    "harnessCommit": "cba4fd6-dirty",
+    "harnessCommit": "173ea46-dirty",
     "pythonRef": "lane/quantum/contract-conformance@42703f1",
     "sha256": {
       "contracts.js": "ecc0ed1d2c9ad162",
       "index.html": "6112169d8d1887b8",
       "main.css": "d93eb501784b286e",
-      "main.js": "7a54f161953b89a4",
+      "main.js": "e0f60cfa875411d2",
       "pb_spy.py": "64f237ced68a9dbb",
       "quantum/__init__.py": "0717eeef492541b7",
       "quantum/bridge.js": "3fc88082eed66aa9",
@@ -29,7 +29,7 @@
   "runnerLogTail": [
     {
       "kind": "runner",
-      "msg": "runner: 12 files in /private/tmp/pb-run-bzyCZd/echo; backend = ionq-mock"
+      "msg": "runner: 12 files in /private/tmp/pb-run-v9Giv6/echo; backend = ionq-mock"
     },
     {
       "kind": "system",
@@ -84,21 +84,66 @@
       "listIsArray": true,
       "json": "{\"outer\":{\"inner\":1},\"list\":[1,2],\"n\":1}"
     },
-    "build": "pb-head-old-python-20261010T002702-31335",
+    "build": "pb-head-old-python-20261010T003115-10636",
     "backendName": "basic_simulator",
     "platform": {
       "sysPlatform": "emscripten",
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.005
+      "coldImportSeconds": 0.006
     },
     "timing": {
-      "msFrameStartToMainBody": 5252.3,
-      "verifyMs": 0,
-      "wallSecondsPageToDone": 5.5
+      "msFrameStartToMainBody": 10731.4,
+      "verifyMs": 0.2,
+      "wallSecondsPageToDone": 11.8
     },
     "calls": [
+      {
+        "label": "cloning(plus)",
+        "hook": false,
+        "ms": 7.7,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "plus"
+          },
+          "facts": [
+            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
+            "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+            "The two outputs are entangled with each other, not copies of the input.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "10": 0,
+            "11": 0.5,
+            "00": 0.5,
+            "01": 0
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "observables": {
+            "purityQ0": 0.5,
+            "purityQ1": 0.5,
+            "fidelityQ0WithInput": 0.5,
+            "fidelityQ1WithInput": 0.5,
+            "jointFidelityWithTwoCopies": 0.5
+          }
+        },
+        "nodeVerdict": []
+      },
       {
         "label": "cloning(plus)",
         "hook": false,
@@ -147,52 +192,7 @@
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 3.6,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
-        },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "cloning",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
-          "qubits": 2,
-          "parameters": {
-            "state": "plus"
-          },
-          "facts": [
-            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
-            "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
-            "The two outputs are entangled with each other, not copies of the input.",
-            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
-          ],
-          "probabilities": {
-            "10": 0,
-            "11": 0.5,
-            "00": 0.5,
-            "01": 0
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "observables": {
-            "purityQ0": 0.5,
-            "purityQ1": 0.5,
-            "fidelityQ0WithInput": 0.5,
-            "fidelityQ1WithInput": 0.5,
-            "jointFidelityWithTwoCopies": 0.5
-          }
-        },
-        "nodeVerdict": []
-      },
-      {
-        "label": "cloning(plus)",
-        "hook": false,
-        "ms": 1.4,
+        "ms": 3,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -237,7 +237,7 @@
       {
         "label": "cloning(zero)",
         "hook": false,
-        "ms": 0.9,
+        "ms": 2.3,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -281,7 +281,7 @@
       {
         "label": "cloning(one)",
         "hook": false,
-        "ms": 0.9,
+        "ms": 2.6,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -325,7 +325,7 @@
       {
         "label": "cloning(bloch_a)",
         "hook": false,
-        "ms": 1.2,
+        "ms": 1.7,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -370,7 +370,7 @@
       {
         "label": "relay(I)",
         "hook": false,
-        "ms": 2.4,
+        "ms": 3.2,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -456,7 +456,7 @@
       {
         "label": "relay(Z)",
         "hook": false,
-        "ms": 0.7,
+        "ms": 0.9,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -499,7 +499,7 @@
       {
         "label": "calibration#1",
         "hook": false,
-        "ms": 2.3,
+        "ms": 4,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -513,7 +513,7 @@
       {
         "label": "calibration#2",
         "hook": false,
-        "ms": 0.6,
+        "ms": 4.5,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -527,7 +527,7 @@
       {
         "label": "dryRun(calibration#2, X=false, Z=false)",
         "hook": false,
-        "ms": 0.3,
+        "ms": 2.5,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -555,7 +555,7 @@
       {
         "label": "dryRun(calibration#2, X=false, Z=true)",
         "hook": false,
-        "ms": 0,
+        "ms": 0.2,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -569,7 +569,7 @@
       {
         "label": "dryRun(calibration#2, X=true, Z=true)",
         "hook": false,
-        "ms": 0,
+        "ms": 0.1,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -583,7 +583,7 @@
       {
         "label": "commit#1",
         "hook": false,
-        "ms": 0.4,
+        "ms": 1.5,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -611,7 +611,7 @@
       {
         "label": "commit#3 after settle",
         "hook": false,
-        "ms": 0.2,
+        "ms": 0.7,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -625,7 +625,7 @@
       {
         "label": "RESTART: resetStoryToken()",
         "hook": true,
-        "ms": 0,
+        "ms": 0.2,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -639,7 +639,7 @@
       {
         "label": "commit#4 after RESTART",
         "hook": false,
-        "ms": 0.2,
+        "ms": 4.2,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -720,12 +720,12 @@
     {
       "name": "main.js (harness) ran to the end without error",
       "ok": true,
-      "detail": "page load → done in 5.5s"
+      "detail": "page load → done in 11.8s"
     },
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "pb-head-old-python-20261010T002702-31335"
+      "detail": "pb-head-old-python-20261010T003115-10636"
     },
     {
       "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -735,7 +735,7 @@
         "python": "3.14.2",
         "qiskit": "2.5.2",
         "pyodide": "314.0.7",
-        "coldImportSeconds": 0.005
+        "coldImportSeconds": 0.006
       }
     },
     {
@@ -878,37 +878,37 @@
     {
       "name": "cloning(plus): adapter returned a result",
       "ok": true,
+      "detail": "7.7 ms"
+    },
+    {
+      "name": "cloning(plus): adapter returned a result",
+      "ok": true,
       "detail": "5.6 ms"
     },
     {
       "name": "cloning(plus): adapter returned a result",
       "ok": true,
-      "detail": "3.6 ms"
-    },
-    {
-      "name": "cloning(plus): adapter returned a result",
-      "ok": true,
-      "detail": "1.4 ms"
+      "detail": "3 ms"
     },
     {
       "name": "cloning(zero): adapter returned a result",
       "ok": true,
-      "detail": "0.9 ms"
+      "detail": "2.3 ms"
     },
     {
       "name": "cloning(one): adapter returned a result",
       "ok": true,
-      "detail": "0.9 ms"
+      "detail": "2.6 ms"
     },
     {
       "name": "cloning(bloch_a): adapter returned a result",
       "ok": true,
-      "detail": "1.2 ms"
+      "detail": "1.7 ms"
     },
     {
       "name": "relay(I): adapter returned a result",
       "ok": true,
-      "detail": "2.4 ms"
+      "detail": "3.2 ms"
     },
     {
       "name": "relay(X): adapter returned a result",
@@ -918,7 +918,7 @@
     {
       "name": "relay(Z): adapter returned a result",
       "ok": true,
-      "detail": "0.7 ms"
+      "detail": "0.9 ms"
     },
     {
       "name": "calibration#1: adapter returned a result",

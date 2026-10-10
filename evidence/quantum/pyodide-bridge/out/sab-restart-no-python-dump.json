@@ -1,17 +1,17 @@
 {
   "assembly": {
-    "token": "pb-sab-restart-no-python-20261010T002820-6834",
+    "token": "pb-sab-restart-no-python-20261010T003423-10459",
     "sabotage": "restart-no-python",
     "fault": false,
-    "runnerRef": "lane/platform/integration@f08dd0b",
-    "contractsRef": "lane/platform/integration@f08dd0b",
-    "harnessCommit": "cba4fd6-dirty",
-    "pythonRef": "HEAD@cba4fd6",
+    "runnerRef": "lane/platform/integration@32838bc",
+    "contractsRef": "lane/platform/integration@32838bc",
+    "harnessCommit": "173ea46-dirty",
+    "pythonRef": "HEAD@173ea46",
     "sha256": {
-      "contracts.js": "ecc0ed1d2c9ad162",
+      "contracts.js": "4aca6191d2d8218f",
       "index.html": "6112169d8d1887b8",
       "main.css": "d93eb501784b286e",
-      "main.js": "1d1c5917dfbc862c",
+      "main.js": "dc8583d894294077",
       "pb_spy.py": "64f237ced68a9dbb",
       "quantum/__init__.py": "4770b5d0e03c289a",
       "quantum/bridge.js": "fee368268120c004",
@@ -29,7 +29,7 @@
   "runnerLogTail": [
     {
       "kind": "runner",
-      "msg": "runner: 12 files in /private/tmp/pb-run-IrdqOT/echo; backend = ionq-mock"
+      "msg": "runner: 12 files in /private/tmp/pb-run-3tNys6/echo; backend = ionq-mock"
     },
     {
       "kind": "system",
@@ -77,7 +77,7 @@
     },
     {
       "kind": "system",
-      "msg": "Probabilities panel: {\"0x3\":0.484375,\"0x0\":0.515625}"
+      "msg": "Probabilities panel: {\"0x0\":0.50390625,\"0x3\":0.49609375}"
     },
     {
       "kind": "system",
@@ -92,25 +92,25 @@
       "listIsArray": true,
       "json": "{\"outer\":{\"inner\":1},\"list\":[1,2],\"n\":1}"
     },
-    "build": "pb-sab-restart-no-python-20261010T002820-6834",
+    "build": "pb-sab-restart-no-python-20261010T003423-10459",
     "backendName": "basic_simulator",
     "platform": {
       "sysPlatform": "emscripten",
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.015
+      "coldImportSeconds": 0.01
     },
     "timing": {
-      "msFrameStartToMainBody": 9363.1,
-      "verifyMs": 7.3,
-      "wallSecondsPageToDone": 10.2
+      "msFrameStartToMainBody": 10452.4,
+      "verifyMs": 11.4,
+      "wallSecondsPageToDone": 11.5
     },
     "calls": [
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 8.8,
+        "ms": 12,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -155,7 +155,7 @@
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 4,
+        "ms": 5.5,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -200,7 +200,7 @@
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 1.5,
+        "ms": 9.1,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -245,7 +245,7 @@
       {
         "label": "cloning(zero)",
         "hook": false,
-        "ms": 1.1,
+        "ms": 32,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -289,7 +289,7 @@
       {
         "label": "cloning(one)",
         "hook": false,
-        "ms": 1,
+        "ms": 25.3,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -333,7 +333,7 @@
       {
         "label": "cloning(bloch_a)",
         "hook": false,
-        "ms": 1.4,
+        "ms": 3.9,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -378,7 +378,7 @@
       {
         "label": "relay(I)",
         "hook": false,
-        "ms": 2.5,
+        "ms": 8.2,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -421,7 +421,7 @@
       {
         "label": "relay(X)",
         "hook": false,
-        "ms": 1,
+        "ms": 5.6,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -464,7 +464,7 @@
       {
         "label": "relay(Z)",
         "hook": false,
-        "ms": 0.7,
+        "ms": 2.5,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -507,7 +507,7 @@
       {
         "label": "calibration#1",
         "hook": false,
-        "ms": 2,
+        "ms": 8.4,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -518,15 +518,15 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(0.918011) then RZ(1.376390) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+          "circuitDescription": "prepare RY(1.207353) then RZ(-0.482347) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 0.9180114198,
-            "phi": 1.3763903696
+            "theta": 1.207353325,
+            "phi": -0.4823471646
           },
           "facts": [
-            "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1. Choose the receiver's X and Z for these two bits.",
+            "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1. Choose the receiver's X and Z for these two bits.",
             "The calibration state lies away from every axis of the Bloch sphere, so any wrong X/Z choice visibly lowers the receiver's fidelity.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -541,12 +541,12 @@
             0
           ],
           "observables": {
-            "inputBlochX": 0.1534642414,
-            "inputBlochY": 0.7794309849,
-            "inputBlochZ": 0.6074010754
+            "inputBlochX": 0.8280396393,
+            "inputBlochY": -0.4335597579,
+            "inputBlochZ": 0.3554944334
           },
           "measurementBits": {
-            "m0": 0,
+            "m0": 1,
             "m1": 1
           }
         },
@@ -555,7 +555,7 @@
       {
         "label": "calibration#2",
         "hook": false,
-        "ms": 1.4,
+        "ms": 5.1,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -566,12 +566,12 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(0.705697) then RZ(1.206941) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+          "circuitDescription": "prepare RY(1.966075) then RZ(-0.181851) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 0.7056969331,
-            "phi": 1.2069414748
+            "theta": 1.9660747578,
+            "phi": -0.1818509404
           },
           "facts": [
             "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1. Choose the receiver's X and Z for these two bits.",
@@ -589,9 +589,9 @@
             0
           ],
           "observables": {
-            "inputBlochX": 0.2308107005,
-            "inputBlochY": 0.6061041866,
-            "inputBlochZ": 0.7611597306
+            "inputBlochX": 0.9076715257,
+            "inputBlochY": -0.1669048239,
+            "inputBlochZ": -0.3850651648
           },
           "measurementBits": {
             "m0": 0,
@@ -603,7 +603,7 @@
       {
         "label": "dryRun(calibration#1, X=false, Z=false)",
         "hook": false,
-        "ms": 2.8,
+        "ms": 8.9,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -614,21 +614,21 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(0.918011) then RZ(1.376390) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1; Bob applies no correction",
+          "circuitDescription": "prepare RY(1.207353) then RZ(-0.482347) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1; Bob applies no correction",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 0.9180114198,
-            "phi": 1.3763903696,
-            "m0": 0,
+            "theta": 1.207353325,
+            "phi": -0.4823471646,
+            "m0": 1,
             "m1": 1,
             "applyX": false,
             "applyZ": false
           },
           "facts": [
-            "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z OFF.",
-            "Receiver fidelity with the test state: 0.023551, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
+            "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z ON.",
+            "Receiver fidelity with the test state: 0.187974, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
           ],
           "probabilities": {
             "10": 0.25,
@@ -640,19 +640,19 @@
             1,
             0
           ],
-          "fidelity": 0.0235512734,
+          "fidelity": 0.1879740637,
           "observables": {
             "branchProbability": 0.25,
-            "sourceFidelityAfterMeasurement": 0.8037005377,
-            "receiverBlochX": 0.1534642414,
-            "receiverBlochY": -0.7794309849,
-            "receiverBlochZ": -0.6074010754,
-            "inputBlochX": 0.1534642414,
-            "inputBlochY": 0.7794309849,
-            "inputBlochZ": 0.6074010754
+            "sourceFidelityAfterMeasurement": 0.3222527833,
+            "receiverBlochX": -0.8280396393,
+            "receiverBlochY": -0.4335597579,
+            "receiverBlochZ": -0.3554944334,
+            "inputBlochX": 0.8280396393,
+            "inputBlochY": -0.4335597579,
+            "inputBlochZ": 0.3554944334
           },
           "measurementBits": {
-            "m0": 0,
+            "m0": 1,
             "m1": 1
           }
         },
@@ -661,7 +661,7 @@
       {
         "label": "dryRun(calibration#1, X=true, Z=false)",
         "hook": false,
-        "ms": 3,
+        "ms": 10.5,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -672,21 +672,137 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(0.918011) then RZ(1.376390) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1; Bob applies X",
+          "circuitDescription": "prepare RY(1.207353) then RZ(-0.482347) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1; Bob applies X",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 0.9180114198,
-            "phi": 1.3763903696,
-            "m0": 0,
+            "theta": 1.207353325,
+            "phi": -0.4823471646,
+            "m0": 1,
             "m1": 1,
             "applyX": true,
             "applyZ": false
           },
           "facts": [
-            "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z OFF.",
+            "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z ON.",
+            "Receiver fidelity with the test state: 0.126376, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 0.1263762922,
+          "observables": {
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.3222527833,
+            "receiverBlochX": -0.8280396393,
+            "receiverBlochY": 0.4335597579,
+            "receiverBlochZ": 0.3554944334,
+            "inputBlochX": 0.8280396393,
+            "inputBlochY": -0.4335597579,
+            "inputBlochZ": 0.3554944334
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "dryRun(calibration#1, X=false, Z=true)",
+        "hook": false,
+        "ms": 7.2,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare RY(1.207353) then RZ(-0.482347) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1; Bob applies Z",
+          "qubits": 3,
+          "parameters": {
+            "state": "calibration",
+            "theta": 1.207353325,
+            "phi": -0.4823471646,
+            "m0": 1,
+            "m1": 1,
+            "applyX": false,
+            "applyZ": true
+          },
+          "facts": [
+            "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z ON.",
+            "Receiver fidelity with the test state: 0.685650, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 0.6856496442,
+          "observables": {
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.3222527833,
+            "receiverBlochX": 0.8280396393,
+            "receiverBlochY": 0.4335597579,
+            "receiverBlochZ": -0.3554944334,
+            "inputBlochX": 0.8280396393,
+            "inputBlochY": -0.4335597579,
+            "inputBlochZ": 0.3554944334
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "dryRun(calibration#1, X=true, Z=true)",
+        "hook": false,
+        "ms": 11.1,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare RY(1.207353) then RZ(-0.482347) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1; Bob applies X then Z",
+          "qubits": 3,
+          "parameters": {
+            "state": "calibration",
+            "theta": 1.207353325,
+            "phi": -0.4823471646,
+            "m0": 1,
+            "m1": 1,
+            "applyX": true,
+            "applyZ": true
+          },
+          "facts": [
+            "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z ON.",
             "Receiver fidelity with the test state: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
           ],
           "probabilities": {
             "10": 0.25,
@@ -701,132 +817,16 @@
           "fidelity": 1,
           "observables": {
             "branchProbability": 0.25,
-            "sourceFidelityAfterMeasurement": 0.8037005377,
-            "receiverBlochX": 0.1534642414,
-            "receiverBlochY": 0.7794309849,
-            "receiverBlochZ": 0.6074010754,
-            "inputBlochX": 0.1534642414,
-            "inputBlochY": 0.7794309849,
-            "inputBlochZ": 0.6074010754
+            "sourceFidelityAfterMeasurement": 0.3222527833,
+            "receiverBlochX": 0.8280396393,
+            "receiverBlochY": -0.4335597579,
+            "receiverBlochZ": 0.3554944334,
+            "inputBlochX": 0.8280396393,
+            "inputBlochY": -0.4335597579,
+            "inputBlochZ": 0.3554944334
           },
           "measurementBits": {
-            "m0": 0,
-            "m1": 1
-          }
-        },
-        "nodeVerdict": []
-      },
-      {
-        "label": "dryRun(calibration#1, X=false, Z=true)",
-        "hook": false,
-        "ms": 2.3,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
-        },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "teleportation",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(0.918011) then RZ(1.376390) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1; Bob applies Z",
-          "qubits": 3,
-          "parameters": {
-            "state": "calibration",
-            "theta": 0.9180114198,
-            "phi": 1.3763903696,
-            "m0": 0,
-            "m1": 1,
-            "applyX": false,
-            "applyZ": true
-          },
-          "facts": [
-            "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z OFF.",
-            "Receiver fidelity with the test state: 0.607513, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
-          ],
-          "probabilities": {
-            "10": 0.25,
-            "11": 0.25,
-            "00": 0.25,
-            "01": 0.25
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "fidelity": 0.6075126602,
-          "observables": {
-            "branchProbability": 0.25,
-            "sourceFidelityAfterMeasurement": 0.8037005377,
-            "receiverBlochX": -0.1534642414,
-            "receiverBlochY": 0.7794309849,
-            "receiverBlochZ": -0.6074010754,
-            "inputBlochX": 0.1534642414,
-            "inputBlochY": 0.7794309849,
-            "inputBlochZ": 0.6074010754
-          },
-          "measurementBits": {
-            "m0": 0,
-            "m1": 1
-          }
-        },
-        "nodeVerdict": []
-      },
-      {
-        "label": "dryRun(calibration#1, X=true, Z=true)",
-        "hook": false,
-        "ms": 2.8,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
-        },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "teleportation",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(0.918011) then RZ(1.376390) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1; Bob applies X then Z",
-          "qubits": 3,
-          "parameters": {
-            "state": "calibration",
-            "theta": 0.9180114198,
-            "phi": 1.3763903696,
-            "m0": 0,
-            "m1": 1,
-            "applyX": true,
-            "applyZ": true
-          },
-          "facts": [
-            "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z OFF.",
-            "Receiver fidelity with the test state: 0.368936, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
-          ],
-          "probabilities": {
-            "10": 0.25,
-            "11": 0.25,
-            "00": 0.25,
-            "01": 0.25
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "fidelity": 0.3689360664,
-          "observables": {
-            "branchProbability": 0.25,
-            "sourceFidelityAfterMeasurement": 0.8037005377,
-            "receiverBlochX": -0.1534642414,
-            "receiverBlochY": -0.7794309849,
-            "receiverBlochZ": 0.6074010754,
-            "inputBlochX": 0.1534642414,
-            "inputBlochY": 0.7794309849,
-            "inputBlochZ": 0.6074010754
-          },
-          "measurementBits": {
-            "m0": 0,
+            "m0": 1,
             "m1": 1
           }
         },
@@ -835,7 +835,7 @@
       {
         "label": "commit#1",
         "hook": false,
-        "ms": 2,
+        "ms": 4.5,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -852,9 +852,9 @@
             "state": "token"
           },
           "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z ON.",
             "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
             "The token has been consumed: this commit cannot be repeated in this run.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -873,7 +873,7 @@
             "branchProbability": 0.25
           },
           "measurementBits": {
-            "m0": 0,
+            "m0": 1,
             "m1": 0
           }
         },
@@ -899,9 +899,9 @@
             "state": "token"
           },
           "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z ON.",
             "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
             "The token has been consumed: this commit cannot be repeated in this run.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -920,7 +920,7 @@
             "branchProbability": 0.25
           },
           "measurementBits": {
-            "m0": 0,
+            "m0": 1,
             "m1": 0
           }
         },
@@ -946,9 +946,9 @@
             "state": "token"
           },
           "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z ON.",
             "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
             "The token has been consumed: this commit cannot be repeated in this run.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -967,7 +967,7 @@
             "branchProbability": 0.25
           },
           "measurementBits": {
-            "m0": 0,
+            "m0": 1,
             "m1": 0
           }
         },
@@ -1000,7 +1000,7 @@
       {
         "label": "commit#4 after RESTART",
         "hook": false,
-        "ms": 3.1,
+        "ms": 3.5,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -1050,8 +1050,8 @@
             "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
           ],
           "counts": {
-            "11": 124,
-            "00": 132
+            "11": 127,
+            "00": 129
           },
           "keyQubits": [
             1,
@@ -1080,8 +1080,8 @@
             "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
           ],
           "counts": {
-            "11": 124,
-            "00": 132
+            "11": 127,
+            "00": 129
           },
           "keyQubits": [
             1,
@@ -1113,8 +1113,8 @@
             "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
           ],
           "counts": {
-            "11": 124,
-            "00": 132
+            "11": 127,
+            "00": 129
           },
           "keyQubits": [
             1,
@@ -1145,39 +1145,39 @@
       "branchArgs": [
         {
           "state": "calibration",
-          "m0": 0,
+          "m0": 1,
           "m1": 1,
           "applyX": false,
           "applyZ": false,
-          "theta": 0.9180114198,
-          "phi": 1.3763903696
+          "theta": 1.207353325,
+          "phi": -0.4823471646
         },
         {
           "state": "calibration",
-          "m0": 0,
+          "m0": 1,
           "m1": 1,
           "applyX": true,
           "applyZ": false,
-          "theta": 0.9180114198,
-          "phi": 1.3763903696
+          "theta": 1.207353325,
+          "phi": -0.4823471646
         },
         {
           "state": "calibration",
-          "m0": 0,
+          "m0": 1,
           "m1": 1,
           "applyX": false,
           "applyZ": true,
-          "theta": 0.9180114198,
-          "phi": 1.3763903696
+          "theta": 1.207353325,
+          "phi": -0.4823471646
         },
         {
           "state": "calibration",
-          "m0": 0,
+          "m0": 1,
           "m1": 1,
           "applyX": true,
           "applyZ": true,
-          "theta": 0.9180114198,
-          "phi": 1.3763903696
+          "theta": 1.207353325,
+          "phi": -0.4823471646
         }
       ]
     }
@@ -1186,12 +1186,12 @@
     {
       "name": "main.js (harness) ran to the end without error",
       "ok": true,
-      "detail": "page load → done in 10.2s"
+      "detail": "page load → done in 11.5s"
     },
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "pb-sab-restart-no-python-20261010T002820-6834"
+      "detail": "pb-sab-restart-no-python-20261010T003423-10459"
     },
     {
       "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -1201,7 +1201,7 @@
         "python": "3.14.2",
         "qiskit": "2.5.2",
         "pyodide": "314.0.7",
-        "coldImportSeconds": 0.015
+        "coldImportSeconds": 0.01
       }
     },
     {
@@ -1425,82 +1425,82 @@
     {
       "name": "cloning(plus): adapter returned a result",
       "ok": true,
-      "detail": "8.8 ms"
+      "detail": "12 ms"
     },
     {
       "name": "cloning(plus): adapter returned a result",
       "ok": true,
-      "detail": "4 ms"
+      "detail": "5.5 ms"
     },
     {
       "name": "cloning(plus): adapter returned a result",
       "ok": true,
-      "detail": "1.5 ms"
+      "detail": "9.1 ms"
     },
     {
       "name": "cloning(zero): adapter returned a result",
       "ok": true,
-      "detail": "1.1 ms"
+      "detail": "32 ms"
     },
     {
       "name": "cloning(one): adapter returned a result",
       "ok": true,
-      "detail": "1 ms"
+      "detail": "25.3 ms"
     },
     {
       "name": "cloning(bloch_a): adapter returned a result",
       "ok": true,
-      "detail": "1.4 ms"
+      "detail": "3.9 ms"
     },
     {
       "name": "relay(I): adapter returned a result",
       "ok": true,
-      "detail": "2.5 ms"
+      "detail": "8.2 ms"
     },
     {
       "name": "relay(X): adapter returned a result",
       "ok": true,
-      "detail": "1 ms"
+      "detail": "5.6 ms"
     },
     {
       "name": "relay(Z): adapter returned a result",
       "ok": true,
-      "detail": "0.7 ms"
+      "detail": "2.5 ms"
     },
     {
       "name": "calibration#1: adapter returned a result",
       "ok": true,
-      "detail": "2 ms"
+      "detail": "8.4 ms"
     },
     {
       "name": "calibration#2: adapter returned a result",
       "ok": true,
-      "detail": "1.4 ms"
+      "detail": "5.1 ms"
     },
     {
       "name": "dryRun(calibration#1, X=false, Z=false): adapter returned a result",
       "ok": true,
-      "detail": "2.8 ms"
+      "detail": "8.9 ms"
     },
     {
       "name": "dryRun(calibration#1, X=true, Z=false): adapter returned a result",
       "ok": true,
-      "detail": "3 ms"
+      "detail": "10.5 ms"
     },
     {
       "name": "dryRun(calibration#1, X=false, Z=true): adapter returned a result",
       "ok": true,
-      "detail": "2.3 ms"
+      "detail": "7.2 ms"
     },
     {
       "name": "dryRun(calibration#1, X=true, Z=true): adapter returned a result",
       "ok": true,
-      "detail": "2.8 ms"
+      "detail": "11.1 ms"
     },
     {
       "name": "commit#1: adapter returned a result",
       "ok": true,
-      "detail": "2 ms"
+      "detail": "4.5 ms"
     },
     {
       "name": "commit#2: adapter returned a result",
@@ -1589,12 +1589,12 @@
       "ok": true,
       "detail": [
         [
-          0.9180114198,
-          1.3763903696
+          1.207353325,
+          -0.4823471646
         ],
         [
-          0.7056969331,
-          1.2069414748
+          1.9660747578,
+          -0.1818509404
         ]
       ]
     },
@@ -1602,8 +1602,8 @@
       "name": "calibration: every draw is generic (max Bloch component² ≤ 0.9, re-derived here)",
       "ok": true,
       "detail": [
-        0.6075,
-        0.5794
+        0.6856,
+        0.8239
       ]
     },
     {
@@ -1611,12 +1611,12 @@
       "ok": true,
       "detail": [
         [
-          0.9180114198,
-          1.3763903696
+          1.207353325,
+          -0.4823471646
         ],
         [
-          0.7056969331,
-          1.2069414748
+          1.9660747578,
+          -0.1818509404
         ]
       ]
     },
@@ -1626,7 +1626,7 @@
       "detail": {
         "draw": "calibration#1",
         "bits": {
-          "m0": 0,
+          "m0": 1,
           "m1": 1
         }
       }
@@ -1637,30 +1637,30 @@
       "detail": {
         "got": {
           "state": "calibration",
-          "theta": 0.9180114198,
-          "phi": 1.3763903696,
-          "m0": 0,
+          "theta": 1.207353325,
+          "phi": -0.4823471646,
+          "m0": 1,
           "m1": 1,
           "applyX": false,
           "applyZ": false
         },
         "want": {
-          "theta": 0.9180114198,
-          "phi": 1.3763903696,
-          "m0": 0,
+          "theta": 1.207353325,
+          "phi": -0.4823471646,
+          "m0": 1,
           "m1": 1
         }
       }
     },
     {
-      "name": "dryRun(calibration#1, X=false, Z=false): fidelity = 0.023551 (closed form on the measured state)",
+      "name": "dryRun(calibration#1, X=false, Z=false): fidelity = 0.187974 (closed form on the measured state)",
       "ok": true,
-      "detail": 0.0235512734
+      "detail": 0.1879740637
     },
     {
       "name": "dryRun(calibration#1, X=false, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
       "ok": true,
-      "detail": 0.0235512734
+      "detail": 0.1879740637
     },
     {
       "name": "dryRun(calibration#1, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch",
@@ -1668,30 +1668,30 @@
       "detail": {
         "got": {
           "state": "calibration",
-          "theta": 0.9180114198,
-          "phi": 1.3763903696,
-          "m0": 0,
+          "theta": 1.207353325,
+          "phi": -0.4823471646,
+          "m0": 1,
           "m1": 1,
           "applyX": true,
           "applyZ": false
         },
         "want": {
-          "theta": 0.9180114198,
-          "phi": 1.3763903696,
-          "m0": 0,
+          "theta": 1.207353325,
+          "phi": -0.4823471646,
+          "m0": 1,
           "m1": 1
         }
       }
     },
     {
-      "name": "dryRun(calibration#1, X=true, Z=false): fidelity = 1.000000 (closed form on the measured state)",
+      "name": "dryRun(calibration#1, X=true, Z=false): fidelity = 0.126376 (closed form on the measured state)",
       "ok": true,
-      "detail": 1
+      "detail": 0.1263762922
     },
     {
-      "name": "dryRun(calibration#1, X=true, Z=false): the rule's choice scores F ≥ 0.999999",
+      "name": "dryRun(calibration#1, X=true, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
       "ok": true,
-      "detail": 1
+      "detail": 0.1263762922
     },
     {
       "name": "dryRun(calibration#1, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch",
@@ -1699,30 +1699,30 @@
       "detail": {
         "got": {
           "state": "calibration",
-          "theta": 0.9180114198,
-          "phi": 1.3763903696,
-          "m0": 0,
+          "theta": 1.207353325,
+          "phi": -0.4823471646,
+          "m0": 1,
           "m1": 1,
           "applyX": false,
           "applyZ": true
         },
         "want": {
-          "theta": 0.9180114198,
-          "phi": 1.3763903696,
-          "m0": 0,
+          "theta": 1.207353325,
+          "phi": -0.4823471646,
+          "m0": 1,
           "m1": 1
         }
       }
     },
     {
-      "name": "dryRun(calibration#1, X=false, Z=true): fidelity = 0.607513 (closed form on the measured state)",
+      "name": "dryRun(calibration#1, X=false, Z=true): fidelity = 0.685650 (closed form on the measured state)",
       "ok": true,
-      "detail": 0.6075126602
+      "detail": 0.6856496442
     },
     {
       "name": "dryRun(calibration#1, X=false, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
       "ok": true,
-      "detail": 0.6075126602
+      "detail": 0.6856496442
     },
     {
       "name": "dryRun(calibration#1, X=true, Z=true): theta/phi round-trip exactly from the measurement into the branch",
@@ -1730,30 +1730,30 @@
       "detail": {
         "got": {
           "state": "calibration",
-          "theta": 0.9180114198,
-          "phi": 1.3763903696,
-          "m0": 0,
+          "theta": 1.207353325,
+          "phi": -0.4823471646,
+          "m0": 1,
           "m1": 1,
           "applyX": true,
           "applyZ": true
         },
         "want": {
-          "theta": 0.9180114198,
-          "phi": 1.3763903696,
-          "m0": 0,
+          "theta": 1.207353325,
+          "phi": -0.4823471646,
+          "m0": 1,
           "m1": 1
         }
       }
     },
     {
-      "name": "dryRun(calibration#1, X=true, Z=true): fidelity = 0.368936 (closed form on the measured state)",
+      "name": "dryRun(calibration#1, X=true, Z=true): fidelity = 1.000000 (closed form on the measured state)",
       "ok": true,
-      "detail": 0.3689360664
+      "detail": 1
     },
     {
-      "name": "dryRun(calibration#1, X=true, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
+      "name": "dryRun(calibration#1, X=true, Z=true): the rule's choice scores F ≥ 0.999999",
       "ok": true,
-      "detail": 0.3689360664
+      "detail": 1
     },
     {
       "name": "spy: Python teleport_branch received the measured theta/phi on every dry run",
@@ -1761,39 +1761,39 @@
       "detail": [
         {
           "state": "calibration",
-          "m0": 0,
+          "m0": 1,
           "m1": 1,
           "applyX": false,
           "applyZ": false,
-          "theta": 0.9180114198,
-          "phi": 1.3763903696
+          "theta": 1.207353325,
+          "phi": -0.4823471646
         },
         {
           "state": "calibration",
-          "m0": 0,
+          "m0": 1,
           "m1": 1,
           "applyX": true,
           "applyZ": false,
-          "theta": 0.9180114198,
-          "phi": 1.3763903696
+          "theta": 1.207353325,
+          "phi": -0.4823471646
         },
         {
           "state": "calibration",
-          "m0": 0,
+          "m0": 1,
           "m1": 1,
           "applyX": false,
           "applyZ": true,
-          "theta": 0.9180114198,
-          "phi": 1.3763903696
+          "theta": 1.207353325,
+          "phi": -0.4823471646
         },
         {
           "state": "calibration",
-          "m0": 0,
+          "m0": 1,
           "m1": 1,
           "applyX": true,
           "applyZ": true,
-          "theta": 0.9180114198,
-          "phi": 1.3763903696
+          "theta": 1.207353325,
+          "phi": -0.4823471646
         }
       ]
     },
@@ -1803,7 +1803,7 @@
       "detail": {
         "fidelity": 1,
         "bits": {
-          "m0": 0,
+          "m0": 1,
           "m1": 0
         },
         "parameters": {
@@ -1881,8 +1881,8 @@
             "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
           ],
           "counts": {
-            "11": 124,
-            "00": 132
+            "11": 127,
+            "00": 129
           },
           "keyQubits": [
             1,
@@ -1909,8 +1909,8 @@
       "name": "verify: 256 shots, ideal Bell keys only",
       "ok": true,
       "detail": {
-        "11": 124,
-        "00": 132
+        "11": 127,
+        "00": 129
       }
     }
   ]
