@@ -12,12 +12,15 @@
 // - Python is reached with `.callPromising`. A plain call that reaches an IonQ backend stops the
 //   run with an XHR ConnectionError: the HTTP request can only be awaited on a stack entered
 //   through callPromising.
-// - Pyodide's bare `toJs()` turns every dict into a Map, which the validator rejects by name.
+// - Older Pyodide's bare `toJs()` turns every dict into a Map, which the validator rejects by name
+//   (314.0.7 already gives plain Objects; the dict_converter below is kept as a version guard).
 import * as cloning from 'quantum.cloning';
 import * as entanglement from 'quantum.entanglement';
 import * as teleportation from 'quantum.teleportation';
 import * as qollabJob from 'quantum.qollab_job';
-import { validateExperimentResult } from '../contracts.js';
+import {
+  validateExperimentResult, validateTeleportBitsResult, validateTeleportCorrectionResult, makeCorrectionRequest,
+} from '../contracts.js';
 
 export class ScientificModuleError extends Error {
   constructor(label, errors, cause) {
@@ -41,14 +44,16 @@ function toPlain(value) {
 // A PythonError's message is the whole traceback; its last line is the exception itself.
 const lastLine = (err) => String(err?.message ?? err).trim().split('\n').pop();
 
-async function callEngine(label, fn, ...args) {
+// `validate` defaults to the ExperimentResult contract; the dry-run phases pass the stricter
+// two-phase validators, which also re-check the angles, the bits and the fidelity's physics.
+async function callEngine(label, fn, args, validate = validateExperimentResult) {
   let result;
   try {
     result = toPlain(await fn.callPromising(...args));
   } catch (err) {
     throw new ScientificModuleError(label, [lastLine(err)], err);
   }
-  const errors = validateExperimentResult(result);
+  const errors = validate(result);
   if (errors.length) {
     console.error(`quantum bridge: ${label} returned a result the contract rejects: ${errors.join('; ')}`);
     throw new ScientificModuleError(label, errors);
@@ -57,30 +62,43 @@ async function callEngine(label, fn, ...args) {
 }
 
 // Mission 1 (§7.2): the naive CNOT duplicator on a prepared calibration state.
-export const cloneTest = (state) => callEngine('cloning test', cloning.run_calibration, state);
+export const cloneTest = (state) => callEngine('cloning test', cloning.run_calibration, [state]);
 
 // Mission 2 (§7.3): the receiver's exact marginal after the sender applies I, X or Z.
-export const bellSignalling = (senderGate) => callEngine('relay signalling', entanglement.bell_signalling, senderGate);
+export const bellSignalling = (senderGate) => callEngine('relay signalling', entanglement.bell_signalling, [senderGate]);
 
-// Mission 3, step 1: a Bell measurement on a fresh calibration state gives the bits (m0, m1)
-// BEFORE the player picks corrections (owner ruling 2026-10-10, red-team item 2). Unlimited:
-// each call prepares a new state, so no measured unknown state is ever reused.
-export const calibrationMeasurement = (stateId) => callEngine('calibration measurement', teleportation.bell_measurement, stateId);
+// Mission 3, the rooftop dry run, in two calls: bits first, corrections second (owner ruling
+// 2026-10-10, red-team item 2; echo/CONTRACTS.md "Teleport dry run: two phases").
+// Step 1: Python draws a FRESH random generic calibration state and returns its angles in
+// `parameters` with one sampled (m0, m1). Unlimited: each call prepares a new state, so no measured
+// unknown state is ever reused. The angles are the request the contract checks the result against.
+const anglesOf = (result) => ({ theta: result?.parameters?.theta, phi: result?.parameters?.phi });
+export const calibrationMeasurement = () => callEngine('calibration measurement', teleportation.bell_measurement,
+  ['calibration'], (result) => validateTeleportBitsResult(anglesOf(result), result));
 
-// Mission 3, step 2: the receiver's state for THOSE bits after the player's X/Z choice.
-export function teleportDryRun(stateId, correctionX, correctionZ, bits) {
-  if (!bits || ![0, 1].includes(bits.m0) || ![0, 1].includes(bits.m1))
-    return Promise.reject(new ScientificModuleError('teleport dry run', [`bits must be { m0: 0|1, m1: 0|1 }, got ${JSON.stringify(bits)}`]));
-  return callEngine('teleport dry run', teleportation.teleport_branch, stateId, bits.m0, bits.m1, Boolean(correctionX), Boolean(correctionZ));
+// Step 2: the receiver's state for THOSE bits on THAT state after the player's X/Z choice. It takes
+// the step-1 result itself, so the angles and bits travel from the measurement and are never retyped:
+// the correction is graded on the state that was actually measured.
+export function teleportDryRun(calibration, correctionX, correctionZ) {
+  let req;
+  try {
+    req = makeCorrectionRequest(anglesOf(calibration), calibration, { applyX: correctionX, applyZ: correctionZ });
+  } catch (err) {
+    return Promise.reject(new ScientificModuleError('teleport dry run', [err.message], err));
+  }
+  return callEngine('teleport dry run', teleportation.teleport_branch,
+    ['calibration', req.m0, req.m1, req.applyX, req.applyZ, req.theta, req.phi],
+    (result) => validateTeleportCorrectionResult(req, result));
 }
 
-// The story transfer (§7.4): the token is measured once. A call that returned a valid result is
-// latched, so every later call gets that same recorded result. A call that failed measured
-// nothing, so it unlatches and the player may retry (overseer ruling 2026-10-10, gameplay item 1).
+// The story transfer (§7.4): the hidden token is measured once. A call that returned a valid result
+// is latched, so every later call gets that same recorded result; Python refuses a second
+// live_commit on its own as well. A call that failed measured nothing, so it unlatches and the
+// player may retry (overseer ruling 2026-10-10, gameplay item 1).
 let commit = null;
-export function commitTransfer(stateId) {
+export function commitTransfer() {
   if (commit) return commit;
-  const attempt = callEngine('live commit', teleportation.live_commit, stateId);
+  const attempt = callEngine('live commit', teleportation.live_commit, []);
   commit = attempt;
   attempt.catch(() => {
     if (commit === attempt) commit = null;
@@ -88,29 +106,26 @@ export function commitTransfer(stateId) {
   return attempt;
 }
 
+// RESTART on the ending screen (owner ruling 2026-10-10): a new story, a new token. Python's latch
+// is re-armed first, then the JS one, so a commit can never reach a still-consumed token. The
+// backend-job memo below is NOT reset: IonQ allows one job per run, not per story.
+export async function resetStoryToken() {
+  if (commit) await commit.catch(() => {});
+  try {
+    await teleportation.reset_story_token.callPromising();
+  } catch (err) {
+    throw new ScientificModuleError('restart', [lastLine(err)], err);
+  }
+  commit = null;
+}
+
 // The one selected-backend job (§8.4, §8.6, §10.7). IonQ accepts one job per run, so the promise
 // is memoised for the life of the page, failure included: Python's guard in qollab_job.py counts a
 // failed submission as spent, and so does this. On failure it rejects with §8.6's wording.
 let verification = null;
 export function verifySelectedBackendOnce() {
-  if (!verification) verification = verifyOnce();
+  if (!verification) verification = callEngine(
+    'Quantum backend verification unavailable; educational circuit validated locally',
+    qollabJob.run_backend_verification_once, [backend]);
   return verification;
-}
-
-const UNAVAILABLE = 'Quantum backend verification unavailable; educational circuit validated locally';
-
-async function verifyOnce() {
-  let result;
-  try {
-    result = toPlain(await qollabJob.run_bell_verification_once.callPromising(backend));
-  } catch (err) {
-    console.error(`quantum bridge: backend verification failed: ${err?.message ?? err}`);
-    throw new ScientificModuleError(UNAVAILABLE, [lastLine(err)], err);
-  }
-  const errors = validateExperimentResult(result);
-  if (errors.length) {
-    console.error(`quantum bridge: backend verification result rejected by the contract: ${errors.join('; ')}`);
-    throw new ScientificModuleError(UNAVAILABLE, errors);
-  }
-  return result;
 }
