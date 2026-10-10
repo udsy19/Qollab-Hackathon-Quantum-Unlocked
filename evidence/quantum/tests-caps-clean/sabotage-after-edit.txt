@@ -1,0 +1,9 @@
+OK    control (no mutation), T1: green (pytest exit 0) | 1 passed in 0.48s
+OK    control (no mutation), T2: green (pytest exit 0) | 1 passed in 0.51s
+OK    hardcode "ionq_simulator": red (pytest exit 1) | 1 failed in 0.43s
+OK    hardcode "ionq-simulator" (hyphen): red (pytest exit 1) | 1 failed in 0.41s
+OK    read an api_key from the env: red (pytest exit 1) | 1 failed in 0.38s
+OK    apikey (no separator): red (pytest exit 1) | 1 failed in 0.37s
+OK    a token: red (pytest exit 1) | 1 failed in 0.40s
+OK    name BasicSimulator: red (pytest exit 1) | 1 failed in 0.28s
+OK    key order reversed in interpret_counts: red (pytest exit 1) | 1 failed in 0.45s
