@@ -7,31 +7,27 @@
 // Fields read (CONTRACTS.md § Where the §10.x reference outputs go):
 //   cloning:          parameters.state, fidelity = |<psi psi|out>|^2
 //   bell_signalling:  parameters.senderGate, probabilities over keyQubits [1] (receiver marginal)
-//   teleportation:    parameters.stateId, parameters.correctionX/Z, measurementBits {m0, m1}, fidelity
-import { validateExperimentResult, QUEST_STATES as S, QUEST_EVENTS as E } from '../contracts.js';
+//   teleport dry run: the phase-2 request and result, judged by contracts' dryRunVerdict
+//   commit:           parameters.stateId, parameters.applyX/Z, measurementBits {m0, m1}, fidelity
+import { validateExperimentResult, dryRunVerdict, expectedCorrections, FIDELITY_PASS,
+  QUEST_STATES as S, QUEST_EVENTS as E } from '../contracts.js';
 
-const FIDELITY_OK = 0.999999; // §7.4 ideal-validation threshold
 const MARGINAL_TOL = 1e-6;
 export const STORY_TOKEN_ID = 'story_token';
 
-// §7.1: m0 = source readout, m1 = local Bell half; receiver X iff m1=1, Z iff m0=1.
-export function expectedCorrections(m0, m1) {
-  if (![0, 1].includes(m0) || ![0, 1].includes(m1)) throw new Error('invalid bits');
-  return { applyX: m1 === 1, applyZ: m0 === 1 };
-}
-
 const none = (reason) => ({ event: null, reason });
 
-// Correct corrections are judged by the rule AND the computed fidelity. Fidelity alone is not
-// enough: on |0> a spurious Z is a global phase and still scores 1.
-function correctTeleport(r) {
+// The story-token commit applies the §7.1 rule inside one engine call (owner ruling, gameplay
+// consult 3). Judged by the rule AND the computed fidelity: on |0> a spurious Z is a global phase
+// and still scores 1, so fidelity alone is not enough.
+function correctCommit(r) {
   const bits = r.measurementBits;
   if (!bits || typeof r.fidelity !== 'number') return 'no measurement bits or fidelity';
   const want = expectedCorrections(bits.m0, bits.m1);
-  if (r.parameters.correctionX !== want.applyX || r.parameters.correctionZ !== want.applyZ) {
+  if (r.parameters.applyX !== want.applyX || r.parameters.applyZ !== want.applyZ) {
     return `corrections do not match m0=${bits.m0}, m1=${bits.m1}`;
   }
-  if (r.fidelity < FIDELITY_OK) return `fidelity ${r.fidelity} below ${FIDELITY_OK}`;
+  if (r.fidelity < FIDELITY_PASS) return `fidelity ${r.fidelity} below ${FIDELITY_PASS}`;
   return null;
 }
 
@@ -48,9 +44,9 @@ function receiverIsUniform(r) {
 
 const RULES = {
   [S.CLONE_INTRO]: (r) => (r.experiment === 'cloning' && ['zero', 'one'].includes(r.parameters.state)
-    && r.fidelity >= FIDELITY_OK ? E.BASIS_DEMO_OK : none('need a basis-state copy that succeeded')),
+    && r.fidelity >= FIDELITY_PASS ? E.BASIS_DEMO_OK : none('need a basis-state copy that succeeded')),
   [S.CLONE_BASIS_PASSED]: (r) => (r.experiment === 'cloning' && ['plus', 'phase'].includes(r.parameters.state)
-    && typeof r.fidelity === 'number' && r.fidelity < FIDELITY_OK ? E.SUPERPOSITION_DEMO_FAILED : none('need a superposition copy attempt')),
+    && typeof r.fidelity === 'number' && r.fidelity < FIDELITY_PASS ? E.SUPERPOSITION_DEMO_FAILED : none('need a superposition copy attempt')),
   [S.RELAY_INTRO]: (r) => (r.experiment === 'bell_signalling' ? E.PREPARE_BELL_PAIR : none('need a Bell-pair result')),
   [S.RELAY_BELL_CREATED]: (r) => {
     if (r.experiment !== 'bell_signalling') return none('need a Bell-pair result');
@@ -58,32 +54,34 @@ const RULES = {
     const why = receiverIsUniform(r);
     return why ? none(why) : E.ATTEMPT_NO_SIGNALLING;
   },
-  // Calibration runs on prepared test states only; the story token is never spent here (§7.4).
-  // A pass must have needed a correction (owner ruling 2026-10-10, gameplay consult 3): with
-  // m0=m1=0 "do nothing" is right, but it proves nothing about applying X or Z.
-  [S.TELEPORT_DRY_RUN]: (r) => {
+  // Phase 2 of the dry run (CONTRACTS.md § Teleport dry run), judged against the request it
+  // answered: the story token never enters it (the request is { theta, phi, m0, m1, applyX,
+  // applyZ } of a generic calibration state), and only unlocksCommit — a correct pass on bits other
+  // than 00 (owner ruling, gameplay consult 3) — advances.
+  [S.TELEPORT_DRY_RUN]: (r, request) => {
     if (r.experiment !== 'teleportation') return none('need a teleportation result');
-    if (r.parameters.stateId === STORY_TOKEN_ID) return none('calibration may not use the story token');
-    const why = correctTeleport(r);
-    if (why) return none(why);
-    if (r.measurementBits.m0 === 0 && r.measurementBits.m1 === 0) return none('correct, but bits 00 need no correction: calibrate again on a run that needs X or Z');
+    const v = dryRunVerdict(request, r);
+    if (v.errors.length) return none(`dry run refused: ${v.errors.join('; ')}`);
+    if (!v.passed) return none(`wrong correction for m0=${request.m0}, m1=${request.m1}: calibrate again on a fresh state`);
+    if (!v.unlocksCommit) return none('correct, but bits 00 need no correction: calibrate again on a run that needs X or Z');
     return E.CORRECT_CALIBRATION;
   },
   [S.TELEPORT_DRY_RUN_PASSED]: (r) => {
     if (r.experiment !== 'teleportation' || r.parameters.stateId !== STORY_TOKEN_ID) return none('need the story-token transfer');
-    const why = correctTeleport(r);
+    const why = correctCommit(r);
     return why ? none(why) : E.COMMIT_TRANSFER;
   },
 };
 
 export const hasExperiment = (state) => Object.hasOwn(RULES, state);
 
-export function eventForResult(state, result) {
+// `request` is the call's input, for rules that judge a result against what was asked (the dry run).
+export function eventForResult(state, result, request) {
   if (!hasExperiment(state)) return none(`${state} has no experiment`);
   const errors = validateExperimentResult(result);
   if (errors.length) return none(`invalid result: ${errors.join('; ')}`);
   try {
-    const out = RULES[state](result);
+    const out = RULES[state](result, request);
     return typeof out === 'string' ? { event: out, reason: 'result shows the lesson' } : out;
   } catch (err) {
     return none(`result could not be judged: ${err.message}`);

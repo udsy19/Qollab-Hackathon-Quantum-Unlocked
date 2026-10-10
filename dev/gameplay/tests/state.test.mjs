@@ -4,7 +4,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { loadSpec, edgeKey } from './spec.mjs';
 import { createEventBus } from '../../../echo/game/eventBus.js';
-import { QUEST_STATE_LIST, TRANSITIONS, BUS_EVENTS } from '../../../echo/contracts.js';
+import { QUEST_STATE_LIST, TRANSITIONS, BUS_EVENTS, EVENT_SOURCES } from '../../../echo/contracts.js';
 import { createQuestMachine, commitIsOneShot, COMMIT_STATUS, worldChangesFor } from '../../../echo/game/state.js';
 
 const spec = loadSpec();
@@ -15,9 +15,12 @@ const ACKS = ['EXPLANATION_READ', 'VIEW_RECEIVER_MARGINAL'];
 const goodCommit = () => ({
   experiment: 'teleportation', engine: 'exact_qiskit_local', qubits: 3,
   circuitDescription: 'live teleport of the story token', facts: ['committed'],
-  parameters: { stateId: 'story_token', correctionX: true, correctionZ: false },
+  parameters: { stateId: 'story_token', applyX: true, applyZ: false },
   measurementBits: { m0: 0, m1: 1 }, fidelity: 1,
 });
+// Send as the event's rightful source (EVENT_SOURCES), the way the product's caller would.
+const viaOf = (ev) => { try { return EVENT_SOURCES[ev].via; } catch { return undefined; } };
+const sendAs = (m, ev) => m.send(ev, viaOf(ev));
 const deferred = () => { let resolve; let reject; const p = new Promise((a, b) => { resolve = a; reject = b; }); return { p, resolve, reject }; };
 
 function tableEdges(table) {
@@ -37,7 +40,7 @@ function recorder(bus) {
 async function play(m, ev) {
   if (ev === 'COMMIT_TRANSFER') return (await m.commitTransfer(async () => goodCommit())).ok;
   if (ACKS.includes(ev)) m.resultPanelShown();
-  return m.send(ev).ok;
+  return sendAs(m, ev).ok;
 }
 
 async function machineIn(state) {
@@ -111,8 +114,8 @@ test('every illegal (state, known event) pair is refused and emits nothing; unkn
       if (legal.has(`${s}|${ev}`)) continue;
       const { bus, m } = await machineIn(s);
       const log = recorder(bus);
-      assert.equal(m.can(ev), false, `can(${ev}) in ${s}`);
-      const r = ev === 'COMMIT_TRANSFER' ? await m.commitTransfer(async () => goodCommit()) : m.send(ev);
+      assert.equal(m.can(ev, viaOf(ev)), false, `can(${ev}) in ${s}`);
+      const r = ev === 'COMMIT_TRANSFER' ? await m.commitTransfer(async () => goodCommit()) : sendAs(m, ev);
       assert.equal(r.ok, false, `${s} accepted ${ev}`);
       assert.equal(m.state, s);
       assert.deepEqual(log, [], `${s}/${ev} emitted`);
@@ -121,8 +124,8 @@ test('every illegal (state, known event) pair is refused and emits nothing; unkn
     for (const bad of ['NOT_AN_EVENT', '', null, 42]) {
       const { bus, m } = await machineIn(s);
       const log = recorder(bus);
-      assert.equal(m.can(bad), false);
-      assert.throws(() => m.send(bad), TypeError, `${s}/${bad}`);
+      assert.equal(m.can(bad, viaOf(bad)), false);
+      assert.throws(() => sendAs(m, bad), TypeError, `${s}/${bad}`);
       assert.equal(m.state, s);
       assert.deepEqual(log, []);
       checked++;
@@ -142,10 +145,10 @@ test('every legal spec edge is accepted from its state', async () => {
 test('pressing E again at booth, relay or socket does nothing', async () => {
   for (const [state, ev] of [['FREE_ROAM_ALLEY', 'OPEN_CLONE_BOOTH'], ['RELAY_UNLOCKED', 'REACH_RELAY'], ['ROOFTOP_UNLOCKED', 'REPAIR_CLASSICAL_LINK']]) {
     const { bus, m } = await machineIn(state);
-    assert.equal(m.send(ev).ok, true);
+    assert.equal(sendAs(m, ev).ok, true);
     const after = m.state;
     const log = recorder(bus);
-    for (let i = 0; i < 5; i++) assert.equal(m.send(ev).ok, false);
+    for (let i = 0; i < 5; i++) assert.equal(sendAs(m, ev).ok, false);
     assert.equal(m.state, after);
     assert.deepEqual(log, []);
   }
@@ -170,7 +173,7 @@ test('resetGame() from every state: TITLE, a new epoch, one QUEST_STATE_CHANGED 
     assert.equal(m.state, 'TITLE');
     assert.equal(m.epoch, e0 + 1);
     assert.deepEqual(log, [{ from: s, to: 'TITLE', event: null }]);
-    assert.equal(m.send('START').ok, true, `fresh run after reset from ${s}`);
+    assert.equal(sendAs(m, 'START').ok, true, `fresh run after reset from ${s}`);
   }
 });
 
@@ -185,14 +188,44 @@ test('RESTART from ENDING (owner ruling 12), DECLASSIFIED and CREDITS is resetGa
   }
 });
 
+test('RESTART on the ENDING screen (owner ruling 12) is resetGame(): TITLE, a new epoch, the latch re-armed', async () => {
+  const { bus, m } = await machineIn('ENDING');
+  const e0 = m.epoch;
+  const log = recorder(bus);
+  assert.equal(sendAs(m, 'RESTART').ok, true);
+  assert.equal(m.state, 'TITLE');
+  assert.equal(m.epoch, e0 + 1, 'RESTART starts a new session (§9.5): old tickets go stale');
+  assert.equal(m.commit, COMMIT_STATUS.IDLE, 'the new session carries a fresh token');
+  assert.deepEqual(log, [{ from: 'ENDING', to: 'TITLE', event: 'RESTART' }]);
+});
+
+test('EVENT_SOURCES: an event from the wrong source is refused and emits nothing (a terminal cannot walk you through a door)', async () => {
+  for (const [state, ev, wrong] of [
+    ['CLONE_UNDERSTOOD', 'EXIT_BOOTH', 'terminal_acknowledgement'], ['RELAY_UNDERSTOOD', 'OPEN_ROOFTOP', 'interactable'],
+    ['RELAY_UNDERSTOOD', 'OPEN_ROOFTOP', undefined], ['FREE_ROAM_ALLEY', 'OPEN_CLONE_BOOTH', 'menu'],
+    ['CLONE_INTRO', 'BASIS_DEMO_OK', 'interactable'], ['TELEPORT_COMMITTED', 'ANIMATION_END', 'menu'],
+    ['ENDING', 'RESTART', 'world_trigger'],
+  ]) {
+    const { bus, m } = await machineIn(state);
+    const log = recorder(bus);
+    assert.equal(m.can(ev, wrong), false, `can(${ev}, ${wrong})`);
+    const r = m.send(ev, wrong);
+    assert.equal(r.ok, false, `${state}: ${ev} via ${wrong} accepted`);
+    assert.equal(m.state, state);
+    assert.deepEqual(log, []);
+  }
+  const { m } = await machineIn('CLONE_UNDERSTOOD');
+  assert.equal(m.send('EXIT_BOOTH', 'world_trigger').ok, true, 'the rightful source still works');
+});
+
 // ---------------------------------------------------------------- F2: run-to-completion
 
 test('F2: a send() inside a listener is delivered after the outer change reaches every listener', async () => {
   const { bus, m } = await machineIn('OPENING');
   const seen = [];
-  bus.on(CHANGED, (p) => { if (p.to === 'FREE_ROAM_ALLEY') m.send('OPEN_CLONE_BOOTH'); });
+  bus.on(CHANGED, (p) => { if (p.to === 'FREE_ROAM_ALLEY') sendAs(m, 'OPEN_CLONE_BOOTH'); });
   bus.on(CHANGED, (p) => seen.push(`${p.to} (machine.state=${m.state})`));
-  m.send('SKIP');
+  sendAs(m, 'SKIP');
   assert.deepEqual(seen, ['FREE_ROAM_ALLEY (machine.state=FREE_ROAM_ALLEY)', 'CLONE_INTRO (machine.state=CLONE_INTRO)']);
   assert.equal(m.state, 'CLONE_INTRO');
 });
@@ -202,15 +235,15 @@ test('F2: resetGame() inside a listener is delivered after the outer change, nev
   const seen = [];
   bus.on(CHANGED, (p) => { if (p.to === 'OPENING') m.resetGame(); });
   bus.on(CHANGED, (p) => seen.push(`${p.from}->${p.to} (state=${m.state})`));
-  m.send('START');
+  sendAs(m, 'START');
   assert.deepEqual(seen, ['TITLE->OPENING (state=OPENING)', 'OPENING->TITLE (state=TITLE)']);
 });
 
 test('F2: a listener sending a refused event mid-delivery is judged against the queued state', async () => {
   const { bus, m } = await machineIn('TITLE');
   const results = [];
-  bus.on(CHANGED, (p) => { if (p.to === 'OPENING') results.push(m.send('START').ok, m.send('SKIP').ok); });
-  m.send('START');
+  bus.on(CHANGED, (p) => { if (p.to === 'OPENING') results.push(sendAs(m, 'START').ok, sendAs(m, 'SKIP').ok); });
+  sendAs(m, 'START');
   assert.deepEqual(results, [false, true]);
   assert.equal(m.state, 'FREE_ROAM_ALLEY');
 });
@@ -222,7 +255,7 @@ test('F3: a result asked before resetGame() is stale even when the new session i
   const d = deferred();
   const pending = m.experiment(() => d.p);
   m.resetGame();
-  for (const ev of ['START', 'SKIP', 'OPEN_CLONE_BOOTH']) m.send(ev);
+  for (const ev of ['START', 'SKIP', 'OPEN_CLONE_BOOTH']) sendAs(m, ev);
   assert.equal(m.state, 'CLONE_INTRO');
   d.resolve({ experiment: 'cloning', engine: 'exact_qiskit_local', qubits: 2, circuitDescription: 'CX', facts: ['copied'], parameters: { state: 'zero' }, fidelity: 1 });
   const r = await pending;
@@ -242,8 +275,8 @@ test('F3: a current result does advance (the ticket is not stale by default)', a
 
 test('F4: COMMIT_TRANSFER cannot be sent directly, only through commitTransfer()', async () => {
   const { m } = await machineIn('TELEPORT_DRY_RUN_PASSED');
-  assert.equal(m.send('COMMIT_TRANSFER').ok, false);
-  assert.equal(m.can('COMMIT_TRANSFER'), false);
+  assert.equal(sendAs(m, 'COMMIT_TRANSFER').ok, false);
+  assert.equal(m.can('COMMIT_TRANSFER', viaOf('COMMIT_TRANSFER')), false);
   assert.equal(m.state, 'TELEPORT_DRY_RUN_PASSED');
 });
 
@@ -305,11 +338,11 @@ test('F4: a commit result that lands after resetGame() neither commits nor latch
 test('ruling 13: EXPLANATION_READ / VIEW_RECEIVER_MARGINAL advance only after the result panel was shown in that state', async () => {
   for (const [state, ack] of [['CLONE_SUPERPOSITION_FAILED', 'EXPLANATION_READ'], ['RELAY_SEND_FAILED', 'VIEW_RECEIVER_MARGINAL']]) {
     const { m } = await machineIn(state);
-    assert.equal(m.can(ack), false);
-    assert.equal(m.send(ack).ok, false, `${ack} before the panel`);
+    assert.equal(m.can(ack, viaOf(ack)), false);
+    assert.equal(sendAs(m, ack).ok, false, `${ack} before the panel`);
     assert.equal(m.state, state);
     m.resultPanelShown();
-    assert.equal(m.send(ack).ok, true, `${ack} after the panel`);
+    assert.equal(sendAs(m, ack).ok, true, `${ack} after the panel`);
   }
 });
 
@@ -317,12 +350,12 @@ test('ruling 13: a panel shown in an earlier state or session does not unlock a 
   const { m } = await machineIn('CLONE_SUPERPOSITION_FAILED');
   m.resultPanelShown();
   m.resetGame();
-  for (const ev of ['START', 'SKIP', 'OPEN_CLONE_BOOTH']) m.send(ev);
+  for (const ev of ['START', 'SKIP', 'OPEN_CLONE_BOOTH']) sendAs(m, ev);
   const r = await m.experiment(async () => ({ experiment: 'cloning', engine: 'exact_qiskit_local', qubits: 2, circuitDescription: 'CX', facts: ['ok'], parameters: { state: 'zero' }, fidelity: 1 }));
   assert.equal(r.event, 'BASIS_DEMO_OK');
   await m.experiment(async () => ({ experiment: 'cloning', engine: 'exact_qiskit_local', qubits: 2, circuitDescription: 'CX', facts: ['no'], parameters: { state: 'plus' }, fidelity: 0.5 }));
   assert.equal(m.state, 'CLONE_SUPERPOSITION_FAILED');
-  assert.equal(m.send('EXPLANATION_READ').ok, false);
+  assert.equal(sendAs(m, 'EXPLANATION_READ').ok, false);
 });
 
 // ---------------------------------------------------------------- §9.3 world changes

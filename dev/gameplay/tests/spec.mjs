@@ -43,11 +43,14 @@ export function parseTransitions(block) {
 }
 
 // Owner-accepted additions (owner-answers 2026-10-10 § 13 lane design questions, item 1), as named
-// by platform's CONTRACTS.md § Additions. The owner also accepted DECLASSIFIED -> ENDING; it has no
-// event name in contracts yet, so it is a platform request, not an edge here.
+// by platform's CONTRACTS.md § Additions: item 1 (BOOT -> TITLE, DECLASSIFIED -> CREDITS,
+// DECLASSIFIED -> ENDING, which contracts v2 names CLOSE_SCIENCE) and item 12 ("the ENDING screen
+// offers RESTART directly").
 export const ACCEPTED_ADDITIONS = Object.freeze([
   { from: 'BOOT', event: 'BOOT_COMPLETE', to: 'TITLE' },
   { from: 'DECLASSIFIED', event: 'OPEN_CREDITS', to: 'CREDITS' },
+  { from: 'DECLASSIFIED', event: 'CLOSE_SCIENCE', to: 'ENDING' },
+  { from: 'ENDING', event: 'RESTART', to: 'TITLE' },
 ]);
 
 export function loadSpec(path = VISION_PATH) {

@@ -1,11 +1,14 @@
 // The quest machine (vision §9). The table is platform's (echo/contracts.js); this file owns only
 // the runtime around it: delivery order, session identity for async results, the one-shot commit,
-// the acknowledgement gate and resetGame() (§9.5). It keeps no copy of any state or edge.
-import { TRANSITIONS, transition, INITIAL_STATE, BUS_EVENTS, WORLD_CHANGES, QUEST_STATES, QUEST_EVENTS } from '../contracts.js';
+// the acknowledgement gate, the source gate and resetGame() (§9.5). It keeps no copy of any state
+// or edge.
+import { TRANSITIONS, transition, INITIAL_STATE, RESET_STATE, BUS_EVENTS, WORLD_CHANGES, EVENT_SOURCES,
+  QUEST_EVENTS } from '../contracts.js';
 import { eventForResult } from './missionRules.js';
 
-const RESET_TO = QUEST_STATES.TITLE;
+const RESET_TO = RESET_STATE;
 const COMMIT = QUEST_EVENTS.COMMIT_TRANSFER;
+const RESTART = QUEST_EVENTS.RESTART;
 // Owner ruling 13 (2026-10-10): reading the explanation / the receiver panel only counts once
 // story-ui has actually put that result panel on screen in this state.
 const ACKNOWLEDGEMENTS = new Set([QUEST_EVENTS.EXPLANATION_READ, QUEST_EVENTS.VIEW_RECEIVER_MARGINAL]);
@@ -94,21 +97,30 @@ export function createQuestMachine(bus) {
     return enqueue({ from: tail, to: r.state, event });
   }
 
-  function gate(event) {
+  // `via` is how the caller fired the event; it must be the one EVENT_SOURCES names, so a terminal
+  // cannot walk the player through a door and a world trigger cannot read a panel for them.
+  function gate(event, via) {
     if (event === COMMIT) return `${COMMIT} is sent only by commitTransfer()`;
+    const src = EVENT_SOURCES[event];
+    if (via !== src.via) return `${event} comes from ${src.lane} via ${src.via}, not ${via ?? 'an unnamed source'}`;
     if (ACKNOWLEDGEMENTS.has(event) && (panelSeq !== seq || queue.length)) return `${event} needs the result panel on screen first`;
     return null;
   }
 
-  function send(event) {
+  function send(event, via) {
     transition(tail, event); // a misspelt name throws even where the gate would refuse it
-    const why = gate(event);
+    const why = gate(event, via);
     if (why) return { ok: false, state: tail, reason: why };
+    // RESTART is a table edge AND a new session (§9.5, CONTRACTS.md § Restart): same as resetGame().
+    if (event === RESTART) {
+      const r = transition(tail, event);
+      return r.ok ? enqueue({ from: tail, to: r.state, event }, true) : { ok: false, state: tail, reason: r.reason };
+    }
     return advance(event);
   }
 
-  function can(event) {
-    try { return transition(tail, event).ok && !gate(event); } catch { return false; }
+  function can(event, via) {
+    try { return transition(tail, event).ok && !gate(event, via); } catch { return false; }
   }
 
   // §9.5: back to TITLE from anywhere, as a new session. Emits QUEST_STATE_CHANGED with
@@ -123,12 +135,14 @@ export function createQuestMachine(bus) {
   const ticket = () => Object.freeze({ epoch, seq, state });
   const isCurrent = (t) => Boolean(t) && t.epoch === epoch && t.seq === seq && queue.length === 0;
 
-  // Run one experiment and let its result decide (missionRules). Rejects only with what run() rejects.
-  async function experiment(run) {
+  // Run one experiment and let its result decide (missionRules). `request` is what run() asked the
+  // engine, for a rule that judges the result against it (the teleport dry run's phase 2).
+  // Rejects only with what run() rejects.
+  async function experiment(run, request) {
     const t = ticket();
     const result = await run();
     if (!isCurrent(t)) return { stale: true, result, event: null, reason: `asked in ${t.state} (session ${t.epoch}); the quest has moved on` };
-    const verdict = eventForResult(t.state, result);
+    const verdict = eventForResult(t.state, result, request);
     if (!verdict.event || verdict.event === COMMIT) {
       return { stale: false, result, event: null, reason: verdict.event ? `${COMMIT} only via commitTransfer()` : verdict.reason };
     }

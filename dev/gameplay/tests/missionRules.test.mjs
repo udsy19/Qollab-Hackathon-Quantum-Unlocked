@@ -1,21 +1,17 @@
 // The quest only advances on a result that shows the lesson; a bare click, a wrong result or a
 // malformed one does nothing, and nothing here ever throws (review F6).
-import test from 'node:test';
+// Results come from the dev engine (real Qiskit), never from hand-built fixtures of the happy path.
+import test, { after } from 'node:test';
 import assert from 'node:assert/strict';
-import { eventForResult, expectedCorrections, hasExperiment } from '../../../echo/game/missionRules.js';
-import { createFakeQuantum } from '../fakeQuantum.js';
+import { eventForResult, hasExperiment } from '../../../echo/game/missionRules.js';
+import { makeCorrectionRequest } from '../../../echo/contracts.js';
+import { startDevEngine } from './devEngineServer.mjs';
 
-const q = createFakeQuantum({ delayMs: 0 });
+const server = await startDevEngine();
+after(() => server.stop());
+const q = server.engine();
 const ALL_STATES = ['BOOT', 'TITLE', 'CLONE_INTRO', 'CLONE_BASIS_PASSED', 'RELAY_INTRO', 'RELAY_BELL_CREATED', 'TELEPORT_DRY_RUN', 'TELEPORT_DRY_RUN_PASSED', 'ENDING'];
 const AXIS = { theta: 1.137, phi: 0.44 }; // §10.5 generic test state, ry then rz
-
-test('expectedCorrections is the §7.1 rule: X iff m1=1, Z iff m0=1', () => {
-  assert.deepEqual(expectedCorrections(0, 0), { applyX: false, applyZ: false });
-  assert.deepEqual(expectedCorrections(0, 1), { applyX: true, applyZ: false });
-  assert.deepEqual(expectedCorrections(1, 0), { applyX: false, applyZ: true });
-  assert.deepEqual(expectedCorrections(1, 1), { applyX: true, applyZ: true });
-  assert.throws(() => expectedCorrections(2, 0));
-});
 
 test('hasExperiment names exactly the states a result can advance', () => {
   assert.deepEqual(ALL_STATES.filter(hasExperiment), ['CLONE_INTRO', 'CLONE_BASIS_PASSED', 'RELAY_INTRO', 'RELAY_BELL_CREATED', 'TELEPORT_DRY_RUN', 'TELEPORT_DRY_RUN_PASSED']);
@@ -23,11 +19,12 @@ test('hasExperiment names exactly the states a result can advance', () => {
 
 test('F6: malformed input is refused with a reason, never thrown, in every state', () => {
   const junk = [undefined, null, 0, 'x', [], {}, new Map(), { experiment: 'cloning', parameters: null, fidelity: 1 },
-    { experiment: 'teleportation', engine: 'exact_qiskit_local', qubits: 3, circuitDescription: 'c', facts: ['f'], parameters: { stateId: 'calibration', correctionX: false, correctionZ: false }, measurementBits: { m0: '0', m1: 0 }, fidelity: 1 },
+    { experiment: 'teleportation', engine: 'exact_qiskit_local', qubits: 3, circuitDescription: 'c', facts: ['f'], parameters: { theta: 1.137, phi: 0.44, applyX: false, applyZ: false }, measurementBits: { m0: '0', m1: 0 }, fidelity: 1 },
     { experiment: 'cloning', parameters: { state: 'zero' }, fidelity: 1 }];
-  for (const s of ALL_STATES) for (const r of junk) {
+  const requests = [undefined, null, {}, { theta: 1.137, phi: 0.44, m0: 0, m1: 0, applyX: false, applyZ: false }];
+  for (const s of ALL_STATES) for (const r of junk) for (const req of requests) {
     let v;
-    assert.doesNotThrow(() => { v = eventForResult(s, r); }, `${s} ${JSON.stringify(r)}`);
+    assert.doesNotThrow(() => { v = eventForResult(s, r, req); }, `${s} ${JSON.stringify(r)}`);
     assert.equal(v.event, null);
     assert.equal(typeof v.reason, 'string');
   }
@@ -64,24 +61,52 @@ test('F7: contradictory or mislabelled receiver probabilities are refused', asyn
   for (const [name, r] of Object.entries(variants)) assert.equal(eventForResult('RELAY_BELL_CREATED', r).event, null, name);
 });
 
+// Phase 2 for given bits, as the game asks it. The bits are fixed here to cover all four branches;
+// in play they come from a phase-1 result through makeCorrectionRequest (checked below).
+const correction = async (m0, m1, applyX, applyZ) => {
+  const req = { ...AXIS, m0, m1, applyX, applyZ };
+  return { req, r: await q.teleportCorrection(req) };
+};
+
 test('dry run: advances only with corrections matching the bits AND fidelity ~1, on a non-00 run (ruling consult 3)', async () => {
   for (const m0 of [0, 1]) for (const m1 of [0, 1]) for (const X of [false, true]) for (const Z of [false, true]) {
-    const r = await q.teleportDryRun(X, Z, { m0, m1 }, AXIS);
+    const { req, r } = await correction(m0, m1, X, Z);
     const right = X === (m1 === 1) && Z === (m0 === 1);
     const want = right && (m0 || m1) ? 'CORRECT_CALIBRATION' : null;
-    assert.equal(eventForResult('TELEPORT_DRY_RUN', r).event, want, `X=${X} Z=${Z} m0=${m0} m1=${m1}`);
+    assert.equal(eventForResult('TELEPORT_DRY_RUN', r, req).event, want, `X=${X} Z=${Z} m0=${m0} m1=${m1}`);
   }
-  const zeroZero = eventForResult('TELEPORT_DRY_RUN', await q.teleportDryRun(false, false, { m0: 0, m1: 0 }, AXIS));
-  assert.match(zeroZero.reason, /00|no correction/i);
+  const zz = await correction(0, 0, false, false);
+  assert.match(eventForResult('TELEPORT_DRY_RUN', zz.r, zz.req).reason, /00|no correction/i);
+  const wrong = await correction(1, 0, false, false);
+  assert.match(eventForResult('TELEPORT_DRY_RUN', wrong.r, wrong.req).reason, /wrong correction/);
+});
+
+test('dry run: a result judged without its request, or against another request, is refused', async () => {
+  const { req, r } = await correction(0, 1, true, false);
+  assert.equal(eventForResult('TELEPORT_DRY_RUN', r, req).event, 'CORRECT_CALIBRATION');
+  assert.equal(eventForResult('TELEPORT_DRY_RUN', r).event, null, 'no request');
+  assert.equal(eventForResult('TELEPORT_DRY_RUN', r, { ...req, m1: 0, applyX: false }).event, null, 'bits swapped after the fact');
+  assert.equal(eventForResult('TELEPORT_DRY_RUN', { ...r, fidelity: 1 }, { ...req, applyX: false }).event, null, 'fidelity forged for a wrong choice');
+});
+
+test('dry run end to end: phase 1 bits, makeCorrectionRequest, phase 2 — the rule passes and a wrong choice does not', async () => {
+  const phase1 = await q.teleportBits(AXIS);
+  const { m0, m1 } = phase1.measurementBits;
+  const goodReq = makeCorrectionRequest(AXIS, phase1, { applyX: m1 === 1, applyZ: m0 === 1 });
+  const badReq = makeCorrectionRequest(AXIS, phase1, { applyX: m1 !== 1, applyZ: m0 === 1 });
+  const good = eventForResult('TELEPORT_DRY_RUN', await q.teleportCorrection(goodReq), goodReq);
+  const bad = eventForResult('TELEPORT_DRY_RUN', await q.teleportCorrection(badReq), badReq);
+  assert.equal(good.event, m0 || m1 ? 'CORRECT_CALIBRATION' : null, good.reason);
+  assert.equal(bad.event, null);
 });
 
 test('the story token is never a calibration, and calibration is never a commit', async () => {
   const token = await q.commitStoryToken();
   assert.equal(eventForResult('TELEPORT_DRY_RUN', token).event, null);
   assert.equal(eventForResult('TELEPORT_DRY_RUN_PASSED', token).event, 'COMMIT_TRANSFER');
-  const calib = await q.teleportDryRun(true, false, { m0: 0, m1: 1 }, AXIS);
-  assert.equal(eventForResult('TELEPORT_DRY_RUN_PASSED', calib).event, null);
-  const wrongToken = { ...token, parameters: { ...token.parameters, correctionX: !token.parameters.correctionX } };
+  const calib = await correction(0, 1, true, false);
+  assert.equal(eventForResult('TELEPORT_DRY_RUN_PASSED', calib.r).event, null);
+  const wrongToken = { ...token, parameters: { ...token.parameters, applyX: !token.parameters.applyX } };
   assert.equal(eventForResult('TELEPORT_DRY_RUN_PASSED', wrongToken).event, null);
 });
 
