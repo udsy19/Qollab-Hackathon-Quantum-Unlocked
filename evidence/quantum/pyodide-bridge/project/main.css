@@ -1,0 +1,8 @@
+#pb { font: 12px/1.35 ui-monospace, Menlo, monospace; padding: 10px 14px; color: #111; }
+#pb h1 { font-size: 16px; margin: 0 0 6px; }
+#pb table { border-collapse: collapse; width: 100%; }
+#pb td, #pb th { border: 1px solid #ccc; padding: 2px 6px; text-align: left; vertical-align: top; }
+#pb tr.ok td:nth-child(3) { color: #0a6b2a; font-weight: 600; }
+#pb tr.bad td:nth-child(3) { color: #b00020; font-weight: 600; }
+#pb #verify-line { font-weight: 600; margin-top: 8px; }
+#pb pre { max-height: 200px; overflow: auto; background: #f4f4f6; }

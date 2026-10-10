@@ -1,0 +1,1692 @@
+{
+  "assembly": {
+    "token": "pb-sab-swallow-validator-head-20261010T000055-22732",
+    "sabotage": "swallow-validator",
+    "runnerRef": "lane/platform/g0-runner-smoke@71d2477",
+    "contractsRef": "lane/platform/integration@939a57d",
+    "harnessCommit": "dffd4f5",
+    "pythonRef": "HEAD@dffd4f5",
+    "sha256": {
+      "contracts.js": "8052cf2926a54fa2",
+      "index.html": "6112169d8d1887b8",
+      "main.css": "d93eb501784b286e",
+      "main.js": "235ce4f39c13d106",
+      "pb_spy.py": "571deb7a75d4bb4f",
+      "quantum/__init__.py": "de8aa10047a847c1",
+      "quantum/bridge.js": "4810b34c64bb80e2",
+      "quantum/cloning.py": "a727719a81996851",
+      "quantum/entanglement.py": "ca3415a9a76d6ab6",
+      "quantum/formats.py": "2845818ab978be6d",
+      "quantum/qollab_job.py": "da99e9cf6b5afaf9",
+      "quantum/teleportation.py": "4d1b7c3548a53c9e"
+    }
+  },
+  "runnerCounters": {
+    "jobs": 0,
+    "refusedByRunner": 0
+  },
+  "runnerLogTail": [
+    {
+      "kind": "runner",
+      "msg": "runner: 12 files in /private/tmp/pb-run-OzTthq/echo; backend = ionq-mock"
+    },
+    {
+      "kind": "system",
+      "msg": "Loading packages..."
+    },
+    {
+      "kind": "out",
+      "msg": "Loading micropip"
+    },
+    {
+      "kind": "out",
+      "msg": "Loaded micropip"
+    },
+    {
+      "kind": "out",
+      "msg": "Loading numpy, scipy, typing-extensions"
+    },
+    {
+      "kind": "out",
+      "msg": "Loaded numpy, scipy, typing-extensions"
+    },
+    {
+      "kind": "system",
+      "msg": "Loading project files..."
+    },
+    {
+      "kind": "out",
+      "msg": "numpy already loaded from default channel"
+    },
+    {
+      "kind": "out",
+      "msg": "No new packages to load"
+    },
+    {
+      "kind": "system",
+      "msg": "Compiling / initializing runtime..."
+    },
+    {
+      "kind": "system",
+      "msg": "Running..."
+    },
+    {
+      "kind": "system",
+      "msg": "Circuit panel: 2 qubits"
+    },
+    {
+      "kind": "system",
+      "msg": "Probabilities panel: {\"0x3\":0.515625,\"0x0\":0.484375}"
+    },
+    {
+      "kind": "system",
+      "msg": "Done."
+    }
+  ],
+  "dump": {
+    "toJsDefault": {
+      "topIsMap": false,
+      "topType": "[object Object]",
+      "innerIsMap": false,
+      "listIsArray": true,
+      "json": "{\"outer\":{\"inner\":1},\"list\":[1,2],\"n\":1}"
+    },
+    "build": "pb-sab-swallow-validator-head-20261010T000055-22732",
+    "backendName": "basic_simulator",
+    "platform": {
+      "sysPlatform": "emscripten",
+      "python": "3.14.2",
+      "qiskit": "2.5.2",
+      "pyodide": "314.0.7",
+      "coldImportSeconds": 0.001
+    },
+    "timing": {
+      "msFrameStartToMainBody": 4622.5,
+      "verifyMs": 7.3,
+      "wallSecondsPageToDone": 5.3
+    },
+    "calls": [
+      {
+        "label": "cloning(plus)",
+        "ms": 8.4,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "kind": "naive_cnot_clone",
+          "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "plus"
+          },
+          "facts": [
+            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
+            "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+            "The two outputs are entangled with each other, not copies of the input.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "source=0,copy=0": 0.5,
+            "source=1,copy=0": 0,
+            "source=0,copy=1": 0,
+            "source=1,copy=1": 0.5
+          },
+          "circuitText": "     ┌───┐     \nq_0: ┤ H ├──■──\n     └───┘┌─┴─┐\nq_1: ─────┤ X ├\n          └───┘",
+          "details": {
+            "sourcePurity": 0.5,
+            "copyPurity": 0.5,
+            "sourceFidelity": 0.5,
+            "copyFidelity": 0.5,
+            "jointFidelityWithTwoCopies": 0.5,
+            "isTwoIndependentCopies": false,
+            "isEntangled": true,
+            "amplitudes": {
+              "source=0,copy=0": [
+                0.7071067812,
+                0
+              ],
+              "source=1,copy=0": [
+                0,
+                0
+              ],
+              "source=0,copy=1": [
+                0,
+                0
+              ],
+              "source=1,copy=1": [
+                0.7071067812,
+                0
+              ]
+            }
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "cloning(plus)",
+        "ms": 3.7,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "kind": "naive_cnot_clone",
+          "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "plus"
+          },
+          "facts": [
+            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
+            "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+            "The two outputs are entangled with each other, not copies of the input.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "source=0,copy=0": 0.5,
+            "source=1,copy=0": 0,
+            "source=0,copy=1": 0,
+            "source=1,copy=1": 0.5
+          },
+          "circuitText": "     ┌───┐     \nq_0: ┤ H ├──■──\n     └───┘┌─┴─┐\nq_1: ─────┤ X ├\n          └───┘",
+          "details": {
+            "sourcePurity": 0.5,
+            "copyPurity": 0.5,
+            "sourceFidelity": 0.5,
+            "copyFidelity": 0.5,
+            "jointFidelityWithTwoCopies": 0.5,
+            "isTwoIndependentCopies": false,
+            "isEntangled": true,
+            "amplitudes": {
+              "source=0,copy=0": [
+                0.7071067812,
+                0
+              ],
+              "source=1,copy=0": [
+                0,
+                0
+              ],
+              "source=0,copy=1": [
+                0,
+                0
+              ],
+              "source=1,copy=1": [
+                0.7071067812,
+                0
+              ]
+            }
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "cloning(plus)",
+        "ms": 1.6,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "kind": "naive_cnot_clone",
+          "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "plus"
+          },
+          "facts": [
+            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
+            "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+            "The two outputs are entangled with each other, not copies of the input.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "source=0,copy=0": 0.5,
+            "source=1,copy=0": 0,
+            "source=0,copy=1": 0,
+            "source=1,copy=1": 0.5
+          },
+          "circuitText": "     ┌───┐     \nq_0: ┤ H ├──■──\n     └───┘┌─┴─┐\nq_1: ─────┤ X ├\n          └───┘",
+          "details": {
+            "sourcePurity": 0.5,
+            "copyPurity": 0.5,
+            "sourceFidelity": 0.5,
+            "copyFidelity": 0.5,
+            "jointFidelityWithTwoCopies": 0.5,
+            "isTwoIndependentCopies": false,
+            "isEntangled": true,
+            "amplitudes": {
+              "source=0,copy=0": [
+                0.7071067812,
+                0
+              ],
+              "source=1,copy=0": [
+                0,
+                0
+              ],
+              "source=0,copy=1": [
+                0,
+                0
+              ],
+              "source=1,copy=1": [
+                0.7071067812,
+                0
+              ]
+            }
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "cloning(zero)",
+        "ms": 1.2,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "kind": "naive_cnot_clone",
+          "circuitDescription": "prepare |0> on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "zero"
+          },
+          "facts": [
+            "Two matching basis values: this input was already a Z-basis state, so the circuit only copied a known classical value.",
+            "This does not work for an unknown state; try a superposition.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "source=0,copy=0": 1,
+            "source=1,copy=0": 0,
+            "source=0,copy=1": 0,
+            "source=1,copy=1": 0
+          },
+          "circuitText": "          \nq_0: ──■──\n     ┌─┴─┐\nq_1: ┤ X ├\n     └───┘",
+          "details": {
+            "sourcePurity": 1,
+            "copyPurity": 1,
+            "sourceFidelity": 1,
+            "copyFidelity": 1,
+            "jointFidelityWithTwoCopies": 1,
+            "isTwoIndependentCopies": true,
+            "isEntangled": false,
+            "amplitudes": {
+              "source=0,copy=0": [
+                1,
+                0
+              ],
+              "source=1,copy=0": [
+                0,
+                0
+              ],
+              "source=0,copy=1": [
+                0,
+                0
+              ],
+              "source=1,copy=1": [
+                0,
+                0
+              ]
+            }
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "cloning(one)",
+        "ms": 1.5,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "kind": "naive_cnot_clone",
+          "circuitDescription": "prepare |1> on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "one"
+          },
+          "facts": [
+            "Two matching basis values: this input was already a Z-basis state, so the circuit only copied a known classical value.",
+            "This does not work for an unknown state; try a superposition.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "source=0,copy=0": 0,
+            "source=1,copy=0": 0,
+            "source=0,copy=1": 0,
+            "source=1,copy=1": 1
+          },
+          "circuitText": "     ┌───┐     \nq_0: ┤ X ├──■──\n     └───┘┌─┴─┐\nq_1: ─────┤ X ├\n          └───┘",
+          "details": {
+            "sourcePurity": 1,
+            "copyPurity": 1,
+            "sourceFidelity": 1,
+            "copyFidelity": 1,
+            "jointFidelityWithTwoCopies": 1,
+            "isTwoIndependentCopies": true,
+            "isEntangled": false,
+            "amplitudes": {
+              "source=0,copy=0": [
+                0,
+                0
+              ],
+              "source=1,copy=0": [
+                0,
+                0
+              ],
+              "source=0,copy=1": [
+                0,
+                0
+              ],
+              "source=1,copy=1": [
+                1,
+                0
+              ]
+            }
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "cloning(bloch_a)",
+        "ms": 2,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "kind": "naive_cnot_clone",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "bloch_a"
+          },
+          "facts": [
+            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.551480.",
+            "Each output alone has purity 0.588334; an independent copy of a pure state would have purity 1.",
+            "The two outputs are entangled with each other, not copies of the input.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "source=0,copy=0": 0.7101592606,
+            "source=1,copy=0": 0,
+            "source=0,copy=1": 0,
+            "source=1,copy=1": 0.2898407394
+          },
+          "circuitText": "     ┌───────────┐┌──────────┐     \nq_0: ┤ Ry(1.137) ├┤ Rz(0.44) ├──■──\n     └───────────┘└──────────┘┌─┴─┐\nq_1: ─────────────────────────┤ X ├\n                              └───┘",
+          "details": {
+            "sourcePurity": 0.5883338296,
+            "copyPurity": 0.5883338296,
+            "sourceFidelity": 0.5883338296,
+            "copyFidelity": 0.5883338296,
+            "jointFidelityWithTwoCopies": 0.5514795209,
+            "isTwoIndependentCopies": false,
+            "isEntangled": true,
+            "amplitudes": {
+              "source=0,copy=0": [
+                0.822398028,
+                -0.1839041713
+              ],
+              "source=1,copy=0": [
+                0,
+                0
+              ],
+              "source=0,copy=1": [
+                0,
+                0
+              ],
+              "source=1,copy=1": [
+                0.5253925344,
+                0.1174879746
+              ]
+            }
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "relay(I)",
+        "ms": 2.4,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "bell_signalling",
+          "engine": "exact_qiskit_local",
+          "kind": "receiver_marginal",
+          "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies I on q0 (sender), q1 = receiver",
+          "qubits": 2,
+          "parameters": {
+            "senderGate": "I"
+          },
+          "facts": [
+            "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+            "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+            "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 1.000000.",
+            "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+          ],
+          "probabilities": {
+            "sender=0,receiver=0": 0.5,
+            "sender=1,receiver=0": 0,
+            "sender=0,receiver=1": 0,
+            "sender=1,receiver=1": 0.5
+          },
+          "circuitText": "     ┌───┐     \nq_0: ┤ H ├──■──\n     └───┘┌─┴─┐\nq_1: ─────┤ X ├\n          └───┘",
+          "details": {
+            "receiverMarginal": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "receiverPurity": 0.5,
+            "receiverBlochVector": [
+              0,
+              0,
+              0
+            ],
+            "zBasisAgreement": 1,
+            "xBasisAgreement": 1
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "relay(X)",
+        "ms": 1,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "bell_signalling",
+          "engine": "exact_qiskit_local",
+          "kind": "receiver_marginal",
+          "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies X on q0 (sender), q1 = receiver",
+          "qubits": 2,
+          "parameters": {
+            "senderGate": "X"
+          },
+          "facts": [
+            "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+            "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+            "Comparing both logs afterwards: Z-basis bits agree with probability 0.000000, X-basis bits with probability 1.000000.",
+            "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+          ],
+          "probabilities": {
+            "sender=0,receiver=0": 0,
+            "sender=1,receiver=0": 0.5,
+            "sender=0,receiver=1": 0.5,
+            "sender=1,receiver=1": 0
+          },
+          "circuitText": "     ┌───┐     ┌───┐\nq_0: ┤ H ├──■──┤ X ├\n     └───┘┌─┴─┐└───┘\nq_1: ─────┤ X ├─────\n          └───┘     ",
+          "details": {
+            "receiverMarginal": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "receiverPurity": 0.5,
+            "receiverBlochVector": [
+              0,
+              0,
+              0
+            ],
+            "zBasisAgreement": 0,
+            "xBasisAgreement": 1
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "relay(Z)",
+        "ms": 1.1,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "bell_signalling",
+          "engine": "exact_qiskit_local",
+          "kind": "receiver_marginal",
+          "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies Z on q0 (sender), q1 = receiver",
+          "qubits": 2,
+          "parameters": {
+            "senderGate": "Z"
+          },
+          "facts": [
+            "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+            "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+            "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 0.000000.",
+            "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+          ],
+          "probabilities": {
+            "sender=0,receiver=0": 0.5,
+            "sender=1,receiver=0": 0,
+            "sender=0,receiver=1": 0,
+            "sender=1,receiver=1": 0.5
+          },
+          "circuitText": "     ┌───┐     ┌───┐\nq_0: ┤ H ├──■──┤ Z ├\n     └───┘┌─┴─┐└───┘\nq_1: ─────┤ X ├─────\n          └───┘     ",
+          "details": {
+            "receiverMarginal": {
+              "0": 0.5,
+              "1": 0.5
+            },
+            "receiverPurity": 0.5,
+            "receiverBlochVector": [
+              0,
+              0,
+              0
+            ],
+            "zBasisAgreement": 1,
+            "xBasisAgreement": 0
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"circuitText\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "calibration(bloch_a)",
+        "ms": 0.6,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "kind": "bell_measurement_sample",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a"
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 0 (local Bell-half readout).",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "m0=0,m1=0": 0.25,
+            "m0=0,m1=1": 0.25,
+            "m0=1,m1=0": 0.25,
+            "m0=1,m1=1": 0.25
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 0
+          },
+          "details": {
+            "shots": 1
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false)",
+        "ms": 1.9,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "kind": "branch_model",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies no correction",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a",
+            "m0": 1,
+            "m1": 0,
+            "applyX": false,
+            "applyZ": false
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON.",
+            "Receiver test fidelity: 0.176668.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+          ],
+          "probabilities": {
+            "m0=0,m1=0": 0.25,
+            "m0=0,m1=1": 0.25,
+            "m0=1,m1=0": 0.25,
+            "m0=1,m1=1": 0.25
+          },
+          "fidelity": 0.1766676593,
+          "measurementBits": {
+            "m0": 1,
+            "m1": 0
+          },
+          "details": {
+            "branchProbability": 0.25,
+            "expectedCorrections": {
+              "applyX": false,
+              "applyZ": true
+            },
+            "choiceFollowsRule": false,
+            "receiverBlochVector": [
+              -0.8209505112,
+              -0.3864875145,
+              0.4203185212
+            ],
+            "sourceFidelityAfterMeasurement": 0.2898407394
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "dryRun(bloch_a, m0=1, m1=0, X=true, Z=false)",
+        "ms": 1.8,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "kind": "branch_model",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies X",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a",
+            "m0": 1,
+            "m1": 0,
+            "applyX": true,
+            "applyZ": false
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON.",
+            "Receiver test fidelity: 0.149373.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+          ],
+          "probabilities": {
+            "m0=0,m1=0": 0.25,
+            "m0=0,m1=1": 0.25,
+            "m0=1,m1=0": 0.25,
+            "m0=1,m1=1": 0.25
+          },
+          "fidelity": 0.1493725989,
+          "measurementBits": {
+            "m0": 1,
+            "m1": 0
+          },
+          "details": {
+            "branchProbability": 0.25,
+            "expectedCorrections": {
+              "applyX": false,
+              "applyZ": true
+            },
+            "choiceFollowsRule": false,
+            "receiverBlochVector": [
+              -0.8209505112,
+              0.3864875145,
+              -0.4203185212
+            ],
+            "sourceFidelityAfterMeasurement": 0.2898407394
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=true)",
+        "ms": 1.4,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "kind": "branch_model",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies Z",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a",
+            "m0": 1,
+            "m1": 0,
+            "applyX": false,
+            "applyZ": true
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON.",
+            "Receiver test fidelity: 1.000000.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+          ],
+          "probabilities": {
+            "m0=0,m1=0": 0.25,
+            "m0=0,m1=1": 0.25,
+            "m0=1,m1=0": 0.25,
+            "m0=1,m1=1": 0.25
+          },
+          "fidelity": 1,
+          "measurementBits": {
+            "m0": 1,
+            "m1": 0
+          },
+          "details": {
+            "branchProbability": 0.25,
+            "expectedCorrections": {
+              "applyX": false,
+              "applyZ": true
+            },
+            "choiceFollowsRule": true,
+            "receiverBlochVector": [
+              0.8209505112,
+              0.3864875145,
+              0.4203185212
+            ],
+            "sourceFidelityAfterMeasurement": 0.2898407394
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "dryRun(bloch_a, m0=1, m1=0, X=true, Z=true)",
+        "ms": 1.4,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "kind": "branch_model",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies X then Z",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a",
+            "m0": 1,
+            "m1": 0,
+            "applyX": true,
+            "applyZ": true
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON.",
+            "Receiver test fidelity: 0.673960.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+          ],
+          "probabilities": {
+            "m0=0,m1=0": 0.25,
+            "m0=0,m1=1": 0.25,
+            "m0=1,m1=0": 0.25,
+            "m0=1,m1=1": 0.25
+          },
+          "fidelity": 0.6739597419,
+          "measurementBits": {
+            "m0": 1,
+            "m1": 0
+          },
+          "details": {
+            "branchProbability": 0.25,
+            "expectedCorrections": {
+              "applyX": false,
+              "applyZ": true
+            },
+            "choiceFollowsRule": false,
+            "receiverBlochVector": [
+              0.8209505112,
+              -0.3864875145,
+              -0.4203185212
+            ],
+            "sourceFidelityAfterMeasurement": 0.2898407394
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false)",
+        "ms": 1.4,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "kind": "branch_model",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies no correction",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a",
+            "m0": 1,
+            "m1": 0,
+            "applyX": false,
+            "applyZ": false
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON.",
+            "Receiver test fidelity: 0.176668.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+          ],
+          "probabilities": {
+            "m0=0,m1=0": 0.25,
+            "m0=0,m1=1": 0.25,
+            "m0=1,m1=0": 0.25,
+            "m0=1,m1=1": 0.25
+          },
+          "fidelity": 0.1766676593,
+          "measurementBits": {
+            "m0": 1,
+            "m1": 0
+          },
+          "details": {
+            "branchProbability": 0.25,
+            "expectedCorrections": {
+              "applyX": false,
+              "applyZ": true
+            },
+            "choiceFollowsRule": false,
+            "receiverBlochVector": [
+              -0.8209505112,
+              -0.3864875145,
+              0.4203185212
+            ],
+            "sourceFidelityAfterMeasurement": 0.2898407394
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "commit#1(bloch_b)",
+        "ms": 1.8,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "kind": "live_commit",
+          "circuitDescription": "prepare token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure m0, m1; Bob applies X iff m1=1, Z iff m0=1",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_b"
+          },
+          "facts": [
+            "Live bits m0 = 1, m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
+            "Receiver fidelity with the token: 1.000000.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver.",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "m0=0,m1=0": 0.25,
+            "m0=0,m1=1": 0.25,
+            "m0=1,m1=0": 0.25,
+            "m0=1,m1=1": 0.25
+          },
+          "fidelity": 1,
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          },
+          "details": {
+            "shots": 1,
+            "appliedCorrections": {
+              "applyX": true,
+              "applyZ": true
+            },
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.8331380106
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "commit#2(bloch_b)",
+        "ms": 0,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "kind": "live_commit",
+          "circuitDescription": "prepare token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure m0, m1; Bob applies X iff m1=1, Z iff m0=1",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_b"
+          },
+          "facts": [
+            "Live bits m0 = 1, m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
+            "Receiver fidelity with the token: 1.000000.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver.",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "m0=0,m1=0": 0.25,
+            "m0=0,m1=1": 0.25,
+            "m0=1,m1=0": 0.25,
+            "m0=1,m1=1": 0.25
+          },
+          "fidelity": 1,
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          },
+          "details": {
+            "shots": 1,
+            "appliedCorrections": {
+              "applyX": true,
+              "applyZ": true
+            },
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.8331380106
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      },
+      {
+        "label": "commit#3 after settle",
+        "ms": 0.1,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "kind": "live_commit",
+          "circuitDescription": "prepare token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure m0, m1; Bob applies X iff m1=1, Z iff m0=1",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_b"
+          },
+          "facts": [
+            "Live bits m0 = 1, m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
+            "Receiver fidelity with the token: 1.000000.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver.",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "m0=0,m1=0": 0.25,
+            "m0=0,m1=1": 0.25,
+            "m0=1,m1=0": 0.25,
+            "m0=1,m1=1": 0.25
+          },
+          "fidelity": 1,
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          },
+          "details": {
+            "shots": 1,
+            "appliedCorrections": {
+              "applyX": true,
+              "applyZ": true
+            },
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.8331380106
+          }
+        },
+        "nodeVerdict": [
+          "unknown field \"kind\"",
+          "unknown field \"details\"",
+          "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+        ]
+      }
+    ],
+    "commit": {
+      "samePromise": true,
+      "sameObjectAfterSettle": true
+    },
+    "verification": {
+      "samePromise": true,
+      "first": {
+        "status": "verified",
+        "result": {
+          "experiment": "bell_verification",
+          "engine": "qollab_selected_backend",
+          "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
+          "qubits": 2,
+          "parameters": {
+            "shots": 256,
+            "backend": "basic_simulator"
+          },
+          "counts": {
+            "11": 132,
+            "00": 124
+          },
+          "summary": {
+            "shots": 256,
+            "correlated": 256,
+            "correlatedFraction": 1,
+            "qubitOnes": {
+              "q0": 132,
+              "q1": 132
+            }
+          },
+          "facts": [
+            "Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.",
+            "Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.",
+            "256 of 256 shots (100.0%) had both qubits agree (00 or 11).",
+            "Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).",
+            "This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.",
+            "The agreement carries no message: on its own, each qubit reads 0 or 1 at random.",
+            "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
+          ]
+        }
+      },
+      "second": {
+        "status": "verified",
+        "result": {
+          "experiment": "bell_verification",
+          "engine": "qollab_selected_backend",
+          "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
+          "qubits": 2,
+          "parameters": {
+            "shots": 256,
+            "backend": "basic_simulator"
+          },
+          "counts": {
+            "11": 132,
+            "00": 124
+          },
+          "summary": {
+            "shots": 256,
+            "correlated": 256,
+            "correlatedFraction": 1,
+            "qubitOnes": {
+              "q0": 132,
+              "q1": 132
+            }
+          },
+          "facts": [
+            "Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.",
+            "Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.",
+            "256 of 256 shots (100.0%) had both qubits agree (00 or 11).",
+            "Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).",
+            "This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.",
+            "The agreement carries no message: on its own, each qubit reads 0 or 1 at random.",
+            "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
+          ]
+        }
+      },
+      "sameValue": true,
+      "pageVerdictOfFirst": [
+        "unknown field \"summary\"",
+        "experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    "spy": {
+      "counts": {
+        "backendRunAttempts": 1,
+        "backendRunCompleted": 1,
+        "verificationCalls": 1
+      },
+      "events": [
+        "run_bell_verification_once call #1",
+        "backend.run attempt #1",
+        "backend.run completed #1"
+      ],
+      "networkMock": true
+    }
+  },
+  "checks": [
+    {
+      "name": "main.js (harness) ran to the end without error",
+      "ok": true,
+      "detail": "page load → done in 5.3s"
+    },
+    {
+      "name": "served build token matches the one just written",
+      "ok": true,
+      "detail": "pb-sab-swallow-validator-head-20261010T000055-22732"
+    },
+    {
+      "name": "Python ran in Pyodide (sys.platform emscripten)",
+      "ok": true,
+      "detail": {
+        "sysPlatform": "emscripten",
+        "python": "3.14.2",
+        "qiskit": "2.5.2",
+        "pyodide": "314.0.7",
+        "coldImportSeconds": 0.001
+      }
+    },
+    {
+      "name": "Qiskit 2.x loaded",
+      "ok": true,
+      "detail": "2.5.2"
+    },
+    {
+      "name": "cloning(plus): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"circuitText\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "cloning(plus): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"circuitText\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "cloning(plus): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"circuitText\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "cloning(zero): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"circuitText\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "cloning(one): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"circuitText\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "cloning(bloch_a): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"circuitText\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "relay(I): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"circuitText\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "relay(X): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"circuitText\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "relay(Z): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"circuitText\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "calibration(bloch_a): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=true, Z=false): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=true): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=true, Z=true): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "commit#1(bloch_b): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "commit#2(bloch_b): delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "commit#3 after settle: delivered value re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"kind\"",
+        "unknown field \"details\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "cloning(plus): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "cloning(plus): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "cloning(plus): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "cloning(zero): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "cloning(one): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "cloning(bloch_a): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "relay(I): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "relay(X): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "relay(Z): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "calibration(bloch_a): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=true, Z=false): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=true): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=true, Z=true): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "commit#1(bloch_b): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "commit#2(bloch_b): non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "commit#3 after settle: non-conforming engine output is a LOUD ScientificModuleError",
+      "ok": false,
+      "detail": "delivered"
+    },
+    {
+      "name": "verify ×2: the second call returns the SAME promise",
+      "ok": true,
+      "detail": true
+    },
+    {
+      "name": "verify ×2: both callers get the same value",
+      "ok": true,
+      "detail": true
+    },
+    {
+      "name": "spy: exactly 1 entry into qollab_job.run_bell_verification_once",
+      "ok": true,
+      "detail": {
+        "backendRunAttempts": 1,
+        "backendRunCompleted": 1,
+        "verificationCalls": 1
+      }
+    },
+    {
+      "name": "spy: exactly 1 backend.run attempted",
+      "ok": true,
+      "detail": {
+        "backendRunAttempts": 1,
+        "backendRunCompleted": 1,
+        "verificationCalls": 1
+      }
+    },
+    {
+      "name": "spy: that backend.run completed (stack entered via callPromising)",
+      "ok": true,
+      "detail": {
+        "backendRunAttempts": 1,
+        "backendRunCompleted": 1,
+        "verificationCalls": 1
+      }
+    },
+    {
+      "name": "verified result re-validates in Node",
+      "ok": false,
+      "detail": [
+        "unknown field \"summary\"",
+        "experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\"",
+        "keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing"
+      ]
+    },
+    {
+      "name": "verified counts: 256 shots, ideal Bell keys only",
+      "ok": true,
+      "detail": {
+        "11": 132,
+        "00": 124
+      }
+    }
+  ]
+}
