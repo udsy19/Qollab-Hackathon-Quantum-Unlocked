@@ -1,0 +1,55 @@
+ref   platform  lane/platform/integration @ f08dd0bd9  (7 file(s) under echo/)
+ref   quantum   lane/quantum/integration @ c6558fbb1  (19 file(s) under echo/)
+ref   gameplay  lane/gameplay/integration @ 7c4741bb9  (6 file(s) under echo/)
+ref   story-ui  lane/story-ui/integration @ 320613e82  (10 file(s) under echo/)
+ref   art       lane/art/integration @ 9f5b7fcf9  (6 file(s) under echo/)
+CONFLICT    echo/CONTRACTS.md  in 5 refs with different bytes: platform:47bd498 quantum:8a2096f gameplay:65f85a6 story-ui:8a2096f art:8a2096f; took platform
+EXCLUDED    echo/QOLLAB_SMOKE_TEST.md  (echo/QOLLAB_SMOKE_TEST.md) carried by platform:582534a; release upload omits it
+CONFLICT    echo/contracts.js  in 5 refs with different bytes: platform:37e2588 quantum:fcbcd50 gameplay:f5d9633 story-ui:fcbcd50 art:fcbcd50; took platform
+EXCLUDED    echo/tests/conftest.py  (echo/tests/**) carried by quantum:1111c57; release upload omits it
+EXCLUDED    echo/tests/smoke_plan.md  (echo/tests/**) carried by quantum:f258a30; release upload omits it
+EXCLUDED    echo/tests/test_cloning.py  (echo/tests/**) carried by quantum:9bc584e; release upload omits it
+EXCLUDED    echo/tests/test_contract_conformance.py  (echo/tests/**) carried by quantum:5e34bee; release upload omits it
+EXCLUDED    echo/tests/test_entanglement.py  (echo/tests/**) carried by quantum:bb04045; release upload omits it
+EXCLUDED    echo/tests/test_formats.py  (echo/tests/**) carried by quantum:226d987; release upload omits it
+EXCLUDED    echo/tests/test_hardening_findings.py  (echo/tests/**) carried by quantum:2f27ac6; release upload omits it
+EXCLUDED    echo/tests/test_qollab_job.py  (echo/tests/**) carried by quantum:19397df; release upload omits it
+EXCLUDED    echo/tests/test_rulings.py  (echo/tests/**) carried by quantum:8ef23b2; release upload omits it
+EXCLUDED    echo/tests/test_teleportation.py  (echo/tests/**) carried by quantum:3ae0d56; release upload omits it
+RED  29 file(s) in /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nwE1AoTEL2/echo; 2 violation(s)
+MANIFEST    /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nwE1AoTEL2/echo.manifest.tsv  29 file(s), 241744 bytes
+caps  echo/quantum/qollab_job.py:169 backend-run-python Python calls backend.run itself; only JS may, unless the owner rules otherwise
+caps    info: echo/data/teachback.js:112 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+caps    info: echo/quantum/qollab_job.py:1 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+caps    info: echo/quantum/qollab_job.py:157 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+caps    info: echo/ui/menu.js:58 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+caps    info: backend.run: 2 call site(s): echo/main.js:199, echo/quantum/qollab_job.py:169
+caps  LIMITATIONS (not covered by any rule above):
+caps    - backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".
+caps    - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+caps    - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+caps    - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+caps    - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
+caps  scanned 29 files (25 code files) under /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nwE1AoTEL2/echo
+caps  RED: 1 failure(s) across 1 rule(s): backend-run-python
+SITE     platform   backend.run  echo/main.js:199
+SITE     quantum    backend.run  echo/quantum/qollab_job.py:169
+blockers, by lane (the lane whose ref must change):
+BLOCKER  art        CONFLICT  echo/contracts.js:337  differs from platform's copy
+BLOCKER  art        CONFLICT  echo/CONTRACTS.md:201  differs from platform's copy
+BLOCKER  gameplay   CONFLICT  echo/contracts.js:2  differs from platform's copy
+BLOCKER  gameplay   CONFLICT  echo/CONTRACTS.md:7  differs from platform's copy
+BLOCKER  quantum    CONFLICT  echo/contracts.js:337  differs from platform's copy
+BLOCKER  quantum    CONFLICT  echo/CONTRACTS.md:201  differs from platform's copy
+BLOCKER  quantum    backend-run-python  echo/quantum/qollab_job.py:169  Python calls backend.run itself; only JS may, unless the owner rules otherwise
+BLOCKER  story-ui   CONFLICT  echo/contracts.js:337  differs from platform's copy
+BLOCKER  story-ui   CONFLICT  echo/CONTRACTS.md:201  differs from platform's copy
+| lane | CONFLICT | NON-OWNER | UNOWNED | LEAKED | import-unresolved | import-specifier | backend-run-count | backend-run-python | other caps | total |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| platform | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| quantum | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 3 |
+| gameplay | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
+| story-ui | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
+| art | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
+RELEASE RED  29 file(s) to upload from /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nwE1AoTEL2/echo; assembly RED, caps RED; 9 blocker(s)
+exit 1

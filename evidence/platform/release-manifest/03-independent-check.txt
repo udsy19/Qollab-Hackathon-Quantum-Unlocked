@@ -1,0 +1,7 @@
+# independent: find + shasum + wc on the output tree, no node
+files: 29
+tests/ present: 0
+QOLLAB_SMOKE_TEST.md present: 0
+README.md present: yes
+largest file bytes:    29754 /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nwE1AoTEL2/echo/contracts.js
+manifest == independent listing: IDENTICAL (29 lines)

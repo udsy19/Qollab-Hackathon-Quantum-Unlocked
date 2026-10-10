@@ -1,0 +1,18 @@
+control: fixtures exit 0, clean release exit 0
+mutation                                       edit? result
+exclusion removed                              yes   CAUGHT by: release-clean, release-smoke-on-quantum, release-caps-red, release-unresolved-import, release-conflict
+exclusion AND the leak re-check removed        yes   CAUGHT by: release-clean, release-smoke-on-quantum, release-caps-red, release-unresolved-import, release-conflict
+'echo/tests/**' dropped from the list          yes   CAUGHT by: release-clean, release-smoke-on-quantum, release-caps-red, release-unresolved-import, release-conflict
+smoke doc dropped from the list                yes   CAUGHT by: release-clean, release-smoke-on-quantum
+manifest omits one file                        yes   CAUGHT by: release-clean, release-smoke-on-quantum, release-caps-red, release-unresolved-import, release-conflict
+manifest lists a phantom file                  yes   CAUGHT by: release-clean, release-smoke-on-quantum, release-caps-red, release-unresolved-import, release-conflict
+manifest bytes off by one                      yes   CAUGHT by: release-clean, release-smoke-on-quantum, release-caps-red, release-unresolved-import, release-conflict
+caps returns 1, assembly green                 yes   CAUGHT: release exit 1 (want 1)
+caps refuses (2), assembly green               yes   CAUGHT: release exit 2 (want 2)
+caps crashes (no site list), assembly green    yes   CAUGHT: release exit 2 (want 2)
+assembler ignores the caps exit code           yes   CAUGHT by: release-caps-red, release-unresolved-import
+caps blockers all blamed on platform           yes   CAUGHT by: release-caps-red, release-unresolved-import
+conflict blamed on the kept lane               yes   CAUGHT by: release-conflict
+conflict line off by one                       yes   CAUGHT by: release-conflict
+14 mutations, 0 null/refused
+exit 0
