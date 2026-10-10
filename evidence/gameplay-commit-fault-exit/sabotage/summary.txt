@@ -1,0 +1,6 @@
+0-control-unmutated: unit exit 0 (green) · playthrough exit 0 (green) · 
+1a-machine-no-restart-offer: unit exit 1 (RED) · playthrough exit 1 (RED) · Error: a measured, refused commit stranded the player: no RESTART offered (state TELEPORT_DRY_RUN_PASSED, note: commit: refused (measured_re
+1b-terminal-no-restart-button: unit exit 0 (green) · playthrough exit 1 (RED) · Error: a measured, refused commit stranded the player: no RESTART offered (state TELEPORT_DRY_RUN_PASSED, note: commit: refused (measured_re
+2a-machine-commit-rearms: unit exit 1 (RED) · playthrough exit 1 (RED) · Error: a second commit request reached the engine (state TELEPORT_DRY_RUN_PASSED, note: commit: refused (measured_refused) — corrections do 
+2b-terminal-commit-button-rearms: unit exit 0 (green) · playthrough exit 1 (RED) · Error: a latched commit is still offered (state TELEPORT_DRY_RUN_PASSED, note: commit: refused (measured_refused) — corrections do not match
+3-control-noop: MUTATION DID NOT APPLY (refused)

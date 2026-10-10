@@ -1,0 +1,49 @@
+{
+  "asBuilt": {
+    "reached": "CLONE_INTRO",
+    "commit": "idle",
+    "log": [
+      "BOOT_COMPLETE:ok",
+      "START:ok",
+      "SKIP:ok",
+      "OPEN_CLONE_BOOTH:ok",
+      "clone:zero→null (need a basis-state copy that succeeded)"
+    ]
+  },
+  "onV2": {
+    "reached": "CLONE_INTRO",
+    "commit": "idle",
+    "log": [
+      "BOOT_COMPLETE:ok",
+      "START:ok",
+      "SKIP:ok",
+      "OPEN_CLONE_BOOTH:ok",
+      "clone:zero→null (need a basis-state copy that succeeded)"
+    ]
+  },
+  "onV2Shim": {
+    "reached": "CREDITS",
+    "commit": "committed",
+    "log": [
+      "BOOT_COMPLETE:ok",
+      "START:ok",
+      "SKIP:ok",
+      "OPEN_CLONE_BOOTH:ok",
+      "clone:zero→BASIS_DEMO_OK",
+      "clone:plus→SUPERPOSITION_DEMO_FAILED",
+      "EXPLANATION_READ:ok",
+      "EXIT_BOOTH:ok",
+      "REACH_RELAY:ok",
+      "bell:I→PREPARE_BELL_PAIR",
+      "bell:X→ATTEMPT_NO_SIGNALLING",
+      "VIEW_RECEIVER_MARGINAL:ok",
+      "OPEN_ROOFTOP:ok",
+      "REPAIR_CLASSICAL_LINK:ok",
+      "RUN_DRY_TEST:ok",
+      "corr:bloch_a:01:10→CORRECT_CALIBRATION",
+      "commit→COMMITTED",
+      "ANIMATION_END:ok",
+      "OPEN_CREDITS:ok"
+    ]
+  }
+}

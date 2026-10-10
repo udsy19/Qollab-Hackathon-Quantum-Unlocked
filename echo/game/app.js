@@ -10,7 +10,7 @@ import { createFollowCamera } from './camera.js';
 import { createInteractions } from './interactions.js';
 
 // Read back from the served page to prove which build a screenshot came from.
-export const BUILD = 'v2p-0006-b';
+export const BUILD = 'pm-0011-a';
 
 const FIXED_DT = 1 / 60;
 const MAX_STEPS = 6;

@@ -48,9 +48,10 @@ export const COMMIT_STATUS = Object.freeze({
   IN_FLIGHT: 'in_flight',
   COMMITTED: 'committed',
   // A result came back but did not show a correct transfer. The rule applies the corrections
-  // inside the call, so this is an engine fault: the token is spent and the quest cannot
-  // honestly advance. Visible state, awaiting an owner ruling on what the player sees.
-  MEASURED_REFUSED: 'measured_refused_awaiting_ruling',
+  // inside the call (§7.4), so this is an engine fault after measurement: the token is spent,
+  // the quest cannot honestly advance and COMMIT never re-arms. The way on is resetGame()
+  // (§9.5): a new session with a fresh token. See machine.commitFault.
+  MEASURED_REFUSED: 'measured_refused',
 });
 
 export function createQuestMachine(bus) {
@@ -58,6 +59,7 @@ export function createQuestMachine(bus) {
   let epoch = 0; // one value per session; bumps on resetGame()
   let seq = 0; // bumps on every delivered change, so a ticket is ABA-proof within a session too
   let commit = COMMIT_STATUS.IDLE;
+  let commitFault = null; // what the UI shows while the latch is MEASURED_REFUSED
   let panelSeq = -1; // seq at which story-ui last showed a result panel
   // Run-to-completion: a send() or resetGame() made while listeners are hearing about a change is
   // queued, so every listener hears every change in the order it happened, and machine.state
@@ -74,7 +76,7 @@ export function createQuestMachine(bus) {
         const job = queue.shift();
         state = job.payload.to;
         seq++;
-        if (job.reset) { epoch++; commit = COMMIT_STATUS.IDLE; }
+        if (job.reset) { epoch++; commit = COMMIT_STATUS.IDLE; commitFault = null; }
         bus.emit(BUS_EVENTS.QUEST_STATE_CHANGED, job.payload);
       }
     } finally {
@@ -168,7 +170,10 @@ export function createQuestMachine(bus) {
     const verdict = eventForResult(t.state, result);
     if (verdict.event !== COMMIT || !isCurrent(t)) {
       commit = COMMIT_STATUS.MEASURED_REFUSED;
-      return { ok: false, commit, result, reason: verdict.event ? 'the quest moved during the commit' : verdict.reason };
+      const reason = verdict.event ? 'the quest moved during the commit' : verdict.reason;
+      // No fabricated success (§12.3): the token was measured and is gone, verification failed.
+      commitFault = Object.freeze({ tokenConsumed: true, verified: false, reason, result, restartOffered: true });
+      return { ok: false, commit, result, reason };
     }
     commit = COMMIT_STATUS.COMMITTED;
     const r = advance(COMMIT);
@@ -179,6 +184,7 @@ export function createQuestMachine(bus) {
     get state() { return state; },
     get epoch() { return epoch; },
     get commit() { return commit; },
+    get commitFault() { return commitFault; },
     send, can, resetGame, resultPanelShown, ticket, isCurrent, experiment, commitTransfer,
   };
 }

@@ -1,6 +1,8 @@
 // Headless playthrough of the 3D gameplay harness through REAL input (keyboard + mouse drag), with
 // screenshots: title → three missions → a visibly wrong dry run → commit → city lit → ending →
-// RESTART → title, then a second full run after the reset, ending through the credits.
+// RESTART → title; a second run whose story commit is forced to come back measured but refused
+// (the dev engine's fault switch) → honest scientific-module error, COMMIT never re-armed, RESTART;
+// then a third full run in the new session, ending through the credits.
 //
 //   node dev/gameplay/world-playthrough.mjs [outDir] [--port 8647] [--falsify] [--publish]
 //
@@ -9,9 +11,11 @@
 // fully green run) copies the record to PUBLISH_DIR — a deliberate act, never a side effect of grading.
 // Provenance (law 16): the expected BUILD token is read from echo/game/app.js bytes on disk, the served
 // one from the page; a mismatch aborts (exit 2).
-// --falsify: in-page collider sabotage, plus three sabotages on DISPOSABLE COPIES of the tree (law 10),
-// each served by its own server: a WORLD_CHANGES id renamed in the subscriber, the RESTART/reset
-// handler removed, and the EVENT_SOURCES gate removed. Each must turn its check red.
+// --falsify: in-page collider sabotage, plus sabotages on DISPOSABLE COPIES of the tree (law 10),
+// each served by its own server after an unbroken control on the same copy: a WORLD_CHANGES id
+// renamed in the subscriber, the RESTART/reset handler removed, the EVENT_SOURCES gate removed, and
+// three on the refused commit (no RESTART offer, COMMIT re-armed, validateCommitResult bypassed).
+// Each must turn its check red.
 // Exit 0 = every check passed, 1 = a check failed, 2 = could not grade.
 import { createRequire } from 'node:module';
 import { execSync, spawn } from 'node:child_process';
@@ -28,7 +32,7 @@ const opt = (name, dflt) => { const i = argv.indexOf(name); return i >= 0 ? argv
 const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const PORT = Number(opt('--port', 8647));
 const OUT = path.resolve(argv.find((a, i) => !a.startsWith('--') && argv[i - 1] !== '--port') ?? path.join(process.env.TMPDIR ?? '/tmp', 'echo-v2-playthrough'));
-const PUBLISH_DIR = path.join(ROOT, 'evidence/gameplay/world-v2-port');
+const PUBLISH_DIR = path.join(ROOT, 'evidence/gameplay/port-merge/world');
 const FALSIFY = flag('--falsify');
 fs.mkdirSync(OUT, { recursive: true });
 const expected = /BUILD = '([^']+)'/.exec(fs.readFileSync(path.join(ROOT, 'echo/game/app.js'), 'utf8'))[1];
@@ -81,6 +85,13 @@ const errors = [];
 const page = await openPage(URL_, errors);
 try { await page.waitForFunction(() => window.__echo, { timeout: 20000 }); } catch { await refuse(`the game did not boot: ${errors.join(' | ')}`); }
 
+// Engine commit calls per session, counted at the adapter (outside the quest machine), so the
+// one-measurement-per-token claim does not rest on the machine's own latch.
+const countCommits = (pg) => pg.evaluate(() => {
+  const e = window.__engine; const real = e.commitStoryToken; window.__commitCalls = {};
+  e.commitStoryToken = (...a) => { const k = window.__echo.quest.epoch; window.__commitCalls[k] = (window.__commitCalls[k] ?? 0) + 1; return real(...a); };
+});
+await countCommits(page);
 const served = await page.evaluate(() => window.__echo.BUILD);
 const gl = await page.evaluate(() => {
   const c = document.createElement('canvas').getContext('webgl2');
@@ -181,8 +192,41 @@ async function closeTerminal() { await page.click('#term-close'); await sleep(15
 async function pressE() { await page.keyboard.press('KeyE'); await sleep(250); }
 const lastResult = () => page.evaluate(() => JSON.parse(document.querySelector('#term-host .dt-result')?.textContent || 'null'));
 
+// A measured, refused story commit (§7.4, §9.5, §12.3), forced with the dev engine's fault switch
+// (the engine applies the wrong X inside the one atomic call, so a real Qiskit result comes back and
+// fails validateCommitResult). Everything is read from the page: the call count at the adapter, the
+// panel and the buttons from the DOM. Used by the main run and by the commit sabotages.
+async function refusedCommit(pg) {
+  const before = await pg.evaluate(() => window.__commitCalls[window.__echo.quest.epoch] ?? 0);
+  await pg.evaluate(() => window.__engine.faultNextCommit());
+  const clicked = await pg.evaluate(() => {
+    const b = [...document.querySelectorAll('#term-host button')].find((x) => x.textContent.trim() === 'COMMIT TRANSFER (story token, once)' && !x.disabled);
+    b?.click(); return Boolean(b);
+  });
+  if (!clicked) return { ok: false, detail: `no enabled COMMIT button in ${await pg.evaluate(() => window.__echo.quest.state)}` };
+  await pg.waitForFunction(() => /^commit: /.test(document.querySelector('#term-host .dt-note')?.textContent ?? ''), { timeout: 15000 }).catch(() => {});
+  // Under the button: a direct second request must not reach the engine.
+  const again = await pg.evaluate(async () => (await window.__echo.quest.commitTransfer(() => window.__engine.commitStoryToken())).ok);
+  const f = await pg.evaluate(() => ({
+    state: window.__echo.quest.state, latch: window.__echo.quest.commit,
+    calls: window.__commitCalls[window.__echo.quest.epoch] ?? 0,
+    panel: (document.querySelector('#term-host .dt-fault')?.innerText ?? '').replace(/\n+/g, ' | '),
+    commitOffered: [...document.querySelectorAll('#term-host button')].some((b) => b.textContent.startsWith('COMMIT') && !b.disabled),
+    restart: [...document.querySelectorAll('#term-host button')].some((b) => b.textContent.trim() === 'RESTART (resetGame)' && !b.disabled),
+  }));
+  const bad = [];
+  if (f.state !== 'TELEPORT_DRY_RUN_PASSED') bad.push(`quest advanced to ${f.state}`);
+  if (f.latch !== 'measured_refused') bad.push(`latch ${f.latch}`);
+  if (f.calls - before !== 1 || again) bad.push(`engine commit calls this session ${f.calls - before}, direct retry ok=${again}`);
+  if (!/measured and consumed/.test(f.panel) || !/Verification failed/.test(f.panel) || !/Refusal: \S/.test(f.panel)) bad.push(`no honest scientific-module error: "${f.panel}"`);
+  if (f.commitOffered) bad.push('COMMIT offered again');
+  if (!f.restart) bad.push('no RESTART offered: the player is stranded');
+  return { ok: bad.length === 0, detail: bad.length ? bad.join('; ') : `${f.latch}, 1 engine call, panel: ${f.panel}` };
+}
+
 // ---------------------------------------------------------------- one full run, start to ENDING
-async function fullRun(run) {
+// `fault`: the story commit is forced to come back measured but refused; the run ends with RESTART.
+async function fullRun(run, { fault = false } = {}) {
   const first = run === 1;
   const tag = (n) => `r${run}-${n}`;
   if (first) await shot('01-title');
@@ -370,6 +414,19 @@ async function fullRun(run) {
   }
   check(`run ${run}: correct dry run → TELEPORT_DRY_RUN_PASSED, every attempt on a fresh state`, passed && states.size >= 2, `${states.size} distinct states`);
   if (first) await shot('11-dry-run-passed');
+  if (fault) {
+    const f = await refusedCommit(page);
+    check(`run ${run}: commit measured but refused → honest error, token measured once, COMMIT never re-armed, RESTART offered`, f.ok, f.detail);
+    await shot(`r${run}-commit-refused-scientific-module-error-restart`);
+    const e0 = await page.evaluate(() => window.__echo.quest.epoch);
+    await tbtn('RESTART (resetGame)', 'TITLE');
+    await sleep(400);
+    const r = await dbg();
+    const clean = await page.evaluate((e) => window.__echo.quest.epoch === e + 1 && window.__echo.quest.commit === 'idle' && window.__echo.quest.commitFault === null
+      && !document.querySelector('#term-host .dt-fault') && document.getElementById('terminal').hidden, e0);
+    check(`run ${run}: RESTART from the fault → TITLE, new session, idle latch, world reset`, atSpawn(r) && clean, JSON.stringify({ state: r.state, player: r.player, changes: r.changes }));
+    return;
+  }
   await tbtn('COMMIT TRANSFER (story token, once)');
   check(`run ${run}: commit → TELEPORT_COMMITTED`, (await dbg()).state === 'TELEPORT_COMMITTED');
   const second = await page.evaluate(() => window.__echo.quest.commitTransfer(() => window.__engine.commitStoryToken()));
@@ -395,7 +452,10 @@ await sleep(400);
 let s = await dbg();
 check('ENDING → RESTART → TITLE: player at spawn, doors closed, no world change in force', atSpawn(s), JSON.stringify({ state: s.state, player: s.player, changes: s.changes }));
 await shot('15-restart-title');
-await fullRun(2);
+await fullRun(2, { fault: true });
+await fullRun(3);
+const calls = await page.evaluate(() => ({ ...window.__commitCalls }));
+check('engine commit calls per session: exactly one each (run 1, the refused run 2, run 3 after RESTART)', JSON.stringify(calls) === JSON.stringify({ 0: 1, 1: 1, 2: 1 }), JSON.stringify(calls));
 await page.click('#end-credits');
 await sleep(200);
 await shot('16-credits');
@@ -447,6 +507,37 @@ async function toCloneUnderstood(pg) {
   });
   return (await dbg(pg)).state;
 }
+// The short way to the armed commit, each event from its rightful source; the dry run on fresh
+// generic states with the §7.1 corrections, through the dev engine (real Qiskit).
+async function toDryRunPassed(pg) {
+  await pg.waitForFunction(() => window.__echo, { timeout: 8000 });
+  await countCommits(pg);
+  return pg.evaluate(async () => {
+    const q = window.__echo.quest; const e = window.__engine;
+    const c = await import('/echo/contracts.js');
+    const send = (...evs) => evs.forEach((ev) => q.send(ev, c.EVENT_SOURCES[ev].via));
+    const ack = (ev) => { q.resultPanelShown(); send(ev); };
+    send('START', 'SKIP', 'OPEN_CLONE_BOOTH');
+    await q.experiment(() => e.cloneTest('zero')); await q.experiment(() => e.cloneTest('plus'));
+    ack('EXPLANATION_READ');
+    send('EXIT_BOOTH', 'REACH_RELAY');
+    await q.experiment(() => e.bellSignalling('I')); await q.experiment(() => e.bellSignalling('X'));
+    ack('VIEW_RECEIVER_MARGINAL');
+    send('OPEN_ROOFTOP', 'REPAIR_CLASSICAL_LINK', 'RUN_DRY_TEST');
+    for (let i = 0; i < 20 && q.state === 'TELEPORT_DRY_RUN'; i++) {
+      const req = c.randomGenericState(); const bits = await e.teleportBits(req);
+      const { m0, m1 } = bits.measurementBits;
+      const corr = c.makeCorrectionRequest(req, bits, { applyX: m1 === 1, applyZ: m0 === 1 });
+      await q.experiment(() => e.teleportCorrection(corr), corr);
+    }
+    return q.state;
+  });
+}
+async function refusedCommitCheck(pg) {
+  const st = await toDryRunPassed(pg);
+  if (st !== 'TELEPORT_DRY_RUN_PASSED') return { ok: false, detail: `could not arm the commit: ${st}` };
+  return refusedCommit(pg);
+}
 const SABOTAGES = [
   { name: 'WORLD_CHANGES id renamed in the subscriber (alley door: corridor_door_opens → corridor_door_open)',
     file: 'echo/scene/alley.js', from: "openOn: 'corridor_door_opens'", to: "openOn: 'corridor_door_open'",
@@ -480,6 +571,13 @@ const SABOTAGES = [
       const d = await dbg(pg);
       return { ok: !r.ok && d.state === 'CLONE_UNDERSTOOD', detail: `send ok=${r.ok} state=${d.state}` };
     } },
+  // The refused commit (§7.4, §9.5): the check is refusedCommit() on a forced engine fault.
+  { name: 'no RESTART offer on a refused commit (state.js: restartOffered false)',
+    file: 'echo/game/state.js', from: 'restartOffered: true })', to: 'restartOffered: false })', check: refusedCommitCheck },
+  { name: 'COMMIT re-armed after measured_refused (state.js: the latch returns to idle)',
+    file: 'echo/game/state.js', from: 'commit = COMMIT_STATUS.MEASURED_REFUSED;', to: 'commit = COMMIT_STATUS.IDLE;', check: refusedCommitCheck },
+  { name: 'validateCommitResult bypassed (missionRules.js: no errors on any commit result)',
+    file: 'echo/game/missionRules.js', from: 'const errors = validateCommitResult(r);', to: 'const errors = [];', check: refusedCommitCheck },
 ];
 if (FALSIFY) {
   let port = PORT + 1;

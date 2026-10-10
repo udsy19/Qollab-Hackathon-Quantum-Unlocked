@@ -14,11 +14,16 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (3)
+## Notes here (8)
 
 - [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
+- [[Reports/gameplay-real-engine-seam|Real-engine seam: gameplay quest rules fed real Qiskit results]]
 - [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
+- [[Reports/quest-core-adversarial-review|Quest core: adversarial review (gameplay integration @ d5ec620)]]
+- [[Reports/quest-state-machine-contract|Quest state machine contract (echo/game) — what the world and the UI code against]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
+- [[Reports/world-controller-contract|World + controller contract (echo/game, echo/scene): controls, collision and interaction]]
+- [[Reports/world-v2-port|The 3D world on contracts v2: one quest table, WORLDCHANGES ids, EVENTSOURCES, the two-phase dry run]]
 
 ## Below this folder
 

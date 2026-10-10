@@ -1,0 +1,80 @@
+build expected=v2p-0006-b (echo/game/app.js on disk) served=v2p-0006-b port=8731 renderer=ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)
+PASS  run 1: title shown at TITLE  
+PASS  run 1: PLAY → FREE_ROAM_ALLEY  
+PASS  mouse drag (+200 px) orbits the camera  yaw 0.00 → -0.52
+PASS  run 1: prompt at booth when near + facing  {"x":3.6066454526026637,"z":-11.502234926508812,"heading":-1.6151056906784136,"speed":0.024439400305973615}
+PASS  no prompt behind pylon (in range, facing)  dist=2.17 heading=-2.39
+PASS  door A blocks before corridor_door_opens  z=-25.85
+PASS  run 1: E opens booth terminal, quest → CLONE_INTRO  
+walk video: 926 frames over 37.6 s → walk.mp4
+PASS  terminal "Duplicate zero" → CLONE_BASIS_PASSED  CLONE_BASIS_PASSED
+PASS  terminal "Duplicate plus" → CLONE_SUPERPOSITION_FAILED  CLONE_SUPERPOSITION_FAILED
+PASS  run 1: |+> copy shows fidelity 0.5 from exact_qiskit_local  exact_qiskit_local F=0.5
+PASS  run 1: EXPLANATION_READ refused before the result panel (ruling 13)  
+PASS  terminal "EXPLANATION_READ" → CLONE_UNDERSTOOD  CLONE_UNDERSTOOD
+PASS  run 1: EXIT_BOOTH sent from a terminal is refused (EVENT_SOURCES)  EXIT_BOOTH comes from gameplay via world_trigger, not terminal_acknowledgement
+PASS  run 1: no EXIT_BOOTH button in the world terminal  
+PASS  run 1: corridor_door_opens in force and door A open  ["booth_indicator_red_fades","corridor_door_opens","objective_target_glows"]
+PASS  run 1: EXIT_BOOTH world trigger → RELAY_UNLOCKED  
+PASS  door B blocks before rooftop_access_unlocked  x=8.85
+PASS  run 1: prompt at relay core  {"x":-0.10156321045044854,"z":-47.57898910772473,"heading":-5.410380982361523,"speed":0.010802736322260718}
+PASS  terminal "Sender I" → RELAY_BELL_CREATED  RELAY_BELL_CREATED
+PASS  run 1: cyan_conduit_illuminates in force  
+PASS  terminal "Sender X" → RELAY_SEND_FAILED  RELAY_SEND_FAILED
+PASS  run 1: receiver marginal after X is exactly 1/2, 1/2 (exact_qiskit_local)  {"0":0.5,"1":0.5}
+PASS  terminal "VIEW_RECEIVER_MARGINAL" → RELAY_UNDERSTOOD  RELAY_UNDERSTOOD
+PASS  run 1: rooftop_access_unlocked in force and door B open  
+PASS  run 1: OPEN_ROOFTOP from an interactable is refused (EVENT_SOURCES)  OPEN_ROOFTOP comes from gameplay via world_trigger, not interactable
+PASS  run 1: OPEN_ROOFTOP world trigger → ROOFTOP_UNLOCKED  
+PASS  run 1: prompt at classical socket  
+PASS  run 1: socket → LINK_REPAIRED  
+PASS  run 1: prompt at teleport_terminal  {"x":29.99553170491246,"z":-44.20151565014902,"heading":-9.415778829116485,"speed":0.07344276901651478}
+PASS  run 1: E at terminal → TELEPORT_DRY_RUN  
+PASS  run 1: COMMIT not offered before a passed dry run  
+PASS  run 1: bits shown before corrections, all four choices offered  m0=1 m1=0
+PASS  run 1: phase 1 carries bits and no fidelity, on a generic calibration state  {"theta":1.7539195129945846,"phi":-2.1693814458711533}
+PASS  terminal "Apply X then Z" → TELEPORT_DRY_RUN  TELEPORT_DRY_RUN
+PASS  run 1: wrong dry run visibly fails (Qiskit fidelity ≤ 0.9) and stays in TELEPORT_DRY_RUN  F=0.306974427306 θ=1.754 φ=-2.169 — dry run (X then Z): no progress — wrong correction for m0=1, m1=0: calibrate again on a fresh state · fidelity shown 0.306974427306
+PASS  run 1: correct dry run → TELEPORT_DRY_RUN_PASSED, every attempt on a fresh state  2 distinct states
+PASS  run 1: commit → TELEPORT_COMMITTED  
+PASS  run 1: a second commit is refused (token consumed once)  commit already committed
+PASS  run 1: city_lighting_wave in force  
+PASS  run 1: ANIMATION_END → ENDING  
+PASS  ENDING → RESTART → TITLE: player at spawn, doors closed, no world change in force  {"state":"TITLE","player":{"x":0,"z":2,"heading":0,"speed":0},"changes":[]}
+PASS  run 2: title shown at TITLE  
+PASS  run 2: PLAY → FREE_ROAM_ALLEY  
+PASS  run 2: prompt at booth when near + facing  {"x":3.6104066579743654,"z":-11.500192628530513,"heading":-1.5393360994187644,"speed":0.03280939508391272}
+PASS  run 2: E opens booth terminal, quest → CLONE_INTRO  
+PASS  terminal "Duplicate zero" → CLONE_BASIS_PASSED  CLONE_BASIS_PASSED
+PASS  terminal "Duplicate plus" → CLONE_SUPERPOSITION_FAILED  CLONE_SUPERPOSITION_FAILED
+PASS  run 2: |+> copy shows fidelity 0.5 from exact_qiskit_local  exact_qiskit_local F=0.5
+PASS  run 2: EXPLANATION_READ refused before the result panel (ruling 13)  
+PASS  terminal "EXPLANATION_READ" → CLONE_UNDERSTOOD  CLONE_UNDERSTOOD
+PASS  run 2: EXIT_BOOTH sent from a terminal is refused (EVENT_SOURCES)  EXIT_BOOTH comes from gameplay via world_trigger, not terminal_acknowledgement
+PASS  run 2: no EXIT_BOOTH button in the world terminal  
+PASS  run 2: corridor_door_opens in force and door A open  ["booth_indicator_red_fades","corridor_door_opens","objective_target_glows"]
+PASS  run 2: EXIT_BOOTH world trigger → RELAY_UNLOCKED  
+PASS  run 2: prompt at relay core  {"x":-0.007073275229637249,"z":-47.5915015867165,"heading":-1.7534032059596046e-17,"speed":0.05579136737324575}
+PASS  terminal "Sender I" → RELAY_BELL_CREATED  RELAY_BELL_CREATED
+PASS  run 2: cyan_conduit_illuminates in force  
+PASS  terminal "Sender X" → RELAY_SEND_FAILED  RELAY_SEND_FAILED
+PASS  run 2: receiver marginal after X is exactly 1/2, 1/2 (exact_qiskit_local)  {"0":0.5,"1":0.5}
+PASS  terminal "VIEW_RECEIVER_MARGINAL" → RELAY_UNDERSTOOD  RELAY_UNDERSTOOD
+PASS  run 2: rooftop_access_unlocked in force and door B open  
+PASS  run 2: OPEN_ROOFTOP from an interactable is refused (EVENT_SOURCES)  OPEN_ROOFTOP comes from gameplay via world_trigger, not interactable
+PASS  run 2: OPEN_ROOFTOP world trigger → ROOFTOP_UNLOCKED  
+PASS  run 2: prompt at classical socket  
+PASS  run 2: socket → LINK_REPAIRED  
+PASS  run 2: prompt at teleport_terminal  {"x":30.00501201378257,"z":-44.03546834095909,"heading":-9.463990833450124,"speed":0.04348024614762458}
+PASS  run 2: E at terminal → TELEPORT_DRY_RUN  
+PASS  run 2: COMMIT not offered before a passed dry run  
+PASS  run 2: bits shown before corrections, all four choices offered  m0=0 m1=1
+PASS  run 2: phase 1 carries bits and no fidelity, on a generic calibration state  {"theta":2.6447597532696667,"phi":-2.8477188803977533}
+PASS  terminal "Apply no correction" → TELEPORT_DRY_RUN  TELEPORT_DRY_RUN
+PASS  run 2: wrong dry run visibly fails (Qiskit fidelity ≤ 0.9) and stays in TELEPORT_DRY_RUN  F=0.208127145386 θ=2.645 φ=-2.848 — dry run (no correction): no progress — wrong correction for m0=0, m1=1: calibrate again on a fresh state · fidelity shown 0.208127145386
+PASS  run 2: correct dry run → TELEPORT_DRY_RUN_PASSED, every attempt on a fresh state  2 distinct states
+FAIL  run 2: commit measured but refused → honest error, token measured once, COMMIT never re-armed, RESTART offered  latch measured_refused_awaiting_ruling; no honest scientific-module error: ""; no RESTART offered: the player is stranded
+Error: no enabled terminal button "RESTART (resetGame)" in TELEPORT_DRY_RUN_PASSED
+    at tbtn (file:///private/tmp/pm-red/dev/gameplay/world-playthrough.mjs:170:18)
+    at async fullRun (file:///private/tmp/pm-red/dev/gameplay/world-playthrough.mjs:422:5)
+    at async file:///private/tmp/pm-red/dev/gameplay/world-playthrough.mjs:455:1

@@ -307,18 +307,50 @@ test('F4: a commit call that errors measured nothing, so it may be retried once 
   assert.equal(calls, 2);
 });
 
-test('F4: a commit result that came back but was refused latches: no second request, quest does not move', async () => {
+// A result came back, so the story token was measured (§7.4): COMMIT never re-arms, but the player
+// is told why and offered RESTART (§9.5), and the new session's token commits. Literal status
+// names here, not COMMIT_STATUS, so a renamed latch is caught.
+test('F4: a measured, refused commit spends the token, says why, offers RESTART, and the next session commits', async () => {
   const { m } = await machineIn('TELEPORT_DRY_RUN_PASSED');
   let calls = 0;
   const bad = { ...goodCommit(), parameters: { stateId: 'story_token', applyX: false, applyZ: false } };
   const r = await m.commitTransfer(async () => { calls++; return bad; });
   assert.equal(r.ok, false);
-  assert.equal(m.commit, COMMIT_STATUS.MEASURED_REFUSED);
+  assert.equal(m.commit, 'measured_refused');
   assert.equal(m.state, 'TELEPORT_DRY_RUN_PASSED');
-  assert.equal((await m.commitTransfer(async () => { calls++; return goodCommit(); })).ok, false);
-  assert.equal(calls, 1);
+  const fault = m.commitFault;
+  assert.ok(fault, 'the refusal is exposed for the UI');
+  assert.equal(fault.tokenConsumed, true);
+  assert.equal(fault.verified, false);
+  assert.equal(typeof fault.reason, 'string');
+  assert.ok(fault.reason.length > 0 && fault.reason === r.reason, 'the refusal reason reaches the UI');
+  assert.equal(fault.restartOffered, true);
+  for (let i = 0; i < 3; i++) assert.equal((await m.commitTransfer(async () => { calls++; return goodCommit(); })).ok, false);
+  assert.equal(calls, 1, 'the measured token is never measured again');
+  assert.equal(m.commit, 'measured_refused');
+  const e0 = m.epoch;
   m.resetGame();
-  assert.equal(m.commit, COMMIT_STATUS.IDLE, 'only a new session re-arms the latch');
+  assert.equal(m.state, 'TITLE');
+  assert.equal(m.epoch, e0 + 1);
+  assert.equal(m.commit, 'idle', 'only a new session re-arms the latch');
+  assert.equal(m.commitFault, null);
+  let calls2 = 0;
+  for (const [ev] of WALK.slice(1, 16)) assert.equal(await play(m, ev), true, `second session: ${ev}`);
+  const c = await m.commitTransfer(async () => { calls2++; return goodCommit(); });
+  assert.equal(c.ok, true);
+  assert.equal(calls2, 1);
+  assert.equal(m.state, 'TELEPORT_COMMITTED');
+  assert.equal(sendAs(m, 'ANIMATION_END').ok, true); // v2: as its EVENT_SOURCES source
+  assert.equal(m.state, 'ENDING');
+});
+
+test('F4: no fault is exposed on a clean or an errored commit', async () => {
+  const { m } = await machineIn('TELEPORT_DRY_RUN_PASSED');
+  assert.equal(m.commitFault, null);
+  await m.commitTransfer(async () => { throw new Error('bridge timeout'); });
+  assert.equal(m.commitFault, null, 'nothing was measured, so nothing was consumed');
+  await m.commitTransfer(async () => goodCommit());
+  assert.equal(m.commitFault, null);
 });
 
 test('F4: a commit result that lands after resetGame() neither commits nor latches the new session', async () => {
