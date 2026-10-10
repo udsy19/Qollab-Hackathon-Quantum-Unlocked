@@ -41,6 +41,8 @@ export function mountMenu(root, { settings, onChange = () => {}, onStart = () =>
   const overlay = el('div', 'echo-menu');
   overlay.setAttribute('role', 'dialog');
   overlay.setAttribute('aria-modal', 'true');
+  // A name even while closed; show() swaps in the open screen's heading.
+  overlay.setAttribute('aria-label', 'Menu');
   overlay.dataset.visible = 'false';
 
   // Title (vision §4.1 Shot A card, §12.5 Gate C "strong title screen").
@@ -150,6 +152,7 @@ export function mountMenu(root, { settings, onChange = () => {}, onStart = () =>
     for (const [key, node] of Object.entries(screens)) node.hidden = key !== id;
     overlay.dataset.screen = id;
     overlay.setAttribute('aria-labelledby', `echo-menu-${id}-title`);
+    overlay.removeAttribute('aria-label');
     overlay.dataset.visible = 'true';
     root.dataset.menuOpen = 'true';
     if (id === 'settings') syncForm();
@@ -167,6 +170,8 @@ export function mountMenu(root, { settings, onChange = () => {}, onStart = () =>
     stack = [];
     overlay.dataset.visible = 'false';
     delete overlay.dataset.screen;
+    overlay.removeAttribute('aria-labelledby');
+    overlay.setAttribute('aria-label', 'Menu');
     root.dataset.menuOpen = 'false';
     for (const node of Object.values(screens)) node.hidden = true;
     if (returnFocus && returnFocus.isConnected && returnFocus !== document.body) returnFocus.focus();
