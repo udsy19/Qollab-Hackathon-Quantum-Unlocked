@@ -536,6 +536,73 @@ for (const r of ts.rows.filter(r => JSON.stringify({ applyX: r.applyX, applyZ: r
   ok(got === false, `PIN verdict requires the ruled correction (X iff m1=1, Z iff m0=1): wrong choice m0=${r.m0} m1=${r.m1} X=${r.applyX} Z=${r.applyZ} at F=1 does not pass (got ${JSON.stringify(got)})`)
 }
 
+console.log('· the one story commit (vision §7.4; owner, gameplay consult 3: one atomic local exact call)')
+// Ground truth: Qiskit's fidelity on every rule-following branch of the oracle states (teleport_oracle.py),
+// the ruled rule RULED_RULE, and the marker typed here. The token's state is hidden, so a commit carries no
+// angles: what it can be graded on is the bits, the corrections applied to THOSE bits, and the fidelity.
+// The commit is the game's last step, so nothing behind it catches a wrong verdict: each guard below is the
+// only one for its defect (red-team 0005 §5: fidelity 0.9 and swapped m0/m1 were "valid").
+const MARKER = 'story_token'  // red-team 0005 §5 / gameplay missionRules.js STORY_TOKEN_ID; supervisor brief consult 11: ONE name, parameters.stateId
+pin('STORY_TOKEN_ID', C.STORY_TOKEN_ID, MARKER, 'supervisor brief consult 11: the commit names its state parameters.stateId === "story_token"')
+const VC = r => errs(call(C.validateCommitResult, r))
+const commitRes = (bits, f, choice = RULED_RULE(bits.m0, bits.m1), extra = {}) => ({
+  experiment: 'teleportation', engine: 'exact_qiskit_local', circuitDescription: 'commit probe', qubits: 3,
+  parameters: { stateId: MARKER, ...choice, ...extra }, probabilities: { '00': 0.25, '01': 0.25, '10': 0.25, '11': 0.25 },
+  keyQubits: [1, 0], measurementBits: bits, fidelity: f, facts: ['commit probe'] })
+let commitsSeen = 0
+for (const st of T.states) {
+  for (const r of st.rows.filter(r => JSON.stringify({ applyX: r.applyX, applyZ: r.applyZ }) === JSON.stringify(RULED_RULE(r.m0, r.m1)))) {
+    commitsSeen++
+    const e = VC(commitRes({ m0: r.m0, m1: r.m1 }, r.fidelity))
+    ok(e.length === 0, `commit with Qiskit's rule-following branch accepted: ${st.name} m0=${r.m0} m1=${r.m1} F=${r.fidelity} (errors ${JSON.stringify(e)})`)
+  }
+}
+ok(commitsSeen === 4 * T.states.length, `every oracle state contributes its 4 rule-following commits (${commitsSeen})`)
+// Every wrong correction, at a perfect fidelity: the rule is the only guard that can see it.
+for (const [m0, m1] of [[0, 0], [0, 1], [1, 0], [1, 1]]) {
+  for (const applyX of [false, true]) for (const applyZ of [false, true]) {
+    if (JSON.stringify({ applyX, applyZ }) === JSON.stringify(RULED_RULE(m0, m1))) continue
+    ok(VC(commitRes({ m0, m1 }, 1, { applyX, applyZ })).some(x => x.includes('rule')),
+      `commit with corrections X=${applyX} Z=${applyZ} on m0=${m0} m1=${m1} (not the rule) refused at F=1`)
+  }
+}
+const one = { m0: 1, m1: 0 }
+for (const [what, res, needle] of [
+  ['fidelity 0.9 (red-team row fidelity_0_9_commit)', commitRes(one, 0.9), 'fidelity'],
+  ['m0/m1 swapped: bits 1,0 with the corrections of 0,1 (red-team row m0m1_swapped_commit)', commitRes(one, 1, RULED_RULE(0, 1)), 'rule'],
+  ['no story-token marker', (r => { delete r.parameters.stateId; return r })(commitRes(one, 1)), 'stateId'],
+  ['the engine\'s pre-contract marker parameters.state "token"', (r => { delete r.parameters.stateId; r.parameters.state = 'token'; return r })(commitRes(one, 1)), 'stateId'],
+  ['a calibration marker', commitRes(one, 1, undefined, { stateId: 'calibration' }), 'stateId'],
+  ['counts on an exact result', { ...commitRes(one, 1), counts: { '00': 64, '01': 64, '10': 64, '11': 64 } }, 'counts'],
+  ['a documented preview', { ...commitRes(one, 1), engine: 'documented_preview' }, 'exact_qiskit_local'],
+  ['experiment cloning', { ...commitRes(one, 1), experiment: 'cloning', measurementBits: undefined }, 'teleportation'],
+  ['no fidelity', (({ fidelity, ...r }) => r)(commitRes(one, 1)), 'fidelity'],
+  ['no measurementBits', (({ measurementBits, ...r }) => r)(commitRes(one, 1)), 'measurementBits'],
+  ['no applied corrections in parameters', (r => { delete r.parameters.applyX; delete r.parameters.applyZ; return r })(commitRes(one, 1)), 'applyX'],
+  ['applyZ as the number 1', commitRes(one, 1, { applyX: false, applyZ: 1 }), 'applyZ'],
+  ['the token\'s angles (the token is never shown)', commitRes(one, 1, undefined, { theta: 2.03, phi: -2.61 }), 'theta'],
+  ['parameters.m0 contradicting measurementBits', commitRes(one, 1, undefined, { m0: 0 }), 'parameters.m0'],
+  ['an invalid ExperimentResult (empty facts)', { ...commitRes(one, 1), facts: [] }, 'facts'],
+]) {
+  const e = VC(res)
+  ok(e.some(x => x.includes(needle)), `commit with ${what} refused (an error mentioning "${needle}"; got ${JSON.stringify(e)})`)
+}
+for (const junk of [null, undefined, 'commit', [], new Map()]) {
+  const e = VC(junk)
+  ok(e.length > 0 && !e[0].startsWith('NOT A LIST'), `validateCommitResult(${describeJunk(junk)}) returns errors, never throws (got ${JSON.stringify(e)})`)
+}
+function describeJunk(v) { return v instanceof Map ? 'a Map' : JSON.stringify(v) ?? 'undefined' }
+// The floor is the §7.4 band on the commit too: the same probes as the dry-run verdict.
+for (const [f, want] of [[1, true], [0.999999, true], [0.999999 - 1e-15, true], [0.999999 - 1e-9, false], [0.99999, false], [0.9, false]]) {
+  const got = VC(commitRes({ m0: 1, m1: 1 }, f)).length === 0
+  ok(got === want, `PIN commit floor FIDELITY_PASS 0.999999 (vision §7.4): rule-following commit at F=${f} ${want ? 'accepted' : 'refused'} (got ${got ? 'accepted' : 'refused'})`)
+}
+// The token never enters a dry run (§7.4): a dry-run result carrying the marker is refused in both phases.
+ok(errs(call(C.validateTeleportBitsResult, ex.bitsRequest, { ...ex.bitsResult, parameters: { ...ex.bitsResult.parameters, stateId: MARKER } })).some(x => x.includes('stateId')),
+  'phase-1 result carrying the story-token marker refused')
+ok(errs(call(C.validateTeleportCorrectionResult, c0.request, { ...c0.result, parameters: { ...c0.result.parameters, stateId: MARKER } })).some(x => x.includes('stateId')),
+  'phase-2 result carrying the story-token marker refused')
+
 console.log('· the export surface is exactly the documented contract')
 // Typed here, not read from the module: a new export is a contract change (CONTRACTS.md migration row
 // + this list). Without it an undeclared name such as COUNTDOWN_GAME_OVER passed green (consult 9 null).
@@ -543,9 +610,9 @@ const EXPECTED_EXPORTS = ['BACKEND_SHOTS', 'BELL_RECEIVER_QUBIT', 'BIT_LABELS', 
   'COUNTDOWN_START_SECONDS', 'DEFAULT_SETTINGS', 'ENGINE_KINDS', 'EVENT_SOURCES', 'EXPERIMENTS',
   'FIDELITY_CROSSCHECK_TOLERANCE', 'FIDELITY_EPSILON', 'FIDELITY_PASS', 'GENERIC_MAX_WRONG_FIDELITY', 'INITIAL_STATE',
   'INTERACTABLE_BINDINGS', 'INTERACTABLE_IDS', 'MOMENT_EVENTS', 'PROBABILITY_TOLERANCE', 'QUALITY_LEVELS',
-  'QUEST_EVENTS', 'QUEST_STATES', 'QUEST_STATE_LIST', 'RESET_STATE', 'TELEPORT_TEST_STATE', 'TRANSITIONS',
+  'QUEST_EVENTS', 'QUEST_STATES', 'QUEST_STATE_LIST', 'RESET_STATE', 'STORY_TOKEN_ID', 'TELEPORT_TEST_STATE', 'TRANSITIONS',
   'UI_HOOKS', 'UI_ROOT_ID', 'WORLD_CHANGES', 'countdownRemaining', 'dryRunVerdict', 'expectedCorrections',
-  'makeCorrectionRequest', 'marginalProbabilities', 'randomGenericState', 'transition', 'validateExperimentResult',
+  'makeCorrectionRequest', 'marginalProbabilities', 'randomGenericState', 'transition', 'validateCommitResult', 'validateExperimentResult',
   'validateSettings', 'validateTeleportBitsRequest', 'validateTeleportBitsResult',
   'validateTeleportCorrectionRequest', 'validateTeleportCorrectionResult']
 const gotExports = Object.keys(C)
