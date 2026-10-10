@@ -14,7 +14,7 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (8)
+## Notes here (9)
 
 - [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
 - [[Reports/cross-lane-recheck|Cross-lane recheck: real quantum results through contracts v2 into the quest]]
@@ -23,6 +23,7 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 - [[Reports/player-text-audit|Player-text audit: does every word ECHO shows tell the truth?]]
 - [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/quest-state-audit|Quest-state audit: can the quest reach the ending only honestly?]]
+- [[Reports/quest-state-regrade|Quest-state regrade: can the consult-6 quest breaks still happen?]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
 ## Below this folder

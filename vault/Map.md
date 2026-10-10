@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **44 notes** over 10 folders.
+Measured 2026-10-10: **45 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -84,6 +84,7 @@ Folder README: [[Reports/README]]
 - [[Reports/player-text-audit|Player-text audit: does every word ECHO shows tell the truth?]]
 - [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/quest-state-audit|Quest-state audit: can the quest reach the ending only honestly?]]
+- [[Reports/quest-state-regrade|Quest-state regrade: can the consult-6 quest breaks still happen?]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
 ## `Reports/audits/`
