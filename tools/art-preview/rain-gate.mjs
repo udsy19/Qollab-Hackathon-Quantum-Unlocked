@@ -43,25 +43,34 @@ const measure = () => {
     rainLumP99: +pct(bgRainLs, 0.99).toFixed(3), rainLumMax: +pct(bgRainLs, 1).toFixed(3), rainAddP99: +pct(adds, 0.99).toFixed(3), rainAddMax: +addMax.toFixed(3),
     accentPx: accN, accentLumMedian: +pct(accLs, 0.5).toFixed(3), accentWashMean: accN ? +(accWash / accN).toFixed(2) : null }
 }
-const browser = await chromium.launch({ channel: 'chrome', headless: false, args: ['--window-size=1300,820'] })
-const page = await browser.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 2 })
-page.on('pageerror', e => console.log('PAGEERROR', e.message))
-for (const q of ['low', 'med', 'high']) for (const [view, pose] of Object.entries(POSES)) {
-  await page.goto(`http://127.0.0.1:${port}/tools/art-preview/?nopanel&q=${q}&view=${pose ? 'alley' : view}`)
-  await page.waitForFunction(() => window.__art)
-  if (pose) await page.evaluate(([p, t]) => { const a = window.__art; a.setView = () => {}; a.camera.position.fromArray(p); a.camera.lookAt(...t) }, pose)
-  await page.waitForTimeout(1500)
-  const rows = []
-  for (let k = 0; k < 3; k++) { rows.push(await page.evaluate(measure)); await page.waitForTimeout(400) }
-  const best = rows.reduce((m, r) => (r.rainCoveragePct > m.rainCoveragePct ? r : m)) // worst case of 3 frames
-  let verdict
-  if (INDOOR.has(view)) verdict = best.rainCoveragePct <= MAX_INDOOR_COVERAGE_PCT ? 'green' : 'red'
-  else if (!best.accentPx) verdict = 'refused' // no accent pixels found: nothing to compare against
-  else verdict = best.rainCoveragePct >= MIN_OUTDOOR_COVERAGE_PCT && best.rainLumP99 <= ACCENT_RATIO * best.accentLumMedian ? 'green' : 'red'
-  if (verdict === 'red') red++
-  if (verdict === 'refused') refused++
-  checks++
-  console.log(JSON.stringify({ label, q, view, verdict, ...best }))
+// A page that never loads (syntax error, server down) is no verdict at all: refuse, never red or green.
+let browser
+try {
+  browser = await chromium.launch({ channel: 'chrome', headless: false, args: ['--window-size=1300,820'] })
+  const page = await browser.newPage({ viewport: { width: 1280, height: 720 }, deviceScaleFactor: 2 })
+  page.on('pageerror', e => console.log('PAGEERROR', e.message))
+  page.setDefaultTimeout(15000)
+  for (const q of ['low', 'med', 'high']) for (const [view, pose] of Object.entries(POSES)) {
+    await page.goto(`http://127.0.0.1:${port}/tools/art-preview/?nopanel&q=${q}&view=${pose ? 'alley' : view}`)
+    await page.waitForFunction(() => window.__art)
+    if (pose) await page.evaluate(([p, t]) => { const a = window.__art; a.setView = () => {}; a.camera.position.fromArray(p); a.camera.lookAt(...t) }, pose)
+    await page.waitForTimeout(1500)
+    const rows = []
+    for (let k = 0; k < 3; k++) { rows.push(await page.evaluate(measure)); await page.waitForTimeout(400) }
+    const best = rows.reduce((m, r) => (r.rainCoveragePct > m.rainCoveragePct ? r : m)) // worst case of 3 frames
+    let verdict
+    if (INDOOR.has(view)) verdict = best.rainCoveragePct <= MAX_INDOOR_COVERAGE_PCT ? 'green' : 'red'
+    else if (!best.accentPx) verdict = 'refused' // no accent pixels found: nothing to compare against
+    else verdict = best.rainCoveragePct >= MIN_OUTDOOR_COVERAGE_PCT && best.rainLumP99 <= ACCENT_RATIO * best.accentLumMedian ? 'green' : 'red'
+    if (verdict === 'red') red++
+    if (verdict === 'refused') refused++
+    checks++
+    console.log(JSON.stringify({ label, q, view, verdict, ...best }))
+  }
+} catch (e) {
+  console.error(`refused: ${e.message.split('\n')[0]}`)
+  await browser?.close()
+  process.exit(2)
 }
 await browser.close()
 console.log(`rain-gate: ${checks} checks, ${red} red, ${refused} refused`)
