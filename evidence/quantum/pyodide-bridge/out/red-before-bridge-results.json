@@ -1,0 +1,12 @@
+[
+  {
+    "name": "main.js (harness) ran to the end without error",
+    "ok": false,
+    "detail": "Cannot find module './quantum/bridge.js' imported from main.js"
+  },
+  {
+    "name": "served build token rendered",
+    "ok": false,
+    "detail": "none rendered (…); run error above"
+  }
+]

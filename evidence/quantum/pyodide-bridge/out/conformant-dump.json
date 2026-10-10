@@ -1,0 +1,1423 @@
+{
+  "assembly": {
+    "token": "pb-conformant-20261009T235107-3957",
+    "sabotage": "none",
+    "runnerRef": "lane/platform/g0-runner-smoke@71d2477",
+    "contractsRef": "lane/platform/integration@939a57d",
+    "pythonRef": "lane/quantum/contract-conformance@42703f1",
+    "sha256": {
+      "contracts.js": "8052cf2926a54fa2",
+      "index.html": "6112169d8d1887b8",
+      "main.css": "d93eb501784b286e",
+      "main.js": "48afd9a232aa8d96",
+      "pb_spy.py": "e2069aff6a6e68fe",
+      "quantum/__init__.py": "0717eeef492541b7",
+      "quantum/bridge.js": "6f60ff6ee94e29ac",
+      "quantum/cloning.py": "69c42984e4bfcd04",
+      "quantum/entanglement.py": "b5a7ba9d28707d6c",
+      "quantum/formats.py": "8a95785415a780a5",
+      "quantum/qollab_job.py": "edc6840e865acf43",
+      "quantum/teleportation.py": "9b571b8b460048ca"
+    }
+  },
+  "runnerCounters": {
+    "jobs": 0,
+    "refusedByRunner": 0
+  },
+  "runnerLogTail": [
+    {
+      "kind": "runner",
+      "msg": "runner: 12 files in /private/tmp/pb-run-wuhFD0/echo; backend = ionq-mock"
+    },
+    {
+      "kind": "system",
+      "msg": "Loading packages..."
+    },
+    {
+      "kind": "out",
+      "msg": "Loading micropip"
+    },
+    {
+      "kind": "out",
+      "msg": "Loaded micropip"
+    },
+    {
+      "kind": "out",
+      "msg": "Loading numpy, scipy, typing-extensions"
+    },
+    {
+      "kind": "out",
+      "msg": "Loaded numpy, scipy, typing-extensions"
+    },
+    {
+      "kind": "system",
+      "msg": "Loading project files..."
+    },
+    {
+      "kind": "out",
+      "msg": "numpy already loaded from default channel"
+    },
+    {
+      "kind": "out",
+      "msg": "No new packages to load"
+    },
+    {
+      "kind": "system",
+      "msg": "Compiling / initializing runtime..."
+    },
+    {
+      "kind": "system",
+      "msg": "Running..."
+    },
+    {
+      "kind": "system",
+      "msg": "Circuit panel: 2 qubits"
+    },
+    {
+      "kind": "system",
+      "msg": "Probabilities panel: {\"0x0\":0.50390625,\"0x3\":0.49609375}"
+    },
+    {
+      "kind": "err",
+      "msg": "quantum bridge: backend verification result rejected by the contract: experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\""
+    },
+    {
+      "kind": "system",
+      "msg": "Done."
+    }
+  ],
+  "dump": {
+    "build": "pb-conformant-20261009T235107-3957",
+    "backendName": "basic_simulator",
+    "platform": {
+      "sysPlatform": "emscripten",
+      "python": "3.14.2",
+      "qiskit": "2.5.2"
+    },
+    "timing": {
+      "msFrameStartToMainBody": 5938,
+      "verifyMs": 5.2,
+      "wallSecondsPageToDone": 6.2
+    },
+    "calls": [
+      {
+        "label": "cloning(plus)",
+        "ms": 5.2,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "plus"
+          },
+          "facts": [
+            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
+            "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+            "The two outputs are entangled with each other, not copies of the input.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "10": 0,
+            "11": 0.5,
+            "00": 0.5,
+            "01": 0
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "observables": {
+            "purityQ0": 0.5,
+            "purityQ1": 0.5,
+            "fidelityQ0WithInput": 0.5,
+            "fidelityQ1WithInput": 0.5,
+            "jointFidelityWithTwoCopies": 0.5
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "cloning(plus)",
+        "ms": 3.9,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "plus"
+          },
+          "facts": [
+            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
+            "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+            "The two outputs are entangled with each other, not copies of the input.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "10": 0,
+            "11": 0.5,
+            "00": 0.5,
+            "01": 0
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "observables": {
+            "purityQ0": 0.5,
+            "purityQ1": 0.5,
+            "fidelityQ0WithInput": 0.5,
+            "fidelityQ1WithInput": 0.5,
+            "jointFidelityWithTwoCopies": 0.5
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "cloning(plus)",
+        "ms": 1.5,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "plus"
+          },
+          "facts": [
+            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
+            "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+            "The two outputs are entangled with each other, not copies of the input.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "10": 0,
+            "11": 0.5,
+            "00": 0.5,
+            "01": 0
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "observables": {
+            "purityQ0": 0.5,
+            "purityQ1": 0.5,
+            "fidelityQ0WithInput": 0.5,
+            "fidelityQ1WithInput": 0.5,
+            "jointFidelityWithTwoCopies": 0.5
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "cloning(zero)",
+        "ms": 1,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare |0> on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "zero"
+          },
+          "facts": [
+            "Two matching basis values: this input was already a Z-basis state, so the circuit only copied a known classical value.",
+            "This does not work for an unknown state; try a superposition.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "10": 0,
+            "11": 0,
+            "00": 1,
+            "01": 0
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "observables": {
+            "purityQ0": 1,
+            "purityQ1": 1,
+            "fidelityQ0WithInput": 1,
+            "fidelityQ1WithInput": 1,
+            "jointFidelityWithTwoCopies": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "cloning(one)",
+        "ms": 0.9,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare |1> on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "one"
+          },
+          "facts": [
+            "Two matching basis values: this input was already a Z-basis state, so the circuit only copied a known classical value.",
+            "This does not work for an unknown state; try a superposition.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "10": 0,
+            "11": 1,
+            "00": 0,
+            "01": 0
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "observables": {
+            "purityQ0": 1,
+            "purityQ1": 1,
+            "fidelityQ0WithInput": 1,
+            "fidelityQ1WithInput": 1,
+            "jointFidelityWithTwoCopies": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "cloning(bloch_a)",
+        "ms": 1.8,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "bloch_a"
+          },
+          "facts": [
+            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.551480.",
+            "Each output alone has purity 0.588334; an independent copy of a pure state would have purity 1.",
+            "The two outputs are entangled with each other, not copies of the input.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "10": 0,
+            "11": 0.2898407394,
+            "00": 0.7101592606,
+            "01": 0
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "observables": {
+            "purityQ0": 0.5883338296,
+            "purityQ1": 0.5883338296,
+            "fidelityQ0WithInput": 0.5883338296,
+            "fidelityQ1WithInput": 0.5883338296,
+            "jointFidelityWithTwoCopies": 0.5514795209
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "relay(I)",
+        "ms": 3.6,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "bell_signalling",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies I on q0 (sender), q1 = receiver",
+          "qubits": 2,
+          "parameters": {
+            "senderGate": "I"
+          },
+          "facts": [
+            "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+            "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+            "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 1.000000.",
+            "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+          ],
+          "probabilities": {
+            "0": 0.5,
+            "1": 0.5
+          },
+          "keyQubits": [
+            1
+          ],
+          "observables": {
+            "receiverPurity": 0.5,
+            "receiverBlochX": 0,
+            "receiverBlochY": 0,
+            "receiverBlochZ": 0,
+            "zBasisAgreement": 1,
+            "xBasisAgreement": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "relay(X)",
+        "ms": 1.1,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "bell_signalling",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies X on q0 (sender), q1 = receiver",
+          "qubits": 2,
+          "parameters": {
+            "senderGate": "X"
+          },
+          "facts": [
+            "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+            "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+            "Comparing both logs afterwards: Z-basis bits agree with probability 0.000000, X-basis bits with probability 1.000000.",
+            "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+          ],
+          "probabilities": {
+            "0": 0.5,
+            "1": 0.5
+          },
+          "keyQubits": [
+            1
+          ],
+          "observables": {
+            "receiverPurity": 0.5,
+            "receiverBlochX": 0,
+            "receiverBlochY": 0,
+            "receiverBlochZ": 0,
+            "zBasisAgreement": 0,
+            "xBasisAgreement": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "relay(Z)",
+        "ms": 0.9,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "bell_signalling",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies Z on q0 (sender), q1 = receiver",
+          "qubits": 2,
+          "parameters": {
+            "senderGate": "Z"
+          },
+          "facts": [
+            "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+            "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+            "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 0.000000.",
+            "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+          ],
+          "probabilities": {
+            "0": 0.5,
+            "1": 0.5
+          },
+          "keyQubits": [
+            1
+          ],
+          "observables": {
+            "receiverPurity": 0.5,
+            "receiverBlochX": 0,
+            "receiverBlochY": 0,
+            "receiverBlochZ": 0,
+            "zBasisAgreement": 1,
+            "xBasisAgreement": 0
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "calibration(bloch_a)",
+        "ms": 0.7,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a"
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 1 (local Bell-half readout).",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=false)",
+        "ms": 1.9,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=1; Bob applies no correction",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a",
+            "m0": 1,
+            "m1": 1,
+            "applyX": false,
+            "applyZ": false
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 1 (local Bell-half readout): the rule asks for X ON, Z ON.",
+            "Receiver test fidelity: 0.149373.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 0.1493725989,
+          "observables": {
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.2898407394,
+            "receiverBlochX": -0.8209505112,
+            "receiverBlochY": 0.3864875145,
+            "receiverBlochZ": -0.4203185212
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=false)",
+        "ms": 2.5,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=1; Bob applies X",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a",
+            "m0": 1,
+            "m1": 1,
+            "applyX": true,
+            "applyZ": false
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 1 (local Bell-half readout): the rule asks for X ON, Z ON.",
+            "Receiver test fidelity: 0.176668.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 0.1766676593,
+          "observables": {
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.2898407394,
+            "receiverBlochX": -0.8209505112,
+            "receiverBlochY": -0.3864875145,
+            "receiverBlochZ": 0.4203185212
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=true)",
+        "ms": 1.6,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=1; Bob applies Z",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a",
+            "m0": 1,
+            "m1": 1,
+            "applyX": false,
+            "applyZ": true
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 1 (local Bell-half readout): the rule asks for X ON, Z ON.",
+            "Receiver test fidelity: 0.673960.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 0.6739597419,
+          "observables": {
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.2898407394,
+            "receiverBlochX": 0.8209505112,
+            "receiverBlochY": -0.3864875145,
+            "receiverBlochZ": -0.4203185212
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=true)",
+        "ms": 1.7,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=1; Bob applies X then Z",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a",
+            "m0": 1,
+            "m1": 1,
+            "applyX": true,
+            "applyZ": true
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 1 (local Bell-half readout): the rule asks for X ON, Z ON.",
+            "Receiver test fidelity: 1.000000.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 1,
+          "observables": {
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.2898407394,
+            "receiverBlochX": 0.8209505112,
+            "receiverBlochY": 0.3864875145,
+            "receiverBlochZ": 0.4203185212
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false)",
+        "ms": 1.4,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies no correction",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_a",
+            "m0": 1,
+            "m1": 0,
+            "applyX": false,
+            "applyZ": false
+          },
+          "facts": [
+            "m0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON.",
+            "Receiver test fidelity: 0.176668.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 0.1766676593,
+          "observables": {
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.2898407394,
+            "receiverBlochX": -0.8209505112,
+            "receiverBlochY": -0.3864875145,
+            "receiverBlochZ": 0.4203185212
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 0
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "commit#1(bloch_b)",
+        "ms": 2.3,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure m0, m1; Bob applies X iff m1=1, Z iff m0=1",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_b"
+          },
+          "facts": [
+            "Live bits m0 = 1, m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
+            "Receiver fidelity with the token: 1.000000.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver.",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 1,
+          "observables": {
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.8331380106,
+            "receiverBlochX": -0.2410787151,
+            "receiverBlochY": -0.7056609077,
+            "receiverBlochZ": -0.6662760213
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "commit#2(bloch_b)",
+        "ms": 0,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure m0, m1; Bob applies X iff m1=1, Z iff m0=1",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_b"
+          },
+          "facts": [
+            "Live bits m0 = 1, m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
+            "Receiver fidelity with the token: 1.000000.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver.",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 1,
+          "observables": {
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.8331380106,
+            "receiverBlochX": -0.2410787151,
+            "receiverBlochY": -0.7056609077,
+            "receiverBlochZ": -0.6662760213
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "commit#3 after settle",
+        "ms": 0.1,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure m0, m1; Bob applies X iff m1=1, Z iff m0=1",
+          "qubits": 3,
+          "parameters": {
+            "state": "bloch_b"
+          },
+          "facts": [
+            "Live bits m0 = 1, m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
+            "Receiver fidelity with the token: 1.000000.",
+            "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver.",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 1,
+          "observables": {
+            "branchProbability": 0.25,
+            "sourceFidelityAfterMeasurement": 0.8331380106,
+            "receiverBlochX": -0.2410787151,
+            "receiverBlochY": -0.7056609077,
+            "receiverBlochZ": -0.6662760213
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 1
+          }
+        },
+        "nodeVerdict": []
+      }
+    ],
+    "commit": {
+      "samePromise": true,
+      "sameObjectAfterSettle": true
+    },
+    "verification": {
+      "samePromise": true,
+      "first": {
+        "status": "rejected",
+        "name": "ScientificModuleError",
+        "message": "Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\"",
+        "errors": [
+          "experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\""
+        ]
+      },
+      "second": {
+        "status": "rejected",
+        "name": "ScientificModuleError",
+        "message": "Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\"",
+        "errors": [
+          "experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\""
+        ]
+      },
+      "sameValue": true,
+      "pageVerdictOfFirst": null
+    },
+    "spy": {
+      "counts": {
+        "backendRunAttempts": 1,
+        "backendRunCompleted": 1,
+        "verificationCalls": 1
+      },
+      "events": [
+        "run_bell_verification_once call #1",
+        "backend.run attempt #1",
+        "backend.run completed #1"
+      ],
+      "networkMock": true
+    }
+  },
+  "checks": [
+    {
+      "name": "main.js (harness) ran to the end without error",
+      "ok": true,
+      "detail": "page load → done in 6.2s"
+    },
+    {
+      "name": "served build token matches the one just written",
+      "ok": true,
+      "detail": "pb-conformant-20261009T235107-3957"
+    },
+    {
+      "name": "Python ran in Pyodide (sys.platform emscripten)",
+      "ok": true,
+      "detail": {
+        "sysPlatform": "emscripten",
+        "python": "3.14.2",
+        "qiskit": "2.5.2"
+      }
+    },
+    {
+      "name": "Qiskit 2.x loaded",
+      "ok": true,
+      "detail": "2.5.2"
+    },
+    {
+      "name": "cloning(plus): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "cloning(plus): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "cloning(plus): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "cloning(zero): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "cloning(one): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "cloning(bloch_a): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "relay(I): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "relay(X): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "relay(Z): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "calibration(bloch_a): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=false): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=false): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=true): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=true): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "commit#1(bloch_b): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "commit#2(bloch_b): delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "commit#3 after settle: delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
+      "name": "cloning(plus): adapter returned a result",
+      "ok": true,
+      "detail": "5.2 ms"
+    },
+    {
+      "name": "cloning(plus): adapter returned a result",
+      "ok": true,
+      "detail": "3.9 ms"
+    },
+    {
+      "name": "cloning(plus): adapter returned a result",
+      "ok": true,
+      "detail": "1.5 ms"
+    },
+    {
+      "name": "cloning(zero): adapter returned a result",
+      "ok": true,
+      "detail": "1 ms"
+    },
+    {
+      "name": "cloning(one): adapter returned a result",
+      "ok": true,
+      "detail": "0.9 ms"
+    },
+    {
+      "name": "cloning(bloch_a): adapter returned a result",
+      "ok": true,
+      "detail": "1.8 ms"
+    },
+    {
+      "name": "relay(I): adapter returned a result",
+      "ok": true,
+      "detail": "3.6 ms"
+    },
+    {
+      "name": "relay(X): adapter returned a result",
+      "ok": true,
+      "detail": "1.1 ms"
+    },
+    {
+      "name": "relay(Z): adapter returned a result",
+      "ok": true,
+      "detail": "0.9 ms"
+    },
+    {
+      "name": "calibration(bloch_a): adapter returned a result",
+      "ok": true,
+      "detail": "0.7 ms"
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=false): adapter returned a result",
+      "ok": true,
+      "detail": "1.9 ms"
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=false): adapter returned a result",
+      "ok": true,
+      "detail": "2.5 ms"
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=true): adapter returned a result",
+      "ok": true,
+      "detail": "1.6 ms"
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=true): adapter returned a result",
+      "ok": true,
+      "detail": "1.7 ms"
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): adapter returned a result",
+      "ok": true,
+      "detail": "1.4 ms"
+    },
+    {
+      "name": "commit#1(bloch_b): adapter returned a result",
+      "ok": true,
+      "detail": "2.3 ms"
+    },
+    {
+      "name": "commit#2(bloch_b): adapter returned a result",
+      "ok": true,
+      "detail": "0 ms"
+    },
+    {
+      "name": "commit#3 after settle: adapter returned a result",
+      "ok": true,
+      "detail": "0.1 ms"
+    },
+    {
+      "name": "cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]",
+      "ok": true,
+      "detail": {
+        "10": 0,
+        "11": 0.5,
+        "00": 0.5,
+        "01": 0
+      }
+    },
+    {
+      "name": "cloning(plus): each output purity 0.5 (entangled, not two copies)",
+      "ok": true,
+      "detail": {
+        "purityQ0": 0.5,
+        "purityQ1": 0.5,
+        "fidelityQ0WithInput": 0.5,
+        "fidelityQ1WithInput": 0.5,
+        "jointFidelityWithTwoCopies": 0.5
+      }
+    },
+    {
+      "name": "cloning(zero): basis state copies (purities 1)",
+      "ok": true,
+      "detail": {
+        "purityQ0": 1,
+        "purityQ1": 1,
+        "fidelityQ0WithInput": 1,
+        "fidelityQ1WithInput": 1,
+        "jointFidelityWithTwoCopies": 1
+      }
+    },
+    {
+      "name": "relay(I): receiver marginal exactly 0.5/0.5, keyQubits [1]",
+      "ok": true,
+      "detail": {
+        "0": 0.5,
+        "1": 0.5
+      }
+    },
+    {
+      "name": "relay(X): receiver marginal exactly 0.5/0.5, keyQubits [1]",
+      "ok": true,
+      "detail": {
+        "0": 0.5,
+        "1": 0.5
+      }
+    },
+    {
+      "name": "relay(Z): receiver marginal exactly 0.5/0.5, keyQubits [1]",
+      "ok": true,
+      "detail": {
+        "0": 0.5,
+        "1": 0.5
+      }
+    },
+    {
+      "name": "calibration: bits m0, m1 each 0 or 1",
+      "ok": true,
+      "detail": {
+        "m0": 1,
+        "m1": 1
+      }
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=false): fidelity = 0.149373 (closed form)",
+      "ok": true,
+      "detail": 0.1493725989
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=false): fidelity = 0.176668 (closed form)",
+      "ok": true,
+      "detail": 0.1766676593
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=true): fidelity = 0.673960 (closed form)",
+      "ok": true,
+      "detail": 0.6739597419
+    },
+    {
+      "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=true): fidelity = 1.000000 (closed form)",
+      "ok": true,
+      "detail": 1
+    },
+    {
+      "name": "dryRun(bloch_a,1,0,no correction): fidelity = cos²(1.137)",
+      "ok": true,
+      "detail": {
+        "got": 0.1766676593,
+        "want": 0.17666765925030334
+      }
+    },
+    {
+      "name": "commit: receiver fidelity 1 after the rule on live bits",
+      "ok": true,
+      "detail": {
+        "fidelity": 1,
+        "bits": {
+          "m0": 1,
+          "m1": 1
+        }
+      }
+    },
+    {
+      "name": "commit: a second call returns the SAME promise (token consumed once)",
+      "ok": true,
+      "detail": {
+        "samePromise": true,
+        "sameObjectAfterSettle": true
+      }
+    },
+    {
+      "name": "commit: a call after it settled returns the same recorded object",
+      "ok": true,
+      "detail": {
+        "samePromise": true,
+        "sameObjectAfterSettle": true
+      }
+    },
+    {
+      "name": "verify ×2: the second call returns the SAME promise",
+      "ok": true,
+      "detail": true
+    },
+    {
+      "name": "verify ×2: both callers get the same value",
+      "ok": true,
+      "detail": true
+    },
+    {
+      "name": "spy: exactly 1 entry into qollab_job.run_bell_verification_once",
+      "ok": true,
+      "detail": {
+        "backendRunAttempts": 1,
+        "backendRunCompleted": 1,
+        "verificationCalls": 1
+      }
+    },
+    {
+      "name": "spy: exactly 1 backend.run attempted",
+      "ok": true,
+      "detail": {
+        "backendRunAttempts": 1,
+        "backendRunCompleted": 1,
+        "verificationCalls": 1
+      }
+    },
+    {
+      "name": "spy: that backend.run completed (stack entered via callPromising)",
+      "ok": true,
+      "detail": {
+        "backendRunAttempts": 1,
+        "backendRunCompleted": 1,
+        "verificationCalls": 1
+      }
+    },
+    {
+      "name": "rejected: ScientificModuleError with §8.6 wording + reasons, no result passed on",
+      "ok": true,
+      "detail": {
+        "status": "rejected",
+        "name": "ScientificModuleError",
+        "message": "Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\"",
+        "errors": [
+          "experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\""
+        ]
+      }
+    }
+  ]
+}
