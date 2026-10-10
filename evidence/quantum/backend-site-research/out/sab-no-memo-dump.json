@@ -1,17 +1,17 @@
 {
   "assembly": {
-    "token": "bs-sab-no-memo-20261010T004157-28947",
+    "token": "bs-sab-no-memo-20261010T005219-20674",
     "variant": "A-sab-no-memo",
-    "runnerRef": "lane/platform/integration@45a45f2",
-    "contractsRef": "lane/platform/integration@45a45f2",
-    "pythonRef": "HEAD@cfffe4f",
+    "runnerRef": "lane/platform/integration@0fc2721",
+    "contractsRef": "lane/platform/integration@0fc2721",
+    "pythonRef": "HEAD@dd289c4",
     "harnessDirty": false,
     "sha256": {
       "bs_spy.py": "ae8f212ea741901d",
       "contracts.js": "2398c11391f87fa5",
       "index.html": "1a8287fcde6865d6",
       "main.css": "c11007d9e339ed9d",
-      "main.js": "55e88696f0bbeaf9",
+      "main.js": "5521a267d0cc52cd",
       "quantum/__init__.py": "4770b5d0e03c289a",
       "quantum/bridge.js": "8cbed57b5539b43b",
       "quantum/cloning.py": "9e50d3aba0104f49",
@@ -29,7 +29,7 @@
     "log": [
       {
         "kind": "runner",
-        "msg": "runner: 12 files in /private/tmp/bs-run-o07Hmz/echo; backend = ionq-mock"
+        "msg": "runner: 12 files in /private/tmp/bs-run-PmRabg/echo; backend = ionq-mock"
       },
       {
         "kind": "system",
@@ -85,7 +85,7 @@
       },
       {
         "kind": "system",
-        "msg": "Probabilities panel: {\"0x3\":0.5234375,\"0x0\":0.4765625}"
+        "msg": "Probabilities panel: {\"0x3\":0.46484375,\"0x0\":0.53515625}"
       },
       {
         "kind": "out",
@@ -98,7 +98,7 @@
     ]
   },
   "dump": {
-    "build": "bs-sab-no-memo-20261010T004157-28947",
+    "build": "bs-sab-no-memo-20261010T005219-20674",
     "variant": "A-sab-no-memo",
     "backendName": "basic_simulator",
     "samePromise": false,
@@ -123,8 +123,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 134,
-          "00": 122
+          "11": 119,
+          "00": 137
         },
         "keyQubits": [
           1,
@@ -156,8 +156,8 @@
             "shots": 256
           },
           "rawCounts": {
-            "11": 134,
-            "00": 122
+            "11": 119,
+            "00": 137
           }
         }
       ],
@@ -169,7 +169,7 @@
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "bs-sab-no-memo-20261010T004157-28947"
+      "detail": "bs-sab-no-memo-20261010T005219-20674"
     },
     {
       "name": "harness main.js ran to the end without error",
@@ -223,8 +223,8 @@
       "name": "raw keys: only 00/11, all shots",
       "ok": true,
       "detail": {
-        "11": 134,
-        "00": 122
+        "11": 119,
+        "00": 137
       }
     },
     {
@@ -250,20 +250,20 @@
       "ok": true,
       "detail": {
         "counts": {
-          "11": 134,
-          "00": 122
+          "11": 119,
+          "00": 137
         },
         "keyQubits": [
           1,
           0
         ],
         "ones": {
-          "q0": 134,
-          "q1": 134
+          "q0": 119,
+          "q1": 119
         },
         "rawQ": {
-          "q0": 134,
-          "q1": 134
+          "q0": 119,
+          "q1": 119
         }
       }
     },

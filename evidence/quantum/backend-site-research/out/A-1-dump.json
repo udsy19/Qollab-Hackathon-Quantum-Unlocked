@@ -1,17 +1,17 @@
 {
   "assembly": {
-    "token": "bs-A-1-20261010T004007-2596",
+    "token": "bs-A-1-20261010T005043-10877",
     "variant": "A",
-    "runnerRef": "lane/platform/integration@32838bc",
-    "contractsRef": "lane/platform/integration@32838bc",
-    "pythonRef": "HEAD@cfffe4f",
+    "runnerRef": "lane/platform/integration@45a45f2",
+    "contractsRef": "lane/platform/integration@45a45f2",
+    "pythonRef": "HEAD@dd289c4",
     "harnessDirty": false,
     "sha256": {
       "bs_spy.py": "ae8f212ea741901d",
-      "contracts.js": "4aca6191d2d8218f",
+      "contracts.js": "2398c11391f87fa5",
       "index.html": "1a8287fcde6865d6",
       "main.css": "c11007d9e339ed9d",
-      "main.js": "b93b23da777ed7bc",
+      "main.js": "ca2642ad175f15a3",
       "quantum/__init__.py": "4770b5d0e03c289a",
       "quantum/bridge.js": "903d3e5309fc42b5",
       "quantum/cloning.py": "9e50d3aba0104f49",
@@ -29,7 +29,7 @@
     "log": [
       {
         "kind": "runner",
-        "msg": "runner: 12 files in /private/tmp/bs-run-HEKfv3/echo; backend = ionq-mock"
+        "msg": "runner: 12 files in /private/tmp/bs-run-fFCg7Z/echo; backend = ionq-mock"
       },
       {
         "kind": "system",
@@ -81,7 +81,7 @@
       },
       {
         "kind": "system",
-        "msg": "Probabilities panel: {\"0x3\":0.5,\"0x0\":0.5}"
+        "msg": "Probabilities panel: {\"0x0\":0.50390625,\"0x3\":0.49609375}"
       },
       {
         "kind": "out",
@@ -94,7 +94,7 @@
     ]
   },
   "dump": {
-    "build": "bs-A-1-20261010T004007-2596",
+    "build": "bs-A-1-20261010T005043-10877",
     "variant": "A",
     "backendName": "basic_simulator",
     "samePromise": true,
@@ -119,8 +119,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 128,
-          "00": 128
+          "11": 127,
+          "00": 129
         },
         "keyQubits": [
           1,
@@ -149,8 +149,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 128,
-          "00": 128
+          "11": 127,
+          "00": 129
         },
         "keyQubits": [
           1,
@@ -174,8 +174,8 @@
             "shots": 256
           },
           "rawCounts": {
-            "11": 128,
-            "00": 128
+            "11": 127,
+            "00": 129
           }
         }
       ],
@@ -187,7 +187,7 @@
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "bs-A-1-20261010T004007-2596"
+      "detail": "bs-A-1-20261010T005043-10877"
     },
     {
       "name": "harness main.js ran to the end without error",
@@ -241,8 +241,8 @@
       "name": "raw keys: only 00/11, all shots",
       "ok": true,
       "detail": {
-        "11": 128,
-        "00": 128
+        "11": 127,
+        "00": 129
       }
     },
     {
@@ -268,20 +268,20 @@
       "ok": true,
       "detail": {
         "counts": {
-          "11": 128,
-          "00": 128
+          "11": 127,
+          "00": 129
         },
         "keyQubits": [
           1,
           0
         ],
         "ones": {
-          "q0": 128,
-          "q1": 128
+          "q0": 127,
+          "q1": 127
         },
         "rawQ": {
-          "q0": 128,
-          "q1": 128
+          "q0": 127,
+          "q1": 127
         }
       }
     },

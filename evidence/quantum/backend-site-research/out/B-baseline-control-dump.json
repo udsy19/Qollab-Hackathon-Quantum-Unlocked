@@ -1,17 +1,17 @@
 {
   "assembly": {
-    "token": "bs-B-baseline-control-20261010T004143-27064",
+    "token": "bs-B-baseline-control-20261010T005159-23567",
     "variant": "B-baseline-control",
     "runnerRef": "lane/platform/integration@45a45f2",
     "contractsRef": "lane/platform/integration@45a45f2",
-    "pythonRef": "HEAD@cfffe4f",
+    "pythonRef": "HEAD@dd289c4",
     "harnessDirty": false,
     "sha256": {
       "bs_spy.py": "867bd19e135a3e2e",
       "contracts.js": "2398c11391f87fa5",
       "index.html": "1a8287fcde6865d6",
       "main.css": "c11007d9e339ed9d",
-      "main.js": "137cb03d740c2419",
+      "main.js": "c2bc48b187b4c780",
       "quantum/__init__.py": "4770b5d0e03c289a",
       "quantum/bridge.js": "3fc88082eed66aa9",
       "quantum/cloning.py": "9e50d3aba0104f49",
@@ -29,7 +29,7 @@
     "log": [
       {
         "kind": "runner",
-        "msg": "runner: 12 files in /private/tmp/bs-run-gbk7AZ/echo; backend = ionq-mock"
+        "msg": "runner: 12 files in /private/tmp/bs-run-cioyMZ/echo; backend = ionq-mock"
       },
       {
         "kind": "system",
@@ -90,7 +90,7 @@
     ]
   },
   "dump": {
-    "build": "bs-B-baseline-control-20261010T004143-27064",
+    "build": "bs-B-baseline-control-20261010T005159-23567",
     "variant": "B-baseline-control",
     "backendName": "basic_simulator",
     "samePromise": true,
@@ -179,7 +179,7 @@
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "bs-B-baseline-control-20261010T004143-27064"
+      "detail": "bs-B-baseline-control-20261010T005159-23567"
     },
     {
       "name": "harness main.js ran to the end without error",

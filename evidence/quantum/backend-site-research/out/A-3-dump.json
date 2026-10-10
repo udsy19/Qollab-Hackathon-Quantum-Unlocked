@@ -1,17 +1,17 @@
 {
   "assembly": {
-    "token": "bs-A-3-20261010T004102-9368",
+    "token": "bs-A-3-20261010T005115-29291",
     "variant": "A",
     "runnerRef": "lane/platform/integration@45a45f2",
     "contractsRef": "lane/platform/integration@45a45f2",
-    "pythonRef": "HEAD@cfffe4f",
+    "pythonRef": "HEAD@dd289c4",
     "harnessDirty": false,
     "sha256": {
       "bs_spy.py": "ae8f212ea741901d",
       "contracts.js": "2398c11391f87fa5",
       "index.html": "1a8287fcde6865d6",
       "main.css": "c11007d9e339ed9d",
-      "main.js": "b58c16cf96b574cc",
+      "main.js": "518cf093493782a9",
       "quantum/__init__.py": "4770b5d0e03c289a",
       "quantum/bridge.js": "903d3e5309fc42b5",
       "quantum/cloning.py": "9e50d3aba0104f49",
@@ -29,7 +29,7 @@
     "log": [
       {
         "kind": "runner",
-        "msg": "runner: 12 files in /private/tmp/bs-run-EVaxTl/echo; backend = ionq-mock"
+        "msg": "runner: 12 files in /private/tmp/bs-run-V1CqGB/echo; backend = ionq-mock"
       },
       {
         "kind": "system",
@@ -81,7 +81,7 @@
       },
       {
         "kind": "system",
-        "msg": "Probabilities panel: {\"0x3\":0.55078125,\"0x0\":0.44921875}"
+        "msg": "Probabilities panel: {\"0x0\":0.48828125,\"0x3\":0.51171875}"
       },
       {
         "kind": "out",
@@ -94,7 +94,7 @@
     ]
   },
   "dump": {
-    "build": "bs-A-3-20261010T004102-9368",
+    "build": "bs-A-3-20261010T005115-29291",
     "variant": "A",
     "backendName": "basic_simulator",
     "samePromise": true,
@@ -119,8 +119,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 141,
-          "00": 115
+          "11": 131,
+          "00": 125
         },
         "keyQubits": [
           1,
@@ -149,8 +149,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 141,
-          "00": 115
+          "11": 131,
+          "00": 125
         },
         "keyQubits": [
           1,
@@ -174,8 +174,8 @@
             "shots": 256
           },
           "rawCounts": {
-            "11": 141,
-            "00": 115
+            "11": 131,
+            "00": 125
           }
         }
       ],
@@ -187,7 +187,7 @@
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "bs-A-3-20261010T004102-9368"
+      "detail": "bs-A-3-20261010T005115-29291"
     },
     {
       "name": "harness main.js ran to the end without error",
@@ -241,8 +241,8 @@
       "name": "raw keys: only 00/11, all shots",
       "ok": true,
       "detail": {
-        "11": 141,
-        "00": 115
+        "11": 131,
+        "00": 125
       }
     },
     {
@@ -268,20 +268,20 @@
       "ok": true,
       "detail": {
         "counts": {
-          "11": 141,
-          "00": 115
+          "11": 131,
+          "00": 125
         },
         "keyQubits": [
           1,
           0
         ],
         "ones": {
-          "q0": 141,
-          "q1": 141
+          "q0": 131,
+          "q1": 131
         },
         "rawQ": {
-          "q0": 141,
-          "q1": 141
+          "q0": 131,
+          "q1": 131
         }
       }
     },

@@ -1,17 +1,17 @@
 {
   "assembly": {
-    "token": "bs-sab-python-also-runs-20261010T004211-18913",
+    "token": "bs-sab-python-also-runs-20261010T005239-26050",
     "variant": "A-sab-python-also-runs",
-    "runnerRef": "lane/platform/integration@45a45f2",
-    "contractsRef": "lane/platform/integration@45a45f2",
-    "pythonRef": "HEAD@cfffe4f",
+    "runnerRef": "lane/platform/integration@0fc2721",
+    "contractsRef": "lane/platform/integration@0fc2721",
+    "pythonRef": "HEAD@dd289c4",
     "harnessDirty": false,
     "sha256": {
       "bs_spy.py": "ae8f212ea741901d",
       "contracts.js": "2398c11391f87fa5",
       "index.html": "1a8287fcde6865d6",
       "main.css": "c11007d9e339ed9d",
-      "main.js": "c8770db474c5d099",
+      "main.js": "e70e066cf8f72701",
       "quantum/__init__.py": "4770b5d0e03c289a",
       "quantum/bridge.js": "903d3e5309fc42b5",
       "quantum/cloning.py": "9e50d3aba0104f49",
@@ -29,7 +29,7 @@
     "log": [
       {
         "kind": "runner",
-        "msg": "runner: 12 files in /private/tmp/bs-run-VD0eRP/echo; backend = ionq-mock"
+        "msg": "runner: 12 files in /private/tmp/bs-run-vF9o9r/echo; backend = ionq-mock"
       },
       {
         "kind": "system",
@@ -81,7 +81,7 @@
       },
       {
         "kind": "system",
-        "msg": "Probabilities panel: {\"0x3\":0.47265625,\"0x0\":0.52734375}"
+        "msg": "Probabilities panel: {\"0x3\":0.5546875,\"0x0\":0.4453125}"
       },
       {
         "kind": "system",
@@ -89,7 +89,7 @@
       },
       {
         "kind": "system",
-        "msg": "Probabilities panel: {\"0x0\":0.45703125,\"0x3\":0.54296875}"
+        "msg": "Probabilities panel: {\"0x0\":0.46484375,\"0x3\":0.53515625}"
       },
       {
         "kind": "out",
@@ -102,7 +102,7 @@
     ]
   },
   "dump": {
-    "build": "bs-sab-python-also-runs-20261010T004211-18913",
+    "build": "bs-sab-python-also-runs-20261010T005239-26050",
     "variant": "A-sab-python-also-runs",
     "backendName": "basic_simulator",
     "samePromise": true,
@@ -127,8 +127,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 121,
-          "00": 135
+          "11": 142,
+          "00": 114
         },
         "keyQubits": [
           1,
@@ -157,8 +157,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 121,
-          "00": 135
+          "11": 142,
+          "00": 114
         },
         "keyQubits": [
           1,
@@ -182,8 +182,8 @@
             "shots": 256
           },
           "rawCounts": {
-            "11": 121,
-            "00": 135
+            "11": 142,
+            "00": 114
           }
         },
         {
@@ -199,8 +199,8 @@
             "shots": 256
           },
           "rawCounts": {
-            "11": 139,
-            "00": 117
+            "11": 137,
+            "00": 119
           }
         }
       ],
@@ -212,7 +212,7 @@
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "bs-sab-python-also-runs-20261010T004211-18913"
+      "detail": "bs-sab-python-also-runs-20261010T005239-26050"
     },
     {
       "name": "harness main.js ran to the end without error",
@@ -266,8 +266,8 @@
       "name": "raw keys: only 00/11, all shots",
       "ok": true,
       "detail": {
-        "11": 121,
-        "00": 135
+        "11": 142,
+        "00": 114
       }
     },
     {
@@ -293,20 +293,20 @@
       "ok": true,
       "detail": {
         "counts": {
-          "11": 121,
-          "00": 135
+          "11": 142,
+          "00": 114
         },
         "keyQubits": [
           1,
           0
         ],
         "ones": {
-          "q0": 121,
-          "q1": 121
+          "q0": 142,
+          "q1": 142
         },
         "rawQ": {
-          "q0": 121,
-          "q1": 121
+          "q0": 142,
+          "q1": 142
         }
       }
     },

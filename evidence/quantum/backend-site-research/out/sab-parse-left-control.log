@@ -1,5 +1,5 @@
-assembled /private/tmp/bs-run-qNEDij (A-control-sab-parse-left, token bs-sab-parse-left-control-20261010T004223-12336)
-PASS  served build token matches the one just written  — bs-sab-parse-left-control-20261010T004223-12336
+assembled /private/tmp/bs-run-ooFNMX (A-control-sab-parse-left, token bs-sab-parse-left-control-20261010T005255-6567)
+PASS  served build token matches the one just written  — bs-sab-parse-left-control-20261010T005255-6567
 PASS  harness main.js ran to the end without error  — done
 PASS  runner's own JS-side counter: exactly 1 backend.run  — {"jobs":1,"refusedByRunner":0}
 PASS  runner refused nothing (IonQ one-job mock)  — 0

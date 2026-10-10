@@ -1,5 +1,5 @@
-assembled /private/tmp/bs-run-gbk7AZ (B-baseline-control, token bs-B-baseline-control-20261010T004143-27064)
-PASS  served build token matches the one just written  — bs-B-baseline-control-20261010T004143-27064
+assembled /private/tmp/bs-run-cioyMZ (B-baseline-control, token bs-B-baseline-control-20261010T005159-23567)
+PASS  served build token matches the one just written  — bs-B-baseline-control-20261010T005159-23567
 PASS  harness main.js ran to the end without error  — done
 FAIL  runner's own JS-side counter: exactly 1 backend.run  — {"jobs":0,"refusedByRunner":0}
 PASS  runner refused nothing (IonQ one-job mock)  — 0

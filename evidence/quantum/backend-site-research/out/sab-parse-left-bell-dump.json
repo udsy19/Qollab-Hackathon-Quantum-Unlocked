@@ -1,17 +1,17 @@
 {
   "assembly": {
-    "token": "bs-sab-parse-left-bell-20261010T004233-17425",
+    "token": "bs-sab-parse-left-bell-20261010T005308-5180",
     "variant": "A-sab-parse-left",
-    "runnerRef": "lane/platform/integration@45a45f2",
-    "contractsRef": "lane/platform/integration@45a45f2",
-    "pythonRef": "HEAD@cfffe4f",
+    "runnerRef": "lane/platform/integration@0fc2721",
+    "contractsRef": "lane/platform/integration@0fc2721",
+    "pythonRef": "HEAD@dd289c4",
     "harnessDirty": false,
     "sha256": {
       "bs_spy.py": "ae8f212ea741901d",
       "contracts.js": "2398c11391f87fa5",
       "index.html": "1a8287fcde6865d6",
       "main.css": "c11007d9e339ed9d",
-      "main.js": "71b9fcad4ffaad9f",
+      "main.js": "b20f7e3db48a405d",
       "quantum/__init__.py": "4770b5d0e03c289a",
       "quantum/bridge.js": "903d3e5309fc42b5",
       "quantum/cloning.py": "9e50d3aba0104f49",
@@ -29,7 +29,7 @@
     "log": [
       {
         "kind": "runner",
-        "msg": "runner: 12 files in /private/tmp/bs-run-23PKuK/echo; backend = ionq-mock"
+        "msg": "runner: 12 files in /private/tmp/bs-run-utcMSr/echo; backend = ionq-mock"
       },
       {
         "kind": "system",
@@ -81,7 +81,7 @@
       },
       {
         "kind": "system",
-        "msg": "Probabilities panel: {\"0x3\":0.45703125,\"0x0\":0.54296875}"
+        "msg": "Probabilities panel: {\"0x3\":0.52734375,\"0x0\":0.47265625}"
       },
       {
         "kind": "out",
@@ -94,7 +94,7 @@
     ]
   },
   "dump": {
-    "build": "bs-sab-parse-left-bell-20261010T004233-17425",
+    "build": "bs-sab-parse-left-bell-20261010T005308-5180",
     "variant": "A-sab-parse-left",
     "backendName": "basic_simulator",
     "samePromise": true,
@@ -119,8 +119,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 117,
-          "00": 139
+          "11": 135,
+          "00": 121
         },
         "keyQubits": [
           1,
@@ -149,8 +149,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 117,
-          "00": 139
+          "11": 135,
+          "00": 121
         },
         "keyQubits": [
           1,
@@ -174,8 +174,8 @@
             "shots": 256
           },
           "rawCounts": {
-            "11": 117,
-            "00": 139
+            "11": 135,
+            "00": 121
           }
         }
       ],
@@ -187,7 +187,7 @@
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "bs-sab-parse-left-bell-20261010T004233-17425"
+      "detail": "bs-sab-parse-left-bell-20261010T005308-5180"
     },
     {
       "name": "harness main.js ran to the end without error",
@@ -241,8 +241,8 @@
       "name": "raw keys: only 00/11, all shots",
       "ok": true,
       "detail": {
-        "11": 117,
-        "00": 139
+        "11": 135,
+        "00": 121
       }
     },
     {
@@ -268,20 +268,20 @@
       "ok": true,
       "detail": {
         "counts": {
-          "11": 117,
-          "00": 139
+          "11": 135,
+          "00": 121
         },
         "keyQubits": [
           1,
           0
         ],
         "ones": {
-          "q0": 117,
-          "q1": 117
+          "q0": 135,
+          "q1": 135
         },
         "rawQ": {
-          "q0": 117,
-          "q1": 117
+          "q0": 135,
+          "q1": 135
         }
       }
     },
