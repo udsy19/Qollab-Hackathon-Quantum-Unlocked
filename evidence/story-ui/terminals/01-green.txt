@@ -29,7 +29,7 @@ PASS  relay: events in §9.2 order, each once  — PREPARE_BELL_PAIR,ATTEMPT_NO_
 PASS  teleport: COMMIT disabled before any dry run
 PASS  teleport: clicking a locked COMMIT calls nothing and emits nothing
 PASS  teleport 00: bits shown first (m0, m1) and plan before verify  — 0,0
-PASS  teleport 00 wrong (X ON, Z OFF): displayed fidelity 0.123812 = closed form 0.123812
+PASS  teleport 00 wrong (X ON, Z OFF): displayed fidelity 0.793114 = closed form 0.793114
 PASS  teleport 00 wrong: fidelity < 1 and a FAILURES.teleportation line
 PASS  teleport 00: engine label visible
 PASS  teleport 00: bits shown first (m0, m1) and plan before verify  — 0,0
@@ -38,7 +38,7 @@ PASS  teleport 00 right: fidelity 1
 PASS  teleport 00: engine label visible
 PASS  teleport 00 right: COMMIT stays locked (00 does not test the rule)
 PASS  teleport 01: bits shown first (m0, m1) and plan before verify  — 0,1
-PASS  teleport 01 wrong (X OFF, Z OFF): displayed fidelity 0.09376 = closed form 0.093760
+PASS  teleport 01 wrong (X OFF, Z OFF): displayed fidelity 0.272918 = closed form 0.272918
 PASS  teleport 01 wrong: fidelity < 1 and a FAILURES.teleportation line
 PASS  teleport 01: engine label visible
 PASS  teleport: ESC mid-flow closes
@@ -48,7 +48,7 @@ PASS  teleport 01 right (X ON, Z OFF): displayed fidelity 1 = closed form 1.0000
 PASS  teleport 01 right: fidelity 1
 PASS  teleport 01: engine label visible
 PASS  teleport 10: bits shown first (m0, m1) and plan before verify  — 1,0
-PASS  teleport 10 wrong (X OFF, Z OFF): displayed fidelity 0.33674 = closed form 0.336740
+PASS  teleport 10 wrong (X OFF, Z OFF): displayed fidelity 0.077775 = closed form 0.077775
 PASS  teleport 10 wrong: fidelity < 1 and a FAILURES.teleportation line
 PASS  teleport 10: engine label visible
 PASS  teleport 10: bits shown first (m0, m1) and plan before verify  — 1,0
@@ -56,7 +56,7 @@ PASS  teleport 10 right (X OFF, Z ON): displayed fidelity 1 = closed form 1.0000
 PASS  teleport 10 right: fidelity 1
 PASS  teleport 10: engine label visible
 PASS  teleport 11: bits shown first (m0, m1) and plan before verify  — 1,1
-PASS  teleport 11 wrong (X OFF, Z ON): displayed fidelity 0.236344 = closed form 0.236344
+PASS  teleport 11 wrong (X OFF, Z ON): displayed fidelity 0.05586 = closed form 0.055860
 PASS  teleport 11 wrong: fidelity < 1 and a FAILURES.teleportation line
 PASS  teleport 11: engine label visible
 PASS  teleport 11: bits shown first (m0, m1) and plan before verify  — 1,1
@@ -78,6 +78,12 @@ PASS  malformed: the stub really returned a bad shape
 PASS  malformed: RESULT REFUSED with the validator reason, results panel unchanged
 PASS  pending: CALIBRATING shown, aria-busy, ESC still closes (UI not frozen)
 PASS  pending: ESC closed the terminal mid-call
+PASS  socket: out-of-order junction explained (FAILURES.link_repair.wrong_junction)
+PASS  socket: three junctions → CLASSICAL LINK ONLINE, REPAIR_CLASSICAL_LINK once  — REPAIR_CLASSICAL_LINK
+PASS  hint: HINT shows the integrator-supplied hint inside the terminal
+PASS  200%: nothing in the terminal leaves the viewport horizontally or overflows its box
+PASS  200%: terminal text actually scaled (value font ≥ 32px)  — 33.6px
+PASS  200%: VERIFY reachable by Tab and scrolled into view
 PASS  no page errors
 
-80 checks, 0 failed
+86 checks, 0 failed

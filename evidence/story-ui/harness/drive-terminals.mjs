@@ -47,7 +47,12 @@ async function press(key, label) {
   if (mod) await page.keyboard.up(mod);
   await sleep(40);
 }
-const shot = async (name) => { await sleep(260); await page.screenshot({ path: path.join(out, name) }); };
+const leaves = [];
+// Every leaf text in the open terminal, captured at each screenshot, for copy-check.mjs.
+const captureLeaves = () => H(() => [...document.querySelectorAll('.echo-terminal *')]
+  .filter((e) => e.children.length === 0 || [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim()))
+  .map((e) => [...e.childNodes].filter((n) => n.nodeType === 3).map((n) => n.textContent).join('').trim()).filter(Boolean));
+const shot = async (name) => { await sleep(260); leaves.push(...(await captureLeaves())); await page.screenshot({ path: path.join(out, name) }); };
 const H = (fn, ...a) => page.evaluate(fn, ...a);
 const events = () => H(() => [...echoHarness.events]);
 const calls = (m) => H((m) => echoHarness.stub.calls.filter((c) => c.method === m).length, m);
@@ -289,11 +294,51 @@ try {
   check('pending: ESC closed the terminal mid-call', await H(() => !echoHarness.terminal.isOpen()));
   await H(() => { echoHarness.stub.control.delayMs = 120; });
 
+  // ---------------------------------------------------------------- classical_socket, keyboard only
+  keys.push('=== classical_socket (keyboard only) ===');
+  await H(() => { echoHarness.events.length = 0; echoHarness.terminal.open('classical_socket'); });
+  await tabTo(/^PATCH JUNCTION 2$/);
+  check('socket: out-of-order junction explained (FAILURES.link_repair.wrong_junction)', /No signal reaches that junction yet/.test(await panelText()));
+  await shot('40-socket-wrong-junction.png');
+  for (const n of [1, 2, 3]) await tabTo(new RegExp(`^PATCH JUNCTION ${n}$`));
+  await sleep(100);
+  check('socket: three junctions → CLASSICAL LINK ONLINE, REPAIR_CLASSICAL_LINK once', /CLASSICAL LINK ONLINE/.test(await panelText()) && JSON.stringify(await events()) === '["REPAIR_CLASSICAL_LINK"]', (await events()).join(','));
+  await shot('41-socket-repaired.png');
+  await tabTo(/^HINT$/);
+  check('hint: HINT shows the integrator-supplied hint inside the terminal', /Scan \(Q\) the roof/.test(await panelText()));
+  await shot('42-hint.png');
+  await press('Escape');
+
+  // ---------------------------------------------------------------- 200% text, fresh page
+  keys.push('=== 200% text ===');
+  await page.goto(url + '?scale=200&open=teleport_terminal', { waitUntil: 'networkidle0' });
+  await page.waitForFunction(() => window.echoHarness?.hash);
+  await H(() => { echoHarness.stub.control.delayMs = 50; echoHarness.stub.control.bitsQueue.push([1, 1]); });
+  await tabTo(/^EXECUTE BELL MEASUREMENT ON TEST STATE$/);
+  await idle();
+  const g = await H(() => {
+    const bad = [];
+    const W = innerWidth;
+    for (const e of document.querySelectorAll('.echo-terminal *')) {
+      const r = e.getBoundingClientRect();
+      if (!r.width) continue;
+      if (r.left < -1 || r.right > W + 1) bad.push(`${e.className} x ${Math.round(r.left)}..${Math.round(r.right)}`);
+      if (e.clientWidth && e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).overflowX !== 'visible') bad.push(`${e.className} scrollWidth ${e.scrollWidth}>${e.clientWidth}`);
+    }
+    return { bad, font: getComputedStyle(document.querySelector('.echo-terminal__value')).fontSize };
+  });
+  check('200%: nothing in the terminal leaves the viewport horizontally or overflows its box', g.bad.length === 0, g.bad.slice(0, 4).join('; '));
+  check('200%: terminal text actually scaled (value font ≥ 32px)', parseFloat(g.font) >= 32, g.font);
+  await shot('50-teleport-200.png');
+  await tabTo(/^VERIFY DRY RUN$/, { activate: false });
+  check('200%: VERIFY reachable by Tab and scrolled into view', await H(() => { const r = document.activeElement.getBoundingClientRect(); return r.top >= 0 && r.bottom <= innerHeight; }));
+  await shot('51-teleport-200-verify-focused.png');
+
   check('no page errors', errors.length === 0, errors.join(' | '));
 } catch (e) {
   check(`driver reached the end (${e.message})`, false);
 } finally {
-  fs.writeFileSync(path.join(out, 'drive-result.json'), JSON.stringify({ url, keys, checks, failed, errors }, null, 2));
+  fs.writeFileSync(path.join(out, 'drive-result.json'), JSON.stringify({ url, keys, checks, failed, errors, leaves: [...new Set(leaves)] }, null, 2));
   await browser.close();
 }
 console.log(`\n${checks.length} checks, ${failed} failed`);
