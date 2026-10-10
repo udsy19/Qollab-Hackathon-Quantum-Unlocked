@@ -33,6 +33,11 @@
       "detail": "[\"SKIP\"]"
     },
     {
+      "name": "d: skip() re-entered from onSkip, then called again, still emits SKIP once",
+      "ok": true,
+      "detail": "[\"SKIP\"]"
+    },
+    {
       "name": "d: clicking Skip emits SKIP once",
       "ok": true,
       "detail": "[\"SKIP\"]"

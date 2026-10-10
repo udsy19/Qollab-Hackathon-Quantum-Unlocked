@@ -35,7 +35,7 @@
     {
       "name": "c: each shot fired within 1.2 s of its §4.1 start",
       "ok": true,
-      "detail": "[{\"name\":\"A\",\"t\":0,\"at\":16},{\"name\":\"B\",\"t\":10.016900000005961,\"at\":10032},{\"name\":\"C\",\"t\":24.093,\"at\":24109},{\"name\":\"D\",\"t\":44.02629999999702,\"at\":44042}]"
+      "detail": "[{\"name\":\"A\",\"t\":0,\"at\":19},{\"name\":\"B\",\"t\":10.02540000000596,\"at\":10044},{\"name\":\"C\",\"t\":24.02740000000596,\"at\":24046},{\"name\":\"D\",\"t\":44.04040000000596,\"at\":44059}]"
     },
     {
       "name": "e: full run emits FINISHED exactly once and no SKIP",
@@ -45,7 +45,7 @@
     {
       "name": "e: FINISHED lands at about 65 s",
       "ok": true,
-      "detail": "65044"
+      "detail": "65168"
     },
     {
       "name": "e: overlay is gone after the run",
@@ -68,7 +68,7 @@
       "detail": ""
     },
     {
-      "name": "f: mashing Skip/Esc/Enter after the end emits nothing more",
+      "name": "f: mashing Skip/Esc/Enter and calling skip() after the end emits nothing more",
       "ok": true,
       "detail": "[\"FINISHED\"]"
     },
