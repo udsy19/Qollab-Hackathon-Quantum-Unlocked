@@ -1,6 +1,6 @@
 """Rehearse ECHO's one selected-backend job against IonQ's simulator stack, off Qollab.
 
-One process = one ECHO run, so qollab_job's once-per-run flag starts fresh each time, as on Qollab.
+One process = one ECHO run: exactly one job is submitted, as bridge.js does on Qollab.
 
   live    needs an IonQ key in the environment (owner's ~/.config/echo/ionq.env, loaded only by the
           calling shell). Submits ONE circuit to IonQProvider().get_backend("simulator"), never qpu.
@@ -13,9 +13,11 @@ One process = one ECHO run, so qollab_job's once-per-run flag starts fresh each 
           the circuit (IonQ echoes it back on retrieve), but the histogram is typed in by hand. It
           proves the client path, not IonQ's server, and every output says so.
 
-The Bell run calls qollab_job.run_bell_verification_once, the function bridge.js calls. The
-asymmetric control (X on q0 only) cannot use that function, which builds its own circuit, so it
-submits through backend.run and parses with the same qollab_job.interpret_counts.
+The Bell run does what bridge.js's verifySelectedBackendOnce does: qollab_job builds the circuit,
+ONE backend.run submits it (in the game that call is JS, the only submit site), and
+qollab_job.interpret_counts reads the counts with the backend handed in. The asymmetric control
+(X on q0 only) is submitted the same way and parsed by the same interpret_counts. The once-per-run
+memo lives in bridge.js and is graded by evidence/quantum/pyodide-bridge, not here.
 
 usage:
   rehearse.py live   --circuit bell|control --noise ideal|aria-1|forte-1 --out DIR [--echo-root P]
@@ -66,29 +68,12 @@ def ionq_backend(noise, token):
 
 def run_one(qj, backend, circuit_kind):
     """The measured part of a run. Returns (raw counts, parsed result dict, timing)."""
+    circuit = qj.build_backend_verification_circuit() if circuit_kind == "bell" else control_circuit()
     t0 = time.perf_counter()
-    if circuit_kind == "bell":
-        captured = {}
-        real_run = backend.run
-
-        def spy_run(circ, **kw):  # only to time the submit and keep the job; the circuit is qollab_job's
-            job = real_run(circ, **kw)
-            captured["submit_s"] = time.perf_counter() - t0
-            captured["job"] = job
-            return job
-
-        backend.run = spy_run
-        try:
-            result = qj.run_bell_verification_once(backend, shots=SHOTS)
-        finally:
-            backend.run = real_run
-        raw = captured["job"].result().get_counts()  # IonQJob caches its Result: no extra request
-        submit_s = captured["submit_s"]
-    else:
-        job = backend.run(control_circuit(), shots=SHOTS)
-        submit_s = time.perf_counter() - t0
-        raw = job.result().get_counts()
-        result = qj.interpret_counts(raw, qj._backend_label(backend), shots_requested=SHOTS)
+    job = backend.run(circuit, shots=SHOTS)
+    submit_s = time.perf_counter() - t0
+    raw = job.result().get_counts()
+    result = qj.interpret_counts(raw, backend, shots_requested=SHOTS)
     total_s = time.perf_counter() - t0
     return dict(raw), result, {"submit_s": round(submit_s, 4), "submit_to_counts_s": round(total_s, 4)}
 
@@ -145,16 +130,6 @@ def write_run(out_dir, name, label, raw, result, timing, check_rows, fixture):
     return bad
 
 
-def second_call_refused(qj, backend, calls):
-    """Same run, second verification: must raise BackendJobAlreadyUsed with zero new submits."""
-    before = calls["submit_job"]
-    try:
-        qj.run_bell_verification_once(backend, shots=SHOTS)
-        return False, "second call returned a result"
-    except qj.BackendJobAlreadyUsed:
-        return calls["submit_job"] == before, f"submits before={before} after={calls['submit_job']}"
-
-
 def cmd_live(a):
     token = next((os.environ[k] for k in KEY_ENV if os.environ.get(k)), None)
     if not token:
@@ -181,8 +156,6 @@ def cmd_live(a):
         setattr(ionq_client.IonQClient, m, recorder(m))
     raw, result, timing = run_one(qj, backend, a.circuit)
     rows = checks(a.circuit, a.noise, raw, result)
-    if a.circuit == "bell":
-        rows.append(("second verification in the same run refused, no 2nd submit", *second_call_refused(qj, backend, calls)))
     rows.append(("exactly one IonQ job submitted", calls["submit_job"] == 1, f"{calls['submit_job']}"))
     name = f"live-{a.circuit}-{a.noise}"
     fixture = {"label": LABEL, "provenance": "live", "circuit": a.circuit, "noise_model": a.noise, "shots": SHOTS,
@@ -230,8 +203,6 @@ def cmd_replay(a):
     backend = ionq_backend(noise, "replay-no-key")
     raw, result, timing = run_one(qj, backend, circuit_kind)
     rows = checks(circuit_kind, noise, raw, result)
-    if circuit_kind == "bell":
-        rows.append(("second verification in the same run refused, no 2nd submit", *second_call_refused(qj, backend, calls)))
     rows.append(("exactly one job submitted", calls["submit_job"] == 1, f"{calls['submit_job']}"))
     timing["note"] = "replay: no network, local time only"
     name = "replay-" + Path(a.fixture).name.removesuffix(".fixture.json")
@@ -243,7 +214,7 @@ def cmd_synth(a):
     from qiskit_ionq.helpers import qiskit_to_ionq
     qj = load_qollab_job(a.echo_root)
     backend = ionq_backend(a.noise, "synth-no-key")
-    circ = qj.build_bell_verification_circuit() if a.circuit == "bell" else control_circuit()
+    circ = qj.build_backend_verification_circuit() if a.circuit == "bell" else control_circuit()
     payload = json.loads(qiskit_to_ionq(circ, backend, {**backend.options.__dict__, "shots": SHOTS}, {}, {}))
     job_id = "synthetic-0000"
     fixture = {

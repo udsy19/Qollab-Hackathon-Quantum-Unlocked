@@ -38,7 +38,7 @@ row S1 red   $FX/synth-control-ideal.fixture.json  echo/quantum/qollab_job.py 's
 row S1b null $FX/synth-bell-ideal.fixture.json     echo/quantum/qollab_job.py 's/key\[-1 - clbit\]/key[clbit]/' 'same reversal, Bell run (00/11 are symmetric: the Bell run alone cannot see it)'
 row S2 red   $FX/synth-control-forte-1.fixture.json echo/quantum/qollab_job.py 's/^QUBIT_OF_CLBIT = \(0, 1\)/QUBIT_OF_CLBIT = (1, 0)/' 'clbit<-qubit map swapped'
 row S3 null  $FX/synth-control-ideal.fixture.json  echo/quantum/qollab_job.py 's/^KEY_QUBITS = \[1, 0\]/KEY_QUBITS = [0, 1]/' 'key order flipped AND declared in keyQubits (self-consistent, not a defect)'
-row S4 red   $FX/synth-bell-ideal.fixture.json     echo/quantum/qollab_job.py 's/^    _job_submitted = True$/    pass/' 'once-per-run flag never set'
+row S4 red   $FX/synth-bell-ideal.fixture.json     echo/quantum/qollab_job.py 's/^        backend_name = _backend_label\(backend_name\)$/        backend_name.run(build_backend_verification_circuit(), shots=256); backend_name = _backend_label(backend_name)/' 'Python submits a job of its own while reading the counts (the one submit site is bridge.js)'
 row S5 red   $FX/synth-control-ideal.fixture.json  fx.fixture.json 's/"1": 1.0/"2": 1.0/' 'server reports X(q0) in histogram bit 1 (an MSB-first IonQ convention)'
 row S6 red   $FX/synth-bell-aria-1.fixture.json    fx.fixture.json 's/"1": 0.02/"1": 0.0/; s/"2": 0.02/"2": 0.0/; s/"0": 0.49/"0": 0.51/; s/"3": 0.47/"3": 0.49/' 'noisy run with no 01/10 at all (noise check must not be vacuous)'
 row S7 red   $FX/synth-bell-ideal.fixture.json     fx.fixture.json 's/"0": 0.5/"0": 0.45, "1": 0.05/' 'ideal run that leaks into 01'

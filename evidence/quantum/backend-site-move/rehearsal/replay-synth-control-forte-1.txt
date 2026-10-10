@@ -1,0 +1,7 @@
+== replay-synth-control-forte-1  [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]  timing {'submit_s': 0.0075, 'submit_to_counts_s': 0.008, 'note': 'replay: no network, local time only'}
+  PASS  counts non-empty  (total=256)
+  PASS  parameters.shots is the 256 requested  (256)
+  PASS  control: dominant key decodes to q0=1, q1=0  (key '01', keyQubits [1, 0] -> {1: 0, 0: 1})
+  PASS  control: qiskit-ionq raw key has clbit 0 rightmost  (raw dominant '01')
+  PASS  exactly one job submitted  (1)
+  5 checks, 0 failed

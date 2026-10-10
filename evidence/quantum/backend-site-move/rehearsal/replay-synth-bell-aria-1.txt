@@ -1,0 +1,7 @@
+== replay-synth-bell-aria-1  [SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only]  timing {'submit_s': 0.0124, 'submit_to_counts_s': 0.013, 'note': 'replay: no network, local time only'}
+  PASS  counts non-empty  (total=255)
+  PASS  parameters.shots is the 256 requested  (256)
+  PASS  bell noisy: 0.80 <= correlated fraction < 1  (245/255 = 0.9608)
+  PASS  bell: both 00 and 11 seen  ({'00': 125, '11': 120, '01': 5, '10': 5})
+  PASS  exactly one job submitted  (1)
+  5 checks, 0 failed
