@@ -256,7 +256,9 @@ for (const [path, s] of strings) {
 if (!/no game-over resulting from a non-pausing timer/.test(vision)) refuse('vision no longer states the no-game-over timer anti-goal')
 const zero = story.MOMENTS?.countdown_zero
 check(Array.isArray(zero) && zero.length > 0, 'story.MOMENTS.countdown_zero', 'the countdown reaching 00:00 needs a beat')
-check(Array.isArray(zero) && zero.some(b => /\b(hold|holds|held|holding)\b/i.test(b?.text ?? '')), 'story.MOMENTS.countdown_zero', 'the zero beat must say the isolation is held')
+// The held word must be about the isolation itself, not any other thing that happens to be "holding".
+const HELD = /isolation[^.?!]*\b(hold|holds|held|holding)\b|\b(hold|holds|held|holding)\b[^.?!]*isolation/i
+check(Array.isArray(zero) && zero.some(b => HELD.test(b?.text ?? '')), 'story.MOMENTS.countdown_zero', 'the zero beat must say the grid isolation is held')
 check(typeof objectives.HUD?.countdownHeld === 'string' && /\bHELD\b/.test(objectives.HUD.countdownHeld), 'objectives.HUD.countdownHeld', 'the HUD needs a held status line for 00:00')
 for (const [path, s] of strings) { checks++; if (/game[- ]over|mission failed|too late|you failed|time'?s up/i.test(s)) fail(path, `the timer never ends the game (§1): "${s}"`) }
 
@@ -286,7 +288,8 @@ for (const [path, s] of strings) {
 // Ground truth: branch_truth.py runs the real protocol in local Qiskit for every (m0, m1) × (X, Z)
 // plan on a generic state and reports what the receiver holds. It never reads echo/data.
 const PY = process.env.ECHO_PYTHON ?? '/Users/udsy/PycharmProjects/Qollab-Hackathon-Quantum-Unlocked/.venv/bin/python'
-const bt = spawnSync(PY, ['-I', resolve(here, '../data-fixes/branch_truth.py')], { encoding: 'utf8' })
+// ECHO_BRANCH_TRUTH exists only so the sabotage round can swap in a deliberately broken protocol.
+const bt = spawnSync(PY, ['-I', resolve(process.env.ECHO_BRANCH_TRUTH ?? join(here, '../data-fixes/branch_truth.py'))], { encoding: 'utf8' })
 if (bt.status !== 0) refuse(`branch_truth.py did not run (${PY}, exit ${bt.status}): ${(bt.stderr || bt.error?.message || '').trim().slice(-300)}`)
 const TRUTH = JSON.parse(bt.stdout).rows
 if (TRUTH.length !== 16) refuse(`branch truth has ${TRUTH.length} rows, expected 16`)

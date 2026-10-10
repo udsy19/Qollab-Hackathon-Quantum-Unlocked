@@ -8,7 +8,7 @@ What this proves: every word of ECHO's script, HUD, hints, failure lines, termin
 | `fixtures/bad/` | a deliberately bad data set. The gate must stay red on it. |
 | `01-red-on-bad-fixture.txt` | the gate on the bad fixture: exit 1, 43 failures. |
 | `02-green.txt` | the gate on the real data: exit 0. |
-| `sabotage.mjs` / `03-sabotage.md` | 20 one-line mutations of the real data, each on a temp copy: 16 red, 4 nulls (listed in the table). Refuses if the baseline is not green. |
+| `sabotage.mjs` / `03-sabotage.md` | (consult 3) 20 one-line mutations; consult 4 added 28 more, results in `../data-fixes/04-sabotage.md` of the real data, each on a temp copy: 16 red, 4 nulls (listed in the table). Refuses if the baseline is not green. |
 | `render-script.mjs` / `script.md` | the full script in play order, rendered from the data. ✎ marks new text; *(verbatim §x)* marks text the gate verified against the vision. |
 
 Re-run: `node evidence/story-ui/story-data/check.mjs; node evidence/story-ui/story-data/sabotage.mjs; node evidence/story-ui/story-data/render-script.mjs > evidence/story-ui/story-data/script.md`
