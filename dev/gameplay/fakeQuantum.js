@@ -166,6 +166,7 @@ function teleport(stateId, angles, correctionX, correctionZ, bits) {
 
 export function createFakeQuantum({ delayMs = 250, random = Math.random } = {}) {
   let pendingFailure = null;
+  let commitFault = false;
 
   // Async like the real Pyodide bridge; an injected failure rejects once, for the retry path.
   function call(fn) {
@@ -194,9 +195,12 @@ export function createFakeQuantum({ delayMs = 250, random = Math.random } = {}) 
     // rule's corrections, the receiver state and its fidelity, all inside the same call.
     commitStoryToken: () => call(() => {
       const bits = sampleBellBits();
-      return teleport('story_token', STORY_TOKEN, bits.m1 === 1, bits.m0 === 1, bits);
+      const flip = commitFault; // dev fault: the engine applies the wrong X, the call still returns
+      commitFault = false;
+      return teleport('story_token', STORY_TOKEN, (bits.m1 === 1) !== flip, bits.m0 === 1, bits);
     }),
     sampleBellBits,
     failNext: (reason = 'simulated quantum bridge failure') => { pendingFailure = reason; },
+    faultNextCommit: () => { commitFault = true; },
   };
 }
