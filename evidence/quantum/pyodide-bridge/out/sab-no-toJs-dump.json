@@ -1,24 +1,25 @@
 {
   "assembly": {
-    "token": "pb-sab-no-toJs-20261010T000019-16338",
+    "token": "pb-sab-no-toJs-20261010T003152-2449",
     "sabotage": "no-toJs",
-    "runnerRef": "lane/platform/g0-runner-smoke@71d2477",
-    "contractsRef": "lane/platform/integration@939a57d",
-    "harnessCommit": "dffd4f5",
-    "pythonRef": "lane/quantum/contract-conformance@42703f1",
+    "fault": false,
+    "runnerRef": "lane/platform/integration@32838bc",
+    "contractsRef": "lane/platform/integration@32838bc",
+    "harnessCommit": "173ea46-dirty",
+    "pythonRef": "HEAD@173ea46",
     "sha256": {
-      "contracts.js": "8052cf2926a54fa2",
+      "contracts.js": "4aca6191d2d8218f",
       "index.html": "6112169d8d1887b8",
       "main.css": "d93eb501784b286e",
-      "main.js": "5311eeb05b28c9ba",
-      "pb_spy.py": "571deb7a75d4bb4f",
-      "quantum/__init__.py": "0717eeef492541b7",
-      "quantum/bridge.js": "f5595095d374dd48",
-      "quantum/cloning.py": "69c42984e4bfcd04",
-      "quantum/entanglement.py": "b5a7ba9d28707d6c",
-      "quantum/formats.py": "8a95785415a780a5",
-      "quantum/qollab_job.py": "edc6840e865acf43",
-      "quantum/teleportation.py": "9b571b8b460048ca"
+      "main.js": "a0d1514e266d1e16",
+      "pb_spy.py": "64f237ced68a9dbb",
+      "quantum/__init__.py": "4770b5d0e03c289a",
+      "quantum/bridge.js": "0e795c6a0f96efaf",
+      "quantum/cloning.py": "9e50d3aba0104f49",
+      "quantum/entanglement.py": "cafbffa371fda437",
+      "quantum/formats.py": "48a73f0a98817f8a",
+      "quantum/qollab_job.py": "92cbad5b09ad1032",
+      "quantum/teleportation.py": "c7e450cbd63bc0ae"
     }
   },
   "runnerCounters": {
@@ -28,7 +29,7 @@
   "runnerLogTail": [
     {
       "kind": "runner",
-      "msg": "runner: 12 files in /private/tmp/pb-run-ZMGY6k/echo; backend = ionq-mock"
+      "msg": "runner: 12 files in /private/tmp/pb-run-2in60L/echo; backend = ionq-mock"
     },
     {
       "kind": "system",
@@ -108,31 +109,11 @@
     },
     {
       "kind": "err",
-      "msg": "quantum bridge: calibration measurement returned a result the contract rejects: result must be a plain object, got a PyProxy object"
+      "msg": "quantum bridge: calibration measurement returned a result the contract rejects: phase-1 result: result must be a plain object, got a PyProxy object"
     },
     {
       "kind": "err",
-      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: result must be a plain object, got a PyProxy object"
-    },
-    {
-      "kind": "err",
-      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: result must be a plain object, got a PyProxy object"
-    },
-    {
-      "kind": "err",
-      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: result must be a plain object, got a PyProxy object"
-    },
-    {
-      "kind": "err",
-      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: result must be a plain object, got a PyProxy object"
-    },
-    {
-      "kind": "err",
-      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: result must be a plain object, got a PyProxy object"
-    },
-    {
-      "kind": "err",
-      "msg": "quantum bridge: live commit returned a result the contract rejects: result must be a plain object, got a PyProxy object"
+      "msg": "quantum bridge: calibration measurement returned a result the contract rejects: phase-1 result: result must be a plain object, got a PyProxy object"
     },
     {
       "kind": "err",
@@ -144,11 +125,15 @@
     },
     {
       "kind": "system",
-      "msg": "Probabilities panel: {\"0x0\":0.48828125,\"0x3\":0.51171875}"
+      "msg": "Probabilities panel: {\"0x0\":0.4921875,\"0x3\":0.5078125}"
     },
     {
       "kind": "err",
-      "msg": "quantum bridge: backend verification result rejected by the contract: result must be a plain object, got a PyProxy object"
+      "msg": "quantum bridge: Quantum backend verification unavailable; educational circuit validated locally returned a result the contract rejects: result must be a plain object, got a PyProxy object"
+    },
+    {
+      "kind": "err",
+      "msg": "quantum bridge: live commit returned a result the contract rejects: result must be a plain object, got a PyProxy object"
     },
     {
       "kind": "system",
@@ -163,24 +148,25 @@
       "listIsArray": true,
       "json": "{\"outer\":{\"inner\":1},\"list\":[1,2],\"n\":1}"
     },
-    "build": "pb-sab-no-toJs-20261010T000019-16338",
+    "build": "pb-sab-no-toJs-20261010T003152-2449",
     "backendName": "basic_simulator",
     "platform": {
       "sysPlatform": "emscripten",
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.004
+      "coldImportSeconds": 0.022
     },
     "timing": {
-      "msFrameStartToMainBody": 8267.4,
-      "verifyMs": 6.1,
-      "wallSecondsPageToDone": 8.5
+      "msFrameStartToMainBody": 20093.5,
+      "verifyMs": 30.2,
+      "wallSecondsPageToDone": 22
     },
     "calls": [
       {
         "label": "cloning(plus)",
-        "ms": 5.4,
+        "hook": false,
+        "ms": 10.1,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -193,7 +179,8 @@
       },
       {
         "label": "cloning(plus)",
-        "ms": 3.6,
+        "hook": false,
+        "ms": 4.3,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -206,7 +193,8 @@
       },
       {
         "label": "cloning(plus)",
-        "ms": 1.6,
+        "hook": false,
+        "ms": 1.7,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -219,7 +207,8 @@
       },
       {
         "label": "cloning(zero)",
-        "ms": 0.9,
+        "hook": false,
+        "ms": 2.9,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -232,7 +221,8 @@
       },
       {
         "label": "cloning(one)",
-        "ms": 1,
+        "hook": false,
+        "ms": 2.3,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -245,7 +235,8 @@
       },
       {
         "label": "cloning(bloch_a)",
-        "ms": 1.3,
+        "hook": false,
+        "ms": 2.1,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -258,7 +249,8 @@
       },
       {
         "label": "relay(I)",
-        "ms": 2.5,
+        "hook": false,
+        "ms": 5.6,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -271,7 +263,8 @@
       },
       {
         "label": "relay(X)",
-        "ms": 1.3,
+        "hook": false,
+        "ms": 9,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -284,7 +277,8 @@
       },
       {
         "label": "relay(Z)",
-        "ms": 0.7,
+        "hook": false,
+        "ms": 5.1,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -296,86 +290,93 @@
         "nodeVerdict": null
       },
       {
-        "label": "calibration(bloch_a)",
-        "ms": 0.6,
+        "label": "calibration#1",
+        "hook": false,
+        "ms": 9.6,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
-          "message": "calibration measurement: result must be a plain object, got a PyProxy object",
+          "message": "calibration measurement: phase-1 result: result must be a plain object, got a PyProxy object",
           "errors": [
-            "result must be a plain object, got a PyProxy object"
+            "phase-1 result: result must be a plain object, got a PyProxy object"
           ]
         },
         "nodeVerdict": null
       },
       {
-        "label": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false)",
-        "ms": 2.4,
+        "label": "calibration#2",
+        "hook": false,
+        "ms": 9.1,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
-          "message": "teleport dry run: result must be a plain object, got a PyProxy object",
+          "message": "calibration measurement: phase-1 result: result must be a plain object, got a PyProxy object",
           "errors": [
-            "result must be a plain object, got a PyProxy object"
+            "phase-1 result: result must be a plain object, got a PyProxy object"
           ]
         },
         "nodeVerdict": null
       },
       {
-        "label": "dryRun(bloch_a, m0=1, m1=0, X=true, Z=false)",
-        "ms": 2.3,
+        "label": "dryRun(calibration#2, X=false, Z=false)",
+        "hook": false,
+        "ms": 0.5,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
-          "message": "teleport dry run: result must be a plain object, got a PyProxy object",
+          "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
           "errors": [
-            "result must be a plain object, got a PyProxy object"
+            "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
           ]
         },
         "nodeVerdict": null
       },
       {
-        "label": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=true)",
-        "ms": 2.4,
+        "label": "dryRun(calibration#2, X=true, Z=false)",
+        "hook": false,
+        "ms": 0,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
-          "message": "teleport dry run: result must be a plain object, got a PyProxy object",
+          "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
           "errors": [
-            "result must be a plain object, got a PyProxy object"
+            "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
           ]
         },
         "nodeVerdict": null
       },
       {
-        "label": "dryRun(bloch_a, m0=1, m1=0, X=true, Z=true)",
-        "ms": 2.1,
+        "label": "dryRun(calibration#2, X=false, Z=true)",
+        "hook": false,
+        "ms": 0,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
-          "message": "teleport dry run: result must be a plain object, got a PyProxy object",
+          "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
           "errors": [
-            "result must be a plain object, got a PyProxy object"
+            "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
           ]
         },
         "nodeVerdict": null
       },
       {
-        "label": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false)",
-        "ms": 1.8,
+        "label": "dryRun(calibration#2, X=true, Z=true)",
+        "hook": false,
+        "ms": 0,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
-          "message": "teleport dry run: result must be a plain object, got a PyProxy object",
+          "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
           "errors": [
-            "result must be a plain object, got a PyProxy object"
+            "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
           ]
         },
         "nodeVerdict": null
       },
       {
-        "label": "commit#1(bloch_b)",
-        "ms": 2.7,
+        "label": "commit#1",
+        "hook": false,
+        "ms": 15.7,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -387,7 +388,8 @@
         "nodeVerdict": null
       },
       {
-        "label": "commit#2(bloch_b)",
+        "label": "commit#2",
+        "hook": false,
         "ms": 0,
         "ok": false,
         "error": {
@@ -401,7 +403,46 @@
       },
       {
         "label": "commit#3 after settle",
-        "ms": 1.8,
+        "hook": false,
+        "ms": 8.4,
+        "ok": false,
+        "error": {
+          "name": "ScientificModuleError",
+          "message": "live commit: quantum.teleportation.TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again.",
+          "errors": [
+            "quantum.teleportation.TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
+          ]
+        },
+        "nodeVerdict": null
+      },
+      {
+        "label": "RESTART: resetStoryToken()",
+        "hook": true,
+        "ms": 5.9,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": false,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "restarted": true
+        },
+        "nodeVerdict": [
+          "unknown field \"restarted\"",
+          "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got nothing",
+          "engine must be one of exact_qiskit_local|qollab_selected_backend|documented_preview, got nothing",
+          "circuitDescription must be a non-empty string, got nothing",
+          "qubits must be an integer ≥ 1, got nothing",
+          "parameters must be a plain object, got nothing",
+          "facts must be a non-empty array of strings, got nothing"
+        ]
+      },
+      {
+        "label": "commit#4 after RESTART",
+        "hook": false,
+        "ms": 13.5,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -413,9 +454,20 @@
         "nodeVerdict": null
       }
     ],
+    "dryRun": {
+      "calibration": "calibration#2",
+      "draws": [
+        "calibration#1",
+        "calibration#2"
+      ]
+    },
     "commit": {
-      "samePromise": true,
-      "sameObjectAfterSettle": false
+      "sameRecordedObject": false,
+      "pythonSecondCommit": {
+        "refused": true,
+        "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
+      },
+      "afterRestartIsNewObject": false
     },
     "verification": {
       "samePromise": true,
@@ -436,32 +488,51 @@
         ]
       },
       "sameValue": true,
-      "pageVerdictOfFirst": null
+      "pageVerdictOfFirst": null,
+      "afterRestartSamePromise": true,
+      "afterRestart": {
+        "status": "rejected",
+        "name": "ScientificModuleError",
+        "message": "Quantum backend verification unavailable; educational circuit validated locally: result must be a plain object, got a PyProxy object",
+        "errors": [
+          "result must be a plain object, got a PyProxy object"
+        ]
+      }
     },
     "spy": {
       "counts": {
         "backendRunAttempts": 1,
         "backendRunCompleted": 1,
-        "verificationCalls": 1
+        "verificationCalls": 1,
+        "commitCalls": 3,
+        "commitsCompleted": 2,
+        "resetCalls": 1,
+        "branchCalls": 0
       },
       "events": [
-        "run_bell_verification_once call #1",
+        "live_commit call #1",
+        "live_commit call #2",
+        "run_backend_verification_once call #1",
         "backend.run attempt #1",
-        "backend.run completed #1"
+        "backend.run completed #1",
+        "reset_story_token call #1",
+        "live_commit call #3"
       ],
-      "networkMock": true
+      "networkMock": true,
+      "fault": false,
+      "branchArgs": []
     }
   },
   "checks": [
     {
       "name": "main.js (harness) ran to the end without error",
       "ok": true,
-      "detail": "page load → done in 8.5s"
+      "detail": "page load → done in 22s"
     },
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "pb-sab-no-toJs-20261010T000019-16338"
+      "detail": "pb-sab-no-toJs-20261010T003152-2449"
     },
     {
       "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -471,13 +542,64 @@
         "python": "3.14.2",
         "qiskit": "2.5.2",
         "pyodide": "314.0.7",
-        "coldImportSeconds": 0.004
+        "coldImportSeconds": 0.022
       }
     },
     {
       "name": "Qiskit 2.x loaded",
       "ok": true,
       "detail": "2.5.2"
+    },
+    {
+      "name": "spy fault mode is false (the scenario being graded)",
+      "ok": true,
+      "detail": false
+    },
+    {
+      "name": "dry run: four X/Z choices were tried on one calibration",
+      "ok": true,
+      "detail": [
+        "dryRun(calibration#2, X=false, Z=false)",
+        "dryRun(calibration#2, X=true, Z=false)",
+        "dryRun(calibration#2, X=false, Z=true)",
+        "dryRun(calibration#2, X=true, Z=true)"
+      ]
+    },
+    {
+      "name": "spy: exactly 1 backend.run attempted, and it completed (stack entered via callPromising)",
+      "ok": true,
+      "detail": {
+        "backendRunAttempts": 1,
+        "backendRunCompleted": 1,
+        "verificationCalls": 1,
+        "commitCalls": 3,
+        "commitsCompleted": 2,
+        "resetCalls": 1,
+        "branchCalls": 0
+      }
+    },
+    {
+      "name": "spy: exactly 1 entry into qollab_job.run_backend_verification_once",
+      "ok": true,
+      "detail": {
+        "backendRunAttempts": 1,
+        "backendRunCompleted": 1,
+        "verificationCalls": 1,
+        "commitCalls": 3,
+        "commitsCompleted": 2,
+        "resetCalls": 1,
+        "branchCalls": 0
+      }
+    },
+    {
+      "name": "verify ×2: the second call returns the SAME promise",
+      "ok": true,
+      "detail": true
+    },
+    {
+      "name": "verify after RESTART: still the same promise (one job per run, not per story)",
+      "ok": true,
+      "detail": true
     },
     {
       "name": "cloning(plus): adapter returned a result",
@@ -579,73 +701,73 @@
       }
     },
     {
-      "name": "calibration(bloch_a): adapter returned a result",
+      "name": "calibration#1: adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
-        "message": "calibration measurement: result must be a plain object, got a PyProxy object",
+        "message": "calibration measurement: phase-1 result: result must be a plain object, got a PyProxy object",
         "errors": [
-          "result must be a plain object, got a PyProxy object"
+          "phase-1 result: result must be a plain object, got a PyProxy object"
         ]
       }
     },
     {
-      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): adapter returned a result",
+      "name": "calibration#2: adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
-        "message": "teleport dry run: result must be a plain object, got a PyProxy object",
+        "message": "calibration measurement: phase-1 result: result must be a plain object, got a PyProxy object",
         "errors": [
-          "result must be a plain object, got a PyProxy object"
+          "phase-1 result: result must be a plain object, got a PyProxy object"
         ]
       }
     },
     {
-      "name": "dryRun(bloch_a, m0=1, m1=0, X=true, Z=false): adapter returned a result",
+      "name": "dryRun(calibration#2, X=false, Z=false): adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
-        "message": "teleport dry run: result must be a plain object, got a PyProxy object",
+        "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
         "errors": [
-          "result must be a plain object, got a PyProxy object"
+          "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
         ]
       }
     },
     {
-      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=true): adapter returned a result",
+      "name": "dryRun(calibration#2, X=true, Z=false): adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
-        "message": "teleport dry run: result must be a plain object, got a PyProxy object",
+        "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
         "errors": [
-          "result must be a plain object, got a PyProxy object"
+          "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
         ]
       }
     },
     {
-      "name": "dryRun(bloch_a, m0=1, m1=0, X=true, Z=true): adapter returned a result",
+      "name": "dryRun(calibration#2, X=false, Z=true): adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
-        "message": "teleport dry run: result must be a plain object, got a PyProxy object",
+        "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
         "errors": [
-          "result must be a plain object, got a PyProxy object"
+          "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
         ]
       }
     },
     {
-      "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): adapter returned a result",
+      "name": "dryRun(calibration#2, X=true, Z=true): adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
-        "message": "teleport dry run: result must be a plain object, got a PyProxy object",
+        "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
         "errors": [
-          "result must be a plain object, got a PyProxy object"
+          "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
         ]
       }
     },
     {
-      "name": "commit#1(bloch_b): adapter returned a result",
+      "name": "commit#1: adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
@@ -656,7 +778,7 @@
       }
     },
     {
-      "name": "commit#2(bloch_b): adapter returned a result",
+      "name": "commit#2: adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
@@ -668,6 +790,22 @@
     },
     {
       "name": "commit#3 after settle: adapter returned a result",
+      "ok": false,
+      "detail": {
+        "name": "ScientificModuleError",
+        "message": "live commit: quantum.teleportation.TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again.",
+        "errors": [
+          "quantum.teleportation.TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
+        ]
+      }
+    },
+    {
+      "name": "RESTART: resetStoryToken(): adapter returned a result",
+      "ok": true,
+      "detail": "5.9 ms"
+    },
+    {
+      "name": "commit#4 after RESTART: adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
@@ -702,96 +840,149 @@
       "ok": false
     },
     {
-      "name": "calibration: bits m0, m1 each 0 or 1",
+      "name": "calibration: every draw carries finite theta/phi, bits only (no fidelity, no applyX/Z)",
       "ok": false,
-      "detail": {}
+      "detail": []
     },
     {
-      "name": "dryRun(bloch_a, m0=undefined, m1=undefined, X=false, Z=false): fidelity = 1.000000 (closed form)",
-      "ok": false
+      "name": "calibration: every draw is generic (max Bloch component² ≤ 0.9, re-derived here)",
+      "ok": false,
+      "detail": []
     },
     {
-      "name": "dryRun(bloch_a, m0=undefined, m1=undefined, X=true, Z=false): fidelity = 0.673960 (closed form)",
-      "ok": false
+      "name": "calibration: the draws differ (a fresh random state each time, not a named one)",
+      "ok": false,
+      "detail": []
     },
     {
-      "name": "dryRun(bloch_a, m0=undefined, m1=undefined, X=false, Z=true): fidelity = 0.176668 (closed form)",
-      "ok": false
-    },
-    {
-      "name": "dryRun(bloch_a, m0=undefined, m1=undefined, X=true, Z=true): fidelity = 0.149373 (closed form)",
-      "ok": false
-    },
-    {
-      "name": "dryRun(bloch_a,1,0,no correction): fidelity = cos²(1.137)",
+      "name": "calibration: the graded draw is on a non-00 branch",
       "ok": false,
       "detail": {
-        "want": 0.17666765925030334
+        "draw": "calibration#2",
+        "bits": {}
       }
     },
     {
-      "name": "commit: receiver fidelity 1 after the rule on live bits",
+      "name": "dryRun(calibration#2, X=false, Z=false): theta/phi round-trip exactly from the measurement into the branch",
+      "ok": true,
+      "detail": {
+        "want": {}
+      }
+    },
+    {
+      "name": "dryRun(calibration#2, X=false, Z=false): fidelity = NaN (closed form on the measured state)",
+      "ok": false
+    },
+    {
+      "name": "dryRun(calibration#2, X=false, Z=false): the rule's choice scores F ≥ 0.999999",
+      "ok": false
+    },
+    {
+      "name": "dryRun(calibration#2, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch",
+      "ok": true,
+      "detail": {
+        "want": {}
+      }
+    },
+    {
+      "name": "dryRun(calibration#2, X=true, Z=false): fidelity = NaN (closed form on the measured state)",
+      "ok": false
+    },
+    {
+      "name": "dryRun(calibration#2, X=true, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
+      "ok": false
+    },
+    {
+      "name": "dryRun(calibration#2, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+      "ok": true,
+      "detail": {
+        "want": {}
+      }
+    },
+    {
+      "name": "dryRun(calibration#2, X=false, Z=true): fidelity = NaN (closed form on the measured state)",
+      "ok": false
+    },
+    {
+      "name": "dryRun(calibration#2, X=false, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
+      "ok": false
+    },
+    {
+      "name": "dryRun(calibration#2, X=true, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+      "ok": true,
+      "detail": {
+        "want": {}
+      }
+    },
+    {
+      "name": "dryRun(calibration#2, X=true, Z=true): fidelity = NaN (closed form on the measured state)",
+      "ok": false
+    },
+    {
+      "name": "dryRun(calibration#2, X=true, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
+      "ok": false
+    },
+    {
+      "name": "spy: Python teleport_branch received the measured theta/phi on every dry run",
+      "ok": false,
+      "detail": []
+    },
+    {
+      "name": "commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)",
       "ok": false,
       "detail": {
         "bits": {}
       }
     },
     {
-      "name": "commit: a second call returns the SAME promise (token consumed once)",
-      "ok": true,
-      "detail": {
-        "samePromise": true,
-        "sameObjectAfterSettle": false
-      }
-    },
-    {
-      "name": "commit: a call after it settled returns the same recorded object",
+      "name": "commit: the second and a later call get the SAME recorded result (no second teleport)",
       "ok": false,
       "detail": {
-        "samePromise": true,
-        "sameObjectAfterSettle": false
+        "sameRecordedObject": false,
+        "pythonSecondCommit": {
+          "refused": true,
+          "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
+        },
+        "afterRestartIsNewObject": false
       }
     },
     {
-      "name": "verify ×2: the second call returns the SAME promise",
+      "name": "commit: Python itself refuses a second live_commit (TokenAlreadyConsumed)",
       "ok": true,
-      "detail": true
+      "detail": {
+        "refused": true,
+        "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
+      }
     },
     {
-      "name": "verify ×2: both callers get the same value",
-      "ok": true,
-      "detail": true
+      "name": "RESTART: a commit after resetStoryToken succeeds, as a NEW result (fidelity 1)",
+      "ok": false,
+      "detail": {
+        "err": {
+          "name": "ScientificModuleError",
+          "message": "live commit: result must be a plain object, got a PyProxy object",
+          "errors": [
+            "result must be a plain object, got a PyProxy object"
+          ]
+        }
+      }
     },
     {
-      "name": "spy: exactly 1 entry into qollab_job.run_bell_verification_once",
-      "ok": true,
+      "name": "spy: Python saw exactly 2 live_commit calls (one per story) and 1 reset",
+      "ok": false,
       "detail": {
         "backendRunAttempts": 1,
         "backendRunCompleted": 1,
-        "verificationCalls": 1
+        "verificationCalls": 1,
+        "commitCalls": 3,
+        "commitsCompleted": 2,
+        "resetCalls": 1,
+        "branchCalls": 0
       }
     },
     {
-      "name": "spy: exactly 1 backend.run attempted",
-      "ok": true,
-      "detail": {
-        "backendRunAttempts": 1,
-        "backendRunCompleted": 1,
-        "verificationCalls": 1
-      }
-    },
-    {
-      "name": "spy: that backend.run completed (stack entered via callPromising)",
-      "ok": true,
-      "detail": {
-        "backendRunAttempts": 1,
-        "backendRunCompleted": 1,
-        "verificationCalls": 1
-      }
-    },
-    {
-      "name": "rejected: ScientificModuleError with §8.6 wording + reasons, no result passed on",
-      "ok": true,
+      "name": "verify: RESOLVES (not rejected)",
+      "ok": false,
       "detail": {
         "status": "rejected",
         "name": "ScientificModuleError",
@@ -800,6 +991,11 @@
           "result must be a plain object, got a PyProxy object"
         ]
       }
+    },
+    {
+      "name": "verify ×2: both callers get the same value",
+      "ok": true,
+      "detail": true
     }
   ]
 }

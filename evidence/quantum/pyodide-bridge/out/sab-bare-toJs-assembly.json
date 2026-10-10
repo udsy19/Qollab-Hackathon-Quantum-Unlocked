@@ -1,21 +1,21 @@
 {
-  "token": "pb-sab-bare-toJs-20261010T000111-32408", "sabotage": "bare-toJs",
-  "runnerRef": "lane/platform/g0-runner-smoke@71d2477",
-  "contractsRef": "lane/platform/integration@939a57d",
-  "harnessCommit": "dffd4f5",
-  "pythonRef": "lane/quantum/contract-conformance@42703f1",
+  "token": "pb-sab-bare-toJs-20261010T003130-23554", "sabotage": "bare-toJs", "fault": false,
+  "runnerRef": "lane/platform/integration@32838bc",
+  "contractsRef": "lane/platform/integration@32838bc",
+  "harnessCommit": "173ea46-dirty",
+  "pythonRef": "HEAD@173ea46",
   "sha256": {
-    "contracts.js": "8052cf2926a54fa2",
+    "contracts.js": "4aca6191d2d8218f",
     "index.html": "6112169d8d1887b8",
     "main.css": "d93eb501784b286e",
-    "main.js": "0703942ba96c7ba2",
-    "pb_spy.py": "571deb7a75d4bb4f",
-    "quantum/__init__.py": "0717eeef492541b7",
-    "quantum/bridge.js": "b6dc1cc23d533d2e",
-    "quantum/cloning.py": "69c42984e4bfcd04",
-    "quantum/entanglement.py": "b5a7ba9d28707d6c",
-    "quantum/formats.py": "8a95785415a780a5",
-    "quantum/qollab_job.py": "edc6840e865acf43",
-    "quantum/teleportation.py": "9b571b8b460048ca"
+    "main.js": "0122eedb1a939f49",
+    "pb_spy.py": "64f237ced68a9dbb",
+    "quantum/__init__.py": "4770b5d0e03c289a",
+    "quantum/bridge.js": "072da2bd98ce91e6",
+    "quantum/cloning.py": "9e50d3aba0104f49",
+    "quantum/entanglement.py": "cafbffa371fda437",
+    "quantum/formats.py": "48a73f0a98817f8a",
+    "quantum/qollab_job.py": "92cbad5b09ad1032",
+    "quantum/teleportation.py": "c7e450cbd63bc0ae"
   }
 }

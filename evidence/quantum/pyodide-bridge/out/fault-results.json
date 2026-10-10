@@ -1,0 +1,292 @@
+[
+  {
+    "name": "main.js (harness) ran to the end without error",
+    "ok": true,
+    "detail": "page load → done in 10.6s"
+  },
+  {
+    "name": "served build token matches the one just written",
+    "ok": true,
+    "detail": "pb-fault-20261010T003044-9738"
+  },
+  {
+    "name": "Python ran in Pyodide (sys.platform emscripten)",
+    "ok": true,
+    "detail": {
+      "sysPlatform": "emscripten",
+      "python": "3.14.2",
+      "qiskit": "2.5.2",
+      "pyodide": "314.0.7",
+      "coldImportSeconds": 0.006
+    }
+  },
+  {
+    "name": "Qiskit 2.x loaded",
+    "ok": true,
+    "detail": "2.5.2"
+  },
+  {
+    "name": "cloning(plus): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "cloning(plus): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "cloning(plus): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "cloning(zero): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "cloning(one): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "cloning(bloch_a): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "relay(I): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "relay(X): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "relay(Z): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "calibration#1: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "calibration#2: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "calibration#3: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "calibration#4: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=true): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "commit#1: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "commit#2: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "commit#3 after settle: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "commit#4 after RESTART: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "spy fault mode is true (the scenario being graded)",
+    "ok": true,
+    "detail": true
+  },
+  {
+    "name": "dry run: four X/Z choices were tried on one calibration",
+    "ok": true,
+    "detail": [
+      "dryRun(calibration#1, X=false, Z=false)",
+      "dryRun(calibration#1, X=true, Z=false)",
+      "dryRun(calibration#1, X=false, Z=true)",
+      "dryRun(calibration#1, X=true, Z=true)"
+    ]
+  },
+  {
+    "name": "spy: exactly 1 backend.run attempted, and it completed (stack entered via callPromising)",
+    "ok": true,
+    "detail": {
+      "backendRunAttempts": 1,
+      "backendRunCompleted": 1,
+      "verificationCalls": 1,
+      "commitCalls": 2,
+      "commitsCompleted": 2,
+      "resetCalls": 1,
+      "branchCalls": 4
+    }
+  },
+  {
+    "name": "spy: exactly 1 entry into qollab_job.run_backend_verification_once",
+    "ok": true,
+    "detail": {
+      "backendRunAttempts": 1,
+      "backendRunCompleted": 1,
+      "verificationCalls": 1,
+      "commitCalls": 2,
+      "commitsCompleted": 2,
+      "resetCalls": 1,
+      "branchCalls": 4
+    }
+  },
+  {
+    "name": "verify ×2: the second call returns the SAME promise",
+    "ok": true,
+    "detail": true
+  },
+  {
+    "name": "verify after RESTART: still the same promise (one job per run, not per story)",
+    "ok": true,
+    "detail": true
+  },
+  {
+    "name": "dryRun(calibration#1, X=false, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
+    "ok": true,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)",
+      "errors": [
+        "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)"
+      ]
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
+    "ok": true,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)",
+      "errors": [
+        "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)"
+      ]
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=false, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
+    "ok": true,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)",
+      "errors": [
+        "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)"
+      ]
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=true): the truthful branch is still delivered",
+    "ok": true,
+    "detail": 1
+  },
+  {
+    "name": "verify: old name \"bell_verification\" → LOUD §8.6 ScientificModuleError, nothing passed on",
+    "ok": true,
+    "detail": {
+      "status": "rejected",
+      "name": "ScientificModuleError",
+      "message": "Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"; engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\"",
+      "errors": [
+        "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"",
+        "engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\""
+      ]
+    }
+  }
+]
