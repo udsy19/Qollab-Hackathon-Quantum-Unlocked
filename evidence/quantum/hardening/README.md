@@ -7,7 +7,7 @@ Node. **Not run in Pyodide or on Qollab.** contracts.js = `lane/platform/integra
 | file | what | producer |
 |---|---|---|
 | `red-before/F3-F4-new-tests-on-pre-fix-code.txt` | F3/F4 tests red on the pre-fix engine (951ec9f) | pytest |
-| `red-before/F1-F5-F6-F7-mutations-on-pre-fix-code.txt` | each finding's mutation on the pre-fix engine, with and without the new tests | `/tmp/qh-redbefore.py` (inline in the report) |
+| `red-before/F1-F5-F6-F7-mutations-on-pre-fix-code.txt` | each finding's mutation on the pre-fix engine, with and without the new tests | `red-before/redbefore.py` |
 | `pytest-full.txt` | full suite, exit 0 | `pytest echo/tests` |
 | `results.jsonl`, `validate.txt` | all 233 bridge calls through platform's real `validateExperimentResult` (v2): 0 rejected | `contract-conformance/dump_results.py` + `validate.mjs` |
 | `validate-against-pre-v2-4e1b2ed.txt` | the same results against the pre-v2 contract: only the 3 `backend_verification` rejections | same |
