@@ -11,7 +11,7 @@
 // - Python is called with `.callPromising` only: a plain call stops the run with an XHR
 //   ConnectionError on IonQ backends.
 import * as THREE from 'three';
-import { QUEST_STATES, QUEST_EVENTS, BUS_EVENTS, validateExperimentResult } from './contracts.js';
+import { QUEST_STATES, QUEST_EVENTS, BUS_EVENTS, UI_ROOT_ID, QUALITY_LEVELS, BACKEND_SHOTS, validateExperimentResult } from './contracts.js';
 import { createEventBus } from './game/eventBus.js';
 import { createQuestMachine } from './game/state.js';
 import { mountMenu } from './ui/menu.js';
@@ -22,7 +22,7 @@ import * as cloning from 'quantum.cloning';
 import * as qollabJob from 'quantum.qollab_job';
 
 // Visible provenance token: change it, reload, and read it back from the served page.
-const BUILD = 'shell-2026-10-10b';
+const BUILD = 'shell-2026-10-10c';
 
 const $ = (id) => document.getElementById(id);
 $('echo-build').textContent = BUILD;
@@ -42,6 +42,9 @@ const QUALITY = {
   med: { maxPixelRatio: 1.5, shadows: true },
   high: { maxPixelRatio: 1.75, shadows: true },
 };
+if (Object.keys(QUALITY).join() !== QUALITY_LEVELS.join()) {
+  throw new Error(`renderer quality table ${Object.keys(QUALITY)} does not match contracts QUALITY_LEVELS ${QUALITY_LEVELS}`);
+}
 
 function startWorld(canvas) {
   const renderer = new THREE.WebGLRenderer({ canvas, antialias: true });
@@ -107,7 +110,7 @@ function startWorld(canvas) {
     const dt = Math.min((now - last) / 1000, 0.1); // bounded step
     last = now;
     // story-ui's applySettings writes data-reduced-motion on the UI root (accessibility.js).
-    if ($('echo-ui').dataset.reducedMotion !== 'on') pillar.rotation.y += dt * 0.6;
+    if ($(UI_ROOT_ID).dataset.reducedMotion !== 'on') pillar.rotation.y += dt * 0.6;
     frameHooks.forEach((fn) => fn(dt));
     renderer.render(scene, camera);
   });
@@ -129,11 +132,11 @@ try {
 } catch (err) {
   // §12.3: WebGL failure gets a readable screen, not a blank page.
   $('echo-quest').textContent = 'stopped';
-  $('echo-ui').textContent = `This browser could not start WebGL, which ECHO needs (${err}). Try a current Chrome, Edge or Firefox.`;
+  $(UI_ROOT_ID).textContent = `This browser could not start WebGL, which ECHO needs (${err}). Try a current Chrome, Edge or Firefox.`;
   throw err;
 }
 
-const uiRoot = $('echo-ui');
+const uiRoot = $(UI_ROOT_ID);
 const settings = defaultSettings();
 const hud = mountHud(uiRoot);
 const dialogue = mountDialogue(uiRoot);
@@ -193,9 +196,9 @@ async function verifyOnBackend() {
   status.textContent = `Verifying on selected backend ${backend.name}…`;
   try {
     const circuit = await qollabJob.build_bell_verification_circuit.callPromising();
-    const job = await backend.run(circuit, { shots: qollabJob.DEFAULT_SHOTS });
+    const job = await backend.run(circuit, { shots: BACKEND_SHOTS });
     const counts = (await job.result()).get_counts();
-    const result = toPlain(await qollabJob.interpret_counts.callPromising(counts, String(backend.name), qollabJob.DEFAULT_SHOTS));
+    const result = toPlain(await qollabJob.interpret_counts.callPromising(counts, String(backend.name), BACKEND_SHOTS));
     $('echo-verify-out').textContent = JSON.stringify({ engine: result.engine, counts: result.counts, keyQubits: result.keyQubits }, null, 1);
     const errors = validateExperimentResult(result);
     status.textContent = errors.length
