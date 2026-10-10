@@ -1,0 +1,26 @@
+control: disposable copy with ONLY the 6 measured findings removed (stub main.js/index.html, py backend.run line, test lines 91/207)
+  info: echo/quantum/qollab_job.py:1 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/quantum/qollab_job.py:156 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:112 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:89 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:94 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:166 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:206 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: backend.run: 0 call site(s) in scanned code
+scanned 19 files (17 code files) under /tmp/pcg-scJV/echo
+exit=0
+control: green copy + one JS backend.run in main.js (bridge.js already has none; python site removed) -> 1 JS site
+  info: echo/quantum/qollab_job.py:1 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/quantum/qollab_job.py:156 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:112 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:89 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:94 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:166 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:206 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: backend.run: exactly one call site, echo/main.js:3
+  - backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".
+GREEN: no static Qollab rule broken (see LIMITATIONS for what this cannot prove)

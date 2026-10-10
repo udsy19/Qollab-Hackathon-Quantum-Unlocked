@@ -1,0 +1,41 @@
+ok     probe bell_measurement(theta=, phi=)
+ok     phase-1 bloch_a
+ok     phase-2 bloch_a m0=0 m1=0 X=false Z=false
+ok     phase-2 bloch_a m0=0 m1=0 X=false Z=true
+ok     phase-2 bloch_a m0=0 m1=0 X=true Z=false
+ok     phase-2 bloch_a m0=0 m1=0 X=true Z=true
+ok     phase-2 bloch_a m0=0 m1=1 X=false Z=false
+ok     phase-2 bloch_a m0=0 m1=1 X=false Z=true
+ok     phase-2 bloch_a m0=0 m1=1 X=true Z=false
+ok     phase-2 bloch_a m0=0 m1=1 X=true Z=true
+ok     phase-2 bloch_a m0=1 m1=0 X=false Z=false
+ok     phase-2 bloch_a m0=1 m1=0 X=false Z=true
+ok     phase-2 bloch_a m0=1 m1=0 X=true Z=false
+ok     phase-2 bloch_a m0=1 m1=0 X=true Z=true
+ok     phase-2 bloch_a m0=1 m1=1 X=false Z=false
+ok     phase-2 bloch_a m0=1 m1=1 X=false Z=true
+ok     phase-2 bloch_a m0=1 m1=1 X=true Z=false
+ok     phase-2 bloch_a m0=1 m1=1 X=true Z=true
+ok     phase-1 bloch_b
+ok     phase-2 bloch_b m0=0 m1=0 X=false Z=false
+ok     phase-2 bloch_b m0=0 m1=0 X=false Z=true
+ok     phase-2 bloch_b m0=0 m1=0 X=true Z=false
+ok     phase-2 bloch_b m0=0 m1=0 X=true Z=true
+ok     phase-2 bloch_b m0=0 m1=1 X=false Z=false
+ok     phase-2 bloch_b m0=0 m1=1 X=false Z=true
+ok     phase-2 bloch_b m0=0 m1=1 X=true Z=false
+ok     phase-2 bloch_b m0=0 m1=1 X=true Z=true
+ok     phase-2 bloch_b m0=1 m1=0 X=false Z=false
+ok     phase-2 bloch_b m0=1 m1=0 X=false Z=true
+ok     phase-2 bloch_b m0=1 m1=0 X=true Z=false
+ok     phase-2 bloch_b m0=1 m1=0 X=true Z=true
+ok     phase-2 bloch_b m0=1 m1=1 X=false Z=false
+ok     phase-2 bloch_b m0=1 m1=1 X=false Z=true
+ok     phase-2 bloch_b m0=1 m1=1 X=true Z=false
+ok     phase-2 bloch_b m0=1 m1=1 X=true Z=true
+
+| phase | distinct error | count |
+|---|---|---|
+
+35 results graded, 0 rejected
+exit=0
