@@ -1,9 +1,12 @@
 ---
 type: report
-status: current
+status: superseded
 date: 2026-10-09
-updated: 2026-10-09
+updated: 2026-10-10
+superseded_by: "[[Reports/contracts-v2]]"
 ---
+
+> [!note] Superseded by [[Reports/contracts-v2]]: v2 extends this contract with the owner's 2026-10-10 rulings, and the teleport_terminal null below is closed.
 
 # Shared contracts: echo/contracts.js, measured
 
