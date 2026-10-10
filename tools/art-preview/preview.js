@@ -63,7 +63,7 @@ log(`floors→wet: ${floors}; refs found: ${Object.entries(refs).filter(([, v]) 
 const VIEWS = {
   alley: { position: [1.2, 1.7, 3.5], target: [-0.6, 1.4, -14] },
   'alley-wide': { position: [-3.5, 2.6, 3.6], target: [2, 3.5, -22] },
-  relay: { position: [-6.5, 2.2, -42.5], target: [2, 1.6, -56] },
+  relay: { position: [6.5, 2.6, -43], target: [-3, 1.2, -56] },
   rooftop: { position: [19, 2.4, -42], target: [36, 3, -58] },
   finalShot: district.finalShot,
 };
