@@ -22,8 +22,8 @@ What was measured, and what the next worker should know:
 - **The real script never needs a second page at 200%**, even at 1024×640 (`script-pages-200.txt`):
   every beat in story.js fits on one 2-line page. Only the harness's long VEGA beat exercises the
   pagination path. Long terminal/Declassified text is not paginated by dialogue.js.
-- **1024×640 at 200% did not fit** before this change: the HUD bottom row left the screen by ~64px,
-  the settings panel by ~110px, and the title credit by ~36px. 1280×720 had hidden it. Fixed by (a)
+- **1024×640 at 200% did not fit** before this change: the HUD bottom row ended at y=704 (64px off-screen),
+  the settings panel at y=731 (91px), and the title credit at y=648 (8px). 1280×720 had hidden it. Fixed by (a)
   putting the speaker and Continue on one dialogue header row, (b) capping the root grid gap at
   1.2vh, and (c) tighter menu spacing under `@media (max-height: 760px)`.
 - **The HUD `nowrap` is load-bearing only at 1024×640.** At 1366×768 and 1280×720 the objective and
