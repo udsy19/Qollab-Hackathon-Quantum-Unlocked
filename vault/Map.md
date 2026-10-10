@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **45 notes** over 10 folders.
+Measured 2026-10-10: **46 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -86,6 +86,7 @@ Folder README: [[Reports/README]]
 - [[Reports/integration-shell|Integration shell: one echo/ tree assembled from every lane, run on the local runner]]
 - [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/readme-and-video-draft|README and demo-video script: first draft, every claim sourced]]
+- [[Reports/release-upload-manifest|Release upload manifest: one command builds the Qollab upload folder]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
 ## `Reports/audits/`

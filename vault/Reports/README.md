@@ -14,7 +14,7 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (10)
+## Notes here (11)
 
 - [[Reports/contracts-commit-result|Contracts: the one story commit gets a validator (validateCommitResult, STORYTOKENID)]]
 - [[Reports/contracts-fidelity-band|Fidelity cross-check: tolerance = band, plus a rounding epsilon]]
@@ -25,6 +25,7 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 - [[Reports/integration-shell|Integration shell: one echo/ tree assembled from every lane, run on the local runner]]
 - [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/readme-and-video-draft|README and demo-video script: first draft, every claim sourced]]
+- [[Reports/release-upload-manifest|Release upload manifest: one command builds the Qollab upload folder]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
 ## Below this folder
