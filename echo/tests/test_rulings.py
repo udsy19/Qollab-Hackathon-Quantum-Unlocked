@@ -20,7 +20,9 @@ Z = np.array([[1, 0], [0, -1]], dtype=complex)
 I2 = np.eye(2, dtype=complex)
 BRANCHES = [(0, 0), (0, 1), (1, 0), (1, 1)]
 CHOICES = [(False, False), (False, True), (True, False), (True, True)]
-MARGIN = 0.9  # the generic margin, restated from its justification (F = r_P^2 <= 0.81), not imported
+# The generic margin, restated here, not imported: a wrong choice scores r_P^2, and platform's contract
+# (contracts-v2 GENERIC_MAX_WRONG_FIDELITY) caps that at 0.9 for every state the game may send.
+MAX_WRONG = 0.9
 
 
 def ket(theta, phi):
@@ -58,7 +60,7 @@ def test_every_calibration_draw_is_generic_and_fresh():
     for seed in range(400):
         theta, phi = angles(teleportation.bell_measurement("calibration", seed=seed))
         r = bloch_of(ket(theta, phi))
-        assert max(abs(c) for c in r) <= MARGIN, (seed, r)
+        assert max(c * c for c in r) <= MAX_WRONG, (seed, r)
         seen.add((theta, phi))
         octants.add(tuple(c > 0 for c in r))
     assert len(seen) == 400  # a fresh point every time, never a fixed catalogue state
@@ -87,7 +89,7 @@ def test_every_wrong_choice_visibly_fails_on_a_calibration_state(seed):
             if right:
                 assert r["fidelity"] >= 0.999999
             else:
-                assert r["fidelity"] <= MARGIN ** 2 + 1e-9  # the generic margin, every wrong choice
+                assert r["fidelity"] <= MAX_WRONG + 1e-9  # the generic margin, every wrong choice
             # The receiver's Bloch arrow (physics review F1) and the input arrow it is compared with.
             obs = r["observables"]
             assert [obs["receiverBlochX"], obs["receiverBlochY"], obs["receiverBlochZ"]] == pytest.approx(bloch_of(out), abs=1e-9)
@@ -116,13 +118,24 @@ def test_calibration_state_is_the_one_passed_in_not_hidden_module_state():
     (math.pi / 2, 0.0),             # |+>: r_x = 1
     (math.pi / 2, math.pi / 2),     # |+i>: r_y = 1
     (math.pi, 1.0),                 # |1> up to phase
-    (2 * math.acos(math.sqrt((1 + 0.92) / 2)), 0.3),  # r_z = 0.92, just past the margin
+    (2 * math.acos(math.sqrt((1 + 0.96) / 2)), 0.3),  # r_z = 0.96: a wrong Z would score 0.9216
 ])
 def test_non_generic_calibration_angles_are_refused(theta, phi):
     with pytest.raises(ValueError, match="not generic"):
         teleportation.teleport_branch("calibration", 0, 1, True, False, theta=theta, phi=phi)
     with pytest.raises(ValueError, match="not generic"):
         teleportation.bell_measurement("calibration", theta=theta, phi=phi)
+
+
+def test_a_state_just_inside_the_margin_is_accepted_with_its_angles_unrounded():
+    # r_z^2 = 0.89 <= 0.9: the contract would send it, so the engine must take it, and echo the exact
+    # angles back (the game checks them to 1e-12; JS angles carry ~16 significant digits).
+    theta, phi = 2 * math.acos(math.sqrt((1 + math.sqrt(0.89)) / 2)), 0.123456789012345
+    r = teleportation.teleport_branch("calibration", 0, 1, False, False, theta=theta, phi=phi)
+    assert r["parameters"]["theta"] == theta and r["parameters"]["phi"] == phi
+    assert r["fidelity"] == pytest.approx(abs(np.vdot(ket(theta, phi), hand_receiver(ket(theta, phi), 0, 1, False, False))) ** 2, abs=1e-9)
+    b = teleportation.bell_measurement("calibration", theta=theta, phi=phi, seed=1)
+    assert b["parameters"]["theta"] == theta and b["parameters"]["phi"] == phi
 
 
 @pytest.mark.parametrize("theta,phi", [(None, 0.4), (1.2, None), (float("nan"), 0.4), (True, 0.4), ("1.2", 0.4)])
@@ -162,7 +175,7 @@ TOKEN_GATES = quantum.STATES["token"][0]
 def test_token_is_a_generic_bloch_point_prepared_ry_then_rz():
     assert [g[0] for g in TOKEN_GATES] == ["ry", "rz"]
     theta, phi = TOKEN_GATES[0][1], TOKEN_GATES[1][1]
-    assert max(abs(c) for c in bloch_of(ket(theta, phi))) <= MARGIN
+    assert max(c * c for c in bloch_of(ket(theta, phi))) <= MAX_WRONG
     assert not re.search(r"\d", quantum.STATES["token"][1])  # its label carries no number
 
 

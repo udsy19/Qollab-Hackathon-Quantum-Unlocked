@@ -49,8 +49,8 @@ M = [
     ("prep-order-rz-first", "generic states prepared RZ then RY", F,
      'return (("ry", theta), ("rz", phi))', 'return (("rz", phi), ("ry", theta))'),
     ("withheld-one-branch", "corrections_withheld reports branch 00, not the average", T,
-     "    bob = partial_trace(state, [0, 1])\n    psi = target_state(gates)\n    fid",
-     "    keep = (np.arange(8) & 3) == 0\n    bob = partial_trace(Statevector(state.data * keep * 2), [0, 1])\n    psi = target_state(gates)\n    fid"),
+     "    bob = partial_trace(state_vec, [0, 1])\n    psi = target_state(gates)\n    fid",
+     "    keep = (np.arange(8) & 3) == 0\n    bob = partial_trace(Statevector(state_vec.data * keep * 2), [0, 1])\n    psi = target_state(gates)\n    fid"),
     ("clone-blank-is-plus", "blank copy starts in |+>", C, "    qc.cx(0, 1)\n", "    qc.h(1)\n    qc.cx(0, 1)\n"),
     ("clone-by-purity", "copy verdict from source purity (correct physics, other route: control)", C,
      "independent = joint_fid > 1 - TOL", "independent = source_purity > 1 - TOL"),
@@ -86,15 +86,17 @@ M = [
      "    global _token_consumed\n    _was = _token_consumed\n    _token_consumed = True\n    if _was:"),
     ("reset-does-nothing", "ruling 8: reset_story_token() leaves the latch set", T,
      "    _token_consumed = False\n", "    pass\n"),
+    ("parameters-rounded", "contract: dry-run parameters rounded, so the requested angles do not round-trip", O,
+     '    params = plain(parameters, "parameters", decimals=None)', '    params = plain(parameters, "parameters")'),
     ("calibration-not-generic", "ruling 1: the draw can return a near-axis point", T,
-     "        if max(abs(x), abs(y), abs(z)) <= GENERIC_BLOCH_MAX - 1e-9:", "        if True:"),
+     "        if max(x * x, y * y, z * z) <= GENERIC_MAX_WRONG_FIDELITY - 1e-9:", "        if True:"),
     ("calibration-generic-check-off", "ruling 1: corrections call accepts non-generic angles", F,
-     "    if max(abs(c) for c in r) > GENERIC_BLOCH_MAX:", "    if False:"),
+     "        if max(c * c for c in r) > GENERIC_MAX_WRONG_FIDELITY:", "    if False:"),
     ("calibration-hidden-state", "ruling 1: corrections call ignores the passed angles (module state)", T,
-     "    gates, _ = state_gates(state, theta, phi)\n    b = _branch(",
-     "    gates, _ = state_gates(state, *((_LAST or (theta, phi)) if state == CALIBRATION else (theta, phi)))\n    b = _branch("),
+     "    gates, label = state_gates(state, theta, phi)\n    b = _branch(",
+     "    gates, label = state_gates(state, *((_LAST or (theta, phi)) if state == CALIBRATION else (theta, phi)))\n    b = _branch("),
     ("calibration-fixed-state", "ruling 1: every dry run uses the same calibration point", T,
-     "        theta, phi = draw_calibration_angles(rng)", "        theta, phi = 1.137, 0.44"),
+     "        theta, phi = _draw_calibration_angles(rng)", "        theta, phi = 1.137, 0.44"),
     ("m1-label-old", "ruling 5: m1 labelled 'local Bell-half readout' (old label)", T,
      'M1_LABEL = "LOCAL BELL-HALF READOUT m1"', 'M1_LABEL = "m1 (local Bell-half readout)"'),
     ("backend-experiment-old", "ruling 6: experiment value bell_verification", J,
@@ -110,8 +112,14 @@ M = [
      "the readout was random (50/50) and happened to match", "it equals this basis state because it was already a known Z value; it happened to match"),
 ]
 # relay-counts-for-receiver is a two-step mutation: the guard is dropped AND the relay adds counts.
-EXTRA = {"relay-counts-for-receiver": (E, "        probabilities=marginal,\n",
-                                        "        probabilities=marginal,\n        counts={'0': 128, '1': 128},\n")}
+EXTRA = {
+    "relay-counts-for-receiver": (E, "        probabilities=marginal,\n",
+                                  "        probabilities=marginal,\n        counts={'0': 128, '1': 128},\n"),
+    # hidden module state: the bits call remembers its draw, the corrections call uses the memory
+    "calibration-hidden-state": (T, "        theta, phi = _draw_calibration_angles(rng)\n",
+                                 "        theta, phi = _draw_calibration_angles(rng)\n        global _LAST\n        _LAST = (theta, phi)\n"),
+}
+EXTRA_MODULE = {"calibration-hidden-state": (T, "\n_token_consumed = False\n", "\n_token_consumed = False\n_LAST = None\n")}
 
 
 def apply(d, f, old, new):
@@ -138,8 +146,9 @@ def main():
         d = pathlib.Path(tempfile.mkdtemp(prefix=f"qh-{mid}-")) / "echo"
         shutil.copytree(src, d, ignore=shutil.ignore_patterns("__pycache__"))
         n = apply(d, f, old, new)
-        if n == 1 and mid in EXTRA:
-            n = apply(d, *EXTRA[mid])
+        for extra in (EXTRA, EXTRA_MODULE):
+            if n == 1 and mid in extra:
+                n = apply(d, *extra[mid])
         if n != 1:
             rows.append((mid, what, "-", "-", f"REFUSED (needle found {n}x)"))
             shutil.rmtree(d.parent)

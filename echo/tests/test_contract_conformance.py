@@ -20,12 +20,6 @@ from conftest import BRIDGE_CALL_COUNT, bridge_calls
 
 ECHO = pathlib.Path(__file__).resolve().parents[1]
 
-# The one rejection we expect until platform answers the request in
-# lanes/quantum/reports/0003-contract-conformance.md: the selected-backend Bell check is neither the
-# relay puzzle nor teleportation, and the contract's experiment union has no honest value for it.
-PENDING_BACKEND_VERIFICATION = ('experiment must be one of cloning|bell_signalling|teleportation, '
-                             'got string "backend_verification"')
-
 VALIDATE = """
 const [contracts, results] = process.argv.slice(1)
 const { validateExperimentResult } = await import(contracts)
@@ -70,8 +64,6 @@ def test_every_bridge_result_passes_the_platform_validator(tmp_path):
     verdicts = platform_verdicts(list(results), tmp_path)
     bad = {}
     for label, result, errors in zip(labels, results, verdicts):
-        if result["experiment"] == "backend_verification":
-            errors = [e for e in errors if e != PENDING_BACKEND_VERIFICATION]
         if errors:
             bad[label] = errors
     assert not bad, json.dumps(bad, indent=1)
@@ -94,3 +86,70 @@ def test_no_result_carries_a_retired_field(field):
     # The four fields the contract rejected (report 0003); their content moved to observables/facts.
     for label, fn in bridge_calls():
         assert field not in fn(), label
+
+
+# ------------------------------------------------------------------ the two-phase dry run (contracts-v2)
+DRY_RUN = """
+const [contracts, mode, path] = process.argv.slice(1)
+const c = await import(contracts)
+const { readFileSync } = await import('node:fs')
+if (mode === 'requests') {
+  // mulberry32: a seeded stand-in for Math.random, so the requests the game would draw are repeatable
+  let a = 20261010
+  const rand = () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a)
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296 }
+  console.log(JSON.stringify(Array.from({ length: 12 }, () => c.randomGenericState(rand))))
+} else {
+  const out = JSON.parse(readFileSync(path, 'utf8')).map(({ req, bits, choices }) => {
+    const errs = c.validateTeleportBitsResult(req, bits)
+    const verdicts = choices.map(({ choice, result }) => {
+      const r2 = c.makeCorrectionRequest(req, bits, choice)
+      return { req2: r2, errors: c.validateTeleportCorrectionResult(r2, result), verdict: c.dryRunVerdict(r2, result) }
+    })
+    return { errs, verdicts }
+  })
+  console.log(JSON.stringify(out))
+}
+"""
+
+
+def _node(tmp_path, *args):
+    node = shutil.which("node")
+    assert node, "node is required: this test runs the platform's own JS validators"
+    run = subprocess.run([node, "--input-type=module", "-e", DRY_RUN, contracts_js(tmp_path).as_uri(), *args],
+                         capture_output=True, text=True, timeout=60)
+    assert run.returncode == 0, run.stderr
+    return json.loads(run.stdout)
+
+
+def test_two_phase_dry_run_passes_the_platform_dry_run_validators(tmp_path):
+    from quantum import teleportation
+
+    # Requests drawn by the platform's own randomGenericState, plus the engine's own draws.
+    requests = _node(tmp_path, "requests", "")
+    requests += [{k: teleportation.bell_measurement("calibration", seed=s)["parameters"][k] for k in ("theta", "phi")}
+                 for s in range(12)]
+    assert len(requests) == 24
+    cases = []
+    for i, req in enumerate(requests):
+        bits = teleportation.bell_measurement("calibration", theta=req["theta"], phi=req["phi"], seed=i)
+        m0, m1 = bits["measurementBits"]["m0"], bits["measurementBits"]["m1"]
+        choices = [{"choice": {"applyX": x, "applyZ": z},
+                    "result": teleportation.teleport_branch("calibration", m0, m1, x, z, theta=req["theta"], phi=req["phi"])}
+                   for x in (False, True) for z in (False, True)]
+        cases.append({"req": req, "bits": bits, "choices": choices})
+    data = tmp_path / "dry.json"
+    data.write_text(json.dumps(cases, allow_nan=False))
+    out = _node(tmp_path, "check", str(data))
+    passes = unlocks = 0
+    for case, got in zip(cases, out):
+        assert got["errs"] == [], got["errs"]
+        m0, m1 = case["bits"]["measurementBits"]["m0"], case["bits"]["measurementBits"]["m1"]
+        for v in got["verdicts"]:
+            assert v["errors"] == [], v["errors"]
+            follows = v["req2"]["applyX"] == (m1 == 1) and v["req2"]["applyZ"] == (m0 == 1)
+            assert v["verdict"]["passed"] is follows  # exactly the rule passes, every wrong choice fails
+            assert v["verdict"]["unlocksCommit"] is (follows and (m0, m1) != (0, 0))
+            passes += follows
+            unlocks += v["verdict"]["unlocksCommit"]
+    assert passes == 24 and unlocks > 0

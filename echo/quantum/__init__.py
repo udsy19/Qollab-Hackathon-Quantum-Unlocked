@@ -31,11 +31,13 @@ TOKEN = "token"
 # A dry run's state: fresh random angles, passed explicitly from the bits call to the corrections
 # call (never held here between calls).
 CALIBRATION = "calibration"
-# "Generic" = every Bloch component |r_P| <= 0.9. A wrong X/Z leaves a residual Pauli P, and the
-# receiver's fidelity is then r_P^2 (vault/Reports/quantum-physics-review.md §1), so on a generic
-# state every wrong choice scores <= 0.81 and moves the receiver's arrow by >= 2*asin(sqrt(1-0.81))
-# = 51.7 degrees: visibly wrong in the numbers AND on the Bloch sphere.
-GENERIC_BLOCH_MAX = 0.9
+# "Generic": a wrong X/Z leaves a residual Pauli P, and the receiver's fidelity is then r_P^2, the
+# square of that Bloch component (vault/Reports/quantum-physics-review.md §1). Requiring every
+# r_P^2 <= 0.9 (|r_P| <= 0.949) means every wrong choice scores <= 0.9, far below the 0.999999 pass
+# line, and moves the receiver's arrow by >= 2*asin(sqrt(0.1)) = 36.9 degrees. 0.9 is platform's
+# GENERIC_MAX_WRONG_FIDELITY (echo/contracts.js, contracts-v2), so the engine accepts exactly the
+# states the contract lets the game send.
+GENERIC_MAX_WRONG_FIDELITY = 0.9
 
 
 def calibration_gates(theta, phi):
@@ -52,9 +54,9 @@ def state_gates(state, theta=None, phi=None, story_token=False):
                 raise ValueError(f"a calibration state needs finite numeric {name}, got {v!r}")
         gates = calibration_gates(float(theta), float(phi))
         r = bloch_vector(DensityMatrix(target_state(gates)))
-        if max(abs(c) for c in r) > GENERIC_BLOCH_MAX:
-            raise ValueError(f"calibration state is not generic: Bloch vector {[round(c, 6) for c in r]} has a "
-                             f"component beyond {GENERIC_BLOCH_MAX}, so a wrong correction could pass unseen")
+        if max(c * c for c in r) > GENERIC_MAX_WRONG_FIDELITY:
+            raise ValueError(f"calibration state is not generic: Bloch vector {[round(c, 6) for c in r]} lets a wrong "
+                             f"correction score above {GENERIC_MAX_WRONG_FIDELITY}, so the mistake could pass unseen")
         return gates, f"RY({float(theta):.6f}) then RZ({float(phi):.6f}) on |0>"
     if theta is not None or phi is not None:
         raise ValueError(f"angles are only accepted for state {CALIBRATION!r}, not {state!r}")

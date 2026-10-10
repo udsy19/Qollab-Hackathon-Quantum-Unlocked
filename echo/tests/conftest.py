@@ -25,6 +25,8 @@ def calibration_angles(seed):
 
 
 FAKE_COUNTS = {"00": 120, "11": 130, "01": 3, "10": 3}  # 256 shots of a noisy Bell pair, written by hand
+# IonQ's noisy path rounds probability x shots, so the total can fall short of the 256 requested.
+DRIFTED_COUNTS = {"00": 121, "11": 125, "01": 2, "10": 2}  # 250 counts for 256 requested, written by hand
 
 
 class FakeSelectedBackend:
@@ -89,8 +91,8 @@ def bridge_calls():
         yield f"teleportation.live_commit(seed={seed})", lambda seed=seed: commit(seed)
     yield ("qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=256)",
            lambda: qollab_job.interpret_counts(dict(FAKE_COUNTS), FakeSelectedBackend.name, shots_requested=256))
-    yield ("qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=300)",  # total drifts from the request
-           lambda: qollab_job.interpret_counts(dict(FAKE_COUNTS), FakeSelectedBackend.name, shots_requested=300))
+    yield ("qollab_job.interpret_counts(DRIFTED_COUNTS, shots_requested=256)",  # total drifts from the request
+           lambda: qollab_job.interpret_counts(dict(DRIFTED_COUNTS), FakeSelectedBackend.name, shots_requested=256))
 
     def once():
         qollab_job._job_submitted = False  # a fresh run: the one job is still available

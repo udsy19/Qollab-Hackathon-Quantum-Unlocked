@@ -25,7 +25,7 @@ import numpy as np
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import DensityMatrix, Statevector, partial_trace, state_fidelity
 
-from . import (CALIBRATION, GENERIC_BLOCH_MAX, TOKEN, bloch_vector, prepare, probability_table, state_gates,
+from . import (CALIBRATION, GENERIC_MAX_WRONG_FIDELITY, TOKEN, bloch_vector, prepare, probability_table, state_gates,
                target_state)
 from .formats import experiment_result
 
@@ -65,14 +65,14 @@ def _on(flag):
 
 def _draw_calibration_angles(rng):
     """A fresh generic point: uniform on the Bloch sphere, rejected until every |r_P| is inside the
-    generic margin (about 70% of draws pass). Rounded to the 10 decimals the result carries, so the
+    generic margin (about 85% of draws pass). Rounded to the 10 decimals the result carries, so the
     angles the bits call reports are exactly the angles the corrections call will be handed back."""
     while True:
         z = rng.uniform(-1.0, 1.0)
         phi = rng.uniform(-math.pi, math.pi)
         s = math.sqrt(1.0 - z * z)
         x, y = s * math.cos(phi), s * math.sin(phi)
-        if max(abs(x), abs(y), abs(z)) <= GENERIC_BLOCH_MAX - 1e-9:
+        if max(x * x, y * y, z * z) <= GENERIC_MAX_WRONG_FIDELITY - 1e-9:
             return round(math.acos(z), 10), round(phi, 10)
 
 
