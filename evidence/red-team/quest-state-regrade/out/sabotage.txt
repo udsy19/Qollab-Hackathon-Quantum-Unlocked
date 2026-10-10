@@ -1,0 +1,65 @@
+baseline red (unpatched copy): [TOKEN-RUN-GUARD,ERR-COMMIT,DRY-UNEARNED,FRESH,BITS-FIRST,RESTART-SESSION,PLAYTHROUGH-RAW]
+AS-EXPECTED break B-LATCH            want red=[TOKEN-LATCH,COMMIT-TWICE] newly red=[TOKEN-LATCH,COMMIT-TWICE]  — commit latch removed (commitTransfer no longer checks commit !== IDLE)
+AS-EXPECTED break B-ACK              want red=[ACK,ACK-STALE-PANEL] newly red=[ACK,ACK-STALE-PANEL]  — acknowledgement gate removed from gate()
+AS-EXPECTED break B-EPOCH            want red=[COMMIT-STALE] newly red=[COMMIT-STALE]  — epoch compare dropped from isCurrent() and from commitTransfer()
+AS-EXPECTED break B-00               want red=[DRY-00] newly red=[DRY-00]  — bits-00 refusal removed: a 00 dry run unlocks COMMIT
+AS-EXPECTED break N-EPOCH-TICKET     want red=[] newly red=[]  — NULL PROBE: only isCurrent() epoch compare dropped; seq is monotonic across sessions, so tickets stay stale
+AS-EXPECTED break N-FID-TELE         want red=[] newly red=[]  — NULL PROBE: teleport fidelity gate removed; the rule also matches corrections to bits
+AS-EXPECTED break B-EPOCH-SEQ        want red=[STALE-TICKET,TICKET-REPLAY,COMMIT-STALE] newly red=[STALE-TICKET,TICKET-REPLAY,COMMIT-STALE]  — epoch AND seq compare dropped (isCurrent only checks the queue)
+AS-EXPECTED break B-ACK-SEQ          want red=[ACK-STALE-PANEL] newly red=[ACK,ACK-STALE-PANEL]  — ack gate no longer bound to the current state (any panel ever shown counts)
+AS-EXPECTED break B-ARMED            want red=[COMMIT-AFTER-RESTART] newly red=[COMMIT-AFTER-RESTART]  — commitTransfer() no longer checks the armed state
+AS-EXPECTED break B-TOKEN-DRY        want red=[TOKEN-ELSEWHERE] newly red=[TOKEN-ELSEWHERE]  — dry run no longer refuses the story token
+AS-EXPECTED break B-RULE-SWAP        want red=[DRY-RULE,PLAYTHROUGH] newly red=[GAME-STATES,GAME-EDGES,PARITY,GAME-NOSKIP,GAME-COMMIT-ONCE,DRY-RULE,TICKET-REPLAY,COMMIT-TWICE,COMMIT-STALE,COMMIT-AFTER-RESTART,PLAYTHROUGH]  — X/Z rule swapped (X iff m0, Z iff m1)
+AS-EXPECTED break B-FID              want red=[PLAYTHROUGH] newly red=[PLAYTHROUGH]  — FIDELITY_OK 0.999999 -> 0.4: the |+> copy (F=0.5) no longer fails
+AS-EXPECTED break B-PARITY           want red=[PARITY,GAME-EDGES] newly red=[GAME-EDGES,PARITY,PLAYTHROUGH]  — gameplay gate() refuses SKIP that the contract allows
+AS-EXPECTED break B-CREDITS          want red=[GAME-STATES,CONTRACT-STATES,GAME-EDGES,CONTRACT-EDGES] newly red=[GAME-STATES,GAME-EDGES,GAME-EXTRA,CONTRACT-STATES,CONTRACT-EDGES,CONTRACT-EXTRA]  — contract: CREDITS unreachable
+AS-EXPECTED break B-CHEAT            want red=[GAME-EXTRA,CONTRACT-EXTRA,GAME-NOSKIP,CONTRACT-NOSKIP,GAME-ENDING-ENTRY,CONTRACT-ENDING-ENTRY] newly red=[GAME-EXTRA,CONTRACT-EXTRA,GAME-NOSKIP,GAME-ENDING-ENTRY,CONTRACT-NOSKIP,CONTRACT-ENDING-ENTRY]  — contract: TITLE --CHEAT--> ENDING
+AS-EXPECTED break B-REARM-a          want red=[REFUSED] newly red=[REFUSED]  — contract: TELEPORT_COMMITTED --ABORT--> TELEPORT_DRY_RUN_PASSED (state.js load guard must refuse to load)  (REFUSED: cannot import audited modules: contracts TRANSITIONS violate the one-shot commit: TELEPORT_DRY_RUN_PASSED is reachable again from TELEPORT_COMMITTED without passing TITLE)
+AS-EXPECTED break B-REARM-b          want red=[GAME-COMMIT-ONCE,CONTRACT-COMMIT-ONCE] newly red=[GAME-STATES,GAME-EDGES,CONTRACT-EXTRA,PARITY,GAME-NOSKIP,GAME-COMMIT-ONCE,CONTRACT-COMMIT-ONCE,TICKET-REPLAY,COMMIT-TWICE,COMMIT-STALE,COMMIT-AFTER-RESTART,PLAYTHROUGH]  — same re-arm edge AND the load guard disabled (enabling step)
+AS-EXPECTED break B-CONTRACT-BITS    want red=[CONTRACT-BITS] newly red=[CONTRACT-BITS]  — contract: makeCorrectionRequest no longer refuses a choice without a valid phase-1 result
+AS-EXPECTED break B-ORACLE           want red=[ENGINE-ORACLE] newly red=[ENGINE-ORACLE]  — one real engine fidelity nudged by 1e-8 in the fed results (bloch_b 11, no corrections)
+AS-EXPECTED fix   F-ALL              want red=[] red=[]  — all minimal fixes applied: expect 0 red
+AS-EXPECTED l1o   L-RUNGUARD         want red=[TOKEN-RUN-GUARD] red=[TOKEN-RUN-GUARD]  — all fixes except RUNGUARD
+AS-EXPECTED l1o   L-ERRSHAPE         want red=[ERR-COMMIT] red=[ERR-COMMIT]  — all fixes except ERRSHAPE
+AS-EXPECTED l1o   L-EARNED           want red=[DRY-UNEARNED] red=[DRY-UNEARNED]  — all fixes except EARNED
+AS-EXPECTED l1o   L-FRESH            want red=[FRESH] red=[FRESH]  — all fixes except FRESH
+AS-EXPECTED l1o   L-BITS             want red=[BITS-FIRST] red=[BITS-FIRST]  — all fixes except BITS
+AS-EXPECTED l1o   L-RESTART          want red=[RESTART-SESSION] red=[RESTART-SESSION]  — all fixes except RESTART
+AS-EXPECTED l1o   L-RAW              want red=[PLAYTHROUGH-RAW] red=[PLAYTHROUGH-RAW]  — all fixes except RAW
+
+27 scenarios: 27 as expected, 0 unexpected
+coverage GAME-STATES            red under: B-RULE-SWAP, B-CREDITS, B-REARM-b
+coverage GAME-EDGES             red under: B-RULE-SWAP, B-PARITY, B-CREDITS, B-REARM-b
+coverage GAME-EXTRA             red under: B-CREDITS, B-CHEAT
+coverage CONTRACT-STATES        red under: B-CREDITS
+coverage CONTRACT-EDGES         red under: B-CREDITS
+coverage CONTRACT-EXTRA         red under: B-CREDITS, B-CHEAT, B-REARM-b
+coverage PARITY                 red under: B-RULE-SWAP, B-PARITY, B-REARM-b
+coverage GAME-NOSKIP            red under: B-RULE-SWAP, B-CHEAT, B-REARM-b
+coverage GAME-ENDING-ENTRY      red under: B-CHEAT
+coverage GAME-COMMIT-ONCE       red under: B-RULE-SWAP, B-REARM-b
+coverage CONTRACT-NOSKIP        red under: B-CHEAT
+coverage CONTRACT-ENDING-ENTRY  red under: B-CHEAT
+coverage CONTRACT-COMMIT-ONCE   red under: B-REARM-b
+coverage ENGINE-ORACLE          red under: B-ORACLE
+coverage TOKEN-ELSEWHERE        red under: B-TOKEN-DRY
+coverage TOKEN-LATCH            red under: B-LATCH
+coverage TOKEN-RUN-GUARD        red under: L-RUNGUARD
+coverage ERR-COMMIT             red under: L-ERRSHAPE
+coverage DRY-RULE               red under: B-RULE-SWAP
+coverage DRY-00                 red under: B-00
+coverage DRY-UNEARNED           red under: L-EARNED
+coverage FRESH                  red under: L-FRESH
+coverage BITS-FIRST             red under: L-BITS
+coverage CONTRACT-BITS          red under: B-CONTRACT-BITS
+coverage ACK                    red under: B-ACK, B-ACK-SEQ
+coverage ACK-STALE-PANEL        red under: B-ACK, B-ACK-SEQ
+coverage STALE-TICKET           red under: B-EPOCH-SEQ
+coverage TICKET-REPLAY          red under: B-EPOCH-SEQ, B-RULE-SWAP, B-REARM-b
+coverage COMMIT-TWICE           red under: B-LATCH, B-RULE-SWAP, B-REARM-b
+coverage COMMIT-STALE           red under: B-EPOCH, B-EPOCH-SEQ, B-RULE-SWAP, B-REARM-b
+coverage COMMIT-AFTER-RESTART   red under: B-ARMED, B-RULE-SWAP, B-REARM-b
+coverage RESTART-SESSION        red under: L-RESTART
+coverage PLAYTHROUGH            red under: B-RULE-SWAP, B-FID, B-PARITY, B-REARM-b
+coverage PLAYTHROUGH-RAW        red under: L-RAW
+coverage: 34/34 checks went red at least once

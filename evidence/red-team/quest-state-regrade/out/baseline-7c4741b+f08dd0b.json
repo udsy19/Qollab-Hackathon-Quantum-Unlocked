@@ -1,0 +1,240 @@
+[
+  {
+    "id": "GAME-STATES",
+    "source": "V§9.1",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "GAME-EDGES",
+    "source": "V§9.2 + R13.1/R13.12",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "GAME-EXTRA",
+    "source": "V§9.2 transition(): anything else refused",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "CONTRACT-STATES",
+    "source": "V§9.1",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "CONTRACT-EDGES",
+    "source": "V§9.2 + R13.1/R13.12",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "CONTRACT-EXTRA",
+    "source": "V§9.2 transition(): anything else refused",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "PARITY",
+    "source": "owner relay \"gameplay imports its quest table from echo/contracts.js\"",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "GAME-NOSKIP",
+    "source": "V§9.2 chain; CLAUDE.md \"Playable\"",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "GAME-ENDING-ENTRY",
+    "source": "V§9.2 + R13.1",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "GAME-COMMIT-ONCE",
+    "source": "V§7.4, V§9.3 idempotence",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "CONTRACT-NOSKIP",
+    "source": "V§9.2 chain; CLAUDE.md \"Playable\"",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "CONTRACT-ENDING-ENTRY",
+    "source": "V§9.2 + R13.1",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "CONTRACT-COMMIT-ONCE",
+    "source": "V§7.4, V§9.3 idempotence",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "ENGINE-ORACLE",
+    "source": "independence: every fed fidelity re-derived by oracle.mjs (cross-checked vs Qiskit in crosscheck.py)",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "TOKEN-ELSEWHERE",
+    "source": "V§7.4: the token is measured only at the final commit",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "TOKEN-LATCH",
+    "source": "V§7.4 \"do not let the player re-run teleportation of the already-measured token\"; RG3.1 \"latched once recorded\"",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "TOKEN-RUN-GUARD",
+    "source": "V§7.4 + P-ONCE: the token is measured exactly once per session, only via the commit",
+    "verdict": "FAIL",
+    "fails": [
+      "experiment() in TELEPORT_DRY_RUN_PASSED ran a story-token request outside commitTransfer, then the commit measured again: 2 token measurements in one session",
+      "after the commit (latch committed), experiment() in TELEPORT_COMMITTED still ran a story-token request"
+    ]
+  },
+  {
+    "id": "ERR-COMMIT",
+    "source": "RG3.1: an errored commit records nothing; retry allowed",
+    "verdict": "FAIL",
+    "fails": [
+      "after errored result null, a good commit is refused (latch measured_refused): no retry",
+      "after errored result undefined, a good commit is refused (latch measured_refused): no retry",
+      "after errored result {}, a good commit is refused (latch measured_refused): no retry",
+      "after errored result {\"experiment\":\"teleportation\"}, a good commit is refused (latch measured_refused): no retry",
+      "after errored result {\"experiment\":\"teleportation\",\"parameters\":{\"stateId\":\"story_token\"}}, a good commit is refused (latch measured_refused): no retry"
+    ]
+  },
+  {
+    "id": "DRY-RULE",
+    "source": "V§7.4 + oracle physics; CLAUDE.md \"all four conditional correction choices\"",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "DRY-00",
+    "source": "RG3.2: COMMIT unlocks only after a correct dry run whose bits are NOT 00",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "DRY-UNEARNED",
+    "source": "RG3.2 + V§9.2: an outcome-named mission event needs the result that shows it",
+    "verdict": "FAIL",
+    "fails": [
+      "CLONE_INTRO: send('BASIS_DEMO_OK') with no experiment result advanced to CLONE_BASIS_PASSED",
+      "CLONE_BASIS_PASSED: send('SUPERPOSITION_DEMO_FAILED') with no experiment result advanced to CLONE_SUPERPOSITION_FAILED",
+      "TELEPORT_DRY_RUN: send('CORRECT_CALIBRATION') with no experiment result advanced to TELEPORT_DRY_RUN_PASSED"
+    ]
+  },
+  {
+    "id": "FRESH",
+    "source": "R13.11: a wrong dry run retries on a FRESH calibration state",
+    "verdict": "FAIL",
+    "fails": [
+      "after a wrong dry run on bloch_a, a retry on the SAME prepared state yields CORRECT_CALIBRATION"
+    ]
+  },
+  {
+    "id": "BITS-FIRST",
+    "source": "owner § red-team physics (2): corrections are chosen after m0, m1 are shown",
+    "verdict": "FAIL",
+    "fails": [
+      "TELEPORT_DRY_RUN: a single corrections-included result, with no bits-first result before it, yields CORRECT_CALIBRATION"
+    ]
+  },
+  {
+    "id": "CONTRACT-BITS",
+    "source": "owner § red-team physics (2): the contract defines a bits-first dry run",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "ACK",
+    "source": "R13.13: acknowledgements advance only after the result panel was shown",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "ACK-STALE-PANEL",
+    "source": "R13.13: the panel must be shown IN the acknowledging state",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "STALE-TICKET",
+    "source": "V§9.5 resetGame: a result asked in an old session must not move the new one",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "TICKET-REPLAY",
+    "source": "V§9.5 + ABA: a ticket from an earlier session or an earlier visit is not current",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "COMMIT-TWICE",
+    "source": "V§7.4: one commit, one token measurement",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "COMMIT-STALE",
+    "source": "V§9.5: a commit in flight across resetGame() moves nothing, and the new session can commit",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "COMMIT-AFTER-RESTART",
+    "source": "R13.12 + V§9.5: after RESTART the old token is gone; nothing commits outside the armed state",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "RESTART-SESSION",
+    "source": "R13.12 + V§9.5: every RESTART the ENDING screen offers starts a full new session",
+    "verdict": "FAIL",
+    "fails": [
+      "RESTART via edge: second session cannot commit (latch committed); the game is soft-locked before the ending"
+    ]
+  },
+  {
+    "id": "PLAYTHROUGH",
+    "source": "V§9.2 legal path on real engine results (names-only seam alias); CLAUDE.md \"Playable\"",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "PLAYTHROUGH-RAW",
+    "source": "V§9.2 + CLAUDE.md \"Playable\": the engine's results as emitted, no alias",
+    "verdict": "FAIL",
+    "fails": [
+      "CLONE_INTRO: rule refused cloning {\"state\":\"zero\"} (need a basis-state copy that succeeded)",
+      "CLONE_INTRO: rule refused cloning {\"state\":\"plus\"} (need a basis-state copy that succeeded)",
+      "CLONE_INTRO refused EXPLANATION_READ",
+      "CLONE_INTRO refused EXIT_BOOTH",
+      "CLONE_INTRO refused REACH_RELAY",
+      "CLONE_INTRO: rule refused bell_signalling {\"senderGate\":\"I\"} (need a basis-state copy that succeeded)",
+      "CLONE_INTRO: rule refused bell_signalling {\"senderGate\":\"X\"} (need a basis-state copy that succeeded)",
+      "CLONE_INTRO refused VIEW_RECEIVER_MARGINAL",
+      "CLONE_INTRO refused OPEN_ROOFTOP",
+      "CLONE_INTRO refused REPAIR_CLASSICAL_LINK",
+      "CLONE_INTRO refused RUN_DRY_TEST",
+      "CLONE_INTRO: rule refused teleportation {\"state\":\"bloch_b\",\"m0\":1,\"m1\":1,\"applyX\":true,\"applyZ\":true} (need a basis-state copy that succeeded)",
+      "CLONE_INTRO refused ANIMATION_END",
+      "playthrough ended in CLONE_INTRO"
+    ]
+  }
+]

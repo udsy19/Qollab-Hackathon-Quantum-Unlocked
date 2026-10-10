@@ -1,0 +1,4 @@
+phase-1 (bell_measurement) results accepted by validateTeleportBitsResult: 0/48
+phase-2 (teleport_branch, generic states) accepted by validateTeleportCorrectionResult: 0/32
+  80x phase# result parameters.theta nothing is not the requested #
+  80x phase# result parameters.phi nothing is not the requested #
