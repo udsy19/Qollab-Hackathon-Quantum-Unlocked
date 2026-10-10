@@ -140,6 +140,7 @@ export const RUN_JOURNAL = Object.freeze({
     commit: 'THE TRANSFER · the one commit',
     backend: 'BACKEND CHECK · one job',
   },
+  fidelityGloss: FIDELITY_GLOSS,
   labels: {
     input: 'Input state',
     joint: 'Joint outcome probabilities',

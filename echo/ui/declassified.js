@@ -120,7 +120,9 @@ function journalPanel(record) {
   section(S.dryRuns, list(rec.dryRuns).map((d, i) => (isPlain(d) && validateExperimentResult(d.bits).length === 0
     ? group(d.result, `${L.dryRun} ${i + 1}`, (r) => dryRunReadings(d.bits, r))
     : el('p', 'echo-declass__none', RUN_JOURNAL.invalid))));
-    section(S.commit, rec.commit ? [group(rec.commit, null, (r) => [...bitReadings(r), [L.applied, applied(r.parameters)], [L.commitFidelity, fmt(r.fidelity)]])] : []);
+  section(S.commit, rec.commit ? [group(rec.commit, null, (r) => [...bitReadings(r), [L.applied, applied(r.parameters)], [L.commitFidelity, fmt(r.fidelity)]])] : []);
+  // The words that explain the number appear wherever the number does (story-data gate §10).
+  if (rec.commit || list(rec.dryRuns).length) frag.push(el('p', 'echo-declass__note', RUN_JOURNAL.fidelityGloss));
   section(S.backend, rec.backend ? [group(rec.backend, null, backendReadings)] : []);
   return frag;
 }
