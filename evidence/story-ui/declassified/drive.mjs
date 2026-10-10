@@ -192,8 +192,10 @@ try {
   // Keyboard scroll: Tab into the panel, End scrolls it to the dry runs, the commit and the backend line.
   await press('Tab', 'Tab (into the journal panel)');
   await press('End', 'End (scroll the journal)');
-  await settle(150);
-  check('journal: panel takes focus and End scrolls it', await page.evaluate(() => { const p = document.activeElement; return p.getAttribute('role') === 'tabpanel' && p.scrollTop > 0; }));
+  // Chrome animates keyboard scrolling; under load 150 ms was measured as not always enough (2 flaky reds
+  // in the first sabotage round), so poll for up to 2 s.
+  const scrolled = await page.waitForFunction(() => { const p = document.activeElement; return p.getAttribute('role') === 'tabpanel' && p.scrollTop > 0 && Math.abs(p.scrollTop + p.clientHeight - p.scrollHeight) < 2; }, { timeout: 2000 }).then(() => true, () => false);
+  check('journal: panel takes focus and End scrolls it to the bottom', scrolled, await page.evaluate(() => `${document.activeElement.getAttribute('role')} scrollTop ${document.activeElement.scrollTop}`));
   await shot('01b-journal-dryruns-commit.png');
 
   // 3. Each §4.5 tab by ArrowRight: every data line present, kets rendered as ⟩, no ASCII ket left.

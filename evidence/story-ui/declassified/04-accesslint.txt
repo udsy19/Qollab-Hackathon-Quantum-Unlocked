@@ -1,0 +1,6 @@
+control (unnamed button planted in the dialog): flagged labels-and-names/button-name
+page    moderate  navigable/page-has-heading-one  html  — Page does not contain a level-one heading.
+page    moderate  landmarks/region  #provenance  — Content is not contained within a landmark region.
+
+24 violation instances (2 distinct); inside the dialog: 0
+exit 0

@@ -176,9 +176,9 @@
       "detail": ""
     },
     {
-      "name": "journal: panel takes focus and End scrolls it",
+      "name": "journal: panel takes focus and End scrolls it to the bottom",
       "ok": true,
-      "detail": ""
+      "detail": "tabpanel scrollTop 880"
     },
     {
       "name": "tab THE COPY: ArrowRight focuses and selects it, ring visible",
