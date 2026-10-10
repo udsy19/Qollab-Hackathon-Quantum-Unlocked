@@ -1,0 +1,56 @@
+Boot -> TITLE | BOOTED: {"ok":true,"state":"TITLE"}
+Start -> OPENING | START: {"ok":true,"state":"OPENING"}
+Skip opening -> FREE_ROAM_ALLEY | SKIP: {"ok":true,"state":"FREE_ROAM_ALLEY"}
+E at booth -> CLONE_INTRO | OPEN_CLONE_BOOTH: {"ok":true,"state":"CLONE_INTRO"}
+Duplicate plus -> CLONE_INTRO | clone plus: no progress — need a basis-state copy that succeeded
+Duplicate zero -> CLONE_BASIS_PASSED | clone zero: BASIS_DEMO_OK -> CLONE_BASIS_PASSED
+Duplicate plus -> CLONE_BASIS_PASSED | clone plus: ERROR — injected: bridge timed out. Nothing changed; try again.
+Duplicate plus -> CLONE_SUPERPOSITION_FAILED | clone plus: SUPERPOSITION_DEMO_FAILED -> CLONE_SUPERPOSITION_FAILED
+Read the scan -> CLONE_UNDERSTOOD | EXPLANATION_READ: {"ok":true,"state":"CLONE_UNDERSTOOD"}
+Leave booth -> RELAY_UNLOCKED | EXIT_BOOTH: {"ok":true,"state":"RELAY_UNLOCKED"}
+E at relay -> RELAY_INTRO | REACH_RELAY: {"ok":true,"state":"RELAY_INTRO"}
+Sender I -> RELAY_BELL_CREATED | bell I: PREPARE_BELL_PAIR -> RELAY_BELL_CREATED
+Sender I -> RELAY_BELL_CREATED | bell I: no progress — the sender must act locally (X or Z) to try to signal
+Sender X -> RELAY_SEND_FAILED | bell X: ATTEMPT_NO_SIGNALLING -> RELAY_SEND_FAILED
+Read receiver panel -> RELAY_UNDERSTOOD | VIEW_RECEIVER_MARGINAL: {"ok":true,"state":"RELAY_UNDERSTOOD"}
+Open rooftop -> ROOFTOP_UNLOCKED | OPEN_ROOFTOP: {"ok":true,"state":"ROOFTOP_UNLOCKED"}
+E at socket -> LINK_REPAIRED | REPAIR_CLASSICAL_LINK: {"ok":true,"state":"LINK_REPAIRED"}
+Start calibration -> TELEPORT_DRY_RUN | RUN_DRY_TEST: {"ok":true,"state":"TELEPORT_DRY_RUN"}
+Apply & verify -> TELEPORT_DRY_RUN | dry run: no progress — corrections do not match m0=1, m1=0
+Apply & verify -> TELEPORT_DRY_RUN_PASSED | dry run: CORRECT_CALIBRATION -> TELEPORT_DRY_RUN_PASSED
+COMMIT TRANSFER (story token, once) -> TELEPORT_COMMITTED | commit: COMMIT_TRANSFER -> TELEPORT_COMMITTED
+direct second COMMIT_TRANSFER -> {"ok":false,"state":"TELEPORT_COMMITTED","reason":"\"COMMIT_TRANSFER\" is not valid in TELEPORT_COMMITTED"}
+Transfer animation ends -> ENDING | ANIMATION_END: {"ok":true,"state":"ENDING"}
+Declassified -> DECLASSIFIED | OPEN_SCIENCE: {"ok":true,"state":"DECLASSIFIED"}
+Credits -> CREDITS | OPEN_CREDITS: {"ok":true,"state":"CREDITS"}
+Restart -> TITLE | RESTART: {"ok":true,"state":"TITLE"}
+reset during in-flight clone -> TITLE | clone zero: result discarded (quest moved to TITLE)
+--- page errors: none
+--- bus log (newest first):
+quest:reset CLONE_INTRO -> TITLE
+quest:transition FREE_ROAM_ALLEY --OPEN_CLONE_BOOTH--> CLONE_INTRO
+quest:transition OPENING --SKIP--> FREE_ROAM_ALLEY
+quest:transition TITLE --START--> OPENING
+quest:transition CREDITS --RESTART--> TITLE
+quest:transition DECLASSIFIED --OPEN_CREDITS--> CREDITS
+quest:transition ENDING --OPEN_SCIENCE--> DECLASSIFIED
+quest:transition TELEPORT_COMMITTED --ANIMATION_END--> ENDING
+quest:transition TELEPORT_DRY_RUN_PASSED --COMMIT_TRANSFER--> TELEPORT_COMMITTED
+quest:transition TELEPORT_DRY_RUN --CORRECT_CALIBRATION--> TELEPORT_DRY_RUN_PASSED
+quest:transition LINK_REPAIRED --RUN_DRY_TEST--> TELEPORT_DRY_RUN
+quest:transition ROOFTOP_UNLOCKED --REPAIR_CLASSICAL_LINK--> LINK_REPAIRED
+quest:transition RELAY_UNDERSTOOD --OPEN_ROOFTOP--> ROOFTOP_UNLOCKED
+quest:transition RELAY_SEND_FAILED --VIEW_RECEIVER_MARGINAL--> RELAY_UNDERSTOOD
+quest:transition RELAY_BELL_CREATED --ATTEMPT_NO_SIGNALLING--> RELAY_SEND_FAILED
+quest:transition RELAY_INTRO --PREPARE_BELL_PAIR--> RELAY_BELL_CREATED
+quest:transition RELAY_UNLOCKED --REACH_RELAY--> RELAY_INTRO
+quest:transition CLONE_UNDERSTOOD --EXIT_BOOTH--> RELAY_UNLOCKED
+quest:transition CLONE_SUPERPOSITION_FAILED --EXPLANATION_READ--> CLONE_UNDERSTOOD
+quest:transition CLONE_BASIS_PASSED --SUPERPOSITION_DEMO_FAILED--> CLONE_SUPERPOSITION_FAILED
+next quantum call will fail
+quest:transition CLONE_INTRO --BASIS_DEMO_OK--> CLONE_BASIS_PASSED
+repeated OPEN_CLONE_BOOTH ×5 -> ok: false,false,false,false,false
+quest:transition FREE_ROAM_ALLEY --OPEN_CLONE_BOOTH--> CLONE_INTRO
+quest:transition OPENING --SKIP--> FREE_ROAM_ALLEY
+quest:transition TITLE --START--> OPENING
+quest:transition BOOT --BOOTED--> TITLE
