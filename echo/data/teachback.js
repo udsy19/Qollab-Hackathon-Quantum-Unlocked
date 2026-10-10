@@ -145,7 +145,8 @@ export const RUN_JOURNAL = Object.freeze({
     receiver: 'Receiver alone',
     dryRun: 'Dry run',
     applied: 'You applied',
-    rule: 'Rule for these bits (X if m1 = 1, Z if m0 = 1)',
+    // No-break spaces keep each "m1 = 1" on one line.
+    rule: 'Rule for these bits (X if m1\u00A0=\u00A01, Z if m0\u00A0=\u00A01)',
     none: 'no correction',
     fidelity: 'Fidelity with the test state',
     commitFidelity: 'Fidelity with the original state (simulation check)',

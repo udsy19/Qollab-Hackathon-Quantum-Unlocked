@@ -1,7 +1,7 @@
 {
   "provenance": {
     "version": "declassified r1",
-    "hash": "1fd445b6c328",
+    "hash": "eb2d7ee4d584",
     "files": [
       "echo/main.css",
       "echo/ui/accessibility.js",
@@ -14,6 +14,8 @@
     "Escape (control)",
     "Escape (resume)",
     "Enter (open Declassified)",
+    "Tab (into the journal panel)",
+    "End (scroll the journal)",
     "ArrowRight (→ THE COPY)",
     "ArrowRight (→ THE CONNECTION)",
     "ArrowRight (→ THE TRANSFER)",
@@ -161,7 +163,7 @@
     {
       "name": "journal: absent backend job reads \"not recorded\"",
       "ok": true,
-      "detail": " 1, Z if m0 = 1)\nZ\nFidelity with the test state\n1\nDry-run result\n✓ passed\nTHE TRANSFER · THE ONE COMMIT\n\nEXACT · local Qiskit statevector\n\nSOURCE READOUT m0\n1\nLOCAL BELL-HALF READOUT m1\n1\nYou applied\nX then Z\nFidelity with the original state (simulation check)\n1\nBACKEND CHECK · ONE JOB\n\nnot recorded"
+      "detail": " 1, Z if m0 = 1)\nZ\nFidelity with the test state\n1\nDry-run result\n✓ passed\nTHE TRANSFER · THE ONE COMMIT\n\nEXACT · local Qiskit statevector\n\nSOURCE READOUT m0\n1\nLOCAL BELL-HALF READOUT m1\n1\nYou applied\nX then Z\nFidelity with the original state (simulation check)\n1\nBACKEND CHECK · ONE JOB\n\nnot recorded"
     },
     {
       "name": "journal: dry-run rule line reads Z only for m0=1, m1=0 (both dry runs)",
@@ -170,6 +172,11 @@
     },
     {
       "name": "journal: no ASCII ket on screen",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "journal: panel takes focus and End scrolls it",
       "ok": true,
       "detail": ""
     },

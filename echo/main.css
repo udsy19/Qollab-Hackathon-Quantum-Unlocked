@@ -642,7 +642,7 @@
 .echo-declass__readings,
 .echo-declass__myth {
   display: grid;
-  grid-template-columns: minmax(8em, 18em) minmax(0, 1fr);
+  grid-template-columns: minmax(8em, 22em) minmax(0, 1fr);
   gap: 0.15em 1em;
   margin: 0;
 }

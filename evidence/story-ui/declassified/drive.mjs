@@ -44,7 +44,14 @@ const server = http.createServer((req, res) => {
   res.writeHead(200, { 'content-type': MIME[path.extname(p)] || 'application/octet-stream', 'cache-control': 'no-store' });
   fs.createReadStream(p).pipe(res);
 });
-await new Promise((r, j) => server.listen(PORT, '127.0.0.1', r).on('error', j)).catch((e) => refuse(`port ${PORT}: ${e.message}`));
+// Port 8771 is this gate's (supervisor brief); another lane's harness has been seen holding it, so
+// wait up to 3 minutes for it rather than silently moving elsewhere.
+for (let t = 0; ; t++) {
+  const err = await new Promise((r) => { server.once('error', r); server.listen(PORT, '127.0.0.1', () => r(null)); });
+  if (!err) break;
+  if (err.code !== 'EADDRINUSE' || t >= 90) refuse(`port ${PORT}: ${err.message}`);
+  await new Promise((r) => setTimeout(r, 2000));
+}
 
 const checks = [];
 const keys = [];
@@ -182,6 +189,12 @@ try {
   check('journal: dry-run rule line reads Z only for m0=1, m1=0 (both dry runs)', rules.length === 2 && rules.every((r) => /^Z\b/.test(r) && !/\bX\b/.test(r)), JSON.stringify(rules));
   check('journal: no ASCII ket on screen', !ASCII_KET.test(journal), journal.match(ASCII_KET)?.[0]);
   await shot('01-journal.png');
+  // Keyboard scroll: Tab into the panel, End scrolls it to the dry runs, the commit and the backend line.
+  await press('Tab', 'Tab (into the journal panel)');
+  await press('End', 'End (scroll the journal)');
+  await settle(150);
+  check('journal: panel takes focus and End scrolls it', await page.evaluate(() => { const p = document.activeElement; return p.getAttribute('role') === 'tabpanel' && p.scrollTop > 0; }));
+  await shot('01b-journal-dryruns-commit.png');
 
   // 3. Each §4.5 tab by ArrowRight: every data line present, kets rendered as ⟩, no ASCII ket left.
   await page.evaluate(() => document.querySelector('[role="tab"]')?.focus());
