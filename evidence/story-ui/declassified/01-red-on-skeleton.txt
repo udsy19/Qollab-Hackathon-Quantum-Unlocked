@@ -1,0 +1,63 @@
+provenance {"version":"declassified r1","hash":"4f672a6e7c9e","files":["echo/main.css","echo/ui/accessibility.js","echo/ui/menu.js","echo/ui/declassified.js","echo/data/teachback.js"]}
+PASS  control: Esc opens pause in a started game
+FAIL  open: isOpen() is true
+FAIL  open: a visible modal dialog named Declassified  — null
+FAIL  open: focus moved into the dialog with a visible ring  — {"tag":"BUTTON","role":null,"text":"Open Declassified","inDialog":false,"outlineStyle":"solid","outlineWidth":3,"outlineColor":"rgb(255, 225, 77)"}
+FAIL  tabs: journal, the 3 §4.5 tabs, teach-back, credits, in that order  — []
+FAIL  journal: every value in the run record is shown  — missing 1,1,1,1,1,1,0.5,0.5,0.5,0.5,I,0.5,0.5,X,0.5,0.5,Z,0.5,0.5,0.176668,1,1
+FAIL  journal: one engine-labelled group per recorded result, in record order  — []
+FAIL  journal: each group shows its engine label text
+PASS  journal: every engine kind in vision §8.4 has a label
+FAIL  journal: no number outside an engine-labelled group  — no panel
+FAIL  journal: bits carry BIT_LABELS (SOURCE READOUT m0 / LOCAL BELL-HALF READOUT m1)
+FAIL  journal: absent backend job reads "not recorded"
+FAIL  journal: dry-run rule line reads Z only for m0=1, m1=0 (both dry runs)  — []
+PASS  journal: no ASCII ket on screen
+FAIL  tab THE COPY: ArrowRight focuses and selects it, ring visible  — {"tag":"BUTTON","role":null,"text":"Open Declassified","inDialog":false,"outlineStyle":"solid","outlineWidth":3,"outlineColor":"rgb(255, 225, 77)"}
+FAIL  tab THE COPY: every data line shown whole, kets as |x⟩  — Fed three prepared test states into a duplication booth: |0⟩, |1⟩ and |+⟩. || The booth runs a CNOT from the input onto a blank |0⟩. For |0⟩ and |1⟩ the blank ends up matching. For |+⟩ the two qubits become one entangled pair. || prepare input on q0 · CX(q0, q1) || |0⟩  →  |00⟩ || |1⟩  →  |11⟩ || |+⟩  →  (|00⟩ + |11⟩)/√2 || Purity of each output for |+⟩: 0.5 (an ideal, independent |+⟩ has purity 1
+PASS  tab THE COPY: no ASCII ket on screen
+FAIL  tab THE CONNECTION: ArrowRight focuses and selects it, ring visible  — {"tag":"BUTTON","role":null,"text":"Open Declassified","inDialog":false,"outlineStyle":"solid","outlineWidth":3,"outlineColor":"rgb(255, 225, 77)"}
+FAIL  tab THE CONNECTION: every data line shown whole, kets as |x⟩  — Prepared an entangled test pair, applied I, X or Z to the sender half, and read the receiver half alone. || Whatever the sender did, the receiver's own results stayed 50/50. The sender's action only changed how the two logs line up when compared. || H(q0) · CX(q0, q1) · sender applies I, X or Z to q0 · measure q1 || Receiver alone: P(0) = 0.5, P(1) = 0.5 for I, X and Z. || Receiver's reduced state
+PASS  tab THE CONNECTION: no ASCII ket on screen
+FAIL  tab THE TRANSFER: ArrowRight focuses and selects it, ring visible  — {"tag":"BUTTON","role":null,"text":"Open Declassified","inDialog":false,"outlineStyle":"solid","outlineWidth":3,"outlineColor":"rgb(255, 225, 77)"}
+FAIL  tab THE TRANSFER: every data line shown whole, kets as |x⟩  — Measured the source together with my Bell half, sent the two bits over the amber line, and set the receiver corrections. Then committed the real token once. || The Bell measurement destroyed the source's state and produced two random bits. The receiver's half became the source state up to a known flip, which the bits undid. || H(q1) · CX(q1, q2) · CX(q0, q1) · H(q0) · measure q0 → m0, q1 → m1 · X 
+PASS  tab THE TRANSFER: no ASCII ket on screen
+FAIL  provenance note shown on a science tab
+FAIL  teach-back: focus stays in the dialog with a ring  — {"tag":"BODY","role":null,"text":"NACRE CITY // 02:17 AMECHOONE OF ONEStartSettingsControlsThis effort is supported by Qollab & IonQPausedResumeSettingsCo","inDialog":false,"outlineStyle":"none","outlineWidth":3,"outlineColor":"rgb(0, 0, 0)"}
+FAIL  teach-back: all 9 choices reached by Tab, each showed its why and a right/not-quite mark  — 0/9
+FAIL  teach-back: all 3 questions answered
+FAIL  teach-back: the 3 §4.5 questions shown verbatim
+FAIL  teach-back: no score shown
+PASS  teach-back: no ASCII ket on screen
+FAIL  credits: owner-ruled team line, verbatim
+FAIL  credits: license line names udsy19 and contributors and MIT
+FAIL  credits: "This effort is supported by Qollab & IonQ"
+FAIL  credits: no email address anywhere in the dialog
+FAIL  credits: every CREDITS row from the data is shown  — title,team,support,license,libraries,assets,thanks
+FAIL  credits: opening the credits tab fired OPEN_CREDITS once  — []
+FAIL  focus: trapped and visible over 2 Tab/Shift+Tab presses  — {"tag":"BUTTON","role":null,"text":"Open Declassified","inDialog":false,"outlineStyle":"solid","outlineWidth":3,"outlineColor":"rgb(255, 225, 77)"}
+FAIL  esc: pause did not open while Declassified owned Esc  — {"pause":true,"open":false,"focusOpener":false,"events":[]}
+FAIL  esc: Declassified closed and focus returned to the opener  — {"pause":true,"open":false,"focusOpener":false,"events":[]}
+FAIL  esc: after close, Esc opens pause again (pause re-allowed)
+FAIL  sparse: relay, dry runs, commit fidelity and backend each read "not recorded" (≥4)  — 0 in: 
+FAIL  sparse: invalid result shown as not recorded (contract check), engine not invented
+FAIL  sparse: no NaN / undefined / null / default 0.5 on screen
+FAIL  sparse: commit bits still shown (m0 = 0, m1 = 1)
+FAIL  motion off (control): the dialog animates (some transition > 0)  — []
+FAIL  reduced motion: every transition is 0s and no animation runs  — {"durations":[],"animations":[]}
+FAIL  200% 1280×720 tab JOURNAL: no clipping (font 0px)  — no dialog
+FAIL  200% 1280×720 tab THE COPY: no clipping (font 0px)  — no dialog
+FAIL  200% 1280×720 tab THE CONNECTION: no clipping (font 0px)  — no dialog
+FAIL  200% 1280×720 tab THE TRANSFER: no clipping (font 0px)  — no dialog
+FAIL  200% 1280×720 tab TEACH-BACK: no clipping (font 0px)  — no dialog
+FAIL  200% 1280×720 tab CREDITS: no clipping (font 0px)  — no dialog
+FAIL  200% 1024×640 tab JOURNAL: no clipping (font 0px)  — no dialog
+FAIL  200% 1024×640 tab THE COPY: no clipping (font 0px)  — no dialog
+FAIL  200% 1024×640 tab THE CONNECTION: no clipping (font 0px)  — no dialog
+FAIL  200% 1024×640 tab THE TRANSFER: no clipping (font 0px)  — no dialog
+FAIL  200% 1024×640 tab TEACH-BACK: no clipping (font 0px)  — no dialog
+FAIL  200% 1024×640 tab CREDITS: no clipping (font 0px)  — no dialog
+PASS  no page errors
+
+59 checks, 51 failed
+exit 1

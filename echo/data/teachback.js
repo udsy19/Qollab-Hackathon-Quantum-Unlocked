@@ -104,13 +104,73 @@ export const TEACHBACK = Object.freeze([
   },
 ])
 
-// Team names have not been given by the owner (owner-answers 2026-10-09/10). Do not invent them.
+// Team line: owner-answers 2026-10-10 § credit names, wording fixed by the story-ui supervisor
+// (consult 4). No emails.
 export const CREDITS = Object.freeze([
   { role: 'title', text: 'ECHO: ONE OF ONE' },
-  { role: 'team', text: 'TODO_OWNER: team and credit names (not yet given by the owner)' },
+  { role: 'team', text: 'Team The Quantubians (NYU Tandon School of Engineering): Udaya (captain), George, Harman, Epa' },
   { role: 'support', text: 'This effort is supported by Qollab & IonQ' },
   { role: 'license', text: 'Code: MIT License, udsy19 and contributors' },
   { role: 'libraries', text: 'Built with three.js (MIT) and Qiskit (Apache-2.0), running in Pyodide (MPL-2.0) on Qollab.' },
   { role: 'assets', text: 'TODO_OWNER: third-party assets and their licenses (art lane to list; none yet)' },
   { role: 'thanks', text: 'Thank you for playing.' },
 ])
+
+// Declassified mode's own words (§4.5, §6.1 layer 3). The journal shows numbers from the player's
+// run record only; each reading names the engine that produced it (§8.4 EngineKind). Kets are ASCII
+// here and rendered as |x⟩ by the UI.
+export const RUN_JOURNAL = Object.freeze({
+  title: 'YOUR RUN',
+  intro: 'What you actually did this run. Every number names the engine that produced it.',
+  notRecorded: 'not recorded',
+  invalid: 'not recorded (the result failed its contract check)',
+  engines: {
+    exact_qiskit_local: 'EXACT · local Qiskit statevector',
+    documented_preview: 'PREVIEW · documented values, not computed this run',
+    qollab_selected_backend: 'SAMPLED · the selected Qollab backend',
+  },
+  sections: {
+    clone: 'THE COPY · booth tests',
+    relay: 'THE CONNECTION · relay readings',
+    dryRuns: 'THE TRANSFER · dry runs',
+    commit: 'THE TRANSFER · the one commit',
+    backend: 'BACKEND CHECK · one job',
+  },
+  labels: {
+    input: 'Input state',
+    joint: 'Joint outcome probabilities',
+    purityQ0: 'Purity of the input slot (q0)',
+    purityQ1: 'Purity of the blank slot (q1)',
+    senderGate: 'Sender applied',
+    receiver: 'Receiver alone',
+    dryRun: 'Dry run',
+    applied: 'You applied',
+    rule: 'Rule for these bits (X if m1 = 1, Z if m0 = 1)',
+    none: 'no correction',
+    fidelity: 'Fidelity with the test state',
+    passed: 'passed',
+    failed: 'did not pass',
+    backend: 'Backend',
+    shots: 'Shots requested',
+    counts: 'Counts',
+  },
+})
+
+export const DECLASSIFIED_UI = Object.freeze({
+  dialogLabel: 'Declassified',
+  tabs: { journal: 'JOURNAL', teachback: 'TEACH-BACK', credits: 'CREDITS' },
+  headings: {
+    whatIDid: 'What I did',
+    whatTheQubitsDid: 'What the qubits did',
+    gates: 'Exact gates',
+    expected: 'Expected data (ideal maths)',
+    misconception: 'Misconception corrected',
+    wrong: 'Myth',
+    why: 'What is true',
+  },
+  teachbackIntro: 'Three questions, no score. Pick any answer to see why it is or is not right, and try the others too.',
+  rightMark: 'Right.',
+  wrongMark: 'Not quite.',
+  close: 'Back to the city',
+  toCredits: 'Credits',
+})
