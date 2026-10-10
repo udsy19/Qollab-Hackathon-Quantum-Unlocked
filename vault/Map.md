@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **37 notes** over 10 folders.
+Measured 2026-10-10: **38 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -77,6 +77,7 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 Folder README: [[Reports/README]]
 
 - [[Reports/README|Reports/]]
+- [[Reports/atmosphere-kit|Atmosphere kit: lighting, rain, skyline, world-change effects (art lane)]]
 - [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
 - [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
