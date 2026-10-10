@@ -1,8 +1,8 @@
 ---
 type: dashboard
 status: current
-date: 2026-10-09
-updated: 2026-10-09
+date: 2026-10-10
+updated: 2026-10-10
 ---
 
 # `Design/`
@@ -14,8 +14,9 @@ Design specs — how a thing should behave, written before it is built. Read by 
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (2)
+## Notes here (3)
 
+- [[Design/experiment-result-contract|ExperimentResult contract: what the quantum engine returns to JS]]
 - [[Design/gate-independence-cases|Gate independence — the worked cases]]
 - [[Design/lanes-and-supervisors|How the work is organised: supervised lanes]]
 
