@@ -1,0 +1,6 @@
+builtin auto exit=0
+builtin cancel exit=0
+builtin button exit=0
+ionq-mock auto exit=0
+ionq-mock cancel exit=0
+ionq-mock button exit=0

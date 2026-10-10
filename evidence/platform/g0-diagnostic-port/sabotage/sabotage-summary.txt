@@ -1,0 +1,4 @@
+CASE control-builtin-auto backend=builtin scenario=auto check-exit=0 caps-exit=1 -> AS EXPECTED
+    caps:   info: backend.run: 2 call site(s) in scanned code
+CASE control-builtin-cancel backend=builtin scenario=cancel check-exit=0 caps-exit=1 -> AS EXPECTED
+    caps:   info: backend.run: 2 call site(s) in scanned code
