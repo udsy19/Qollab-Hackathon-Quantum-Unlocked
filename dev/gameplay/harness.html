@@ -1,0 +1,98 @@
+<!doctype html>
+<!-- Dev harness for echo/game (NOT part of the Qollab upload). Serve the worktree root on port 8612:
+     python3 -m http.server 8612   →   http://localhost:8612/dev/gameplay/harness.html
+     The terminal panel here is a STUB that only emits mission events; story-ui owns the real terminals. -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<link rel="icon" href="data:,">
+<title>ECHO — gameplay harness</title>
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js" } }
+</script>
+<style>
+  html, body { margin: 0; height: 100%; background: #070b12; color: #eaf3f6; font: 14px/1.4 ui-monospace, Menlo, monospace; overflow: hidden; }
+  #game-root { position: fixed; inset: 0; }
+  .overlay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(7, 11, 18, 0.78); }
+  .panel { background: #132035; border: 1px solid #56e4f2; padding: 24px 28px; min-width: 320px; }
+  h1 { font-size: 28px; letter-spacing: 0.2em; margin: 0 0 16px; color: #56e4f2; }
+  button { font: inherit; background: #070b12; color: #eaf3f6; border: 1px solid #56e4f2; padding: 8px 14px; margin: 4px 4px 0 0; cursor: pointer; }
+  button:focus-visible { outline: 3px solid #f3ae62; outline-offset: 2px; }
+  #prompt { position: fixed; left: 50%; bottom: 18%; transform: translateX(-50%); background: rgba(19, 32, 53, 0.9); border: 1px solid #56e4f2; padding: 8px 14px; }
+  #prompt b { color: #070b12; background: #56e4f2; padding: 0 6px; margin-right: 8px; }
+  #readout { position: fixed; left: 10px; top: 10px; background: rgba(7, 11, 18, 0.7); padding: 6px 10px; white-space: pre; }
+  #hint { position: fixed; right: 10px; top: 10px; background: rgba(7, 11, 18, 0.7); padding: 6px 10px; color: #9fb0c4; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<div id="game-root"></div>
+<div id="readout"></div>
+<div id="hint">WASD move · Shift sprint · mouse/drag orbit · E interact · Esc pause</div>
+<div id="prompt" hidden><b>E</b><span id="prompt-label"></span></div>
+
+<div id="title" class="overlay"><div class="panel"><h1>ECHO: ONE OF ONE</h1><p>gameplay harness</p><button id="play">PLAY</button></div></div>
+<div id="pause" class="overlay" hidden><div class="panel"><h1>PAUSED</h1><button id="resume">Resume</button><button id="restart">Restart</button></div></div>
+<div id="terminal" class="overlay" hidden><div class="panel"><h1 id="term-title"></h1><p>STUB terminal — emits mission events only.</p><div id="term-actions"></div><button id="term-close">Close</button></div></div>
+<div id="ending" class="overlay" hidden><div class="panel"><h1>ENDING</h1><p>The city is lit.</p><button id="end-restart">Restart</button></div></div>
+
+<script type="module">
+import { startGame, BUILD } from '../../echo/game/app.js';
+
+const $ = (id) => document.getElementById(id);
+const STUB_EVENTS = {
+  copy_booth: ['BASIS_DEMO_OK', 'SUPERPOSITION_DEMO_FAILED', 'EXPLANATION_READ'],
+  relay_core: ['PREPARE_BELL_PAIR', 'ATTEMPT_NO_SIGNALLING', 'VIEW_RECEIVER_MARGINAL'],
+  classical_socket: [],
+  teleport_terminal: ['CORRECT_CALIBRATION', 'COMMIT_TRANSFER'],
+};
+let fps = { fps: 0, calls: 0 };
+
+const ui = {
+  mount({ bus, quest, game }) {
+    window.__echo = game;
+    let termId = null;
+    const show = () => {
+      $('title').hidden = quest.state !== 'TITLE';
+      $('ending').hidden = quest.state !== 'ENDING';
+      $('pause').hidden = !game.paused;
+      $('terminal').hidden = !termId;
+      if (termId) {
+        $('term-title').textContent = termId;
+        const box = $('term-actions');
+        box.replaceChildren(...STUB_EVENTS[termId].filter((e) => quest.can(e)).map((e) => {
+          const b = document.createElement('button');
+          b.textContent = e;
+          b.dataset.event = e;
+          b.onclick = () => quest.send(e);
+          return b;
+        }));
+      }
+    };
+    const closeTerminal = () => { termId = null; show(); bus.emit('ui:terminal:close'); };
+    bus.on('ui:prompt', (p) => { $('prompt').hidden = !p; $('prompt-label').textContent = p ? p.label : ''; });
+    bus.on('ui:terminal:open', ({ id }) => { termId = id; show(); });
+    bus.on('ui:pause', show);
+    bus.on('quest:transition', ({ to }) => {
+      if (to === 'TELEPORT_COMMITTED') { closeTerminal(); setTimeout(() => quest.send('ANIMATION_END'), 5000); }
+      show();
+    });
+    bus.on('quest:reset', () => { termId = null; show(); });
+    bus.on('perf:fps', (f) => { fps = f; });
+    $('play').onclick = () => { quest.send('START'); quest.send('SKIP'); $('play').blur(); show(); };
+    $('resume').onclick = () => { game.resume(); show(); };
+    $('restart').onclick = () => game.reset();
+    $('end-restart').onclick = () => game.reset();
+    $('term-close').onclick = closeTerminal;
+    setInterval(() => {
+      const p = game.debug.player;
+      $('readout').textContent = `build ${BUILD}  fps ${fps.fps}  ms ${fps.ms}  calls ${fps.calls}\nstate ${quest.state}\npos ${p.x.toFixed(2)}, ${p.z.toFixed(2)}  focus ${game.debug.focus ?? '-'}`;
+    }, 200);
+    show();
+  },
+};
+
+startGame({ root: $('game-root'), quantum: null, ui });
+</script>
+</body>
+</html>
