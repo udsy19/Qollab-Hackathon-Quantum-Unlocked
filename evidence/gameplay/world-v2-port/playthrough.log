@@ -1,15 +1,15 @@
-build expected=v2p-0006-a (echo/game/app.js on disk) served=v2p-0006-a port=8647 renderer=ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)
+build expected=v2p-0006-b (echo/game/app.js on disk) served=v2p-0006-b port=8647 renderer=ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)
 PASS  run 1: title shown at TITLE  
 PASS  run 1: PLAY → FREE_ROAM_ALLEY  
 PASS  mouse drag (+200 px) orbits the camera  yaw 0.00 → -0.52
-PASS  run 1: prompt at booth when near + facing  {"x":3.449817761435092,"z":-11.468255573171849,"heading":-1.4218698225439002,"speed":0.00045450490780859793}
-PASS  no prompt behind pylon (in range, facing)  dist=2.27 heading=-2.34
+PASS  run 1: prompt at booth when near + facing  {"x":3.547714132030365,"z":-11.506451032498406,"heading":-1.485559723892662,"speed":0.04269173223376067}
+PASS  no prompt behind pylon (in range, facing)  dist=2.16 heading=-2.44
 PASS  SABOTAGE pylon collider off → same spot now prompts (check flips)  focus=copy_booth
 PASS  restore pylon → no prompt again  
 PASS  door A blocks before corridor_door_opens  z=-25.85
-PASS  SABOTAGE door A collider off → player passes the door line (check flips)  z=-28.62
+PASS  SABOTAGE door A collider off → player passes the door line (check flips)  z=-28.46
 PASS  run 1: E opens booth terminal, quest → CLONE_INTRO  
-walk video: 921 frames over 37.2 s → walk.mp4
+walk video: 978 frames over 39.2 s → walk.mp4
 PASS  terminal "Duplicate zero" → CLONE_BASIS_PASSED  CLONE_BASIS_PASSED
 PASS  terminal "Duplicate plus" → CLONE_SUPERPOSITION_FAILED  CLONE_SUPERPOSITION_FAILED
 PASS  run 1: |+> copy shows fidelity 0.5 from exact_qiskit_local  exact_qiskit_local F=0.5
@@ -20,7 +20,7 @@ PASS  run 1: no EXIT_BOOTH button in the world terminal
 PASS  run 1: corridor_door_opens in force and door A open  ["booth_indicator_red_fades","corridor_door_opens","objective_target_glows"]
 PASS  run 1: EXIT_BOOTH world trigger → RELAY_UNLOCKED  
 PASS  door B blocks before rooftop_access_unlocked  x=8.85
-PASS  run 1: prompt at relay core  {"x":0.024578495582398115,"z":-47.49731792437377,"heading":-5.433008792675342,"speed":0.05645391151550341}
+PASS  run 1: prompt at relay core  {"x":-0.05128749988814459,"z":-47.54312951904779,"heading":-5.39918511445151,"speed":0.008779128189078859}
 PASS  terminal "Sender I" → RELAY_BELL_CREATED  RELAY_BELL_CREATED
 PASS  run 1: cyan_conduit_illuminates in force  
 PASS  terminal "Sender X" → RELAY_SEND_FAILED  RELAY_SEND_FAILED
@@ -31,13 +31,13 @@ PASS  run 1: OPEN_ROOFTOP from an interactable is refused (EVENT_SOURCES)  OPEN_
 PASS  run 1: OPEN_ROOFTOP world trigger → ROOFTOP_UNLOCKED  
 PASS  run 1: prompt at classical socket  
 PASS  run 1: socket → LINK_REPAIRED  
-PASS  run 1: prompt at teleport_terminal  {"x":29.99189520499566,"z":-44.05406172070532,"heading":-3.1003095377044696,"speed":0.051805237089056884}
+PASS  run 1: prompt at teleport_terminal  {"x":30.012588012478147,"z":-44.19710449706391,"heading":-3.069323514687884,"speed":0.011387325290315296}
 PASS  run 1: E at terminal → TELEPORT_DRY_RUN  
 PASS  run 1: COMMIT not offered before a passed dry run  
-PASS  run 1: bits shown before corrections, all four choices offered  m0=1 m1=1
-PASS  run 1: phase 1 carries bits and no fidelity, on a generic calibration state  {"theta":1.0026444186731156,"phi":1.5146892464212849}
-PASS  terminal "Apply Z" → TELEPORT_DRY_RUN  TELEPORT_DRY_RUN
-PASS  run 1: wrong dry run visibly fails (Qiskit fidelity ≤ 0.9) and stays in TELEPORT_DRY_RUN  F=0.002234232729 θ=1.003 φ=1.515 — dry run (Z): no progress — wrong correction for m0=1, m1=1: calibrate again on a fresh state · fidelity shown 0.002234232729
+PASS  run 1: bits shown before corrections, all four choices offered  m0=0 m1=1
+PASS  run 1: phase 1 carries bits and no fidelity, on a generic calibration state  {"theta":1.9067693400066208,"phi":0.8691529862541199}
+PASS  terminal "Apply no correction" → TELEPORT_DRY_RUN  TELEPORT_DRY_RUN
+PASS  run 1: wrong dry run visibly fails (Qiskit fidelity ≤ 0.9) and stays in TELEPORT_DRY_RUN  F=0.371350389804 θ=1.907 φ=0.869 — dry run (no correction): no progress — wrong correction for m0=0, m1=1: calibrate again on a fresh state · fidelity shown 0.371350389804
 PASS  run 1: correct dry run → TELEPORT_DRY_RUN_PASSED, every attempt on a fresh state  2 distinct states
 PASS  run 1: commit → TELEPORT_COMMITTED  
 PASS  run 1: a second commit is refused (token consumed once)  commit already committed
@@ -46,7 +46,7 @@ PASS  run 1: ANIMATION_END → ENDING
 PASS  ENDING → RESTART → TITLE: player at spawn, doors closed, no world change in force  {"state":"TITLE","player":{"x":0,"z":2,"heading":0,"speed":0},"changes":[]}
 PASS  run 2: title shown at TITLE  
 PASS  run 2: PLAY → FREE_ROAM_ALLEY  
-PASS  run 2: prompt at booth when near + facing  {"x":3.6988620861244543,"z":-11.493302577245103,"heading":-1.5667147046827605,"speed":0.041087949642092676}
+PASS  run 2: prompt at booth when near + facing  {"x":3.690760717508606,"z":-11.501151194641833,"heading":-1.5966668130978112,"speed":0.025275052702894277}
 PASS  run 2: E opens booth terminal, quest → CLONE_INTRO  
 PASS  terminal "Duplicate zero" → CLONE_BASIS_PASSED  CLONE_BASIS_PASSED
 PASS  terminal "Duplicate plus" → CLONE_SUPERPOSITION_FAILED  CLONE_SUPERPOSITION_FAILED
@@ -57,7 +57,7 @@ PASS  run 2: EXIT_BOOTH sent from a terminal is refused (EVENT_SOURCES)  EXIT_BO
 PASS  run 2: no EXIT_BOOTH button in the world terminal  
 PASS  run 2: corridor_door_opens in force and door A open  ["booth_indicator_red_fades","corridor_door_opens","objective_target_glows"]
 PASS  run 2: EXIT_BOOTH world trigger → RELAY_UNLOCKED  
-PASS  run 2: prompt at relay core  {"x":0.01106857871410397,"z":-47.56382167969498,"heading":-0.05139800587458223,"speed":0.01692455436870061}
+PASS  run 2: prompt at relay core  {"x":0.012313549403283894,"z":-47.564299930401425,"heading":-3.3575293086841385e-17,"speed":0.07413027787478654}
 PASS  terminal "Sender I" → RELAY_BELL_CREATED  RELAY_BELL_CREATED
 PASS  run 2: cyan_conduit_illuminates in force  
 PASS  terminal "Sender X" → RELAY_SEND_FAILED  RELAY_SEND_FAILED
@@ -68,13 +68,13 @@ PASS  run 2: OPEN_ROOFTOP from an interactable is refused (EVENT_SOURCES)  OPEN_
 PASS  run 2: OPEN_ROOFTOP world trigger → ROOFTOP_UNLOCKED  
 PASS  run 2: prompt at classical socket  
 PASS  run 2: socket → LINK_REPAIRED  
-PASS  run 2: prompt at teleport_terminal  {"x":30.005723467863632,"z":-44.126874325745554,"heading":-3.1853585663129484,"speed":0.019476646520327375}
+PASS  run 2: prompt at teleport_terminal  {"x":29.996233204724412,"z":-44.24428662484259,"heading":-9.45625615682619,"speed":0.03282850768316973}
 PASS  run 2: E at terminal → TELEPORT_DRY_RUN  
 PASS  run 2: COMMIT not offered before a passed dry run  
-PASS  run 2: bits shown before corrections, all four choices offered  m0=1 m1=0
-PASS  run 2: phase 1 carries bits and no fidelity, on a generic calibration state  {"theta":2.0469806434442077,"phi":-2.9150797613690087}
-PASS  terminal "Apply X then Z" → TELEPORT_DRY_RUN  TELEPORT_DRY_RUN
-PASS  run 2: wrong dry run visibly fails (Qiskit fidelity ≤ 0.9) and stays in TELEPORT_DRY_RUN  F=0.750038686182 θ=2.047 φ=-2.915 — dry run (X then Z): no progress — wrong correction for m0=1, m1=0: calibrate again on a fresh state · fidelity shown 0.750038686182
+PASS  run 2: bits shown before corrections, all four choices offered  m0=1 m1=1
+PASS  run 2: phase 1 carries bits and no fidelity, on a generic calibration state  {"theta":1.250343061472246,"phi":-2.7721744470457055}
+PASS  terminal "Apply Z" → TELEPORT_DRY_RUN  TELEPORT_DRY_RUN
+PASS  run 2: wrong dry run visibly fails (Qiskit fidelity ≤ 0.9) and stays in TELEPORT_DRY_RUN  F=0.783339415493 θ=1.250 φ=-2.772 — dry run (Z): no progress — wrong correction for m0=1, m1=1: calibrate again on a fresh state · fidelity shown 0.783339415493
 PASS  run 2: correct dry run → TELEPORT_DRY_RUN_PASSED, every attempt on a fresh state  2 distinct states
 PASS  run 2: commit → TELEPORT_COMMITTED  
 PASS  run 2: a second commit is refused (token consumed once)  commit already committed
@@ -85,7 +85,7 @@ PASS  Esc pauses
 PASS  no movement while paused  
 PASS  Resume unpauses  
 PASS  Pause → Restart → TITLE, player at spawn  {"x":0,"z":2,"heading":0,"speed":0}
-readout (headless, NOT a laptop FPS measurement): build v2p-0006-a  fps 20  ms 0.39  calls 95 | state FREE_ROAM_ALLEY | pos 0.00, 2.00  focus -
+readout (headless, NOT a laptop FPS measurement): build v2p-0006-b  fps 31  ms 0.44  calls 95 | state FREE_ROAM_ALLEY | pos 0.00, 2.00  focus -
 page errors: 0
 PASS  no page errors in the main run  
 PASS  control (copy, unbroken): WORLD_CHANGES id renamed in the subscriber check passes  [{"id":"door_alley","open":true,"t":1},{"id":"door_relay","open":false,"t":0}]
