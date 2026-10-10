@@ -12,13 +12,18 @@ callPromising. `run_sync` has the same requirement (JSPI stack switching), so a 
 here for the same structural reason. It is an emulation of the mechanism, not of IonQ.
 """
 import sys
+import time
 
+_T0 = time.perf_counter()
 import js
 import qiskit
 from pyodide.ffi import run_sync
 from qiskit.providers.basic_provider import BasicSimulator
 
 import quantum.qollab_job as qollab_job
+
+# Imported before bridge.js (hoisted import order), so this is the cold Qiskit + engine import cost.
+IMPORT_SECONDS = time.perf_counter() - _T0
 
 NETWORK_MOCK = "backend=ionq-mock" in str(js.location.search)
 COUNTS = {"backendRunAttempts": 0, "backendRunCompleted": 0, "verificationCalls": 0}
@@ -54,4 +59,11 @@ def snapshot():
 
 
 def platform():
-    return {"sysPlatform": sys.platform, "python": sys.version.split()[0], "qiskit": qiskit.__version__}
+    import pyodide
+    return {"sysPlatform": sys.platform, "python": sys.version.split()[0], "qiskit": qiskit.__version__,
+            "pyodide": pyodide.__version__, "coldImportSeconds": round(IMPORT_SECONDS, 3)}
+
+
+def nested_probe():
+    """A dict holding a dict and a list: what a bare toJs() makes of it is measured in main.js."""
+    return {"outer": {"inner": 1.0}, "list": [1, 2], "n": 1}

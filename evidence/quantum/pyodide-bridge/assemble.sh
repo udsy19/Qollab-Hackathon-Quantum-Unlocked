@@ -39,6 +39,7 @@ done
   echo "  \"token\": \"$TOKEN\", \"sabotage\": \"$SAB\","
   echo "  \"runnerRef\": \"$RUNNER_REF@$(git -C "$REPO" rev-parse --short "$RUNNER_REF")\","
   echo "  \"contractsRef\": \"$CONTRACTS_REF@$(git -C "$REPO" rev-parse --short "$CONTRACTS_REF")\","
+  echo "  \"harnessCommit\": \"$(git -C "$REPO" rev-parse --short HEAD)$(git -C "$REPO" diff --quiet HEAD -- evidence/quantum/pyodide-bridge echo/quantum/bridge.js || echo -dirty)\","
   echo "  \"pythonRef\": \"$PY_REF@$(git -C "$REPO" rev-parse --short "$PY_REF")\","
   echo "  \"sha256\": {"
   (cd "$DEST/echo" && find . -type f | sort | while read -r f; do echo "    \"${f#./}\": \"$(shasum -a 256 "$f" | cut -c1-16)\","; done) | sed '$ s/,$//'

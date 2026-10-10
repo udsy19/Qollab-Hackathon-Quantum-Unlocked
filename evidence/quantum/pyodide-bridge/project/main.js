@@ -83,7 +83,14 @@ const [r1, r2] = await Promise.all([settle(v1), settle(v2)]);
 const verifyMs = +(performance.now() - tv).toFixed(1);
 const r1Verdict = r1?.status === 'verified' ? validateExperimentResult(r1.result) : null;
 
+// What does a BARE toJs() give on this Pyodide? (The contract and the vision assume a Map.)
+const probe = await spy.nested_probe.callPromising();
+const bare = probe.toJs();
+const toJsDefault = { topIsMap: bare instanceof Map, topType: Object.prototype.toString.call(bare), innerIsMap: (bare instanceof Map ? bare.get('outer') : bare.outer) instanceof Map, listIsArray: Array.isArray(bare instanceof Map ? bare.get('list') : bare.list), json: JSON.stringify(bare) };
+probe.destroy();
+
 const dump = {
+  toJsDefault,
   build: BUILD,
   backendName: String(backend.name),
   platform: plainOf(await spy.platform.callPromising()),
