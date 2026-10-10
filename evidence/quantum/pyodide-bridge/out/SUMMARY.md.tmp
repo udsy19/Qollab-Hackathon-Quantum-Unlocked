@@ -1,0 +1,8 @@
+python HEAD@8c6beef · old bridge lane/quantum/integration@24e0ba7 · old python lane/quantum/contract-conformance@42703f1
+
+| run | scenario | expected | exit | verdict | checks |
+|---|---|---|---|---|---|
+| final-1 | conformant | exit 0 | 0 | OK | 85/85 checks passed |
+| final-2 | conformant | exit 0 | 0 | OK | 85/85 checks passed |
+| final-3 | conformant | exit 0 | 0 | OK | 85/85 checks passed |
+| fault | fault | exit 0 | 0 | OK | 31/31 checks passed |
