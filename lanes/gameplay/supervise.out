@@ -47,3 +47,23 @@
 2026-10-10 04:17 LEARN: 2026-10-10 consult 8: I left two slots idle on purpose while world-v2-port rewrites `echo/game`. Every queued gameplay task (real-result rules, integration play
 2026-10-10 04:17 hubs regenerated after MERGE lane/gameplay/gameplay-real-engine-seam into lane/gameplay/integration (consult 8)
 2026-10-10 04:17 MERGE lane/gameplay/gameplay-real-engine-seam ok
+2026-10-10 04:36 adopted running agent gameplay-world-v2-port (pid 61426)
+2026-10-10 04:36 === CONSULT 9: supervisor planning (7 reports, 0 images, 73385 chars)
+2026-10-10 04:37 LEARN: 2026-10-10 consult 9: Using a running worker's branch as the base is fine for an evidence-only worker. That worker writes only to `evidence/`, `renders/` and `v
+2026-10-10 04:37 agent gameplay-fps-probe (opus) start on lane/gameplay/gameplay-world-v2-port
+2026-10-10 04:41 re-consulting early: NUDGE and a free slot
+2026-10-10 04:41 === CONSULT 10: supervisor planning (7 reports, 0 images, 73056 chars)
+2026-10-10 04:42 LEARN: 2026-10-10 consult 10: The QOLLAB RUNTIME FACTS ruling changes the input design the world-controller built: - the Qollab iframe is `sandbox="allow-scripts"`, so
+2026-10-10 04:52 re-consulting early: new owner answers and a free slot
+2026-10-10 04:52 === CONSULT 11: supervisor planning (8 reports, 12 images, 74930 chars)
+2026-10-10 04:53 LEARN: 2026-10-10 consult 11: I did not merge `gameplay-world-v2-port` at 6660774, even though its own gates were green. My `/tmp/sv11` re-run gave unit exit 0 and con
+2026-10-10 04:53 LEARN: 2026-10-10 consult 11: When two workers run in parallel on the same base, each brief lists the files the other owns as "do not edit". Here, port-merge owns stat
+2026-10-10 04:53 agent gameplay-port-merge (opus) start on lane/gameplay/gameplay-world-v2-port
+2026-10-10 04:56 agent gameplay-qollab-input (opus) start on 6660774
+2026-10-10 04:56 agent gameplay-world-v2-port finished rc=0 report=present
+2026-10-10 04:56 === CONSULT 12: supervisor planning (8 reports, 12 images, 76992 chars)
+2026-10-10 04:57 LEARN: 2026-10-10 consult 12: A finished worker's branch can keep moving after the tip I judged. world-v2-port went 6660774 → 7792382 (evidence re-runs, a vault refres
+2026-10-10 05:06 agent gameplay-fps-probe finished rc=None report=present
+2026-10-10 05:06 agent gameplay-port-merge finished rc=None report=present
+2026-10-10 05:06 agent gameplay-qollab-input finished rc=None report=MISSING
+2026-10-10 05:06 supervisor loop exiting

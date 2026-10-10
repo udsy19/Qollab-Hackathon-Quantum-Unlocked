@@ -65,3 +65,42 @@
 2026-10-10 04:26 MERGE lane/quantum/quantum-hardening ok
 2026-10-10 04:26 agent tests-caps-clean (opus) start on lane/quantum/integration
 2026-10-10 04:26 agent backend-site-research (opus) start on lane/quantum/integration
+2026-10-10 04:29 agent tests-caps-clean finished rc=0 report=present
+2026-10-10 04:29 === CONSULT 12: supervisor planning (12 reports, 2 images, 80767 chars)
+2026-10-10 04:30 LEARN: 2026-10-10 consult 12: I merged tests-caps-clean (08bf8c2) after re-running it on the disposable worktree `/tmp/q12tc`. Integration is an ancestor and `merge-tr
+2026-10-10 04:30 LEARN: 2026-10-10 consult 12: backend-site-research checkpoint (not yet proven): - Qollab's real one-job guard is the frame's `fetch` override (`rewriteIonqRequest`), 
+2026-10-10 04:30 hubs regenerated after MERGE lane/quantum/tests-caps-clean into lane/quantum/integration (consult 12)
+2026-10-10 04:30 MERGE lane/quantum/tests-caps-clean ok
+2026-10-10 04:36 adopted running agent bridge-rewire (pid 75821)
+2026-10-10 04:36 adopted running agent backend-site-research (pid 79593)
+2026-10-10 04:36 === CONSULT 13: supervisor planning (12 reports, 2 images, 86483 chars)
+2026-10-10 04:43 LEARN: 2026-10-10 consult 13: I merged bridge-rewire (2bfc51e) after re-running it on the disposable merged copy `/tmp/q13br`. That copy was built with `git commit-tre
+2026-10-10 04:43 hubs regenerated after MERGE lane/quantum/bridge-rewire into lane/quantum/integration (consult 13)
+2026-10-10 04:43 MERGE lane/quantum/bridge-rewire ok
+2026-10-10 04:43 agent backend-site-move (opus) start on lane/quantum/bridge-rewire
+2026-10-10 04:43 agent engine-bridge-review (opus) start on lane/quantum/bridge-rewire
+2026-10-10 04:43 agent bridge-rewire finished rc=0 report=present
+2026-10-10 04:43 === CONSULT 14: supervisor planning (12 reports, 3 images, 89196 chars)
+2026-10-10 04:44 LEARN: 2026-10-10 consult 14: I read backend-site-research's checkpoint screenshots myself, and they show two things the report's TL;DR does not say. 1. On both Option
+2026-10-10 04:55 agent backend-site-research finished rc=0 report=present
+2026-10-10 04:55 === CONSULT 15: supervisor planning (14 reports, 4 images, 92164 chars)
+2026-10-10 04:56 LEARN: 2026-10-10 consult 15: B1 (commit `parameters {"state":"token"}` against the contract's `{stateId:"story_token", applyX, applyZ}`) got through 595 tests and 108
+2026-10-10 04:56 LEARN: 2026-10-10 consult 15: I relaxed the ".py workers run one at a time" rule for commit-seam-fix alongside backend-site-move. The reason is the G1 clock (3 h left)
+2026-10-10 04:56 LEARN: 2026-10-10 consult 15: I merged backend-site-research without a re-run. That was safe because it is evidence and vault only: `git diff integration...branch -- e
+2026-10-10 04:56 hubs regenerated after MERGE lane/quantum/backend-site-research into lane/quantum/integration (consult 15)
+2026-10-10 04:56 MERGE lane/quantum/backend-site-research ok
+2026-10-10 04:56 agent commit-seam-fix (opus) start on lane/quantum/integration
+2026-10-10 04:56 agent engine-bridge-review finished rc=0 report=present
+2026-10-10 04:56 === CONSULT 16: supervisor planning (14 reports, 0 images, 91933 chars)
+2026-10-10 04:57 LEARN: 2026-10-10 consult 16: I merged engine-bridge-review (9c19024) without a re-run because it is evidence and vault only: `git diff integration...branch -- echo/` 
+2026-10-10 04:57 hubs regenerated after MERGE lane/quantum/engine-bridge-review into lane/quantum/integration (consult 16)
+2026-10-10 04:57 MERGE lane/quantum/engine-bridge-review ok
+2026-10-10 04:57 re-consulting early: NUDGE and a free slot
+2026-10-10 04:57 === CONSULT 17: supervisor planning (14 reports, 0 images, 90986 chars)
+2026-10-10 04:58 LEARN: - 2026-10-10 consult 17: commit-seam-fix merged main at b18b878, so its echo/ diff against integration currently shows only `echo/CONTRACTS.md` and `echo/contra
+2026-10-10 04:58 agent g1-proof-harness (sonnet) start on lane/quantum/integration
+2026-10-10 05:01 agent backend-site-move finished rc=0 report=present
+2026-10-10 05:01 === CONSULT 18: supervisor planning (14 reports, 1 images, 95076 chars)
+2026-10-10 05:08 agent commit-seam-fix finished rc=None report=present
+2026-10-10 05:08 agent g1-proof-harness finished rc=None report=present
+2026-10-10 05:08 supervisor loop exiting

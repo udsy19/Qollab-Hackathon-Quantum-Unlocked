@@ -1,54 +1,52 @@
-**Lane:** red-team. We write reports only and make no product edits. Plan row 7.
+**Lane:** red-team. We write reports only and never edit product files (plan row 7).
 
-**Goal:** Run three independent checks on ECHO and report each, with evidence, to the lane that owns the fix.
-1. Physics audit of Prompt 6 and vision §7 against the real code and tests.
+**Goal:** three independent checks of ECHO, each reported with evidence to the lane that owns the fix.
+1. A physics audit of Prompt 6 and vision §7 against the real code.
 2. Blind playtests in the local runner.
-3. Rubric score for each of the four traits, reported separately, never as a weighted total.
+3. A rubric score for each of the four traits, reported separately and never added into a weighted total.
 
 **Approach:**
-- Ground truth comes from the independent oracle (law 4). The spec is treated as a hypothesis (law 5).
-- All sabotage runs on disposable `git archive` exports (law 10).
-- Every audit is pinned to named SHAs.
-- Results are labelled "local runner". Nothing is claimed for Qollab unless `owner-answers.md` records it.
+- Ground truth comes from our own independent oracle (law 4). The spec is treated as a hypothesis (law 5).
+- Sabotage runs only on disposable exports (law 10).
+- Every audit is pinned to named commits.
+- Results are labelled "local runner" or "local Node".
+- To verify a worker's `reproduce.sh`, run it in that worker's own worktree.
 
-**Done:**
-- physics-oracle-audit (0001): MERGED c2.
-- rubric-research (0001): MERGED c3.
-- physics-code-audit (0002): MERGED c4.
-- quest-state-audit (0003): MERGED c6. Findings Q1–Q11.
-- player-text-audit (0006): MERGED c7. Reproduced at story-ui 320613e: 9 findings (3 HIGH / 4 MED / 2 LOW), 58/58 sabotage, branch truth 16/16.
-  - Findings for story-ui: T1 no EXACT label; T2 a Subtitles-off toggle that breaks "captions always on"; T3 no terminal/Declassified/credits UI yet; T4 the credit-line dash; T5 a TODO_OWNER line; T6 voiced misconceptions; T7 no fidelity gloss; T8 failure keys are `m0m1`, the reverse of Qiskit's order (integration hazard); T9 import BIT_LABELS.
-  - Story-ui must fix these and show screenshots of the EXACT panel, the bits-then-X/Z switches and the credits.
+**Done (merged):**
+- physics-oracle-audit (0001)
+- rubric-research (0001)
+- physics-code-audit (0002)
+- quest-state-audit (0003, Q1–Q11)
+- cross-lane-recheck (0005: gate RED, 5/13 checks failing, plus the CLONE_INTRO stall)
+- player-text-audit (0006, T1–T15)
+- **quest-state-regrade (0007), merged this consult.** I re-ran it in its worktree: exit 0, all three baselines match check by check, 27/27 scenarios as expected, 34/34 checks went red at least once, no drift.
+  - Q1 and Q2 are fixed.
+  - Open: R1 HIGH (real output stalls at CLONE_INTRO), R2 (RESTART soft-locks the second run), R3 (`experiment()` measures the token outside the latch), R4 (`CORRECT_CALIBRATION` unlocks with no dry run). All four go to gameplay.
+  - Also open: R8 (theta/phi vs state names) for platform and quantum, and R9 (gameplay's stale contracts copy).
 
-**Branch state at c7 (04:25 UTC):**
+**Branch tips at consult 10 (04:54 UTC):**
 
-| branch | tip | what it holds |
+| branch | tip | what changed |
 |---|---|---|
-| main | 99dfc54 | contracts only |
-| gameplay | 7c4741b | migration + commit-fault RESTART + real-engine seam merged; FSM/logic only, no world/controller (world-controller and world-v2-port are unmerged) |
-| platform | f08dd0b | integration-shell `main.js` imports the quest machine, ui/*, quantum and THREE; README/video draft |
-| quantum | f7efb92 | `bridge.js` exists |
-| story-ui | 320613e | |
+| platform | 0fc2721 | contracts-commit-result (validateCommitResult, our 0005 item) and the release upload manifest |
+| quantum | 24e0ba7 | engine-bridge-review |
+| gameplay integration | 7c4741b | — |
+| gameplay-world-v2-port | 7792382 | merged main contracts land 2; commit judged by validateCommitResult + STORY_TOKEN_ID; claims 92/92 |
+| story-ui | 1908470 | — |
 
-No branch has a player controller and terminals wired to the scene, so the playtest trigger is still unmet. Platform's shell is the first composite that can be assembled.
+**Running:** shell-boot-smoke, dispatched at consult 9. It has two variants: the merged shell, and a preview with v2-port.
 
-**Running:**
-- cross-lane-recheck (c5): checkpointed PARTIAL, 5/13 failing.
-- quest-state-regrade (c7): the 0003 harness on gameplay 7c4741b + platform f08dd0b.
-
-**Queued:**
-1. `shell-boot-smoke` (PARTIAL playtest precursor): assemble platform f08dd0b + gameplay + story-ui + quantum into a disposable export, serve it in the local runner on its own port, take screenshots of the title and the first interactions, and report where it breaks. Dispatch when a slot frees if no controller branch has merged; otherwise go straight to a blind playtest.
-2. `blind-playtest` ×1–2 once gameplay world-controller is merged and the platform shell imports it.
-3. `story-ui-text-recheck` after story-ui pushes T1–T9 fixes: `reproduce.sh <ref>`.
+**Dispatching now:** cross-lane-recheck-2. It re-runs the 0005 gate on the new tips: platform 0fc2721, quantum 24e0ba7, gameplay v2-port 7792382 and integration 7c4741b. It also checks the new validateCommitResult with a sabotage round, and checks R1, R8 and the backend site and verification-name items.
 
 **Next:**
-- rubric-score after the first playtest.
-- Re-run the physics audit when `echo/quantum` changes materially (`bridge.js` is new and cross-lane-recheck covers it).
-- Re-run the playtests after G3 and before the Sun 14:00 freeze.
-- Route the platform README/page copy to a text audit (README is outside 0006's scope: attribution, MIT, theme, novelty claim).
+- A blind playtest once the controller and terminals are in the merged shell. The trigger is v2-port merged into gameplay integration and then into the platform shell, plus shell-boot-smoke variant B reaching CREDITS.
+- story-ui-text-recheck once T1–T9 are pushed. As of 1908470 nothing is pushed, only the opening.
+- A rubric score after the first playtest.
+- A README and page-copy audit, including platform's release manifest.
+- Playtests again before the Sun 14:00 freeze.
 
 **Risks:**
-- The graybox is late; G2 is Sat 17:00, else the one-room cut applies.
-- Impact needs measured teach-back.
-- A lane could self-certify with its own checker.
-- Cap 2 is a bottleneck.
+- G2 at Sat 17:00, with the controller still unmerged.
+- No teach-back data yet for the Impact trait.
+- Lanes could self-certify with their own checkers.
+- Only 2 slots.

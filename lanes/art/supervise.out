@@ -12,3 +12,23 @@
 2026-10-10 04:26 hubs regenerated after MERGE lane/art/atmosphere-kit into lane/art/integration (consult 2)
 2026-10-10 04:26 MERGE lane/art/atmosphere-kit ok
 2026-10-10 04:26 agent rain-shelter-readability (opus) start on lane/art/atmosphere-kit
+2026-10-10 04:36 adopted running agent props-audio (pid 63527)
+2026-10-10 04:36 adopted running agent rain-shelter-readability (pid 80372)
+2026-10-10 04:36 === CONSULT 3: supervisor planning (2 reports, 12 images, 49145 chars)
+2026-10-10 04:37 LEARN: 2026-10-10 consult 3: I checked the rain-shelter checkpoint images myself. Indoor rain is gone in the relay (`renders/rain-shelter-readability/before-relay-med.
+2026-10-10 04:37 LEARN: 2026-10-10 consult 3: Shelter volumes should be exported from art and keyed to gameplay's known footprints (relay, substation passage, elevator), not placed by 
+2026-10-10 04:37 REPORT OVERDUE props-audio: no report 30 min after start
+2026-10-10 04:48 agent props-audio finished rc=0 report=present
+2026-10-10 04:48 === CONSULT 4: supervisor planning (3 reports, 12 images, 62031 chars)
+2026-10-10 04:49 LEARN: 2026-10-10 consult 4: I merged rain-shelter-readability on images, not on its numbers. - Evidence the fix works: `crop-objective-door-player-med.png` shows the 
+2026-10-10 04:49 LEARN: 2026-10-10 consult 4: I merged props-audio. In `b-landmarks-before-after.png` the relay core's energized change reads strongly. The booth indicator and especial
+2026-10-10 04:49 ASK_OWNER: These are not decisions; they are relay requests to the gameplay lane through the overseer, because I cannot write gameplay's `owner-answers.md`: 1. **Rain shelters** (art report `0002-rain-shelter-re
+2026-10-10 04:49 MERGE lane/art/rain-shelter-readability ok
+2026-10-10 04:49 hubs regenerated after MERGE lane/art/props-audio into lane/art/integration (consult 4)
+2026-10-10 04:49 MERGE lane/art/props-audio ok
+2026-10-10 04:49 agent interior-lighting-pass (opus) start on lane/art/integration
+2026-10-10 04:50 agent rain-shelter-readability finished rc=0 report=present
+2026-10-10 04:50 === CONSULT 5: supervisor planning (3 reports, 0 images, 62806 chars)
+2026-10-10 04:50 LEARN: 2026-10-10 consult 5: `lane/art/integration` now contains contracts v2 (80d685f is an ancestor, checked with `git merge-base --is-ancestor`). The consult-1 rule
+2026-10-10 05:06 agent interior-lighting-pass finished rc=None report=present
+2026-10-10 05:06 supervisor loop exiting

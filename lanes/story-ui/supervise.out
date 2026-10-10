@@ -39,3 +39,37 @@
 2026-10-10 04:08 LEARN: 2026-10-10 consult 6, a decision inferred from the docs. Opening skip is ALWAYS available, from the first frame. Basis: §3.4 says "skip opening after first view
 2026-10-10 04:08 MERGE lane/story-ui/data-fixes ok
 2026-10-10 04:08 agent opening (sonnet) start on lane/story-ui/integration
+2026-10-10 04:27 agent opening finished rc=0 report=present
+2026-10-10 04:27 === CONSULT 7: supervisor planning (6 reports, 6 images, 73965 chars)
+2026-10-10 04:30 LEARN: 2026-10-10, consult 7. I merged the opening after re-running BOTH the opening driver and the ui-shell `drive.mjs` in a disposable worktree on the opening tip. T
+2026-10-10 04:30 LEARN: 2026-10-10, consult 7. Red-team's bit-order hazard: `TELEPORT_FAILURE_CASES` is keyed by `'m0m1:XZ'`, which is the reverse of Qiskit's bitstring order (c1c0). A
+2026-10-10 04:30 LEARN: 2026-10-10, consult 7, decided from the docs. Quoting a banned claim as a "misconception" still voices it. §2.4 says "Never say 'quantum entanglement transmits 
+2026-10-10 04:30 hubs regenerated after MERGE lane/story-ui/opening into lane/story-ui/integration (consult 7)
+2026-10-10 04:30 MERGE lane/story-ui/opening ok
+2026-10-10 04:30 agent shell-polish (opus) start on lane/story-ui/integration
+2026-10-10 04:36 adopted running agent declassified (pid 60067)
+2026-10-10 04:36 adopted running agent terminals-c4 (pid 72543)
+2026-10-10 04:36 adopted running agent shell-polish (pid 99564)
+2026-10-10 04:36 === CONSULT 8: supervisor planning (6 reports, 0 images, 75559 chars)
+2026-10-10 04:37 LEARN: 2026-10-10 consult 8: Checked with `git merge-base --is-ancestor`: none of the 3 running workers had been told to keep up with the lane integration branch. - `t
+2026-10-10 04:49 agent declassified finished rc=0 report=present
+2026-10-10 04:49 === CONSULT 9: supervisor planning (7 reports, 12 images, 78406 chars)
+2026-10-10 04:51 LEARN: 2026-10-10 consult 9: I refused to merge `declassified` even though it reported 61/61 green and "credits match the ruling exactly". There were three problems: -
+2026-10-10 04:51 LEARN: 2026-10-10 consult 9, a ruling inferred from the docs: the credits assets line is "Art and sound: generated in code for this project. No third-party assets." Th
+2026-10-10 04:51 LEARN: 2026-10-10 consult 9: The merge order changes from the fixed terminals → declassified → shell-polish to "first ready merges". All three branches conflict with t
+2026-10-10 04:51 agent declassified-conform (sonnet) start on lane/story-ui/declassified
+2026-10-10 04:56 agent terminals-c4 finished rc=0 report=present
+2026-10-10 04:56 === CONSULT 10: supervisor planning (7 reports, 12 images, 84670 chars)
+2026-10-10 04:57 LEARN: 2026-10-10, consult 10. terminals-c4 reported "100/100 green, physics on every bit pair". My code read found that `dryExplanation()` ignores the reviewed `TELEP
+2026-10-10 04:57 agent terminals-conform (opus) start on lane/story-ui/terminals-c4
+2026-10-10 05:00 agent shell-polish finished rc=0 report=present
+2026-10-10 05:00 === CONSULT 11: supervisor planning (7 reports, 4 images, 90092 chars)
+2026-10-10 05:01 LEARN: 2026-10-10 consult 11: I merged shell-polish after reading its 4 renders and its data diff myself. The integration targets now exist on lane branches but not on
+2026-10-10 05:01 LEARN: 2026-10-10 consult 11: shell-polish rewrote the teach-back misconception `wrong` field from an asserted myth into a question ("Can an entangled pair carry the s
+2026-10-10 05:01 hubs regenerated after MERGE lane/story-ui/shell-polish into lane/story-ui/integration (consult 11)
+2026-10-10 05:01 MERGE lane/story-ui/shell-polish ok
+2026-10-10 05:01 agent ui-wiring (opus) start on lane/story-ui/integration
+2026-10-10 05:06 agent declassified-conform finished rc=None report=MISSING
+2026-10-10 05:06 agent terminals-conform finished rc=None report=present
+2026-10-10 05:06 agent ui-wiring finished rc=None report=MISSING
+2026-10-10 05:06 supervisor loop exiting

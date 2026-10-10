@@ -1,59 +1,69 @@
-**Lane gameplay: plan as of consult 8 (2026-10-10 ~00:16 ET, 04:16 UTC).** G2 is due Sat 2026-10-10 17:00 ET, about 16.7 h away. If we miss it, we cut to the one-room version (vision §13).
+**Lane gameplay: plan as of consult 12 (2026-10-10 00:57 ET).** G2 is due Sat 17:00 ET, about 16 h away. If we miss it, we cut to the one-room version (§13).
 
 **Goal (plan row 5):** the playable graybox:
-- third-person follow camera; WASD, mouse, Shift, E and Esc with pointer lock;
+- third-person follow camera; WASD, mouse, Shift, E and Esc;
 - collision and bounds;
-- Alley + booth, Relay Chamber and Rooftop;
+- Alley + booth, Relay and Rooftop;
 - interaction detection;
-- the §9 quest machine (idempotent, no invalid skips, `resetGame()`) and the §9.3 world reactions;
-- a fake adapter in the `ExperimentResult` shape; primitive geometry only.
+- the §9 quest machine (idempotent, no skips, `resetGame()`) and the §9.3 world reactions;
+- primitive geometry only;
+- runs inside Qollab's sandboxed iframe.
 
-**Judged this consult: `gameplay-real-engine-seam` @ 762c615.**
-- The branch holds evidence and `vault/Reports/gameplay-real-engine-seam.md` only. No `echo/` file is touched.
-- I looked at the matrix PNG. It agrees with the report's table: as built and on v2, real results stall at CLONE_INTRO. With a names-only shim they reach CREDITS, but they make 9 wrong advances on named non-generic states and leave 3 Mission 1 rows stuck.
-- It is based on c49a922, so it lacks cbd8098. That is harmless because the two branches touch disjoint files. I am merging it as the lane's measured specification for the real-adapter swap.
+**This consult:** no new worker report. All three workers were dispatched about 5 minutes ago.
 
-**Done (merged):** quest-core, quest-review, contracts-migration, commit-fault-exit, real-engine-seam.
+`gameplay-world-v2-port` has finished. Its branch moved past the 6660774 I judged last consult to **7792382**. The extra commits (cb803ff, abd0a1a, 7792382) contain:
+- evidence re-runs;
+- a vault report refresh;
+- one dev-tool fix in `dev/gameplay/world-playthrough.mjs`: `--publish` no longer wipes the gate logs.
 
-**Running:** `gameplay-world-v2-port`. It ports world-controller onto contracts v2 plus integration and becomes the next integration tip. Its checkpoint plan already includes:
-- a dev-only Python engine server built on platform's `teleport_oracle.py`;
-- `send(event, via)` enforcing EVENT_SOURCES;
-- world reactions keyed by WORLD_CHANGES ids.
+They add no `echo/` product changes; I checked with `git diff --stat 6660774 7792382`.
+
+I re-checked the new PNGs:
+- **PNG 10:** a wrong dry run for m0=0, m1=1 with no correction shows F=0.37135. My own check: (sinθ cosφ)² with θ=1.9068, φ=0.8692 gives 0.3715, so it matches.
+- **PNG 14:** ENDING shows "The city is lit" with Credits and Restart.
+
+**Running (3/3 slots):**
+- `gameplay-fps-probe`: evidence only. This display is vsync-locked at 30 Hz; uncapped it runs 175–360 FPS. Final report pending.
+- `gameplay-port-merge`: base 6660774. Brings integration 7c4741b into the port and restores `commitFault` + RESTART on v2's `validateCommitResult`. It owns `state.js`, `missionRules.js`, `devTerminal.js` and `playthrough.mjs`.
+- `gameplay-qollab-input`: base 6660774. Owns `input`, `camera`, `controller`, `app.js` and a new sandboxed-iframe harness.
 
 **Next, in order:**
-1. **Judge the v2 port**, in this order:
-   - walk video and PNGs driven by real input;
-   - my own `/tmp` re-run;
-   - `node tools/contract-check/check.mjs` and `node tools/qollab-caps/check.mjs`;
-   - `git grep quest:enter` on `echo/` and `dev/` returns 0;
-   - `commitFault`/`restartOffered` are still in `state.js` (integration moved to cbd8098 under it);
-   - then MERGE.
-2. **`gameplay-real-result-rules`** (dispatch on the port's merged tip; it cannot run in parallel because it edits `missionRules.js`, which the port also changes). It implements seam Requests/gameplay 1–4:
-   - **Teleport dry run:** the rule holds the phase-1 request and result, builds phase 2 with `makeCorrectionRequest`, and fires CORRECT_CALIBRATION iff `dryRunVerdict(...).unlocksCommit`. Delete the local duplicate expected-corrections logic.
-   - **Cloning:** judged on result observables, not on state names.
-   - **Commit:** read through platform's commit validator once one exists. Until then, keep the local check at fidelity ≥0.999999 and on `exact_qiskit_local`.
-   - **Acceptance:** `seam.mjs` shows all must-advance rows matching (44/44) and 0 FAIL. The playthrough reaches CREDITS on real results without the names-only shim, with a browser playthrough PNG as proof.
-   - **Housekeeping:** mark `vault/Reports/quest-state-machine-contract.md` `status: outdated`, because its table moved to contracts.js.
-3. **Integration playthrough:** 3 consecutive title→credits runs with reset, through the 3D world, on the worker's own port, recorded. It also takes a headed FPS reading.
-4. **MOMENT events + countdown**, once platform adds them to contracts.js.
+1. **Judge port-merge.** Trial-merge it into integration in a `/tmp` worktree. Grep for `commitFault`/`restartOffered` in `state.js` and for zero hits of `awaiting_ruling`. Re-run the unit tests, contract-check and the world playthrough. Then MERGE.
+2. **Merge the leftover port commits (to 7792382) into integration.** They are disjoint from port-merge's files, so the merge should be trivial. If port-merge already merged that tip, skip this.
+3. **Judge qollab-input.** It must merge the new integration tip. The check is the sandboxed iframe harness with focus lost and regained, drag/keyboard orbit, and the click-to-focus overlay. Then MERGE.
+4. **`gameplay-real-result-rules`** (`missionRules.js` plus tests), dispatched once port-merge is merged:
+   - cloning judged on observables;
+   - commit through `validateCommitResult`;
+   - `seam.mjs`: 44/44 must-advance, 0 FAIL, CREDITS with no shim;
+   - fidelity sabotage goes red;
+   - closes the `token_guard_removed` null.
 
-**Cross-lane needs (for the overseer; recorded in this plan and the seam report):**
-- **Platform:**
-  - S8, highest priority: there is no commit-result contract or validator, so every real commit strands the token and blocks the ending.
-  - S1: name the cloning observable that decides Mission 1.
-  - S11: fixture `good[2]` still uses v1 names on a non-generic state.
-- **Quantum:**
-  - S6: `bell_measurement`/`teleport_branch` must accept and echo `{theta, phi}`.
-  - S7: `bridge.js` must use v2 request signatures.
-  - S9: a fixed, hidden story token, and `live_commit` must emit the corrections it applied.
-  - S10: rename `bell_verification` to `backend_verification`.
-- **Story-ui:** the real teleport terminal must render `machine.commitFault` (error + RESTART → `resetGame()`). Reference: `dev/gameplay/devTerminal.js` `faultPanel()`.
-- **Red-team:** re-run the quest-state-audit harness on integration after the port lands. Seam evidence already shows Q1 (second commit refused 8/8 under the shim) and Q2 (bits 00 never unlock, 11/11) behaving correctly. Q3, Q4 and Q5 are believed closed by contracts-migration but are unconfirmed.
+   Red-team regrade items R2, R3 and R4 are folded into the same brief:
+   - R2: `resetGame()` resets the latch and the token.
+   - R3: every token measurement goes through the latch.
+   - R4: CORRECT_CALIBRATION requires a recorded passing non-00 result.
+
+   R1 (real output stalls at CLONE_INTRO) is covered by the cloning-on-observables item.
+5. **Integration playthrough:** 3 consecutive title→credits runs in the sandboxed iframe, plus the uncapped FPS reading from the probe harness.
+6. MOMENT events + countdown, once platform has them in contracts.js.
+7. After G2: adopt art's atmosphere kit; `react()` stops writing materials.
+
+**Cross-lane needs (for the overseer):** unchanged from consult 11.
+- Platform:
+  - `main.js` sends `BOOT_COMPLETE` via 'boot';
+  - `onRestart` → `game.reset()`;
+  - awaits the `startGame` promise;
+  - S1 cloning observable;
+  - S11 fixture.
+- Quantum: S6/S7 v2 dry-run shapes in `bridge.js`, plus S9 and S10.
+- Story-ui:
+  - `send(event, via)`;
+  - render `commitFault` + RESTART;
+  - the two-phase dry-run UI;
+  - focus-overlay copy.
+- Red-team: re-run the quest-state audit after port-merge plus real-result-rules land.
 
 **Risks:**
-- The port's merge conflicts in `state.js`/`eventBus.js`.
-- The real-adapter swap depends on two other lanes (S6, S8). Until they land, gameplay can only reach CREDITS through the oracle-backed dev engine.
-- No headed FPS reading exists yet.
-- Nothing lands on main until red-team's `cross_lane_check` passes.
-
-**Slots:** 1 of 3 in use. I am deliberately not filling the other two. Every remaining gameplay task edits `echo/game` files that the port is rewriting, so dispatching now would only buy merge conflicts. The real-result-rules worker goes out the moment the port merges.
+- Port-merge and qollab-input are both on 6660774, without the 7792382 publish fix. Whichever merges second must take integration first.
+- Headless FPS readings are not laptop measurements.
+- The real engine depends on quantum's S6.

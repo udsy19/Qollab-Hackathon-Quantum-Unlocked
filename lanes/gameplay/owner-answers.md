@@ -87,3 +87,28 @@ Ask red-team (via its harness, `run.mjs`) for a re-run when done.
 
 ## 2026-10-10 · overseer relay from platform integration-shell (assembled tree)
 `lane/gameplay/integration` carries a stale v1 `echo/contracts.js` + `CONTRACTS.md`. Delete gameplay's copies and import platform's v2 from main (merge main). The assembler goes red until this is done.
+
+## 2026-10-10 · overseer relay from art (atmosphere kit adoption — after G2, not before)
+Art's atmosphere kit is merged on `lane/art/integration` (evidence: `lanes/art/renders/atmosphere-kit/`). Full list: `lanes/art/reports/0001-atmosphere-kit.md` § "Requests to gameplay". AFTER the G2 graybox is integrated (do not divert G2 work for it): delete gameplay's rooftop city, graybox lights, the material swaps in `react()` and its PALETTE copy; import art's `createSkyline`, `createLighting`, `createRain`, `createEffects`; supply the 10 refs art lists. Critical: only ONE owner writes world materials — art's `effects.js` — so gameplay's `react()` must stop writing materials and emit events instead (lane-ownership: lighting/effects are art's files).
+
+## 2026-10-10 · overseer relay: red-team cross-lane-recheck — the THREE fixes that unblock landing
+Report `lanes/red-team/reports/*cross-lane-recheck*.md`. Gate RED 5/13 (was 12/13). Physics 86/86. Real-output quest walk stalls at CLONE_INTRO, CLONE_BASIS_PASSED, TELEPORT_DRY_RUN and the commit (commit then ends `measured_refused` with the token spent). Fake-adapter walk reaches CREDITS.
+GAMEPLAY: read the contract's field names (v2), not your own; walk the quest on REAL engine output until it reaches CREDITS; make your fidelity tests go red when FIDELITY_OK→0.9 or the check is removed (today 55/55 stay green); close the new null `token_guard_removed`.
+
+## 2026-10-10 · overseer relay from platform g0-input-diagnostic — QOLLAB RUNTIME FACTS (binding for all game code)
+Cited from Qollab's shipped code (`/_nuxt/BWPMdZ7B.js`): the preview iframe is `sandbox="allow-scripts"` only — cross-origin (origin null), **no pointer lock**, never auto-focused.
+OVERSEER DECISIONS (inferred from vision §3.1 "Pointer lock only while exploring" + invariant 1 and §6.6 keyboard alternatives): (1) No pointer lock on Qollab: camera orbit = mouse DRAG (hold button) plus keyboard (arrow keys / Q-E style) as the primary path; try `requestPointerLock()` only as an optional enhancement that silently falls back. (2) Show a "Click to focus" overlay until the frame has focus; resume it whenever focus is lost (§3.1 "unlock when … browser focus changes"). (3) `main.js` must NEVER return before the game ends: when it returns Qollab stops listening to the frame (console, Probabilities, IonQ proxying). Keep the top-level module awaiting a promise that resolves only at CREDITS/stop. Evidence: platform report `*g0-input-diagnostic*.md`, build `g0-smoke-2026-10-10c`.
+
+## 2026-10-10 · G0 ON REAL QOLLAB — overseer run of build g0-smoke-2026-10-10c (lane/platform/g0-input-diagnostic)
+Draft https://qollab.xyz/u/udsy/echo-one-of-one. Evidence on main: `evidence/qollab/g0c-*.jpg` + README.
+- Built-in simulator: scene renders; bridge JSON exact (0.5/0.5, purity 0.5, fidelity 1, qiskit 2.5.2, py 3.14.2, emscripten); auto-send ONE job → counts {"11":134,"00":122}, 256 shots; console `backend counts` then `Done.`; Probabilities panel 47.66/52.34. PASS.
+- **IonQ Forte 1 remote simulator (Free): ONE job → counts {"11":124,"00":131,"01":1}, backend `ionq_simulator`, 20.9 s, no one-job error. PASS** — the eligibility path ("runs on IonQ's simulator") is proven on Qollab.
+- Input: the overseer's automated clicks/keys registered 0 on the diagnostic (frame never focused; origin null) — automation cannot drive the Qollab frame. A REAL human mouse/keyboard test is pending with the owner.
+G0 (Plan row 3) is DONE on Qollab except the human-input confirmation. The game must keep `main.js` alive until the ending and the one-job path must stay exactly as in 10c (memoised, guarded, auto-safe).
+
+## 2026-10-10 · overseer relay from red-team quest-state-regrade (gameplay 7c4741b + platform f08dd0b + quantum f7efb92)
+Progress: 15/19 → 27 green / 7 red. Q1 token latch and Q2 bits-00 unlock are FIXED. Remaining (report `lanes/red-team/reports/*quest-state-regrade*.md`):
+- R1 HIGH: real engine output as emitted still stalls the quest at CLONE_INTRO (field-name mismatch with quantum's emitter — coordinate with quantum via the contract).
+- R2 MED: ENDING → RESTART soft-locks the second playthrough because the commit latch stays `committed`; `resetGame()` must reset the latch and the story token (§9.5 "resets quest state … all terminal state").
+- R3 MED: `experiment()` can measure the token outside the latch — route every token measurement through the latch.
+- R4 MED: `send('CORRECT_CALIBRATION')` unlocks COMMIT with no dry run — the event must require a recorded passing non-00 dry-run result.

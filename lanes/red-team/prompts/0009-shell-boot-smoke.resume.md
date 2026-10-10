@@ -1,0 +1,1 @@
+You were interrupted — your process exits whenever you end your turn. Continue your brief from where you stopped, running every command in the FOREGROUND. Do not stop until /Users/udsy/agent-org/lanes/red-team/reports/0009-shell-boot-smoke.md is written.

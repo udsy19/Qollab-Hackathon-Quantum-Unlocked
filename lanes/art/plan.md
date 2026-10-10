@@ -1,36 +1,39 @@
-**Lane goal (G3, plan row 6):** the cyberpunk atmosphere of vision §5 and §11, without destabilising gameplay. That means graphite structures, a wet-ground approximation, fog, rain, an instanced skyline, the cyan quantum / amber classical colour language, three hero landmarks, the §11.2 skyline restoration ending, audio that starts after user input, high/med/low presets with identical logic, and ≥30 FPS at medium. Everything is procedural or original, and every file is under 2 MB. Due Sun 05:00 ET; feature freeze Sun 14:00.
+**Lane goal (G3, plan row 6):** deliver the cyberpunk atmosphere of vision §5 and §11 without destabilising gameplay. That means:
+- graphite structures, a wet-ground approximation, fog and rain
+- an instanced skyline
+- cyan for quantum, amber for classical
+- three hero landmarks
+- the §11.2 skyline-restoration ending
+- audio that starts only after user input
+- high/med/low presets that run the same logic
+- ≥30 FPS at medium
 
-**Done (judged this consult):**
-- `lane/art/atmosphere-kit` (8196838..4708dfc) adds `echo/scene/{lighting,rain,buildings,effects}.js` and the `tools/art-preview/` harness. The harness runs over gameplay's real graybox through `git show`, with nothing copied.
-- I looked at the evidence myself:
-  - `alley-med.png`: graphite alley, cyan and amber accents, and wet-floor streaks are visible.
-  - `wave-frames-*.png`: the skyline wave runs left to right over about 5 s, from a blackout city to a lit warm/cyan city.
-  - `effects-relay.png`: the conduit turns cyan and the schematic amber.
-- The rule checks behind it:
-  - Unknown ids throw.
-  - Applying an id twice is idempotent, and that check goes red when the guard is sabotaged.
-  - A wave replay is guarded, and that check goes red when sabotaged.
-  - The caps gate fails only on `index.html`/`main.js`, which belong to platform.
-- Accepted. It merges into `lane/art/integration`, which also brings main's contracts v2 in.
+Everything is procedural or original, and every file is under 2 MB. Due Sun 05:00 ET; feature freeze Sun 14:00 ET.
 
-**Defects seen in the screenshots (art-owned, being fixed):**
-1. Rain falls inside the relay chamber (`effects-relay.png`).
-   - Art fixes this inside `rain.js` with shelter volumes, so gameplay does not have to toggle by zone.
-2. At medium, the rain is dense and bright enough to compete with the objective lights and silhouettes in `alley-med.png`.
-   - §5 asks for readability first, so it needs a legibility tune: thinner, dimmer and with depth fade.
-3. The relay schematic is a flat amber card that reads as a placeholder (`effects-relay.png`). This goes to the props worker or the polish pass.
+**Approach:** art ships drop-in factory modules (`create*` → `update` / `setQuality` / `dispose`, plus `refs`) that fit gameplay's graybox footprints. We prove them in the `tools/art-preview*` harnesses over gameplay's real graybox. After G2, one integration worker wires them into the district. `lane/art/integration` already contains contracts v2 (80d685f, checked this consult), so new workers are based on it.
 
-**Running:** `props-audio`, which makes the three landmarks, consoles, signs, storytelling props, and the WebAudio `audio.js` that has to implement `play('reactor_hum'|'music_swell')` for effects.js.
+**Done (merged into lane/art/integration):**
+1. `atmosphere-kit`: lighting, rain, buildings and effects, plus `tools/art-preview/`.
+2. `rain-shelter-readability`: shelter volumes in the shader, so no rain falls indoors at any preset. The alley rain now sits below the accents, the rain gate bites when sabotaged, and draw calls did not change.
+3. `props-audio`: 12 prop factories and 9 synthesized cues with 4 zone beds. Audio starts only after input, and all 3 sabotage checks went red.
+
+**In flight:**
+- `interior-lighting-pass`: fill light for the relay, passage and elevator, and a readable amber schematic. Owns `lighting.js` and possibly `effects.js`.
+- `landmark-state-legibility` (dispatched now): the before/after states of the mast, booth and relay must read at a glance from 10–14 m (§9.3, §11.3). It owns `props.js` only, so it cannot collide with the lighting pass.
 
 **Next:**
-- `rain-shelter-readability`, dispatched now.
-- When props-audio lands: judge it and merge it.
-- After G2 (Sat 17:00): an integration worker wires the kit into gameplay's district once gameplay has made the swap. The swap is that gameplay deletes its rooftop city, graybox lights, material swaps in `react()` and palette copy; it imports lighting, rain, skyline and effects, and supplies the refs table in report 0001. The overseer is relaying this.
-- Then a perf pass under a throttled, mid-range-like profile, and finale polish with gameplay's camera.
+- After G2 (Sat 17:00): an integration worker wires lighting, rain, skyline, effects, props and audio into gameplay's district, once gameplay has acted on the relayed requests. It also:
+  - exports a `SHELTERS` constant from art, keyed to gameplay's footprints;
+  - folds the palette into one copy (`props.js` `COLOR` vs district `PALETTE`).
+- A perf pass on a throttled, mid-range-like profile.
+- Finale polish with gameplay's `finalShot`.
+- A reduced-motion clip for the rain and the wave.
+- Listen to the WAVs: `music_swell`, `zone-alley`, `radio_static_burst`, `ui_failure`.
 
 **Risks:**
-- Two writers on materials, gameplay's `react()` and effects.js, if gameplay does not delete its swaps.
-- Art sitting unimported on a branch.
-- FPS has only been measured on an M4 Pro under load.
-- High-preset shadows show nothing until the meshes opt in.
-- The 100-file cap: art is at 4 files plus up to 2 more.
+- Two writers on the same materials: gameplay's `react()` and `effects.js`.
+- Art sits unimported until gameplay adopts it.
+- FPS has only been measured on a loaded M4 Pro.
+- Underlit interiors.
+- The 100-file cap: art has 6 product files.
+- Duplicate palette copies.

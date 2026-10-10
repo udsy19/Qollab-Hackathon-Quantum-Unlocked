@@ -134,3 +134,60 @@ The overseer's MOMENT-events and countdown-hold relay was NOT yet in `contracts.
 My own reading of the PNG found a defect the worker's claim audit missed: the Controls row says "Mouse (click to capture, or drag)". That implies pointer lock, which Qollab's `sandbox="allow-scripts"` iframe forbids (consult 7 finding).
 
 Lesson: the player-facing text must be audited against the runtime facts as well as the code. The final README pass must say "drag to look" and remove the dangling text that the hidden placeholders leave behind.
+
+- 2026-10-10 consult 11: 2026-10-10 consult 11: I merged `contracts-moments-and-land` and landed `contracts-land` (5a90cdf). My own checks:
+- `main...` diff covers only the contract and gate files;
+- extract GREEN 1206/1206;
+- `FIDELITY_PASS` 0.9 is RED;
+- merge-tree clean.
+
+Note: `diff --stat integration...moments` in the consult digest did not show `echo/contracts.js`, but commit 88cd09b does carry it (`git grep MOMENT_EVENTS`). Verify file content with `git grep` and not only the stat digest.
+
+- 2026-10-10 consult 11: 2026-10-10 consult 11: I decided the ONE `backend.run` site under autonomous mode (red-team 0005 item 7: the lanes hold opposite designs). The site is the JS `backend.run` inside `echo/quantum/bridge.js` `verifySelectedBackendOnce(backend)`, with its guard claimed before the first await. Python builds the circuit and `interpret_counts` only. `qollab_job.py`'s Python `backend.run` (`run_bell_verification_once`) is deleted. `main.js` calls bridge.js.
+
+Grounds:
+- the owner ruling "exactly one guarded backend.run site (echo/quantum/bridge.js)";
+- QOLLAB_DEPLOYMENT one-job rule plus the measured fact that a plain Python call on IonQ fails with an XHR error;
+- JS-side job accounting is visible to the runner and to the caps rule `backend-run-python`.
+
+The overseer must relay this to quantum. Caps still needs to catch the destructured, aliased and `getattr` forms (red-team item 10).
+
+- 2026-10-10 consult 12: 2026-10-10 consult 12: I was consulted after a loop restart (04:36) with no new final report and all 3 slots full. The right output is a plan refresh and no dispatch.
+
+I checked `g0-input-diagnostic` myself: `git merge-base --is-ancestor lane/platform/integration lane/platform/g0-input-diagnostic` says NOT_REBASED, and the tip is adae31b on the consult-5 base. The rebase requirement from consult 9 was never delivered to the running worker. A running agent cannot be re-briefed: an AGENT block reaches only new workers.
+
+Lesson: a requirement decided after dispatch must be enforced at judge time. If the finished branch is not rebased, merge nothing and dispatch a separate port worker, rather than resolving a `main.js` conflict blind.
+
+- 2026-10-10 consult 13: 2026-10-10 consult 13: I merged `contracts-commit-result` and landed `contracts-land-2` (ae39421). My checks:
+- extract GREEN 1264/1264;
+- sabotage 0 mismatches;
+- `FIDELITY_PASS` 0.9 is RED;
+- merge-tree is clean;
+- `main...` covers 5 contract/gate files.
+
+My own validator run on the hand-mutated engine output found that swapped m0/m1 is VALID on the 00 and 11 branches. This is correct: swapping equal bits is an equivalent mutant. Judge a bit-swap sabotage only on 01/10.
+
+The real engine is 0/4 valid on commits until quantum adopts `parameters {stateId:'story_token', applyX, applyZ}`. That proposed patch lives at `evidence/platform/contracts-commit/proposed_quantum_patch.diff`.
+
+Also: the evidence JSON nests results under `.commits`. Probe the artifact's real shape before concluding anything from "unknown field" errors.
+
+- 2026-10-10 consult 13: 2026-10-10 consult 13: `g0-input-diagnostic` committed its report (6674bc6, 00:39 ET) on the stale consult-5 base. It is still NOT_REBASED, which confirms the consult-12 lesson. When it finishes, merge nothing from it. Port it with a dedicated worker onto integration's shell `main.js`.
+
+- 2026-10-10 consult 14: 2026-10-10 consult 14: `g0-input-diagnostic` finished (rc 0) still NOT_REBASED (tip 6674bc6 on base 43be7d9; my check was `merge-base --is-ancestor`). Following the consult-12 lesson, I merged nothing and dispatched `g0-diagnostic-port` to rebuild the behaviour by hand on integration's shell `main.js`, with no blind cherry-pick.
+
+Its findings stand as runtime facts for every `main.js` design:
+- the iframe is `sandbox="allow-scripts"` only, so there is no pointer lock and nothing focuses it;
+- the parent stops listening after `Done.`, and the IonQ proxy is off by then;
+- so `main.js` must stay pending until the job settles, and in the full game until the ending.
+
+Integration's `main.js:199` still holds the one `backend.run`. It moves behind `bridge.js` `verifySelectedBackendOnce` only once quantum ships that file, as one serialised commit.
+
+- 2026-10-10 consult 15: 2026-10-10 consult 15: I merged `release-upload-manifest` after my own checks:
+- extract fixtures 13/13 and sabotage 14/14 with 0 nulls;
+- my own `--release` run on the pinned refs gave rc 1, 30 files, 0 `tests/` or smoke-doc leaks, and 9 BLOCKERs (8 drifted contract copies in quantum, gameplay, story-ui and art, plus `qollab_job.py:169` Python `backend.run`).
+
+Tooling trap: `pinned-refs.txt` holds several `--ref` args on one line. `$(cat …)` inside a quoted context passes them as ONE argument, and the assembler REFUSES (rc 2, "unknown argument"). Use `eval` or unquoted expansion. Also, `--release` resolves refs with git, so run it from a worktree using the extract's tool. Inside a bare `git archive` extract it refuses, because the refs do not resolve.
+
+Decided under autonomous mode:
+- `echo/CONTRACTS.md` stays in the upload: documentation is a rubric item, it costs 1 file of 100, and it is not runtime.
+- `LICENSE` reaches the upload by `--release` copying the root `LICENSE`, one source. Do not commit a second copy in `echo/` (no-bloat; QOLLAB_DEPLOYMENT.md:28 lists LICENSE). Dispatched `release-license`.

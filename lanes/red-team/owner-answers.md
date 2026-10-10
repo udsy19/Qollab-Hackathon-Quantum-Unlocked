@@ -68,3 +68,14 @@ Platform landed `echo/contracts.js` + `echo/CONTRACTS.md` v2 (restart, EVENT_SOU
 
 ## 2026-10-10 · owner: "do not stop until you are done … spin up as many agents as you need"
 Full autonomy until submission. Caps raised (platform 3, quantum 3, gameplay 3, story-ui 3, red-team 2, art 2 — art starts now with the procedural prop kit and atmosphere systems that do not touch gameplay files; heavy art integration still after G2). Use the slots: parallelise independent work, keep one task per worker, and keep within lane file ownership. The loop now re-reads `max_parallel` live and adopts running workers on restart (macOS fix).
+
+## 2026-10-10 · overseer relay from platform g0-input-diagnostic — QOLLAB RUNTIME FACTS (binding for all game code)
+Cited from Qollab's shipped code (`/_nuxt/BWPMdZ7B.js`): the preview iframe is `sandbox="allow-scripts"` only — cross-origin (origin null), **no pointer lock**, never auto-focused.
+OVERSEER DECISIONS (inferred from vision §3.1 "Pointer lock only while exploring" + invariant 1 and §6.6 keyboard alternatives): (1) No pointer lock on Qollab: camera orbit = mouse DRAG (hold button) plus keyboard (arrow keys / Q-E style) as the primary path; try `requestPointerLock()` only as an optional enhancement that silently falls back. (2) Show a "Click to focus" overlay until the frame has focus; resume it whenever focus is lost (§3.1 "unlock when … browser focus changes"). (3) `main.js` must NEVER return before the game ends: when it returns Qollab stops listening to the frame (console, Probabilities, IonQ proxying). Keep the top-level module awaiting a promise that resolves only at CREDITS/stop. Evidence: platform report `*g0-input-diagnostic*.md`, build `g0-smoke-2026-10-10c`.
+
+## 2026-10-10 · G0 ON REAL QOLLAB — overseer run of build g0-smoke-2026-10-10c (lane/platform/g0-input-diagnostic)
+Draft https://qollab.xyz/u/udsy/echo-one-of-one. Evidence on main: `evidence/qollab/g0c-*.jpg` + README.
+- Built-in simulator: scene renders; bridge JSON exact (0.5/0.5, purity 0.5, fidelity 1, qiskit 2.5.2, py 3.14.2, emscripten); auto-send ONE job → counts {"11":134,"00":122}, 256 shots; console `backend counts` then `Done.`; Probabilities panel 47.66/52.34. PASS.
+- **IonQ Forte 1 remote simulator (Free): ONE job → counts {"11":124,"00":131,"01":1}, backend `ionq_simulator`, 20.9 s, no one-job error. PASS** — the eligibility path ("runs on IonQ's simulator") is proven on Qollab.
+- Input: the overseer's automated clicks/keys registered 0 on the diagnostic (frame never focused; origin null) — automation cannot drive the Qollab frame. A REAL human mouse/keyboard test is pending with the owner.
+G0 (Plan row 3) is DONE on Qollab except the human-input confirmation. The game must keep `main.js` alive until the ending and the one-job path must stay exactly as in 10c (memoised, guarded, auto-safe).

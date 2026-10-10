@@ -27,3 +27,5 @@ raw answers, so this is where a ruling must be to be remembered.
 - Final COMMIT is one atomic local exact call; token marked consumed only on success; on error, honest error + retry; latched once recorded. COMMIT unlocks after ≥1 correct non-00 dry run; UI offers all four X/Z choices — 2026-10-10, owner-answers § overseer rulings — gameplay consult 3
 - Theme declared: Quantum Unlocked; accessibility claim "targets WCAG 2.2 AA" only for checks actually run — 2026-10-10, owner-answers § overseer rulings — red-team consult 3
 - Full autonomy until submission; use the raised parallel cap for independent work — 2026-10-10, owner-answers § do not stop until you are done
+- Qollab iframe: no pointer lock (drag/keyboard camera, pointer lock optional fallback), click-to-focus overlay, main.js never returns before the game ends — 2026-10-10, owner-answers § QOLLAB RUNTIME FACTS
+- G0 proven on Qollab (built-in + IonQ Forte 1 sim, one job each; evidence/qollab/g0c-*.jpg); human-input check pending — 2026-10-10, owner-answers § G0 ON REAL QOLLAB

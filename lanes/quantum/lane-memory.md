@@ -55,3 +55,48 @@ The branch was not a descendant of integration, but `merge-tree` exited 0, so I 
 - rows 1–2: platform.
 
 - 2026-10-10 consult 11: 2026-10-10 consult 11: Row 3 is a conflict between the ruling's wording and the documented route. The ruling says "one guarded backend.run site (bridge.js)". The documented Qollab route is Python `backend.run` through `callPromising(backend)`, and the caps rule `backend-run-python` forbids it. I have not decided this by assumption: the research worker backend-site-research settles it with doc citations plus a runner proof. Option A moves the call into bridge.js. Option B keeps the Python route and asks platform for a narrow caps exemption plus a runner counter for Python-side runs. Until then, a green caps run on a quantum branch can be red only on entry-index, entry-main and backend-run-python.
+
+- 2026-10-10 consult 12: 2026-10-10 consult 12: I merged tests-caps-clean (08bf8c2) after re-running it on the disposable worktree `/tmp/q12tc`. Integration is an ancestor and `merge-tree` exits 0. Results:
+- caps: RED 3 (entry-index, entry-main, backend-run-python). Gap rows 4–5 are closed.
+- pytest: 595 passed.
+- `sabotage.sh`: 9/9 OK, 0 nulls.
+
+Gotchas:
+- Run gates with `PYTHONDONTWRITEBYTECODE=1`. Without it, pytest's `__pycache__` inflates caps' file count (19→34 files) and would count toward Qollab's 100-file cap if `echo/` were uploaded from a working tree.
+- `cmd | tail` hides the exit code (caps showed `=0` while the printed verdict was RED). Read the verdict line, or use `${PIPESTATUS[0]}`.
+- A literal regex in a "never names X" test misses spelling variants (the before-edit nulls were `ionq-simulator` and `apikey`). Use character classes for separators.
+
+- 2026-10-10 consult 12: 2026-10-10 consult 12: backend-site-research checkpoint (not yet proven):
+- Qollab's real one-job guard is the frame's `fetch` override (`rewriteIonqRequest`), which refuses a second `POST jobs` from either the JS or the Python route. Only the local runner's counter is JS-proxy-only.
+- A JS `backend.run` accepts a Python-built `QuantumCircuit` PyProxy.
+- Platform's main.js on `lane/platform/integration` calls `build_bell_verification_circuit`, which no longer exists after hardening.
+
+The row-3 follow-up must therefore come with a cross-lane note to platform: main.js must call bridge.js `verifySelectedBackendOnce` and hold no `backend.run` of its own. I will confirm all of this against the research's runner proof before I act on it.
+
+- 2026-10-10 consult 13: 2026-10-10 consult 13: I merged bridge-rewire (2bfc51e) after re-running it on the disposable merged copy `/tmp/q13br`. That copy was built with `git commit-tree $(git merge-tree --write-tree integration branch) -p integration -p branch`, then `git worktree add --detach`. This recipe tests the merged result itself, before a real merge exists.
+- `round.sh` (PB_PORT=5213): final runs 81/81, 81/81 and 83/83. The check count varies with the random calibration states, so a different count alone is not a regression. Fault control 32/32. Old bridge 48/73 and old Python 37/69, both red as they should be. Sabotages 8/9 red; the green one, `bare-toJs`, was predicted.
+- pytest 595 passed; contract-check 1087/1087; caps RED 3 (entry-index, entry-main, backend-run-python at `qollab_job.py:169`).
+
+Decision (time-boxed, autonomous): I dispatched backend-site-move (Option A) before backend-site-research finished. Its first step is a runner probe that can refute Option A, and it stops if the probe fails. Basis: the CLAUDE.md priority order, plus the ruling "exactly one guarded backend.run site (bridge.js)" and red-team fix (e).
+
+- 2026-10-10 consult 14: 2026-10-10 consult 14: I read backend-site-research's checkpoint screenshots myself, and they show two things the report's TL;DR does not say.
+1. On both Option A screenshots (A and A-control), the row labelled "Python-side backend.run calls (spy)" reads 1, and the runner counter also reads 1. Under Option A the Python count should be 0. Either that spy counts both routes under a misleading label, or A still submits from Python.
+   - Rule from now on: judge row 3 only on two separate counters, one for the JS proxy and one for Python `backend.run`. Done means JS = 1 and Python = 0. One label that says "1" is not evidence.
+2. The control run's result (X on q0, 0 of 256 agree) still gets `status: "verified"`.
+   - `status` may mean only "the one job completed". The agreement belongs in the facts, which already state it.
+   - Player-facing text must never say the correlation was confirmed. Before G1 is proposed, the reviewer or the move worker must confirm this.
+Evidence: `renders/backend-site-research/{2-optionA-js-submits-counter-1,3-optionA-control-x-q0-decodes-q0-1,1-today-python-route-runner-counter-0}.png`.
+
+- 2026-10-10 consult 15: 2026-10-10 consult 15: B1 (commit `parameters {"state":"token"}` against the contract's `{stateId:"story_token", applyX, applyZ}`) got through 595 tests and 1087/1087 contract-check. The reason: our conformance tests only ever called `validateExperimentResult`, and contracts v2 has per-phase validators (`validateTeleportBitsResult`, `validateTeleportCorrectionResult`, `validateCommitResult`). Every emitter must be checked with the most specific validator for its phase. A generic-shape pass is not conformance. Evidence: `renders/engine-bridge-review/01-pyodide-probe-commit-rejected-by-contract.png`, `evidence/quantum/engine-bridge-review/seam.out` (7/13).
+
+- 2026-10-10 consult 15: 2026-10-10 consult 15: I relaxed the ".py workers run one at a time" rule for commit-seam-fix alongside backend-site-move. The reason is the G1 clock (3 h left), and their files do not overlap: the fix owns cloning.py, teleportation.py and commitTransfer; the move owns qollab_job.py, test_qollab_job.py and verifySelectedBackendOnce. Both touch bridge.js, but in different functions. Mitigation: whichever lands second merges integration and re-runs the full round. If merge-tree conflicts in bridge.js, a short catch-up worker resolves it. I never resolve it by picking a side.
+
+- 2026-10-10 consult 15: 2026-10-10 consult 15: I merged backend-site-research without a re-run. That was safe because it is evidence and vault only: `git diff integration...branch -- echo/` was empty and merge-tree exited 0. Its conclusion stands as research, not proof: Qollab's one-job guard is the frame's `fetch` override (`rewriteIonqRequest`), found by reading shipped JS and never observed firing. Option A needs no caps exemption. My earlier "spy reads 1 under Option A" worry was a single combined spy. backend-site-move's checkpoint uses separate spies (JS=1, Python=0), which is the measurement row 3 is judged on.
+
+- 2026-10-10 consult 16: 2026-10-10 consult 16: I merged engine-bridge-review (9c19024) without a re-run because it is evidence and vault only: `git diff integration...branch -- echo/` was empty and `merge-tree` exited 0, both measured at this consult. Its `evidence/quantum/engine-bridge-review/seam.mjs` is now the lane's seam gate. It checks real engine output against main's per-phase contract validators and gameplay's mission rules. Every future quantum emitter change must leave `seam.mjs` at 13/13, alongside round.sh, pytest and contract-check.
+
+Two sabotage nulls stay open until commit-seam-fix closes them: the hyphenated "faster-than-light" spelling (S3) and swapped m0/m1 labels (S4).
+
+I kept the third slot empty on purpose: with two workers already editing `bridge.js`, a third editor before G1 adds conflict risk and does not shorten the critical path.
+
+- 2026-10-10 consult 17: - 2026-10-10 consult 17: commit-seam-fix merged main at b18b878, so its echo/ diff against integration currently shows only `echo/CONTRACTS.md` and `echo/contracts.js` from main: ae39421 `validateCommitResult` + `STORY_TOKEN_ID`, plus the MOMENT_EVENTS and countdown sections. backend-site-move (8146589) is cut from 807cc39 and lacks that main. Its rehearsal replays and round.sh head controls changed, and it deleted `DEFAULT_SHOTS`, which settles the no-bloat question in favour of contracts `BACKEND_SHOTS`; verify that when I judge it. I used the free third slot for an evidence-only worker (g1-proof-harness, no `echo/` edits), not for a third `bridge.js` editor. It trial-merges both tips now and builds a one-command G1 proof, so a conflict surfaces before 03:45 ET.

@@ -1,0 +1,117 @@
+# Rules for every worker agent (read before your brief)
+
+You are a Claude Code agent directed by the supervisor of lane `quantum`. Read `/Users/udsy/agent-org/lanes/quantum/context.md`
+first: the product, the owner's rulings and what has NOT worked.
+
+- **HEADLESS.** Your process exits the moment you end your turn. Run every command in the FOREGROUND and
+  wait for it. Never use run_in_background or Monitor, and never end your turn "to wait". Write your report
+  before you stop.
+- **VAULT FIRST (mandatory).** Before you design or build, search the vault for what is already known about
+  your goal. Start at `vault/AGENTS.md` (routing), `vault/Index.md` (decided, measured, tried, rejected) and
+  `vault/Map-code.md`, then the relevant `Design/`, `Research/`, `Reports/`, `Decisions/` and `Sessions/`
+  notes.
+  - Your report OPENS with a **Vault check**: notes read (paths), what was already known, what you reused,
+    and what is wrong or stale.
+  - Before you finish, write your durable findings back: measured findings to `vault/Reports/`, findings
+    about the outside world (cited) to `vault/Research/`. Where each kind of finding goes:
+    `vault/Design/lanes-and-supervisors.md` § Where research findings go.
+  - **Never edit or commit the generated files**: the folder hubs (`vault/**/README.md`), `vault/Map.md`
+    and `vault/Index.md` (its PROMOTED block is the overseer's). The loop regenerates the hubs after every
+    MERGE and LAND; branches that commit their own hub output only conflict with each other. Run
+    `node scripts/vault-hubs.mjs --check` if you want to see that your note will be linked.
+  - Before writing any new symbol: `vault/Index.md`, then `node scripts/where.mjs <name> --branches`,
+    then `git grep` (`.claude/rules/no-bloat.md`). Delete what your change supersedes.
+  - Rebuilding what the vault records as built, tried or rejected, without saying why, is a failed task.
+- **GOAL, not tests.** Derive the checks you need from your goal. Prove results through the REAL product
+  (screenshots, drawings, short videos; your own port, never a shared one). Never weaken or delete a test.
+  If a test is wrong, prove it and replace it.
+- **Your worktree and branch are your own.** Commit small and often, and end messages with the project's
+  attribution trailer.
+  - Never push or merge to main yourself.
+  - Never force-push.
+  - Never run `git config` against the shared repo (all worktrees share one `.git/config`).
+  - Tests that commit must use a throw-away repo.
+  - Do not edit protected paths (`vault/Plan.md`, `vault/Roadmap.md`, `vault/Decisions/`,
+    `.claude/rules/`, and the owner's vision docs `ECHO_MASTER_VISION.md`, `ROADMAP_48_HOURS.md`, `QOLLAB_DEPLOYMENT.md`, `CLAUDE_CODE_PROMPTS.md`); a hook refuses it and a landing gate re-checks it. To change one, file
+    `node scripts/propose.mjs --row <id> --kind … --why "…"` and say so in your report.
+  - No auto-memory: no `memory:` frontmatter, no `.claude/agent-memory/` (per-branch copies conflict).
+- **Builds.** Use your own build dir (already set in your env). Heavy builds go through the machine-wide
+  queue (it is on your PATH). Build only what you need.
+- **Sub-agents.** You may launch your own sub-agents (the Agent tool) for parallel research, review or
+  exploration. Give each a goal-framed brief, and merge their findings into YOUR report. You are
+  accountable for them. Their only channel is the Agent tool's prompt and return value; they do not
+  write the vault. If your Claude Code version does not allow a sub-agent to spawn further agents, do
+  all the fan-out yourself.
+- **Images the supervisor should see** go in `/Users/udsy/agent-org/lanes/quantum/renders/<your agent name>/` (PNG, descriptive
+  names). It sees only images newer than its last consult (at most 12, shared with the owner's reference
+  images in `renders/owner/`), so write the ones that matter last and don't re-save old ones.
+- **Never print or commit secrets.**
+- **CHECKPOINT REPORT.** You have a fixed time budget. Write your report file within the first 25 minutes, then
+  update it at least every 45 minutes (your budget is 2 h). Each update covers state, commits, evidence and next. The final version
+  replaces it. Never let more than 45 minutes of findings exist only in your head.
+- **REPORT** (to the path at the end of your brief). The supervisor sees its `## TL;DR`, its first ~2k
+  characters and its last ~3k, so the shape matters:
+  - `## TL;DR` FIRST, at most 10 lines: outcome, evidence paths, what you recommend;
+  - Vault check;
+  - what you found;
+  - what you changed (commits);
+  - evidence paths;
+  - what you did NOT do or could not verify;
+  - `## Decisions inferred from the docs` — each choice the docs did not settle explicitly, with the doc section you inferred it from (autonomous mode; ask the owner only about spend, access, publishing or credit names);
+  - what the supervisor should do next (LAST, so it is in the tail the supervisor reads).
+
+- **Lane ownership.** You edit only this lane's files: quantum: `echo/quantum/`, `echo/tests/` (quantum tests). Anything else is a request in your report.
+
+
+# YOUR BRIEF (supervisor, consult 13)
+
+You are agent `engine-bridge-review` in worktree `/Users/udsy/agent-org/lanes/quantum/wt/engine-bridge-review` on branch `lane/quantum/engine-bridge-review`.
+
+**GOAL:** Before we propose that G1 is done, an adversarial review must look for any way the quantum engine or bridge could show a judge or player something false or broken. Read-only on product files. Your output is findings, each backed by a reproduction.
+
+**VISION:** Truthful quantum (CLAUDE.md, vision §2.4, §7.5):
+- An unknown qubit is never cloned.
+- No faster-than-light message is ever sent.
+- Teleportation uses a Bell pair, a Bell measurement, two classical bits and X/Z corrections, and consumes the source.
+- m0 is the source readout and m1 is the local Bell-half readout. The receiver applies X iff m1=1 and Z iff m0=1.
+- The story token is consumed once, and only on a successful commit.
+- Dry-run states are random and generic.
+- Shots are 256.
+- There is one selected-backend job.
+
+**WHAT WE ARE BUILDING:** These are the files platform's main.js will import:
+- `echo/quantum/{cloning,entanglement,teleportation,formats,qollab_job}.py`;
+- `echo/quantum/bridge.js`;
+- the tests in `echo/tests/`.
+
+**WHAT HAS NOT WORKED:**
+- **Fake adapter:** tests on a fake adapter hid a total integration break.
+- **Named states:** named Pauli states hide a dropped X or Z, and a wrong correction can still score F=0.957.
+- **Literal regexes:** they missed spelling variants.
+- **Tests that pass while broken:** the gameplay tests stayed green with the fidelity check removed.
+- **contract-check:** it grades only contracts.js, never engine output.
+
+**VAULT:** Read `vault/AGENTS.md`, `vault/Index.md` (the promoted lessons), `vault/Reports/{quantum-physics-review,quantum-engine-g1,quantum-hardening,bridge-rewire,quantum-vs-contracts-v2}.md` and `vault/Design/gate-independence-cases.md`. Your report opens with a Vault check.
+
+**DO:**
+- Independently re-derive at least the following, with your own numpy code outside `echo/`, under `evidence/quantum/engine-bridge-review/`:
+  - teleportation for 6+ random states × 4 branches × 4 corrections;
+  - cloning purity of 0.5 for |+> and phase states;
+  - no-signalling marginals.
+
+  Compare your numbers against engine output from the real Pyodide runner (reuse `evidence/quantum/pyodide-bridge/run.sh` with your own `PB_PORT`, chosen in the range 5230–5239) and from host Python.
+- Audit these against the rulings:
+  - the token latch and RESTART;
+  - the commit unlock rule (at least one correct dry run whose bits are not 00);
+  - the `{theta, phi}` pass-through;
+  - the m0/m1 labels and the `circuitDescription` text;
+  - the deferred-measurement circuit, which must be labelled a verification, not a link;
+  - numpy scalars leaking to JS;
+  - any wording in returned `facts` or messages that overclaims (FTL, "certified random", matter teleportation).
+- Choose 3 tests and sabotage each on a disposable copy. Report every null.
+
+**DO NOT:** Edit `echo/`. Do not fix anything; each finding goes in the report with its file:line, a reproduction command and a severity (blocker / should / nit).
+
+**REPORT:** `reports/00NN-engine-bridge-review.md`, and write it to `vault/Reports/engine-bridge-review.md` as well. Checkpoint within 1 h. Hard cutoff 02:45 ET.
+
+**Write your report to `/Users/udsy/agent-org/lanes/quantum/reports/0013-engine-bridge-review.md`, opening with `## TL;DR` (at most 10 lines).** Images the supervisor should see go in `/Users/udsy/agent-org/lanes/quantum/renders/engine-bridge-review/` (PNG; only images newer than its last consult are shown to it).

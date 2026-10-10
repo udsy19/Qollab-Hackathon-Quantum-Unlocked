@@ -1,58 +1,82 @@
-**Lane story-ui plan, consult 6 (Sat 2026-10-10 ~00:10 ET / 04:10 UTC, T+5h)**
+**Lane story-ui plan, consult 11 (Sat 2026-10-10 ~01:05 ET / 05:05 UTC, T+6h)**
 
-**Goal:** the story and interface from vision §4 and §6:
-- a skippable opening
-- 2-line subtitles
-- the HUD
-- three terminals (copy_booth, relay_core, teleport_terminal) wired to the §8.4 adapter, with honest error states
-- progressive hints
-- Declassified mode with the teach-back, plus credits
-- pause and settings menus
-- keyboard navigation, visible focus, reduced motion and text scaling
+**Goal (unchanged):** vision §4 and §6. That covers:
+- a skippable opening and captions of at most 2 lines;
+- the HUD;
+- the three terminals, wired to the §8.4 adapter, with honest error states;
+- progressive hints;
+- Declassified mode, with the teach-back and the credits;
+- pause and settings menus;
+- keyboard navigation, visible focus, reduced motion and text scaling.
 
-This is Plan rows 5 (G2, Sat 17:00 ET) and 6 (G3, Sun 05:00 ET).
+These are plan rows 5 (G2, Sat 17:00 ET) and 6 (G3, Sun 05:00 ET).
 
-**State, checked from git this consult:**
-- main is merged into the lane at `8f3f9a8`, so contracts v2 is in the lane. `git diff lane...main` is empty.
-- **data-fixes was judged and is being MERGED this consult.**
-  - I ran its gate myself in a disposable worktree at `e61a537` (`node evidence/story-ui/story-data/check.mjs`): GREEN, with 11655 checks and the one disclosed `TODO_OWNER` (the assets credit, which waits on the art lane).
-  - I read the 16-row branch-truth table against X^(x⊕m1)Z^(z⊕m0). Every line is true on every case that shows it, and each line speaks only about its own switch. The fidelities agree with cos²(1.137) ≈ 0.177.
-  - `git merge-tree` is clean against integration.
-  - The credits line matches the ruling.
-- `terminals-c4` is running. It is based on the pre-v2 integration branch, so it must show v2 conformance before I merge it: the bits-first dry run, the `ExperimentResult` shape from `echo/contracts.js`, `tools/contract-check/check.mjs` and `tools/qollab-caps/check.mjs`. It must also consume `TELEPORT_FAILURE_CASES`, so after this merge it must merge the lane integration branch.
-- `declassified` is running (port 8771).
-- The free slot (cap 3) goes to `opening` (port 8781).
+**State, checked from git this consult**
 
-**Approach (unchanged):**
-- `echo/ui/` modules use `mount(root, deps)`, and data ships as JS in `echo/data/`.
-- Each CSS area gets a delimited section of `main.css`. Harnesses live in `evidence/story-ui/harness/`, with one port per worker.
-- Contracts come from `echo/contracts.js`.
-- Kets are ASCII in the data and become ⟩ at display time.
-- The engine label is always visible.
+`shell-polish` at `40383ff` is judged and MERGED this consult.
+- `is-ancestor` exits 0 and `merge-tree` is clean.
+- I read all 4 renders myself:
+  - kets render as ⟩;
+  - the select uses the display face, with a visible focus ring;
+  - the long line breaks at a clause;
+  - at 200% and 1024×640 the HUD stays in the viewport.
+- My physics read of the data diff:
+  - `FIDELITY_GLOSS` claims only "0 to 1, 1 = identical", which is true for every value a dry run can show;
+  - teachback:46 is now a question answered "No." and no longer voices §2.4;
+  - the Subtitles option is gone, and the menu offers caption style only.
 
-**Done:**
-- ui-shell (c2)
-- story-data (c3)
-- data-fixes (c6)
+`declassified-conform` at `01350cd` is still running. `is-ancestor` exits 0 against the old integration branch and `merge-tree` is clean. After this merge it must merge the integration branch again. Its misconception renderer must also handle a `wrong` field that is now a question, so a "Myth:" prefix would read wrongly.
 
-**In flight:**
-- `terminals-c4` (G2 critical path)
-- `declassified`
-- `opening` (new)
+`terminals-conform` at `aafc8cc` is still running and merged the integration branch. After this merge it must merge again.
 
-**Next, in order, as slots free:**
-1. `shell-polish`: sentence-boundary pages, ⟩ at display time, the select font, the 1024/1366 @200% null. It goes after the terminals merge.
-2. `integration`: mount everything into platform `main.js` / gameplay, swap the stub for `echo/quantum/bridge.js` once it lands, and play a graybox in the local runner. Target about Sat 12:00 ET.
-3. An a11y pass at 3 viewports × 200%, with accesslint.
+**NEW FACT (git, 05:05 UTC):** the integration targets now exist on lane branches, not on main.
+- `lane/platform/integration:echo/main.js` already imports `mountMenu`, `mountHud` and `mountDialogue` and mounts them into `#echo-ui`.
+- `lane/quantum/integration:echo/quantum/bridge.js` exports:
+  - `cloneTest`, `bellSignalling`, `calibrationMeasurement`;
+  - `teleportDryRun(calibration, x, z)`, `commitTransfer`, `resetStoryToken`;
+  - `verifySelectedBackendOnce`.
+- **Name mismatch:** terminals-c4 expected `bellMeasurement` / `teleportDryRun(…, bits)` / `commitStoryTransfer`. So terminal.js must call the real bridge names, and the integration worker checks this.
 
-**Gameplay asks to relay** (via the plan and owner-answers):
-- `MOMENTS.teleport_dry_run_00`, `MOMENTS.countdown_zero` / `HUD.countdownHeld` and `TELEPORT_FAILURE_CASES` now exist.
-- The opening needs shot hooks for the camera.
+Slots: 2 running + 1 new = 3 of 3.
+
+**Dispatch: `ui-wiring`.**
+- It composes a local-runner build from platform `main.js` + quantum `bridge.js` + gameplay + this lane's UI, in an evidence harness and not in platform files.
+- It finds every seam: opening, terminals, declassified, menu `captionStyle`, and the bridge names.
+- It ships story-ui's side, a single `echo/ui/` mount facade that platform calls.
+- It hands platform an exact patch request.
+
+**Merge conditions:**
+- **`terminals-conform`:**
+  - the integration branch is an ancestor;
+  - failure lines come only from `TELEPORT_FAILURE_CASES`, looked up by the named `measurementBits.{m0, m1}`, for all 16 cases, with no `no_corrections` and no bitstring slicing;
+  - the RECEIVER label and the m0/m1 labels come from the data;
+  - `fidelityGloss` is visible;
+  - the EXACT receiver label shows;
+  - it uses `displayKets` and not its own `ket()`;
+  - all drivers are green;
+  - contract-check and qollab-caps are run;
+  - I read the 4 both-wrong renders myself.
+- **`declassified-conform`:**
+  - the integration branch is an ancestor;
+  - the credits are byte-identical, with no TODO_OWNER;
+  - `FIDELITY_GLOSS` sits next to the journal fidelity;
+  - the question-form misconception renders sensibly;
+  - all drivers are re-run;
+  - the credits are re-rendered.
+
+**Done:** ui-shell (c2), story-data (c3), data-fixes (c6), opening (c7), shell-polish (c11).
+
+**Next:**
+1. Merge `terminals-conform` and `declassified-conform`.
+2. `ui-wiring` turns into a real graybox in the local runner. Target about Sat 12:00 ET.
+3. An a11y pass: 3 viewports × 200% with accesslint, on the integrated build.
+4. Terminal hardening: a try/catch around `render()`.
+
+**For platform** (via report and owner-answers): `mountOpening`, terminal and declassified wiring, `captionStyle`, `CLOSE_TERMINAL`, the CREDITS exit edge, the run-record type, and Esc capture order.
 
 **Risks:**
-- `terminals-c4` needs a conform round.
-- `bridge.js` has not landed.
-- `main.css` is a hot spot. Merge order: terminals → declassified → opening, and each later one rebases.
-- G2 is Sat 17:00.
+- Bridge API names have drifted.
+- The three converging branches meet in the `main.css` hot spot.
+- G2 is Sat 17:00. KILL `terminals-conform` if it has not reported by about 02:45 ET.
 
-**Per-consult check:** compare the in-flight list with the running list and each branch's commits, and re-dispatch anything missing.
+**Ports:** declassified 8771, opening 8781, terminals-conform 8791, shell-polish 8801, ui-wiring 8811.

@@ -1,0 +1,325 @@
+{
+  "shots": {
+    "lineup-low": 64,
+    "lineup-med": 78,
+    "lineup-high": 79,
+    "lineup-after-high": 79,
+    "booth-10m": 12,
+    "booth-10m-after": 12,
+    "booth-3m-initials": 12,
+    "relay-10m": 17,
+    "relay-10m-after": 17,
+    "mast-14m": 12,
+    "mast-14m-after": 12,
+    "quantum-console-3m": 9,
+    "quantum-console-3m-after": 9,
+    "classical-console-3m": 7,
+    "kiosk-4m": 10,
+    "kiosk-10m": 10,
+    "billboard-slogan-12m": 4,
+    "billboard-shelter-before-10m": 4,
+    "billboard-shelter-after-10m": 4,
+    "holo-8m": 4,
+    "arrow-4m": 3,
+    "tram-far": 4
+  },
+  "drawcalls": {
+    "booth": {
+      "low": {
+        "calls": 10,
+        "triangles": 1152
+      },
+      "med": {
+        "calls": 11,
+        "triangles": 1154
+      },
+      "high": {
+        "calls": 12,
+        "triangles": 3458
+      }
+    },
+    "relay": {
+      "low": {
+        "calls": 12,
+        "triangles": 6162
+      },
+      "med": {
+        "calls": 14,
+        "triangles": 6570
+      },
+      "high": {
+        "calls": 14,
+        "triangles": 6570
+      }
+    },
+    "mast": {
+      "low": {
+        "calls": 8,
+        "triangles": 2868
+      },
+      "med": {
+        "calls": 9,
+        "triangles": 3892
+      },
+      "high": {
+        "calls": 9,
+        "triangles": 3892
+      }
+    },
+    "quantum": {
+      "low": {
+        "calls": 7,
+        "triangles": 742
+      },
+      "med": {
+        "calls": 8,
+        "triangles": 766
+      },
+      "high": {
+        "calls": 8,
+        "triangles": 766
+      }
+    },
+    "classical": {
+      "low": {
+        "calls": 5,
+        "triangles": 946
+      },
+      "med": {
+        "calls": 6,
+        "triangles": 1186
+      },
+      "high": {
+        "calls": 6,
+        "triangles": 1186
+      }
+    },
+    "kiosk": {
+      "low": {
+        "calls": 5,
+        "triangles": 300
+      },
+      "med": {
+        "calls": 9,
+        "triangles": 474
+      },
+      "high": {
+        "calls": 9,
+        "triangles": 474
+      }
+    },
+    "slogan": {
+      "low": {
+        "calls": 2,
+        "triangles": 38
+      },
+      "med": {
+        "calls": 3,
+        "triangles": 50
+      },
+      "high": {
+        "calls": 3,
+        "triangles": 50
+      }
+    },
+    "shelter": {
+      "low": {
+        "calls": 2,
+        "triangles": 38
+      },
+      "med": {
+        "calls": 3,
+        "triangles": 50
+      },
+      "high": {
+        "calls": 3,
+        "triangles": 50
+      }
+    },
+    "holo": {
+      "low": {
+        "calls": 3,
+        "triangles": 16
+      },
+      "med": {
+        "calls": 3,
+        "triangles": 16
+      },
+      "high": {
+        "calls": 3,
+        "triangles": 16
+      }
+    },
+    "holo2": {
+      "low": {
+        "calls": 3,
+        "triangles": 16
+      },
+      "med": {
+        "calls": 3,
+        "triangles": 16
+      },
+      "high": {
+        "calls": 3,
+        "triangles": 16
+      }
+    },
+    "arrow": {
+      "low": {
+        "calls": 2,
+        "triangles": 16
+      },
+      "med": {
+        "calls": 2,
+        "triangles": 16
+      },
+      "high": {
+        "calls": 2,
+        "triangles": 16
+      }
+    },
+    "tram": {
+      "low": {
+        "calls": 3,
+        "triangles": 184
+      },
+      "med": {
+        "calls": 3,
+        "triangles": 184
+      },
+      "high": {
+        "calls": 3,
+        "triangles": 184
+      }
+    },
+    "cyan": {
+      "low": {
+        "calls": 1,
+        "triangles": 440
+      },
+      "med": {
+        "calls": 2,
+        "triangles": 1608
+      },
+      "high": {
+        "calls": 2,
+        "triangles": 1608
+      }
+    },
+    "amber": {
+      "low": {
+        "calls": 1,
+        "triangles": 160
+      },
+      "med": {
+        "calls": 2,
+        "triangles": 656
+      },
+      "high": {
+        "calls": 2,
+        "triangles": 656
+      }
+    }
+  },
+  "before": {
+    "contextsBeforeUnlock": 0,
+    "oscillatorsBeforeUnlock": 0,
+    "callErrors": [],
+    "pageErrors": [],
+    "captionsBeforeUnlock": [
+      "terminal_wake",
+      "terminal_input",
+      "terminal_close",
+      "radio_static_burst",
+      "ui_success",
+      "ui_failure",
+      "door_open",
+      "reactor_audio_begins",
+      "music_swell"
+    ],
+    "unlocked": false,
+    "unknownCue": "RangeError: audio cue must be one of terminal_wake|terminal_input|terminal_close|radio_static_burst|ui_success|ui_failure|door_open|reactor_audio_begins|music_swell, got explosion",
+    "unknownZone": "RangeError: audio zone must be one of alley|substation|relay|rooftop, got moon",
+    "volume101": "RangeError: volume must be an integer in [0, 100], got 101",
+    "volumeFraction": "RangeError: volume must be an integer in [0, 100], got 50.5"
+  },
+  "after": {
+    "contextsAfterUnlock": 1,
+    "unlocked": true,
+    "bedOscillatorsAtUnlock": 14,
+    "successAdded": 6,
+    "swellAdded": 21,
+    "swellRepeatAdded": 0,
+    "swellAfterResetAdded": 21,
+    "pageErrors": []
+  },
+  "wav": {
+    "terminal_wake": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/terminal_wake.wav",
+      "peakDbfs": -20.5,
+      "rmsDbfs": -40.5
+    },
+    "terminal_input": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/terminal_input.wav",
+      "peakDbfs": -28,
+      "rmsDbfs": -58.9
+    },
+    "terminal_close": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/terminal_close.wav",
+      "peakDbfs": -24.6,
+      "rmsDbfs": -45.7
+    },
+    "radio_static_burst": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/radio_static_burst.wav",
+      "peakDbfs": -27.4,
+      "rmsDbfs": -43.1
+    },
+    "ui_success": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/ui_success.wav",
+      "peakDbfs": -20.3,
+      "rmsDbfs": -37.4
+    },
+    "ui_failure": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/ui_failure.wav",
+      "peakDbfs": -15.3,
+      "rmsDbfs": -34.5
+    },
+    "door_open": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/door_open.wav",
+      "peakDbfs": -19.3,
+      "rmsDbfs": -36.4
+    },
+    "music_swell": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/music_swell.wav",
+      "peakDbfs": -8.8,
+      "rmsDbfs": -24.8
+    },
+    "reactor_audio_begins": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/reactor_audio_begins.wav",
+      "peakDbfs": -8.4,
+      "rmsDbfs": -17.7
+    },
+    "alley": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/zone-alley.wav",
+      "peakDbfs": -16.2,
+      "rmsDbfs": -28.6
+    },
+    "substation": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/zone-substation.wav",
+      "peakDbfs": -12.7,
+      "rmsDbfs": -21.8
+    },
+    "relay": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/zone-relay.wav",
+      "peakDbfs": -13.7,
+      "rmsDbfs": -22.7
+    },
+    "rooftop": {
+      "file": "/Users/udsy/agent-org/lanes/art/target-props-audio-capture/audio/zone-rooftop.wav",
+      "peakDbfs": -16,
+      "rmsDbfs": -29.1
+    }
+  },
+  "fail": [],
+  "errors": []
+}
