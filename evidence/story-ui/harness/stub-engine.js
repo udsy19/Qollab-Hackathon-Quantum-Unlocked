@@ -8,7 +8,10 @@
 const PREVIEW = 'Documented preview: textbook values for the harness, not a live Qiskit calculation.';
 const r6 = (x) => Math.round(x * 1e12) / 1e12;
 
-export function makeStubEngine() {
+// The relay is the exception: the platform contract refuses a documented_preview bell_signalling
+// (owner ruling 2026-10-10, the receiver panel is EXACT only), so it replays the quantum lane's REAL
+// Qiskit output recorded by record-relay.sh. Those results are honestly exact_qiskit_local.
+export function makeStubEngine({ relayFixtures } = {}) {
   const control = { delayMs: 150, rejectNext: 0, malformedNext: 0, bitsQueue: [] };
   const calls = [];
   const results = [];
@@ -69,13 +72,7 @@ export function makeStubEngine() {
       });
     },
     bellSignalling(senderGate) {
-      return respond('bellSignalling', [senderGate], () => ({
-        experiment: 'bell_signalling', engine: 'documented_preview',
-        circuitDescription: `H(q0); CX(q0 -> q1) Bell pair; sender applies ${senderGate} on q0 (sender), q1 = receiver`,
-        qubits: 2, parameters: { senderGate }, probabilities: { '0': 0.5, '1': 0.5 }, keyQubits: [1],
-        facts: ['Receiver alone: P(0) = 0.5, P(1) = 0.5, whatever the sender did.', PREVIEW],
-        observables: { receiverPurity: 0.5, zBasisAgreement: senderGate === 'X' ? 0 : 1, xBasisAgreement: senderGate === 'Z' ? 0 : 1 },
-      }));
+      return respond('bellSignalling', [senderGate], () => structuredClone(relayFixtures[senderGate]));
     },
     bellMeasurement() {
       return respond('bellMeasurement', [], () => {

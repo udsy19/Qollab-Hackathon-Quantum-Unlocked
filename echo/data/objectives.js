@@ -224,6 +224,7 @@ export const TERMINALS = Object.freeze({
   copy_booth: {
     title: { text: 'PALISADE / DUPLICATION UNIT / MAINTENANCE OVERRIDE', src: '§6.4' },
     inputLabel: 'TEST INPUT',
+    inputModeLabel: 'INPUT MODE',
     inputMode: { text: 'PREPARED CALIBRATION STATE', src: '§6.4' },
     duplicate: 'DUPLICATE',
     // §6.4 asks for "two basis values matched" in place of "two copies in Z basis" for beginners.

@@ -83,7 +83,7 @@ const isDisabled = (re) => H((src) => {
   const b = [...document.querySelectorAll('.echo-terminal button')].find((x) => new RegExp(src).test(x.innerText.trim()));
   return b ? b.disabled || b.getAttribute('aria-disabled') === 'true' : null;
 }, re.source);
-const engineShown = async () => /ENGINE[\s:]*DOCUMENTED PREVIEW/.test(await panelText());
+const engineShown = async () => /ENGINE[\s:]*(DOCUMENTED PREVIEW|EXACT LOCAL QISKIT)/.test(await panelText());
 
 try {
   await page.goto(url, { waitUntil: 'networkidle0' });
@@ -263,16 +263,22 @@ try {
 
   // ---------------------------------------------------------------- engine failure states
   keys.push('=== engine failure states ===');
+  const resultText = () => H(() => document.querySelector('.echo-terminal [data-role="result"]')?.innerText ?? '');
   await H(() => { echoHarness.terminal.open('copy_booth'); echoHarness.stub.control.rejectNext = 1; });
+  let before = await resultText();
   await click(/^\|0⟩$/); await click(/^DUPLICATE$/); await idle();
-  check('engine error: SCIENTIFIC MODULE ERROR + RETRY, no invented numbers', /SCIENTIFIC MODULE ERROR/.test(await panelText()) && !/MATCHED/.test(await panelText()) && (await isDisabled(/^RETRY$/)) === false);
+  check('engine error: SCIENTIFIC MODULE ERROR + RETRY, results panel unchanged (no invented numbers)', /SCIENTIFIC MODULE ERROR/.test(await panelText()) && (await resultText()) === before && (await isDisabled(/^RETRY$/)) === false);
   await shot('30-engine-error.png');
   await click(/^RETRY$/); await idle();
   check('engine error: RETRY recovers', /TWO BASIS VALUES MATCHED: YES/.test(await panelText()));
   await H(() => { echoHarness.stub.control.malformedNext = 1; });
+  // A fresh terminal state is not available, so the malformed result goes to |+> after a page-level
+  // check that the stub really returned it.
+  before = await resultText();
   await click(/^\|1⟩$/); await click(/^DUPLICATE$/); await idle();
   const mal = await panelText();
-  check('malformed: RESULT REFUSED with the validator reason, no numbers', /RESULT REFUSED/.test(mal) && /engine must be one of/.test(mal) && !/MATCHED/.test(mal));
+  check('malformed: the stub really returned a bad shape', await H(() => echoHarness.stub.results.at(-1).out.engine === 'ionq_verified'));
+  check('malformed: RESULT REFUSED with the validator reason, results panel unchanged', /RESULT REFUSED/.test(mal) && /engine must be one of/.test(mal) && (await resultText()) === before);
   await shot('31-malformed-refused.png');
   await H(() => { echoHarness.stub.control.delayMs = 4000; });
   await click(/^RETRY$/);

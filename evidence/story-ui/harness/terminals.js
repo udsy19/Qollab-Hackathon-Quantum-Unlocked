@@ -7,7 +7,7 @@ import { HINTS } from '../../../echo/data/objectives.js';
 import { makeStubEngine } from './stub-engine.js';
 
 const VERSION = 'terminals r1';
-const FILES = ['echo/main.css', 'echo/ui/terminal.js', 'echo/data/objectives.js', 'echo/contracts.js'];
+const FILES = ['echo/main.css', 'echo/ui/terminal.js', 'echo/data/objectives.js', 'echo/contracts.js', 'evidence/story-ui/harness/relay-fixtures.json'];
 
 async function servedHash() {
   const parts = await Promise.all(FILES.map((f) => fetch(`../../../${f}`, { cache: 'no-store' }).then((r) => r.arrayBuffer())));
@@ -24,7 +24,8 @@ applySettings(root, { textScale: Number(params.get('scale') || 100) });
 const hud = mountHud(root);
 hud.setVisible(false);
 const events = [];
-const stub = makeStubEngine();
+const relayFixtures = await fetch('./relay-fixtures.json', { cache: 'no-store' }).then((r) => r.json());
+const stub = makeStubEngine({ relayFixtures });
 const HINT_FOR = { copy_booth: 'clone_superposition', relay_core: 'relay_send', teleport_terminal: 'teleport_correct', classical_socket: 'link_repair' };
 let hintStep = 0;
 const terminal = mountTerminal(root, {

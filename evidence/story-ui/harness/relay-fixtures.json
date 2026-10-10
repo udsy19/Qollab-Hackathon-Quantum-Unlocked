@@ -1,0 +1,97 @@
+{
+ "I": {
+  "experiment": "bell_signalling",
+  "engine": "exact_qiskit_local",
+  "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies I on q0 (sender), q1 = receiver",
+  "qubits": 2,
+  "parameters": {
+   "senderGate": "I"
+  },
+  "facts": [
+   "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+   "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+   "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 1.000000.",
+   "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+  ],
+  "probabilities": {
+   "0": 0.5,
+   "1": 0.5
+  },
+  "keyQubits": [
+   1
+  ],
+  "observables": {
+   "receiverPurity": 0.5,
+   "receiverBlochX": 0.0,
+   "receiverBlochY": 0.0,
+   "receiverBlochZ": 0.0,
+   "zBasisAgreement": 1.0,
+   "xBasisAgreement": 1.0
+  }
+ },
+ "X": {
+  "experiment": "bell_signalling",
+  "engine": "exact_qiskit_local",
+  "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies X on q0 (sender), q1 = receiver",
+  "qubits": 2,
+  "parameters": {
+   "senderGate": "X"
+  },
+  "facts": [
+   "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+   "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+   "Comparing both logs afterwards: Z-basis bits agree with probability 0.000000, X-basis bits with probability 1.000000.",
+   "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+  ],
+  "probabilities": {
+   "0": 0.5,
+   "1": 0.5
+  },
+  "keyQubits": [
+   1
+  ],
+  "observables": {
+   "receiverPurity": 0.5,
+   "receiverBlochX": 0.0,
+   "receiverBlochY": 0.0,
+   "receiverBlochZ": 0.0,
+   "zBasisAgreement": 0.0,
+   "xBasisAgreement": 1.0
+  }
+ },
+ "Z": {
+  "experiment": "bell_signalling",
+  "engine": "exact_qiskit_local",
+  "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies Z on q0 (sender), q1 = receiver",
+  "qubits": 2,
+  "parameters": {
+   "senderGate": "Z"
+  },
+  "facts": [
+   "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+   "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+   "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 0.000000.",
+   "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+  ],
+  "probabilities": {
+   "0": 0.5,
+   "1": 0.5
+  },
+  "keyQubits": [
+   1
+  ],
+  "observables": {
+   "receiverPurity": 0.5,
+   "receiverBlochX": 0.0,
+   "receiverBlochY": 0.0,
+   "receiverBlochZ": 0.0,
+   "zBasisAgreement": 1.0,
+   "xBasisAgreement": 0.0
+  }
+ },
+ "_provenance": {
+  "ref": "lane/quantum/integration",
+  "commit": "d9b42d0",
+  "function": "quantum.entanglement.bell_signalling"
+ }
+}
