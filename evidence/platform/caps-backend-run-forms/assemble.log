@@ -1,0 +1,8 @@
+ref   platform  lane/platform/integration @ 45a45f243  (7 file(s) under echo/)
+ref   quantum   lane/quantum/integration @ 807cc3952  (19 file(s) under echo/)
+ref   gameplay  lane/gameplay/integration @ 7c4741bb9  (6 file(s) under echo/)
+ref   story-ui  lane/story-ui/integration @ 19084703d  (11 file(s) under echo/)
+ref   art       lane/art/integration @ 9f5b7fcf9  (6 file(s) under echo/)
+CONFLICT    echo/CONTRACTS.md  in 5 refs with different bytes: platform:3ead6d4 quantum:8a2096f gameplay:65f85a6 story-ui:8a2096f art:8a2096f; took platform
+CONFLICT    echo/contracts.js  in 5 refs with different bytes: platform:3f2e232 quantum:fcbcd50 gameplay:f5d9633 story-ui:fcbcd50 art:fcbcd50; took platform
+RED  41 file(s) in /tmp/caps-int.EUoo; 2 violation(s)
