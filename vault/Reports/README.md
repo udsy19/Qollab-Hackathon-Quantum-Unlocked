@@ -14,8 +14,9 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (1)
+## Notes here (2)
 
+- [[Reports/story-data-script-gate|Story data and its gate: what the phrase-based physics check can and cannot see]]
 - [[Reports/story-ui-ui-shell-harness|story-ui shell: HUD, dialogue and menus measured in a keyboard-driven harness]]
 
 ## Below this folder
