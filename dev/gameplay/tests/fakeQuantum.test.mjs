@@ -132,4 +132,8 @@ test('unknown inputs are refused, not defaulted', async () => {
   await assert.rejects(q.cloneTest('minus'), /unknown/);
   await assert.rejects(q.cloneTest('constructor'), /unknown/);
   await assert.rejects(q.bellSignalling('Y'), /unknown/);
+  await assert.rejects(q.teleportDryRun('story_token', false, { m0: 0, m1: 0 }), /unknown/);
+  await assert.rejects(q.teleportDryRun(false, false, false), /unknown/);
+  await assert.rejects(q.teleportDryRun(false, false, { m0: '0', m1: 0 }), /unknown/);
+  await assert.rejects(q.teleportDryRun(false, false, { m0: 0, m1: 0 }, { theta: NaN, phi: 0 }), /unknown/);
 });

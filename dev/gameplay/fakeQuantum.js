@@ -135,6 +135,8 @@ function bellSignalling(senderGate) {
 }
 
 function teleport(stateId, angles, correctionX, correctionZ, bits) {
+  if (![0, 1].includes(bits?.m0) || ![0, 1].includes(bits?.m1)) throw new Error(`unknown Bell bits ${JSON.stringify(bits)}`);
+  if (!Number.isFinite(angles?.theta) || !Number.isFinite(angles?.phi)) throw new Error(`unknown state angles ${JSON.stringify(angles)}`);
   const psi = blochState(angles);
   let v = product(3, psi);
   v = cx(gate1(v, 1, H), 1, 2); // Bell pair on q1, q2
@@ -190,7 +192,10 @@ export function createFakeQuantum({ delayMs = 250, random = Math.random } = {}) 
     bellSignalling: (senderGate) => call(() => bellSignalling(senderGate)),
     // One calibration attempt on a fresh random generic state unless a state is given (tests).
     teleportDryRun: (correctionX, correctionZ, bits, angles = randomGenericState(random)) =>
-      call(() => teleport('calibration', angles, Boolean(correctionX), Boolean(correctionZ), bits)),
+      call(() => {
+        if (typeof correctionX !== 'boolean' || typeof correctionZ !== 'boolean') throw new Error('unknown corrections: X and Z must be booleans');
+        return teleport('calibration', angles, correctionX, correctionZ, bits);
+      }),
     // The live commit as ONE atomic call (owner ruling, consult 3): fresh live bits, the §7.1
     // rule's corrections, the receiver state and its fidelity, all inside the same call.
     commitStoryToken: () => call(() => {
