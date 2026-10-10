@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 22s"
+    "detail": "page load → done in 10.7s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-sab-no-toJs-20261010T003152-2449"
+    "detail": "pb-sab-no-toJs-20261010T005412-27853"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -17,7 +17,7 @@
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.022
+      "coldImportSeconds": 0.031
     }
   },
   {
@@ -46,7 +46,9 @@
     "detail": {
       "backendRunAttempts": 1,
       "backendRunCompleted": 1,
-      "verificationCalls": 1,
+      "backendRunFromJs": 1,
+      "backendRunFromPython": 0,
+      "interpretCalls": 1,
       "commitCalls": 3,
       "commitsCompleted": 2,
       "resetCalls": 1,
@@ -54,12 +56,30 @@
     }
   },
   {
-    "name": "spy: exactly 1 entry into qollab_job.run_backend_verification_once",
+    "name": "spy: the job came from JS backend.run (JS = 1, Python = 0)",
+    "ok": true,
+    "detail": {
+      "js": 1,
+      "python": 0
+    }
+  },
+  {
+    "name": "runner's own JS-side backend.run counter = 1 (independent of the spy)",
+    "ok": true,
+    "detail": {
+      "jobs": 1,
+      "refused": 0
+    }
+  },
+  {
+    "name": "spy: exactly 1 call of qollab_job.interpret_counts (Python reads the counts once)",
     "ok": true,
     "detail": {
       "backendRunAttempts": 1,
       "backendRunCompleted": 1,
-      "verificationCalls": 1,
+      "backendRunFromJs": 1,
+      "backendRunFromPython": 0,
+      "interpretCalls": 1,
       "commitCalls": 3,
       "commitsCompleted": 2,
       "resetCalls": 1,
@@ -277,7 +297,7 @@
   {
     "name": "RESTART: resetStoryToken(): adapter returned a result",
     "ok": true,
-    "detail": "5.9 ms"
+    "detail": "0.3 ms"
   },
   {
     "name": "commit#4 after RESTART: adapter returned a result",
@@ -448,7 +468,9 @@
     "detail": {
       "backendRunAttempts": 1,
       "backendRunCompleted": 1,
-      "verificationCalls": 1,
+      "backendRunFromJs": 1,
+      "backendRunFromPython": 0,
+      "interpretCalls": 1,
       "commitCalls": 3,
       "commitsCompleted": 2,
       "resetCalls": 1,

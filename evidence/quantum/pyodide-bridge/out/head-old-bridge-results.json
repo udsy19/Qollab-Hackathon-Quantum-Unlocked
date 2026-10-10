@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 11.4s"
+    "detail": "page load → done in 8.7s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-head-old-bridge-20261010T003059-12055"
+    "detail": "pb-head-old-bridge-20261010T005310-16789"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -107,6 +107,60 @@
     }
   },
   {
+    "name": "calibration#1: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "calibration#2: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=false, Z=false): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=false): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=false, Z=true): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=true): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
     "name": "commit#1: delivered value re-validates in Node",
     "ok": true,
     "detail": {
@@ -151,10 +205,10 @@
     "name": "dry run: four X/Z choices were tried on one calibration",
     "ok": true,
     "detail": [
-      "dryRun(calibration#2, X=false, Z=false)",
-      "dryRun(calibration#2, X=true, Z=false)",
-      "dryRun(calibration#2, X=false, Z=true)",
-      "dryRun(calibration#2, X=true, Z=true)"
+      "dryRun(calibration#1, X=false, Z=false)",
+      "dryRun(calibration#1, X=true, Z=false)",
+      "dryRun(calibration#1, X=false, Z=true)",
+      "dryRun(calibration#1, X=true, Z=true)"
     ]
   },
   {
@@ -163,24 +217,44 @@
     "detail": {
       "backendRunAttempts": 0,
       "backendRunCompleted": 0,
-      "verificationCalls": 0,
-      "commitCalls": 1,
-      "commitsCompleted": 1,
-      "resetCalls": 0,
-      "branchCalls": 0
+      "backendRunFromJs": 0,
+      "backendRunFromPython": 0,
+      "interpretCalls": 0,
+      "commitCalls": 2,
+      "commitsCompleted": 2,
+      "resetCalls": 1,
+      "branchCalls": 4
     }
   },
   {
-    "name": "spy: exactly 1 entry into qollab_job.run_backend_verification_once",
+    "name": "spy: the job came from JS backend.run (JS = 1, Python = 0)",
+    "ok": false,
+    "detail": {
+      "js": 0,
+      "python": 0
+    }
+  },
+  {
+    "name": "runner's own JS-side backend.run counter = 1 (independent of the spy)",
+    "ok": false,
+    "detail": {
+      "jobs": 0,
+      "refused": 0
+    }
+  },
+  {
+    "name": "spy: exactly 1 call of qollab_job.interpret_counts (Python reads the counts once)",
     "ok": false,
     "detail": {
       "backendRunAttempts": 0,
       "backendRunCompleted": 0,
-      "verificationCalls": 0,
-      "commitCalls": 1,
-      "commitsCompleted": 1,
-      "resetCalls": 0,
-      "branchCalls": 0
+      "backendRunFromJs": 0,
+      "backendRunFromPython": 0,
+      "interpretCalls": 0,
+      "commitCalls": 2,
+      "commitsCompleted": 2,
+      "resetCalls": 1,
+      "branchCalls": 4
     }
   },
   {
@@ -196,118 +270,82 @@
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "8.5 ms"
+    "detail": "6.8 ms"
   },
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "6.7 ms"
+    "detail": "3.8 ms"
   },
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "2.2 ms"
+    "detail": "1.7 ms"
   },
   {
     "name": "cloning(zero): adapter returned a result",
     "ok": true,
-    "detail": "2 ms"
+    "detail": "1.1 ms"
   },
   {
     "name": "cloning(one): adapter returned a result",
     "ok": true,
-    "detail": "3.4 ms"
+    "detail": "1.1 ms"
   },
   {
     "name": "cloning(bloch_a): adapter returned a result",
     "ok": true,
-    "detail": "3.1 ms"
+    "detail": "1.3 ms"
   },
   {
     "name": "relay(I): adapter returned a result",
     "ok": true,
-    "detail": "3.9 ms"
+    "detail": "2.3 ms"
   },
   {
     "name": "relay(X): adapter returned a result",
     "ok": true,
-    "detail": "2.9 ms"
+    "detail": "1.4 ms"
   },
   {
     "name": "relay(Z): adapter returned a result",
     "ok": true,
-    "detail": "1.3 ms"
+    "detail": "1 ms"
   },
   {
     "name": "calibration#1: adapter returned a result",
-    "ok": false,
-    "detail": {
-      "name": "ScientificModuleError",
-      "message": "calibration measurement: ValueError: unknown prepared state None; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero'] or 'calibration'",
-      "errors": [
-        "ValueError: unknown prepared state None; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero'] or 'calibration'"
-      ]
-    }
+    "ok": true,
+    "detail": "2.6 ms"
   },
   {
     "name": "calibration#2: adapter returned a result",
-    "ok": false,
-    "detail": {
-      "name": "ScientificModuleError",
-      "message": "calibration measurement: ValueError: unknown prepared state None; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero'] or 'calibration'",
-      "errors": [
-        "ValueError: unknown prepared state None; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero'] or 'calibration'"
-      ]
-    }
+    "ok": true,
+    "detail": "1.6 ms"
   },
   {
-    "name": "dryRun(calibration#2, X=false, Z=false): adapter returned a result",
-    "ok": false,
-    "detail": {
-      "name": "ScientificModuleError",
-      "message": "teleport dry run: bits must be { m0: 0|1, m1: 0|1 }, got undefined",
-      "errors": [
-        "bits must be { m0: 0|1, m1: 0|1 }, got undefined"
-      ]
-    }
+    "name": "dryRun(calibration#1, X=false, Z=false): adapter returned a result",
+    "ok": true,
+    "detail": "3.3 ms"
   },
   {
-    "name": "dryRun(calibration#2, X=true, Z=false): adapter returned a result",
-    "ok": false,
-    "detail": {
-      "name": "ScientificModuleError",
-      "message": "teleport dry run: bits must be { m0: 0|1, m1: 0|1 }, got undefined",
-      "errors": [
-        "bits must be { m0: 0|1, m1: 0|1 }, got undefined"
-      ]
-    }
+    "name": "dryRun(calibration#1, X=true, Z=false): adapter returned a result",
+    "ok": true,
+    "detail": "3.6 ms"
   },
   {
-    "name": "dryRun(calibration#2, X=false, Z=true): adapter returned a result",
-    "ok": false,
-    "detail": {
-      "name": "ScientificModuleError",
-      "message": "teleport dry run: bits must be { m0: 0|1, m1: 0|1 }, got undefined",
-      "errors": [
-        "bits must be { m0: 0|1, m1: 0|1 }, got undefined"
-      ]
-    }
+    "name": "dryRun(calibration#1, X=false, Z=true): adapter returned a result",
+    "ok": true,
+    "detail": "3.1 ms"
   },
   {
-    "name": "dryRun(calibration#2, X=true, Z=true): adapter returned a result",
-    "ok": false,
-    "detail": {
-      "name": "ScientificModuleError",
-      "message": "teleport dry run: bits must be { m0: 0|1, m1: 0|1 }, got undefined",
-      "errors": [
-        "bits must be { m0: 0|1, m1: 0|1 }, got undefined"
-      ]
-    }
+    "name": "dryRun(calibration#1, X=true, Z=true): adapter returned a result",
+    "ok": true,
+    "detail": "3.3 ms"
   },
   {
     "name": "commit#1: adapter returned a result",
     "ok": true,
-    "detail": "8.2 ms"
+    "detail": "1.8 ms"
   },
   {
     "name": "commit#2: adapter returned a result",
@@ -321,17 +359,13 @@
   },
   {
     "name": "RESTART: resetStoryToken(): adapter returned a result",
-    "ok": false,
-    "detail": {
-      "name": "TypeError",
-      "message": "bridge.resetStoryToken is not a function",
-      "errors": null
-    }
+    "ok": true,
+    "detail": "1.5 ms"
   },
   {
     "name": "commit#4 after RESTART: adapter returned a result",
     "ok": true,
-    "detail": "0 ms"
+    "detail": "2.2 ms"
   },
   {
     "name": "cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]",
@@ -391,91 +425,216 @@
   },
   {
     "name": "calibration: every draw carries finite theta/phi, bits only (no fidelity, no applyX/Z)",
-    "ok": false,
-    "detail": []
+    "ok": true,
+    "detail": [
+      [
+        1.9007346653,
+        0.813102768
+      ],
+      [
+        0.9053947485,
+        -0.3222402955
+      ]
+    ]
   },
   {
     "name": "calibration: every draw is generic (max Bloch component² ≤ 0.9, re-derived here)",
-    "ok": false,
-    "detail": []
+    "ok": true,
+    "detail": [
+      0.4723,
+      0.5568
+    ]
   },
   {
     "name": "calibration: the draws differ (a fresh random state each time, not a named one)",
-    "ok": false,
-    "detail": []
+    "ok": true,
+    "detail": [
+      [
+        1.9007346653,
+        0.813102768
+      ],
+      [
+        0.9053947485,
+        -0.3222402955
+      ]
+    ]
   },
   {
     "name": "calibration: the graded draw is on a non-00 branch",
-    "ok": false,
-    "detail": {
-      "draw": "calibration#2",
-      "bits": {}
-    }
-  },
-  {
-    "name": "dryRun(calibration#2, X=false, Z=false): theta/phi round-trip exactly from the measurement into the branch",
     "ok": true,
     "detail": {
-      "want": {}
+      "draw": "calibration#1",
+      "bits": {
+        "m0": 0,
+        "m1": 1
+      }
     }
   },
   {
-    "name": "dryRun(calibration#2, X=false, Z=false): fidelity = NaN (closed form on the measured state)",
-    "ok": false
-  },
-  {
-    "name": "dryRun(calibration#2, X=false, Z=false): the rule's choice scores F ≥ 0.999999",
-    "ok": false
-  },
-  {
-    "name": "dryRun(calibration#2, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch",
+    "name": "dryRun(calibration#1, X=false, Z=false): theta/phi round-trip exactly from the measurement into the branch",
     "ok": true,
     "detail": {
-      "want": {}
+      "got": {
+        "state": "calibration",
+        "theta": 1.9007346653,
+        "phi": 0.813102768,
+        "m0": 0,
+        "m1": 1,
+        "applyX": false,
+        "applyZ": false
+      },
+      "want": {
+        "theta": 1.9007346653,
+        "phi": 0.813102768,
+        "m0": 0,
+        "m1": 1
+      }
     }
   },
   {
-    "name": "dryRun(calibration#2, X=true, Z=false): fidelity = NaN (closed form on the measured state)",
-    "ok": false
+    "name": "dryRun(calibration#1, X=false, Z=false): fidelity = 0.422733 (closed form on the measured state)",
+    "ok": true,
+    "detail": 0.4227330848
   },
   {
-    "name": "dryRun(calibration#2, X=true, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
-    "ok": false
+    "name": "dryRun(calibration#1, X=false, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
+    "ok": true,
+    "detail": 0.4227330848
   },
   {
-    "name": "dryRun(calibration#2, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+    "name": "dryRun(calibration#1, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch",
     "ok": true,
     "detail": {
-      "want": {}
+      "got": {
+        "state": "calibration",
+        "theta": 1.9007346653,
+        "phi": 0.813102768,
+        "m0": 0,
+        "m1": 1,
+        "applyX": true,
+        "applyZ": false
+      },
+      "want": {
+        "theta": 1.9007346653,
+        "phi": 0.813102768,
+        "m0": 0,
+        "m1": 1
+      }
     }
   },
   {
-    "name": "dryRun(calibration#2, X=false, Z=true): fidelity = NaN (closed form on the measured state)",
-    "ok": false
+    "name": "dryRun(calibration#1, X=true, Z=false): fidelity = 1.000000 (closed form on the measured state)",
+    "ok": true,
+    "detail": 1
   },
   {
-    "name": "dryRun(calibration#2, X=false, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
-    "ok": false
+    "name": "dryRun(calibration#1, X=true, Z=false): the rule's choice scores F ≥ 0.999999",
+    "ok": true,
+    "detail": 1
   },
   {
-    "name": "dryRun(calibration#2, X=true, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+    "name": "dryRun(calibration#1, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch",
     "ok": true,
     "detail": {
-      "want": {}
+      "got": {
+        "state": "calibration",
+        "theta": 1.9007346653,
+        "phi": 0.813102768,
+        "m0": 0,
+        "m1": 1,
+        "applyX": false,
+        "applyZ": true
+      },
+      "want": {
+        "theta": 1.9007346653,
+        "phi": 0.813102768,
+        "m0": 0,
+        "m1": 1
+      }
     }
   },
   {
-    "name": "dryRun(calibration#2, X=true, Z=true): fidelity = NaN (closed form on the measured state)",
-    "ok": false
+    "name": "dryRun(calibration#1, X=false, Z=true): fidelity = 0.472301 (closed form on the measured state)",
+    "ok": true,
+    "detail": 0.4723008337
   },
   {
-    "name": "dryRun(calibration#2, X=true, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
-    "ok": false
+    "name": "dryRun(calibration#1, X=false, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
+    "ok": true,
+    "detail": 0.4723008337
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+    "ok": true,
+    "detail": {
+      "got": {
+        "state": "calibration",
+        "theta": 1.9007346653,
+        "phi": 0.813102768,
+        "m0": 0,
+        "m1": 1,
+        "applyX": true,
+        "applyZ": true
+      },
+      "want": {
+        "theta": 1.9007346653,
+        "phi": 0.813102768,
+        "m0": 0,
+        "m1": 1
+      }
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=true): fidelity = 0.104966 (closed form on the measured state)",
+    "ok": true,
+    "detail": 0.1049660816
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
+    "ok": true,
+    "detail": 0.1049660816
   },
   {
     "name": "spy: Python teleport_branch received the measured theta/phi on every dry run",
-    "ok": false,
-    "detail": []
+    "ok": true,
+    "detail": [
+      {
+        "state": "calibration",
+        "m0": 0,
+        "m1": 1,
+        "applyX": false,
+        "applyZ": false,
+        "theta": 1.9007346653,
+        "phi": 0.813102768
+      },
+      {
+        "state": "calibration",
+        "m0": 0,
+        "m1": 1,
+        "applyX": true,
+        "applyZ": false,
+        "theta": 1.9007346653,
+        "phi": 0.813102768
+      },
+      {
+        "state": "calibration",
+        "m0": 0,
+        "m1": 1,
+        "applyX": false,
+        "applyZ": true,
+        "theta": 1.9007346653,
+        "phi": 0.813102768
+      },
+      {
+        "state": "calibration",
+        "m0": 0,
+        "m1": 1,
+        "applyX": true,
+        "applyZ": true,
+        "theta": 1.9007346653,
+        "phi": 0.813102768
+      }
+    ]
   },
   {
     "name": "commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)",
@@ -500,7 +659,7 @@
         "refused": true,
         "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
       },
-      "afterRestartIsNewObject": false
+      "afterRestartIsNewObject": true
     }
   },
   {
@@ -513,22 +672,24 @@
   },
   {
     "name": "RESTART: a commit after resetStoryToken succeeds, as a NEW result (fidelity 1)",
-    "ok": false,
+    "ok": true,
     "detail": {
       "fidelity": 1
     }
   },
   {
     "name": "spy: Python saw exactly 2 live_commit calls (one per story) and 1 reset",
-    "ok": false,
+    "ok": true,
     "detail": {
       "backendRunAttempts": 0,
       "backendRunCompleted": 0,
-      "verificationCalls": 0,
-      "commitCalls": 1,
-      "commitsCompleted": 1,
-      "resetCalls": 0,
-      "branchCalls": 0
+      "backendRunFromJs": 0,
+      "backendRunFromPython": 0,
+      "interpretCalls": 0,
+      "commitCalls": 2,
+      "commitsCompleted": 2,
+      "resetCalls": 1,
+      "branchCalls": 4
     }
   },
   {

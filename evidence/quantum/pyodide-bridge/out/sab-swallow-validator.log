@@ -1,7 +1,7 @@
-sabotage swallow-validator applied to /private/tmp/pb-run-WDk9BX/echo/quantum/bridge.js
-assembled /private/tmp/pb-run-WDk9BX (python HEAD, sabotage swallow-validator, token pb-sab-swallow-validator-20261010T003451-14884)
-PASS  main.js (harness) ran to the end without error  — page load → done in 10.5s
-PASS  served build token matches the one just written  — pb-sab-swallow-validator-20261010T003451-14884
+sabotage swallow-validator applied to /private/tmp/pb-run-eCgfSC/echo/quantum/bridge.js
+assembled /private/tmp/pb-run-eCgfSC (python HEAD, sabotage swallow-validator, token pb-sab-swallow-validator-20261010T005728-19595)
+PASS  main.js (harness) ran to the end without error  — page load → done in 18.9s
+PASS  served build token matches the one just written  — pb-sab-swallow-validator-20261010T005728-19595
 PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.009}
 PASS  Qiskit 2.x loaded  — 2.5.2
 PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
@@ -15,6 +15,7 @@ PASS  relay(X): delivered value re-validates in Node  — {"isMap":false,"factsI
 PASS  relay(Z): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  calibration#1: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  calibration#2: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  calibration#3: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  dryRun(calibration#1, X=false, Z=false): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  dryRun(calibration#1, X=true, Z=false): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  dryRun(calibration#1, X=false, Z=true): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
@@ -25,14 +26,16 @@ PASS  commit#3 after settle: delivered value re-validates in Node  — {"isMap":
 PASS  commit#4 after RESTART: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  spy fault mode is true (the scenario being graded)  — true
 PASS  dry run: four X/Z choices were tried on one calibration  — ["dryRun(calibration#1, X=false, Z=false)","dryRun(calibration#1, X=true, Z=false)","dryRun(calibration#1, X=false, Z=true)","dryRun(calibration#1, X=true, Z=true)"]
-PASS  spy: exactly 1 backend.run attempted, and it completed (stack entered via callPromising)  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1,"commitCalls":2,"commitsCompleted":2,"resetCalls":1,"branchCalls":4}
-PASS  spy: exactly 1 entry into qollab_job.run_backend_verification_once  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1,"commitCalls":2,"commitsCompleted":2,"resetCalls":1,"branchCalls":4}
+PASS  spy: exactly 1 backend.run attempted, and it completed (stack entered via callPromising)  — {"backendRunAttempts":1,"backendRunCompleted":1,"backendRunFromJs":1,"backendRunFromPython":0,"interpretCalls":1,"commitCalls":2,"commitsCompleted":2,"resetCalls":1,"branchCalls":4}
+PASS  spy: the job came from JS backend.run (JS = 1, Python = 0)  — {"js":1,"python":0}
+PASS  runner's own JS-side backend.run counter = 1 (independent of the spy)  — {"jobs":1,"refused":0}
+PASS  spy: exactly 1 call of qollab_job.interpret_counts (Python reads the counts once)  — {"backendRunAttempts":1,"backendRunCompleted":1,"backendRunFromJs":1,"backendRunFromPython":0,"interpretCalls":1,"commitCalls":2,"commitsCompleted":2,"resetCalls":1,"branchCalls":4}
 PASS  verify ×2: the second call returns the SAME promise  — true
 PASS  verify after RESTART: still the same promise (one job per run, not per story)  — true
 FAIL  dryRun(calibration#1, X=false, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics  — delivered F=1
 FAIL  dryRun(calibration#1, X=true, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics  — delivered F=1
-FAIL  dryRun(calibration#1, X=true, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics  — delivered F=1
-PASS  dryRun(calibration#1, X=false, Z=true): the truthful branch is still delivered  — 1
-FAIL  verify: old name "bell_verification" → LOUD §8.6 ScientificModuleError, nothing passed on  — {"status":"verified","result":{"experiment":"bell_verification","engine":"qollab_selected_backend","circuitDescription":"Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1","qubits":2,"parameters":{"shots":256,"backend":"basic_simulator"},"facts":["Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.","Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.","256 of 256 shots (100.0%) had both qubits agree (00 or 11).","Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).","This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.","The agreement carries no message: on its own, each qubit reads 0 or 1 at random.","If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."],"counts":{"11":117,"00":139},"keyQubits":[1,0]}}
-sab-swallow-validator: 30/34 checks passed · runner's own JS-side backend.run counter: 0
+FAIL  dryRun(calibration#1, X=false, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics  — delivered F=1
+PASS  dryRun(calibration#1, X=true, Z=true): the truthful branch is still delivered  — 1
+FAIL  verify: old name "bell_verification" → LOUD §8.6 ScientificModuleError, nothing passed on  — {"status":"verified","result":{"experiment":"bell_verification","engine":"qollab_selected_backend","circuitDescription":"Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1","qubits":2,"parameters":{"shots":256,"backend":"basic_simulator"},"facts":["Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.","Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.","256 of 256 shots (100.0%) had both qubits agree (00 or 11).","Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).","This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.","The agreement carries no message: on its own, each qubit reads 0 or 1 at random.","If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."],"counts":{"11":130,"00":126},"keyQubits":[1,0]}}
+sab-swallow-validator: 33/37 checks passed · runner's own JS-side backend.run counter: 1
 run.sh sab-swallow-validator → exit 1

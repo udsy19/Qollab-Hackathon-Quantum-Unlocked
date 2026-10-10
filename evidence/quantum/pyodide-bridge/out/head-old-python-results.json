@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 11.8s"
+    "detail": "page load → done in 10.3s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-head-old-python-20261010T003115-10636"
+    "detail": "pb-head-old-python-20261010T005322-30726"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -17,7 +17,7 @@
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.006
+      "coldImportSeconds": 0.009
     }
   },
   {
@@ -127,7 +127,9 @@
     "detail": {
       "backendRunAttempts": 0,
       "backendRunCompleted": 0,
-      "verificationCalls": 0,
+      "backendRunFromJs": 0,
+      "backendRunFromPython": 0,
+      "interpretCalls": 0,
       "commitCalls": 3,
       "commitsCompleted": 0,
       "resetCalls": 0,
@@ -135,12 +137,30 @@
     }
   },
   {
-    "name": "spy: exactly 1 entry into qollab_job.run_backend_verification_once",
+    "name": "spy: the job came from JS backend.run (JS = 1, Python = 0)",
+    "ok": false,
+    "detail": {
+      "js": 0,
+      "python": 0
+    }
+  },
+  {
+    "name": "runner's own JS-side backend.run counter = 1 (independent of the spy)",
+    "ok": false,
+    "detail": {
+      "jobs": 0,
+      "refused": 0
+    }
+  },
+  {
+    "name": "spy: exactly 1 call of qollab_job.interpret_counts (Python reads the counts once)",
     "ok": false,
     "detail": {
       "backendRunAttempts": 0,
       "backendRunCompleted": 0,
-      "verificationCalls": 0,
+      "backendRunFromJs": 0,
+      "backendRunFromPython": 0,
+      "interpretCalls": 0,
       "commitCalls": 3,
       "commitsCompleted": 0,
       "resetCalls": 0,
@@ -160,47 +180,47 @@
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "7.7 ms"
+    "detail": "15.9 ms"
   },
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "5.6 ms"
+    "detail": "7.3 ms"
   },
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "3 ms"
+    "detail": "1.9 ms"
   },
   {
     "name": "cloning(zero): adapter returned a result",
     "ok": true,
-    "detail": "2.3 ms"
+    "detail": "1.4 ms"
   },
   {
     "name": "cloning(one): adapter returned a result",
     "ok": true,
-    "detail": "2.6 ms"
+    "detail": "1.2 ms"
   },
   {
     "name": "cloning(bloch_a): adapter returned a result",
     "ok": true,
-    "detail": "1.7 ms"
+    "detail": "7.3 ms"
   },
   {
     "name": "relay(I): adapter returned a result",
     "ok": true,
-    "detail": "3.2 ms"
+    "detail": "6.9 ms"
   },
   {
     "name": "relay(X): adapter returned a result",
     "ok": true,
-    "detail": "1.1 ms"
+    "detail": "2.4 ms"
   },
   {
     "name": "relay(Z): adapter returned a result",
     "ok": true,
-    "detail": "0.9 ms"
+    "detail": "2.7 ms"
   },
   {
     "name": "calibration#1: adapter returned a result",
@@ -513,7 +533,9 @@
     "detail": {
       "backendRunAttempts": 0,
       "backendRunCompleted": 0,
-      "verificationCalls": 0,
+      "backendRunFromJs": 0,
+      "backendRunFromPython": 0,
+      "interpretCalls": 0,
       "commitCalls": 3,
       "commitsCompleted": 0,
       "resetCalls": 0,

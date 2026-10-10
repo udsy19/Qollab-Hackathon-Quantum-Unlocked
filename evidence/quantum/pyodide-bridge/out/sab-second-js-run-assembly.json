@@ -1,0 +1,21 @@
+{
+  "token": "pb-sab-second-js-run-20261010T005626-7002", "sabotage": "second-js-run", "fault": false,
+  "runnerRef": "lane/platform/integration@0fc2721",
+  "contractsRef": "lane/platform/integration@0fc2721",
+  "harnessCommit": "8146589-dirty",
+  "pythonRef": "HEAD@8146589",
+  "sha256": {
+    "contracts.js": "2398c11391f87fa5",
+    "index.html": "6112169d8d1887b8",
+    "main.css": "d93eb501784b286e",
+    "main.js": "00716c535cf50ad1",
+    "pb_spy.py": "6873ddc5ce73b936",
+    "quantum/__init__.py": "4770b5d0e03c289a",
+    "quantum/bridge.js": "0abd50430e9cc0a2",
+    "quantum/cloning.py": "9e50d3aba0104f49",
+    "quantum/entanglement.py": "cafbffa371fda437",
+    "quantum/formats.py": "48a73f0a98817f8a",
+    "quantum/qollab_job.py": "1c3c530328c70edd",
+    "quantum/teleportation.py": "c7e450cbd63bc0ae"
+  }
+}

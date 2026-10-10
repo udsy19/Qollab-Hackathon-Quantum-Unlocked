@@ -1,0 +1,26 @@
+echo/main.js:15 import-unresolved relative import "./game/eventBus.js" resolves to game/eventBus.js, which is not in the upload
+echo/main.js:16 import-unresolved relative import "./game/state.js" resolves to game/state.js, which is not in the upload
+echo/main.js:17 import-unresolved relative import "./ui/menu.js" resolves to ui/menu.js, which is not in the upload
+echo/main.js:18 import-unresolved relative import "./ui/hud.js" resolves to ui/hud.js, which is not in the upload
+echo/main.js:19 import-unresolved relative import "./ui/dialogue.js" resolves to ui/dialogue.js, which is not in the upload
+echo/main.js:20 import-unresolved relative import "./ui/accessibility.js" resolves to ui/accessibility.js, which is not in the upload
+echo/main.js:199 backend-run-count backend.run call site 1 of 2 in echo/**/*.js; at most one is allowed (a second job stops the run on IonQ)
+echo/quantum/bridge.js:141 backend-run-count backend.run call site 2 of 2 in echo/**/*.js; at most one is allowed (a second job stops the run on IonQ)
+  info: echo/quantum/qollab_job.py:1 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:112 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:83 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:87 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:90 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:200 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:201 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: backend.run: 2 call site(s) in scanned code
+LIMITATIONS (not covered by any rule above):
+  - backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+  - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
+scanned 24 files (19 code files) under <tmp>/echo
+RED: 8 failure(s) across 2 rule(s): import-unresolved, backend-run-count

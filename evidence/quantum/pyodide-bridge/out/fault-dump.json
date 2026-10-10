@@ -1,35 +1,35 @@
 {
   "assembly": {
-    "token": "pb-fault-20261010T003044-9738",
+    "token": "pb-fault-20261010T005253-2155",
     "sabotage": "none",
     "fault": true,
-    "runnerRef": "lane/platform/integration@f08dd0b",
-    "contractsRef": "lane/platform/integration@f08dd0b",
-    "harnessCommit": "173ea46-dirty",
-    "pythonRef": "HEAD@173ea46",
+    "runnerRef": "lane/platform/integration@0fc2721",
+    "contractsRef": "lane/platform/integration@0fc2721",
+    "harnessCommit": "8146589-dirty",
+    "pythonRef": "HEAD@8146589",
     "sha256": {
-      "contracts.js": "ecc0ed1d2c9ad162",
+      "contracts.js": "2398c11391f87fa5",
       "index.html": "6112169d8d1887b8",
       "main.css": "d93eb501784b286e",
-      "main.js": "c20d3537bbf85387",
-      "pb_spy.py": "f1264fae02e21a9a",
+      "main.js": "b33d2966867ff1c0",
+      "pb_spy.py": "6ed81f8f1e696339",
       "quantum/__init__.py": "4770b5d0e03c289a",
-      "quantum/bridge.js": "3fc88082eed66aa9",
+      "quantum/bridge.js": "f32b6639d15d0f11",
       "quantum/cloning.py": "9e50d3aba0104f49",
       "quantum/entanglement.py": "cafbffa371fda437",
       "quantum/formats.py": "48a73f0a98817f8a",
-      "quantum/qollab_job.py": "92cbad5b09ad1032",
+      "quantum/qollab_job.py": "1c3c530328c70edd",
       "quantum/teleportation.py": "c7e450cbd63bc0ae"
     }
   },
   "runnerCounters": {
-    "jobs": 0,
+    "jobs": 1,
     "refusedByRunner": 0
   },
   "runnerLogTail": [
     {
       "kind": "runner",
-      "msg": "runner: 12 files in /private/tmp/pb-run-bcdg0e/echo; backend = ionq-mock"
+      "msg": "runner: 12 files in /private/tmp/pb-run-Iw1vZ5/echo; backend = ionq-mock"
     },
     {
       "kind": "system",
@@ -73,15 +73,19 @@
     },
     {
       "kind": "err",
-      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)"
+      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.000002407)"
     },
     {
       "kind": "err",
-      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)"
+      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.218979270)"
     },
     {
       "kind": "err",
-      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)"
+      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.781018323)"
+    },
+    {
+      "kind": "runner",
+      "msg": "runner: backend.run #1 on IonQ one-job mock (BasicSimulator)"
     },
     {
       "kind": "system",
@@ -89,7 +93,7 @@
     },
     {
       "kind": "system",
-      "msg": "Probabilities panel: {\"0x3\":0.51171875,\"0x0\":0.48828125}"
+      "msg": "Probabilities panel: {\"0x3\":0.44140625,\"0x0\":0.55859375}"
     },
     {
       "kind": "err",
@@ -108,25 +112,25 @@
       "listIsArray": true,
       "json": "{\"outer\":{\"inner\":1},\"list\":[1,2],\"n\":1}"
     },
-    "build": "pb-fault-20261010T003044-9738",
+    "build": "pb-fault-20261010T005253-2155",
     "backendName": "basic_simulator",
     "platform": {
       "sysPlatform": "emscripten",
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.006
+      "coldImportSeconds": 0.007
     },
     "timing": {
-      "msFrameStartToMainBody": 9398.9,
-      "verifyMs": 44.1,
-      "wallSecondsPageToDone": 10.6
+      "msFrameStartToMainBody": 12073.4,
+      "verifyMs": 10.9,
+      "wallSecondsPageToDone": 13.6
     },
     "calls": [
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 5.6,
+        "ms": 6.1,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -171,7 +175,7 @@
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 4.5,
+        "ms": 4.4,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -216,7 +220,7 @@
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 2.3,
+        "ms": 1.5,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -261,7 +265,7 @@
       {
         "label": "cloning(zero)",
         "hook": false,
-        "ms": 2,
+        "ms": 1.1,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -305,7 +309,7 @@
       {
         "label": "cloning(one)",
         "hook": false,
-        "ms": 2.9,
+        "ms": 2,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -349,7 +353,7 @@
       {
         "label": "cloning(bloch_a)",
         "hook": false,
-        "ms": 2.2,
+        "ms": 1.9,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -394,7 +398,7 @@
       {
         "label": "relay(I)",
         "hook": false,
-        "ms": 4.2,
+        "ms": 2.7,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -437,7 +441,7 @@
       {
         "label": "relay(X)",
         "hook": false,
-        "ms": 6,
+        "ms": 1.3,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -480,7 +484,7 @@
       {
         "label": "relay(Z)",
         "hook": false,
-        "ms": 7.7,
+        "ms": 1.4,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -523,7 +527,7 @@
       {
         "label": "calibration#1",
         "hook": false,
-        "ms": 14.7,
+        "ms": 2.8,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -534,12 +538,12 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.005906) then RZ(-2.769681) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+          "circuitDescription": "prepare RY(2.057769) then RZ(-3.139837) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 1.0059056566,
-            "phi": -2.7696808327
+            "theta": 2.0577685284,
+            "phi": -3.1398370254
           },
           "facts": [
             "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1. Choose the receiver's X and Z for these two bits.",
@@ -557,9 +561,9 @@
             0
           ],
           "observables": {
-            "inputBlochX": -0.7869022383,
-            "inputBlochY": -0.3069424138,
-            "inputBlochZ": 0.5353234741
+            "inputBlochX": -0.8837524104,
+            "inputBlochY": -0.0015515422,
+            "inputBlochZ": -0.467952209
           },
           "measurementBits": {
             "m0": 1,
@@ -571,7 +575,7 @@
       {
         "label": "calibration#2",
         "hook": false,
-        "ms": 9.7,
+        "ms": 1.9,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -582,108 +586,12 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.302086) then RZ(2.140261) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+          "circuitDescription": "prepare RY(0.607618) then RZ(-2.434097) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 1.3020862,
-            "phi": 2.1402609807
-          },
-          "facts": [
-            "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0. Choose the receiver's X and Z for these two bits.",
-            "The calibration state lies away from every axis of the Bloch sphere, so any wrong X/Z choice visibly lowers the receiver's fidelity.",
-            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
-          ],
-          "probabilities": {
-            "10": 0.25,
-            "11": 0.25,
-            "00": 0.25,
-            "01": 0.25
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "observables": {
-            "inputBlochX": -0.519832282,
-            "inputBlochY": 0.8119670447,
-            "inputBlochZ": 0.2654880729
-          },
-          "measurementBits": {
-            "m0": 0,
-            "m1": 0
-          }
-        },
-        "nodeVerdict": []
-      },
-      {
-        "label": "calibration#3",
-        "hook": false,
-        "ms": 10.2,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
-        },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "teleportation",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.118247) then RZ(-1.405688) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
-          "qubits": 3,
-          "parameters": {
-            "state": "calibration",
-            "theta": 1.1182467773,
-            "phi": -1.4056883413
-          },
-          "facts": [
-            "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0. Choose the receiver's X and Z for these two bits.",
-            "The calibration state lies away from every axis of the Bloch sphere, so any wrong X/Z choice visibly lowers the receiver's fidelity.",
-            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
-          ],
-          "probabilities": {
-            "10": 0.25,
-            "11": 0.25,
-            "00": 0.25,
-            "01": 0.25
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "observables": {
-            "inputBlochX": 0.1478137,
-            "inputBlochY": -0.887104803,
-            "inputBlochZ": 0.4372598524
-          },
-          "measurementBits": {
-            "m0": 0,
-            "m1": 0
-          }
-        },
-        "nodeVerdict": []
-      },
-      {
-        "label": "calibration#4",
-        "hook": false,
-        "ms": 7.8,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
-        },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "teleportation",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(0.838446) then RZ(0.244148) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
-          "qubits": 3,
-          "parameters": {
-            "state": "calibration",
-            "theta": 0.8384458843,
-            "phi": 0.2441482768
+            "theta": 0.607618072,
+            "phi": -2.4340974367
           },
           "facts": [
             "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0. Choose the receiver's X and Z for these two bits.",
@@ -701,9 +609,9 @@
             0
           ],
           "observables": {
-            "inputBlochX": 0.7215522353,
-            "inputBlochY": 0.1797515758,
-            "inputBlochZ": 0.6686192809
+            "inputBlochX": -0.4338898011,
+            "inputBlochY": -0.3710550612,
+            "inputBlochZ": 0.8210102204
           },
           "measurementBits": {
             "m0": 1,
@@ -715,13 +623,13 @@
       {
         "label": "dryRun(calibration#1, X=false, Z=false)",
         "hook": false,
-        "ms": 9.5,
+        "ms": 7.3,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
-          "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)",
+          "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.000002407)",
           "errors": [
-            "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)"
+            "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.000002407)"
           ]
         },
         "nodeVerdict": null
@@ -729,13 +637,13 @@
       {
         "label": "dryRun(calibration#1, X=true, Z=false)",
         "hook": false,
-        "ms": 4,
+        "ms": 11.1,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
-          "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)",
+          "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.218979270)",
           "errors": [
-            "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)"
+            "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.218979270)"
           ]
         },
         "nodeVerdict": null
@@ -743,13 +651,13 @@
       {
         "label": "dryRun(calibration#1, X=false, Z=true)",
         "hook": false,
-        "ms": 8.2,
+        "ms": 11.8,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
-          "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)",
+          "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.781018323)",
           "errors": [
-            "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)"
+            "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.781018323)"
           ]
         },
         "nodeVerdict": null
@@ -757,7 +665,7 @@
       {
         "label": "dryRun(calibration#1, X=true, Z=true)",
         "hook": false,
-        "ms": 4.2,
+        "ms": 16.7,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -768,12 +676,12 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.005906) then RZ(-2.769681) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1; Bob applies X then Z",
+          "circuitDescription": "prepare RY(2.057769) then RZ(-3.139837) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1; Bob applies X then Z",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 1.0059056566,
-            "phi": -2.7696808327,
+            "theta": 2.0577685284,
+            "phi": -3.1398370254,
             "m0": 1,
             "m1": 1,
             "applyX": true,
@@ -797,13 +705,13 @@
           "fidelity": 1,
           "observables": {
             "branchProbability": 0.25,
-            "sourceFidelityAfterMeasurement": 0.2323382629,
-            "receiverBlochX": -0.7869022383,
-            "receiverBlochY": -0.3069424138,
-            "receiverBlochZ": 0.5353234741,
-            "inputBlochX": -0.7869022383,
-            "inputBlochY": -0.3069424138,
-            "inputBlochZ": 0.5353234741
+            "sourceFidelityAfterMeasurement": 0.7339761045,
+            "receiverBlochX": -0.8837524104,
+            "receiverBlochY": -0.0015515422,
+            "receiverBlochZ": -0.467952209,
+            "inputBlochX": -0.8837524104,
+            "inputBlochY": -0.0015515422,
+            "inputBlochZ": -0.467952209
           },
           "measurementBits": {
             "m0": 1,
@@ -815,7 +723,7 @@
       {
         "label": "commit#1",
         "hook": false,
-        "ms": 4.3,
+        "ms": 8.6,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -832,9 +740,9 @@
             "state": "token"
           },
           "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
             "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
             "The token has been consumed: this commit cannot be repeated in this run.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -853,8 +761,8 @@
             "branchProbability": 0.25
           },
           "measurementBits": {
-            "m0": 0,
-            "m1": 0
+            "m0": 1,
+            "m1": 1
           }
         },
         "nodeVerdict": []
@@ -862,7 +770,7 @@
       {
         "label": "commit#2",
         "hook": false,
-        "ms": 0,
+        "ms": 0.1,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -879,9 +787,9 @@
             "state": "token"
           },
           "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
             "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
             "The token has been consumed: this commit cannot be repeated in this run.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -900,8 +808,8 @@
             "branchProbability": 0.25
           },
           "measurementBits": {
-            "m0": 0,
-            "m1": 0
+            "m0": 1,
+            "m1": 1
           }
         },
         "nodeVerdict": []
@@ -926,9 +834,9 @@
             "state": "token"
           },
           "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
             "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
             "The token has been consumed: this commit cannot be repeated in this run.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -947,8 +855,8 @@
             "branchProbability": 0.25
           },
           "measurementBits": {
-            "m0": 0,
-            "m1": 0
+            "m0": 1,
+            "m1": 1
           }
         },
         "nodeVerdict": []
@@ -956,7 +864,7 @@
       {
         "label": "RESTART: resetStoryToken()",
         "hook": true,
-        "ms": 0.6,
+        "ms": 0.1,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -980,7 +888,7 @@
       {
         "label": "commit#4 after RESTART",
         "hook": false,
-        "ms": 17.6,
+        "ms": 3.2,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -1029,9 +937,7 @@
       "calibration": "calibration#1",
       "draws": [
         "calibration#1",
-        "calibration#2",
-        "calibration#3",
-        "calibration#4"
+        "calibration#2"
       ]
     },
     "commit": {
@@ -1079,7 +985,9 @@
       "counts": {
         "backendRunAttempts": 1,
         "backendRunCompleted": 1,
-        "verificationCalls": 1,
+        "backendRunFromJs": 1,
+        "backendRunFromPython": 0,
+        "interpretCalls": 1,
         "commitCalls": 2,
         "commitsCompleted": 2,
         "resetCalls": 1,
@@ -1087,9 +995,9 @@
       },
       "events": [
         "live_commit call #1",
-        "run_backend_verification_once call #1",
-        "backend.run attempt #1",
+        "backend.run attempt #1 from Js",
         "backend.run completed #1",
+        "interpret_counts call #1",
         "reset_story_token call #1",
         "live_commit call #2"
       ],
@@ -1102,8 +1010,8 @@
           "m1": 1,
           "applyX": false,
           "applyZ": false,
-          "theta": 1.0059056566,
-          "phi": -2.7696808327
+          "theta": 2.0577685284,
+          "phi": -3.1398370254
         },
         {
           "state": "calibration",
@@ -1111,8 +1019,8 @@
           "m1": 1,
           "applyX": true,
           "applyZ": false,
-          "theta": 1.0059056566,
-          "phi": -2.7696808327
+          "theta": 2.0577685284,
+          "phi": -3.1398370254
         },
         {
           "state": "calibration",
@@ -1120,8 +1028,8 @@
           "m1": 1,
           "applyX": false,
           "applyZ": true,
-          "theta": 1.0059056566,
-          "phi": -2.7696808327
+          "theta": 2.0577685284,
+          "phi": -3.1398370254
         },
         {
           "state": "calibration",
@@ -1129,8 +1037,8 @@
           "m1": 1,
           "applyX": true,
           "applyZ": true,
-          "theta": 1.0059056566,
-          "phi": -2.7696808327
+          "theta": 2.0577685284,
+          "phi": -3.1398370254
         }
       ]
     }
@@ -1139,12 +1047,12 @@
     {
       "name": "main.js (harness) ran to the end without error",
       "ok": true,
-      "detail": "page load → done in 10.6s"
+      "detail": "page load → done in 13.6s"
     },
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "pb-fault-20261010T003044-9738"
+      "detail": "pb-fault-20261010T005253-2155"
     },
     {
       "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -1154,7 +1062,7 @@
         "python": "3.14.2",
         "qiskit": "2.5.2",
         "pyodide": "314.0.7",
-        "coldImportSeconds": 0.006
+        "coldImportSeconds": 0.007
       }
     },
     {
@@ -1262,24 +1170,6 @@
       }
     },
     {
-      "name": "calibration#3: delivered value re-validates in Node",
-      "ok": true,
-      "detail": {
-        "isMap": false,
-        "factsIsArray": true,
-        "proxyFields": []
-      }
-    },
-    {
-      "name": "calibration#4: delivered value re-validates in Node",
-      "ok": true,
-      "detail": {
-        "isMap": false,
-        "factsIsArray": true,
-        "proxyFields": []
-      }
-    },
-    {
       "name": "dryRun(calibration#1, X=true, Z=true): delivered value re-validates in Node",
       "ok": true,
       "detail": {
@@ -1345,7 +1235,9 @@
       "detail": {
         "backendRunAttempts": 1,
         "backendRunCompleted": 1,
-        "verificationCalls": 1,
+        "backendRunFromJs": 1,
+        "backendRunFromPython": 0,
+        "interpretCalls": 1,
         "commitCalls": 2,
         "commitsCompleted": 2,
         "resetCalls": 1,
@@ -1353,12 +1245,30 @@
       }
     },
     {
-      "name": "spy: exactly 1 entry into qollab_job.run_backend_verification_once",
+      "name": "spy: the job came from JS backend.run (JS = 1, Python = 0)",
+      "ok": true,
+      "detail": {
+        "js": 1,
+        "python": 0
+      }
+    },
+    {
+      "name": "runner's own JS-side backend.run counter = 1 (independent of the spy)",
+      "ok": true,
+      "detail": {
+        "jobs": 1,
+        "refused": 0
+      }
+    },
+    {
+      "name": "spy: exactly 1 call of qollab_job.interpret_counts (Python reads the counts once)",
       "ok": true,
       "detail": {
         "backendRunAttempts": 1,
         "backendRunCompleted": 1,
-        "verificationCalls": 1,
+        "backendRunFromJs": 1,
+        "backendRunFromPython": 0,
+        "interpretCalls": 1,
         "commitCalls": 2,
         "commitsCompleted": 2,
         "resetCalls": 1,
@@ -1380,9 +1290,9 @@
       "ok": true,
       "detail": {
         "name": "ScientificModuleError",
-        "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)",
+        "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.000002407)",
         "errors": [
-          "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.094213645)"
+          "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.000002407)"
         ]
       }
     },
@@ -1391,9 +1301,9 @@
       "ok": true,
       "detail": {
         "name": "ScientificModuleError",
-        "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)",
+        "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.218979270)",
         "errors": [
-          "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.286571222)"
+          "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.218979270)"
         ]
       }
     },
@@ -1402,9 +1312,9 @@
       "ok": true,
       "detail": {
         "name": "ScientificModuleError",
-        "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)",
+        "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.781018323)",
         "errors": [
-          "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.619215133)"
+          "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.781018323)"
         ]
       }
     },

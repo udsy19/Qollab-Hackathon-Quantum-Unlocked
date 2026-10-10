@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 10.5s"
+    "detail": "page load → done in 18.9s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-sab-swallow-validator-20261010T003451-14884"
+    "detail": "pb-sab-swallow-validator-20261010T005728-19595"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -125,6 +125,15 @@
     }
   },
   {
+    "name": "calibration#3: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
     "name": "dryRun(calibration#1, X=false, Z=false): delivered value re-validates in Node",
     "ok": true,
     "detail": {
@@ -217,7 +226,9 @@
     "detail": {
       "backendRunAttempts": 1,
       "backendRunCompleted": 1,
-      "verificationCalls": 1,
+      "backendRunFromJs": 1,
+      "backendRunFromPython": 0,
+      "interpretCalls": 1,
       "commitCalls": 2,
       "commitsCompleted": 2,
       "resetCalls": 1,
@@ -225,12 +236,30 @@
     }
   },
   {
-    "name": "spy: exactly 1 entry into qollab_job.run_backend_verification_once",
+    "name": "spy: the job came from JS backend.run (JS = 1, Python = 0)",
+    "ok": true,
+    "detail": {
+      "js": 1,
+      "python": 0
+    }
+  },
+  {
+    "name": "runner's own JS-side backend.run counter = 1 (independent of the spy)",
+    "ok": true,
+    "detail": {
+      "jobs": 1,
+      "refused": 0
+    }
+  },
+  {
+    "name": "spy: exactly 1 call of qollab_job.interpret_counts (Python reads the counts once)",
     "ok": true,
     "detail": {
       "backendRunAttempts": 1,
       "backendRunCompleted": 1,
-      "verificationCalls": 1,
+      "backendRunFromJs": 1,
+      "backendRunFromPython": 0,
+      "interpretCalls": 1,
       "commitCalls": 2,
       "commitsCompleted": 2,
       "resetCalls": 1,
@@ -258,12 +287,12 @@
     "detail": "delivered F=1"
   },
   {
-    "name": "dryRun(calibration#1, X=true, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
+    "name": "dryRun(calibration#1, X=false, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
     "ok": false,
     "detail": "delivered F=1"
   },
   {
-    "name": "dryRun(calibration#1, X=false, Z=true): the truthful branch is still delivered",
+    "name": "dryRun(calibration#1, X=true, Z=true): the truthful branch is still delivered",
     "ok": true,
     "detail": 1
   },
@@ -291,8 +320,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 117,
-          "00": 139
+          "11": 130,
+          "00": 126
         },
         "keyQubits": [
           1,

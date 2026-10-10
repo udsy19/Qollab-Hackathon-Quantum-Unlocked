@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 5.5s"
+    "detail": "page load → done in 15.9s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-final-1-20261010T003015-11335"
+    "detail": "pb-final-1-20261010T005141-23251"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -17,7 +17,7 @@
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.006
+      "coldImportSeconds": 0.008
     }
   },
   {
@@ -125,6 +125,24 @@
     }
   },
   {
+    "name": "calibration#3: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "calibration#4: delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
     "name": "dryRun(calibration#1, X=false, Z=false): delivered value re-validates in Node",
     "ok": true,
     "detail": {
@@ -217,7 +235,9 @@
     "detail": {
       "backendRunAttempts": 1,
       "backendRunCompleted": 1,
-      "verificationCalls": 1,
+      "backendRunFromJs": 1,
+      "backendRunFromPython": 0,
+      "interpretCalls": 1,
       "commitCalls": 2,
       "commitsCompleted": 2,
       "resetCalls": 1,
@@ -225,12 +245,30 @@
     }
   },
   {
-    "name": "spy: exactly 1 entry into qollab_job.run_backend_verification_once",
+    "name": "spy: the job came from JS backend.run (JS = 1, Python = 0)",
+    "ok": true,
+    "detail": {
+      "js": 1,
+      "python": 0
+    }
+  },
+  {
+    "name": "runner's own JS-side backend.run counter = 1 (independent of the spy)",
+    "ok": true,
+    "detail": {
+      "jobs": 1,
+      "refused": 0
+    }
+  },
+  {
+    "name": "spy: exactly 1 call of qollab_job.interpret_counts (Python reads the counts once)",
     "ok": true,
     "detail": {
       "backendRunAttempts": 1,
       "backendRunCompleted": 1,
-      "verificationCalls": 1,
+      "backendRunFromJs": 1,
+      "backendRunFromPython": 0,
+      "interpretCalls": 1,
       "commitCalls": 2,
       "commitsCompleted": 2,
       "resetCalls": 1,
@@ -250,87 +288,97 @@
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "5.8 ms"
+    "detail": "9.8 ms"
   },
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "3.9 ms"
+    "detail": "4.5 ms"
   },
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "1.7 ms"
+    "detail": "2.9 ms"
   },
   {
     "name": "cloning(zero): adapter returned a result",
     "ok": true,
-    "detail": "1.1 ms"
+    "detail": "2 ms"
   },
   {
     "name": "cloning(one): adapter returned a result",
     "ok": true,
-    "detail": "1.3 ms"
+    "detail": "2.2 ms"
   },
   {
     "name": "cloning(bloch_a): adapter returned a result",
     "ok": true,
-    "detail": "1.4 ms"
+    "detail": "2.9 ms"
   },
   {
     "name": "relay(I): adapter returned a result",
     "ok": true,
-    "detail": "2.4 ms"
+    "detail": "4.3 ms"
   },
   {
     "name": "relay(X): adapter returned a result",
     "ok": true,
-    "detail": "1.2 ms"
+    "detail": "3.2 ms"
   },
   {
     "name": "relay(Z): adapter returned a result",
     "ok": true,
-    "detail": "0.8 ms"
+    "detail": "1.9 ms"
   },
   {
     "name": "calibration#1: adapter returned a result",
     "ok": true,
-    "detail": "2.2 ms"
+    "detail": "5.2 ms"
   },
   {
     "name": "calibration#2: adapter returned a result",
     "ok": true,
-    "detail": "1.2 ms"
+    "detail": "8.9 ms"
+  },
+  {
+    "name": "calibration#3: adapter returned a result",
+    "ok": true,
+    "detail": "10.5 ms"
+  },
+  {
+    "name": "calibration#4: adapter returned a result",
+    "ok": true,
+    "detail": "12.1 ms"
   },
   {
     "name": "dryRun(calibration#1, X=false, Z=false): adapter returned a result",
     "ok": true,
-    "detail": "3.4 ms"
+    "detail": "23.3 ms"
   },
   {
     "name": "dryRun(calibration#1, X=true, Z=false): adapter returned a result",
     "ok": true,
-    "detail": "3.3 ms"
+    "detail": "6.9 ms"
   },
   {
     "name": "dryRun(calibration#1, X=false, Z=true): adapter returned a result",
     "ok": true,
-    "detail": "2.4 ms"
+    "detail": "5.3 ms"
   },
   {
     "name": "dryRun(calibration#1, X=true, Z=true): adapter returned a result",
     "ok": true,
-    "detail": "2.3 ms"
+    "detail": "2.8 ms"
   },
   {
     "name": "commit#1: adapter returned a result",
     "ok": true,
-    "detail": "1.7 ms"
+    "detail": "3.9 ms"
   },
   {
     "name": "commit#2: adapter returned a result",
     "ok": true,
-    "detail": "0.1 ms"
+    "detail": "0 ms"
   },
   {
     "name": "commit#3 after settle: adapter returned a result",
@@ -340,12 +388,12 @@
   {
     "name": "RESTART: resetStoryToken(): adapter returned a result",
     "ok": true,
-    "detail": "0.1 ms"
+    "detail": "0.3 ms"
   },
   {
     "name": "commit#4 after RESTART: adapter returned a result",
     "ok": true,
-    "detail": "2 ms"
+    "detail": "4.7 ms"
   },
   {
     "name": "cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]",
@@ -408,12 +456,20 @@
     "ok": true,
     "detail": [
       [
-        2.7461190082,
-        -2.8424182895
+        2.1628403324,
+        2.5406264978
       ],
       [
-        0.8892205481,
-        0.5766112926
+        2.8132907346,
+        0.0336258895
+      ],
+      [
+        0.5125304153,
+        2.570840993
+      ],
+      [
+        1.8428986076,
+        1.8141686985
       ]
     ]
   },
@@ -421,8 +477,10 @@
     "name": "calibration: every draw is generic (max Bloch component² ≤ 0.9, re-derived here)",
     "ok": true,
     "detail": [
-      0.8516,
-      0.4238
+      0.4684,
+      0.896,
+      0.7595,
+      0.8739
     ]
   },
   {
@@ -430,12 +488,20 @@
     "ok": true,
     "detail": [
       [
-        2.7461190082,
-        -2.8424182895
+        2.1628403324,
+        2.5406264978
       ],
       [
-        0.8892205481,
-        0.5766112926
+        2.8132907346,
+        0.0336258895
+      ],
+      [
+        0.5125304153,
+        2.570840993
+      ],
+      [
+        1.8428986076,
+        1.8141686985
       ]
     ]
   },
@@ -456,30 +522,30 @@
     "detail": {
       "got": {
         "state": "calibration",
-        "theta": 2.7461190082,
-        "phi": -2.8424182895,
+        "theta": 2.1628403324,
+        "phi": 2.5406264978,
         "m0": 1,
         "m1": 0,
         "applyX": false,
         "applyZ": false
       },
       "want": {
-        "theta": 2.7461190082,
-        "phi": -2.8424182895,
+        "theta": 2.1628403324,
+        "phi": 2.5406264978,
         "m0": 1,
         "m1": 0
       }
     }
   },
   {
-    "name": "dryRun(calibration#1, X=false, Z=false): fidelity = 0.851586 (closed form on the measured state)",
+    "name": "dryRun(calibration#1, X=false, Z=false): fidelity = 0.311429 (closed form on the measured state)",
     "ok": true,
-    "detail": 0.8515860444
+    "detail": 0.3114290739
   },
   {
     "name": "dryRun(calibration#1, X=false, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
     "ok": true,
-    "detail": 0.8515860444
+    "detail": 0.3114290739
   },
   {
     "name": "dryRun(calibration#1, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch",
@@ -487,30 +553,30 @@
     "detail": {
       "got": {
         "state": "calibration",
-        "theta": 2.7461190082,
-        "phi": -2.8424182895,
+        "theta": 2.1628403324,
+        "phi": 2.5406264978,
         "m0": 1,
         "m1": 0,
         "applyX": true,
         "applyZ": false
       },
       "want": {
-        "theta": 2.7461190082,
-        "phi": -2.8424182895,
+        "theta": 2.1628403324,
+        "phi": 2.5406264978,
         "m0": 1,
         "m1": 0
       }
     }
   },
   {
-    "name": "dryRun(calibration#1, X=true, Z=false): fidelity = 0.012892 (closed form on the measured state)",
+    "name": "dryRun(calibration#1, X=true, Z=false): fidelity = 0.220151 (closed form on the measured state)",
     "ok": true,
-    "detail": 0.0128922107
+    "detail": 0.2201512429
   },
   {
     "name": "dryRun(calibration#1, X=true, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
     "ok": true,
-    "detail": 0.0128922107
+    "detail": 0.2201512429
   },
   {
     "name": "dryRun(calibration#1, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch",
@@ -518,16 +584,16 @@
     "detail": {
       "got": {
         "state": "calibration",
-        "theta": 2.7461190082,
-        "phi": -2.8424182895,
+        "theta": 2.1628403324,
+        "phi": 2.5406264978,
         "m0": 1,
         "m1": 0,
         "applyX": false,
         "applyZ": true
       },
       "want": {
-        "theta": 2.7461190082,
-        "phi": -2.8424182895,
+        "theta": 2.1628403324,
+        "phi": 2.5406264978,
         "m0": 1,
         "m1": 0
       }
@@ -549,30 +615,30 @@
     "detail": {
       "got": {
         "state": "calibration",
-        "theta": 2.7461190082,
-        "phi": -2.8424182895,
+        "theta": 2.1628403324,
+        "phi": 2.5406264978,
         "m0": 1,
         "m1": 0,
         "applyX": true,
         "applyZ": true
       },
       "want": {
-        "theta": 2.7461190082,
-        "phi": -2.8424182895,
+        "theta": 2.1628403324,
+        "phi": 2.5406264978,
         "m0": 1,
         "m1": 0
       }
     }
   },
   {
-    "name": "dryRun(calibration#1, X=true, Z=true): fidelity = 0.135522 (closed form on the measured state)",
+    "name": "dryRun(calibration#1, X=true, Z=true): fidelity = 0.468420 (closed form on the measured state)",
     "ok": true,
-    "detail": 0.1355217449
+    "detail": 0.4684196832
   },
   {
     "name": "dryRun(calibration#1, X=true, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
     "ok": true,
-    "detail": 0.1355217449
+    "detail": 0.4684196832
   },
   {
     "name": "spy: Python teleport_branch received the measured theta/phi on every dry run",
@@ -584,8 +650,8 @@
         "m1": 0,
         "applyX": false,
         "applyZ": false,
-        "theta": 2.7461190082,
-        "phi": -2.8424182895
+        "theta": 2.1628403324,
+        "phi": 2.5406264978
       },
       {
         "state": "calibration",
@@ -593,8 +659,8 @@
         "m1": 0,
         "applyX": true,
         "applyZ": false,
-        "theta": 2.7461190082,
-        "phi": -2.8424182895
+        "theta": 2.1628403324,
+        "phi": 2.5406264978
       },
       {
         "state": "calibration",
@@ -602,8 +668,8 @@
         "m1": 0,
         "applyX": false,
         "applyZ": true,
-        "theta": 2.7461190082,
-        "phi": -2.8424182895
+        "theta": 2.1628403324,
+        "phi": 2.5406264978
       },
       {
         "state": "calibration",
@@ -611,8 +677,8 @@
         "m1": 0,
         "applyX": true,
         "applyZ": true,
-        "theta": 2.7461190082,
-        "phi": -2.8424182895
+        "theta": 2.1628403324,
+        "phi": 2.5406264978
       }
     ]
   },
@@ -622,8 +688,8 @@
     "detail": {
       "fidelity": 1,
       "bits": {
-        "m0": 0,
-        "m1": 0
+        "m0": 1,
+        "m1": 1
       },
       "parameters": {
         "state": "token"
@@ -663,7 +729,9 @@
     "detail": {
       "backendRunAttempts": 1,
       "backendRunCompleted": 1,
-      "verificationCalls": 1,
+      "backendRunFromJs": 1,
+      "backendRunFromPython": 0,
+      "interpretCalls": 1,
       "commitCalls": 2,
       "commitsCompleted": 2,
       "resetCalls": 1,
@@ -694,8 +762,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 113,
-          "00": 143
+          "11": 126,
+          "00": 130
         },
         "keyQubits": [
           1,
@@ -719,11 +787,22 @@
     }
   },
   {
+    "name": "verify: parameters.shots is the 256 requested, parameters.backend is the backend's own name",
+    "ok": true,
+    "detail": {
+      "parameters": {
+        "shots": 256,
+        "backend": "basic_simulator"
+      },
+      "backendName": "basic_simulator"
+    }
+  },
+  {
     "name": "verify: 256 shots, ideal Bell keys only",
     "ok": true,
     "detail": {
-      "11": 113,
-      "00": 143
+      "11": 126,
+      "00": 130
     }
   }
 ]
