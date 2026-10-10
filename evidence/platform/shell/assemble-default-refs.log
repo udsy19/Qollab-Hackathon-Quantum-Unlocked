@@ -1,0 +1,8 @@
+ref   platform  HEAD @ cb20a32ed  (6 file(s) under echo/)
+ref   quantum   lane/quantum/integration @ d9b42d016  (15 file(s) under echo/)
+ref   gameplay  lane/gameplay/integration @ cbd8098a1  (6 file(s) under echo/)
+ref   story-ui  lane/story-ui/integration @ 320613e82  (10 file(s) under echo/)
+ref   art       lane/art/integration @ 163ca42cb  (0 file(s) under echo/)
+CONFLICT    echo/CONTRACTS.md  in 3 refs with different bytes: platform:8a2096f gameplay:65f85a6 story-ui:8a2096f; took platform
+CONFLICT    echo/contracts.js  in 3 refs with different bytes: platform:fcbcd50 gameplay:f5d9633 story-ui:fcbcd50; took platform
+RED  33 file(s) in /tmp/echo-shell-asm-3/echo; 2 violation(s)

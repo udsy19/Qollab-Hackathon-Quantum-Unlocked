@@ -1,20 +1,19 @@
-<!-- Body fragment only: Qollab drops html/head/body tags and never runs <script>. All code lives in main.js. -->
-<main id="echo-smoke" aria-labelledby="smoke-title">
-  <div id="scene-wrap">
-    <canvas id="scene" role="img" aria-label="Three.js test scene: a glowing cyan cube turning above a dark floor"></canvas>
-  </div>
-  <section id="panel" aria-labelledby="smoke-title">
-    <h1 id="smoke-title">ECHO · G0 platform smoke</h1>
-    <p class="meta">Build <code id="build-token">…</code> · backend <code id="backend-name">…</code></p>
-
-    <h2>1 · Local Qiskit through the Python bridge</h2>
-    <p class="hint">quantum/smoke.py → <code>bell_probabilities.callPromising()</code> → <code>.toJs()</code></p>
-    <pre id="bridge-out" aria-live="polite">Waiting for Python…</pre>
-
-    <h2>2 · One job on the selected backend</h2>
-    <p class="hint">Sends exactly one measured Bell circuit with <code>backend.run</code>. IonQ backends allow one job per run.</p>
-    <button id="verify-btn" type="button" disabled>Verify on selected backend</button>
-    <p id="verify-status" role="status" aria-live="polite"></p>
-    <pre id="backend-out" aria-live="polite"></pre>
+<!-- Body fragment only: Qollab drops html/head/body tags and never runs <script>. All code lives in main.js.
+     Layout is inline here because main.css belongs to story-ui; story-ui mounts every UI module into #echo-ui. -->
+<div id="echo-root" style="position:fixed;inset:0;overflow:hidden;background:#05070f">
+  <canvas id="echo-canvas" style="display:block;width:100%;height:100%" role="img"
+          aria-label="Nacre City, a rain-dark street at night"></canvas>
+  <div id="echo-ui"></div>
+  <section id="echo-system" aria-label="System status"
+           style="position:absolute;right:0.75em;bottom:0.75em;z-index:20;max-width:34em;padding:0.5em 0.75em;
+                  font:12px/1.45 ui-monospace,Menlo,Consolas,monospace;color:#e8f1ff;background:rgba(6,13,24,0.88);
+                  border:1px solid rgba(120,196,255,0.45)">
+    <p style="margin:0">build <code id="echo-build">…</code> · backend <code id="echo-backend">…</code></p>
+    <p style="margin:0">quest <code id="echo-quest">…</code></p>
+    <p style="margin:0">render <code id="echo-render">…</code></p>
+    <p style="margin:0" id="echo-quantum" role="status" aria-live="polite">Calibrating quantum module…</p>
+    <button id="echo-verify" type="button" disabled style="margin-top:0.4em;font:inherit">Verify on selected backend (1 job per run)</button>
+    <p style="margin:0" id="echo-verify-status" role="status" aria-live="polite"></p>
+    <pre id="echo-verify-out" style="margin:0;white-space:pre-wrap"></pre>
   </section>
-</main>
+</div>

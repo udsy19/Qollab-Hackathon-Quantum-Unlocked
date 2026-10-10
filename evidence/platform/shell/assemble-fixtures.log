@@ -1,0 +1,9 @@
+PASS  clean                   
+PASS  conflict-main-css       
+PASS  duplicate-identical     
+PASS  duplicate-drifted       
+PASS  non-owner               
+PASS  art-file-from-gameplay  
+PASS  unowned                 
+PASS  missing-ref             
+GREEN  8/8 fixture(s) behaved

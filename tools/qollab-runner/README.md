@@ -4,8 +4,8 @@ Runs `echo/` in Chrome the way Qollab runs a JS / Qiskit project, so "works here
 
 ```bash
 node tools/qollab-runner/server.mjs --port <your own port>      # then open http://127.0.0.1:<port>/
-node tools/qollab-runner/check.cjs  --port <port> --backend builtin|ionq-mock --out <dir> [--expect-build <token>]
-bash tools/qollab-runner/sabotage.sh <base-port> <out-dir>      # falsification round on disposable copies
+node tools/qollab-runner/check.cjs  --port <port> --backend builtin|ionq-mock --out <dir> [--expect-build <token>]   # drives the integration shell
+bash tools/qollab-runner/sabotage.sh <base-port> <out-dir> <assembled echo/ dir>   # falsification round on disposable copies
 ```
 
 `--project <dir>` serves another project folder (the default is `echo/`). On first start the server makes one GET to fetch Qollab's Qiskit wheel (6.1 MB) into `.cache/` (gitignored). After that the page needs only jsdelivr and PyPI. Use Chrome or another JSPI browser, as on Qollab.

@@ -1,0 +1,36 @@
+CASE control-builtin backend=builtin exit=0 -> AS EXPECTED
+CASE control-ionq-mock backend=ionq-mock exit=0 -> AS EXPECTED
+CASE no-echo-ui backend=builtin exit=2 -> CAUGHT
+    FAIL  main.js ran to the end without error  — Cannot read properties of null (reading 'append')
+    FAIL  story-ui menu is mounted inside #echo-ui and shows the title  — null
+    FAIL  quest shows BOOT —BOOT_COMPLETE→ TITLE  — …
+    NO VERDICT: No element found for selector: #echo-ui [data-action="start"]
+CASE local-quest-state-drifted backend=builtin exit=2 -> CAUGHT
+    FAIL  story-ui menu is mounted inside #echo-ui and shows the title  — {"visible":"false","screen":null,"h1":"ECHOONE OF ONE"}
+    NO VERDICT: Node is either not clickable or not an Element
+CASE local-quest-state-same backend=builtin exit=0 -> AS EXPECTED
+CASE no-dict-converter backend=builtin exit=0 -> AS EXPECTED
+CASE dict-as-map backend=builtin exit=1 -> CAUGHT
+    FAIL  quantum module answers through the bridge: |+> copy overlap 0.5, purity 0.5  — Scientific module error in quantum.cloning.run_calibration: Error: cloning.run_calibration broke the shared contract: result must be a plain object, got a Map (Pyodide toJs() without { dict_converter: Object.fromEntries })
+    FAIL  first press: counts from one job, 256 shots  — {}
+    FAIL  first press: only 00/11, each 88..168 of 256  — {}
+CASE no-guard-ionq-mock backend=ionq-mock exit=1 -> CAUGHT
+    FAIL  second press: page shows a visible refusal  — Quantum backend verification unavailable (Error: The code has already filed one circuit execution job; only one job is allowed per code run); the circuits are still validated locally.
+    FAIL  second press: runner saw no second backend.run  — {"jobs":2,"refused":1}
+CASE no-guard-builtin backend=builtin exit=1 -> CAUGHT
+    FAIL  second press: page shows a visible refusal  — 1 job done, but its result breaks the shared contract: experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification"; engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification"
+    FAIL  second press: runner saw no second backend.run  — {"jobs":2,"refused":0}
+CASE no-render backend=builtin exit=1 -> CAUGHT
+    FAIL  Three.js canvas paints the room once the menu closes (cyan pixels in the middle > 20000)  — {"w":1400,"h":936,"cyan":0}
+CASE quality-unrouted backend=builtin exit=2 -> NULL (expected exit 1)
+    FAIL  build token visible  — null
+    FAIL  backend name rendered from injected backend  — null
+    FAIL  story-ui menu is mounted inside #echo-ui and shows the title  — null
+    FAIL  quest shows BOOT —BOOT_COMPLETE→ TITLE  — null
+    NO VERDICT: No element found for selector: #echo-ui [data-action="start"]
+CASE restart-unwired backend=builtin exit=1 -> CAUGHT
+    FAIL  Restart returns to the title screen  — {"visible":"false","screen":null,"h1":"ECHOONE OF ONE"}
+    FAIL  quest shows OPENING → TITLE (reset)  — TITLE —START→ OPENING
+CASE wrong-build backend=builtin exit=2 -> CAUGHT
+    FAIL  build token visible  — null
+    ABORT: served build null is not the expected not-the-served-build

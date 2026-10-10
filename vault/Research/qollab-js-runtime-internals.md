@@ -51,6 +51,8 @@ This is shipped code, not documentation, so it can change with any deploy. The h
 
 ## Open
 
+- **Correction, 2026-10-10 (integration-shell, measured on the local runner):** the `.toJs()` row above is wrong for Pyodide v314.0.7. With no options, a Python dict came back as a plain `Object` (`Object.getPrototypeOf(d) === Object.prototype`, not a `Map`), nested dicts too. Keep `dict_converter: Object.fromEntries`, which pins the behaviour. Not yet seen on Qollab itself. Evidence: [[Reports/integration-shell]].
+
 - Is the frame sandboxed without `allow-same-origin`? The docs say origin `null`, but puppeteer reported the frame URL as `https://qollab.xyz/jsworker.html`. The runner follows the docs.
 - What do IonQ remote simulators show in Select QPU when signed in? (Owner question, carried from [[qollab-platform-and-submission]].)
 
