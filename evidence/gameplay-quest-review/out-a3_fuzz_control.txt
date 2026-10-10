@@ -1,0 +1,2 @@
+positive control: skip edge FREE_ROAM_ALLEY --OPEN_ROOFTOP--> ROOFTOP_UNLOCKED planted in a disposable copy (/tmp/qr-fz.xyWf)
+F. fuzz: 1000 runs, 300000 steps, 184690 accepted, 11496 commits, 17864 steps in CREDITS, invariant violations = 6054

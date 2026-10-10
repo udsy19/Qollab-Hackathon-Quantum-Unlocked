@@ -1,0 +1,29 @@
+clone zero   qiskit F=1.000000 purity=1.000000 | fake F=1 purity=1 copied=True engine=documented_preview OK
+clone one    qiskit F=1.000000 purity=1.000000 | fake F=1 purity=1 copied=True engine=documented_preview OK
+clone plus   qiskit F=0.500000 purity=0.500000 | fake F=0.5 purity=0.5 copied=False engine=documented_preview OK
+clone phase  qiskit F=0.250000 purity=0.500000 | fake F=0.25 purity=0.5 copied=False engine=documented_preview OK
+bell sender=I qiskit bob=I/2:True P0=0.500000 | fake P0=0.5 OK
+bell sender=X qiskit bob=I/2:True P0=0.500000 | fake P0=0.5 OK
+bell sender=Z qiskit bob=I/2:True P0=0.500000 | fake P0=0.5 OK
+teleport cases 112 mismatches total 0
+WRONG corrections that still score fidelity 1: 20
+  state=zero m0=0 m1=0 chose X=False Z=True
+  state=zero m0=1 m1=0 chose X=False Z=False
+  state=zero m0=0 m1=1 chose X=True Z=True
+  state=zero m0=1 m1=1 chose X=True Z=False
+  state=one m0=0 m1=0 chose X=False Z=True
+  state=one m0=1 m1=0 chose X=False Z=False
+  state=one m0=0 m1=1 chose X=True Z=True
+  state=one m0=1 m1=1 chose X=True Z=False
+  state=plus m0=0 m1=0 chose X=True Z=False
+  state=plus m0=1 m1=0 chose X=True Z=True
+  state=plus m0=0 m1=1 chose X=False Z=False
+  state=plus m0=1 m1=1 chose X=False Z=True
+  state=minus m0=0 m1=0 chose X=True Z=False
+  state=minus m0=1 m1=0 chose X=True Z=True
+  state=minus m0=0 m1=1 chose X=False Z=False
+  state=minus m0=1 m1=1 chose X=False Z=True
+  state=phase m0=0 m1=0 chose X=True Z=True
+  state=phase m0=1 m1=0 chose X=True Z=False
+  state=phase m0=0 m1=1 chose X=False Z=True
+  state=phase m0=1 m1=1 chose X=False Z=False
