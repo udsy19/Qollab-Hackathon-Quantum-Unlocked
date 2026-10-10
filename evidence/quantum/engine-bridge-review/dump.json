@@ -1,0 +1,514 @@
+{
+ "cloning": {
+  "zero": {
+   "experiment": "cloning",
+   "engine": "exact_qiskit_local",
+   "circuitDescription": "prepare |0> on q0 (source); CX(q0 -> q1 blank copy)",
+   "qubits": 2,
+   "parameters": {
+    "state": "zero"
+   },
+   "facts": [
+    "Two matching basis values: this input was already a Z-basis state, so the circuit only copied a known classical value.",
+    "This does not work for an unknown state; try a superposition.",
+    "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+   ],
+   "probabilities": {
+    "00": 1.0,
+    "01": 0.0,
+    "10": 0.0,
+    "11": 0.0
+   },
+   "keyQubits": [
+    1,
+    0
+   ],
+   "observables": {
+    "purityQ0": 1.0,
+    "purityQ1": 1.0,
+    "fidelityQ0WithInput": 1.0,
+    "fidelityQ1WithInput": 1.0,
+    "jointFidelityWithTwoCopies": 1.0
+   }
+  },
+  "one": {
+   "experiment": "cloning",
+   "engine": "exact_qiskit_local",
+   "circuitDescription": "prepare |1> on q0 (source); CX(q0 -> q1 blank copy)",
+   "qubits": 2,
+   "parameters": {
+    "state": "one"
+   },
+   "facts": [
+    "Two matching basis values: this input was already a Z-basis state, so the circuit only copied a known classical value.",
+    "This does not work for an unknown state; try a superposition.",
+    "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+   ],
+   "probabilities": {
+    "00": 0.0,
+    "01": 0.0,
+    "10": 0.0,
+    "11": 1.0
+   },
+   "keyQubits": [
+    1,
+    0
+   ],
+   "observables": {
+    "purityQ0": 1.0,
+    "purityQ1": 1.0,
+    "fidelityQ0WithInput": 1.0,
+    "fidelityQ1WithInput": 1.0,
+    "jointFidelityWithTwoCopies": 1.0
+   }
+  },
+  "plus": {
+   "experiment": "cloning",
+   "engine": "exact_qiskit_local",
+   "circuitDescription": "prepare |+> = (|0>+|1>)/\u221a2 on q0 (source); CX(q0 -> q1 blank copy)",
+   "qubits": 2,
+   "parameters": {
+    "state": "plus"
+   },
+   "facts": [
+    "Not two independent copies: the result overlaps |psi>\u2297|psi> with fidelity 0.500000.",
+    "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+    "The two outputs are entangled with each other, not copies of the input.",
+    "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+   ],
+   "probabilities": {
+    "00": 0.5,
+    "01": 0.0,
+    "10": 0.0,
+    "11": 0.5
+   },
+   "keyQubits": [
+    1,
+    0
+   ],
+   "observables": {
+    "purityQ0": 0.5,
+    "purityQ1": 0.5,
+    "fidelityQ0WithInput": 0.5,
+    "fidelityQ1WithInput": 0.5,
+    "jointFidelityWithTwoCopies": 0.5
+   }
+  },
+  "phase": {
+   "experiment": "cloning",
+   "engine": "exact_qiskit_local",
+   "circuitDescription": "prepare (|0>+i|1>)/\u221a2 on q0 (source); CX(q0 -> q1 blank copy)",
+   "qubits": 2,
+   "parameters": {
+    "state": "phase"
+   },
+   "facts": [
+    "Not two independent copies: the result overlaps |psi>\u2297|psi> with fidelity 0.250000.",
+    "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+    "The two outputs are entangled with each other, not copies of the input.",
+    "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+   ],
+   "probabilities": {
+    "00": 0.5,
+    "01": 0.0,
+    "10": 0.0,
+    "11": 0.5
+   },
+   "keyQubits": [
+    1,
+    0
+   ],
+   "observables": {
+    "purityQ0": 0.5,
+    "purityQ1": 0.5,
+    "fidelityQ0WithInput": 0.5,
+    "fidelityQ1WithInput": 0.5,
+    "jointFidelityWithTwoCopies": 0.25
+   }
+  }
+ },
+ "relay": {
+  "I": {
+   "experiment": "bell_signalling",
+   "engine": "exact_qiskit_local",
+   "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies I on q0 (sender), q1 = receiver",
+   "qubits": 2,
+   "parameters": {
+    "senderGate": "I"
+   },
+   "facts": [
+    "Receiver alone, EXACT (partial trace, not sampled): P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+    "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+    "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 1.000000.",
+    "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+   ],
+   "probabilities": {
+    "0": 0.5,
+    "1": 0.5
+   },
+   "keyQubits": [
+    1
+   ],
+   "observables": {
+    "receiverPurity": 0.5,
+    "receiverBlochX": 0.0,
+    "receiverBlochY": 0.0,
+    "receiverBlochZ": 0.0,
+    "zBasisAgreement": 1.0,
+    "xBasisAgreement": 1.0
+   }
+  },
+  "X": {
+   "experiment": "bell_signalling",
+   "engine": "exact_qiskit_local",
+   "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies X on q0 (sender), q1 = receiver",
+   "qubits": 2,
+   "parameters": {
+    "senderGate": "X"
+   },
+   "facts": [
+    "Receiver alone, EXACT (partial trace, not sampled): P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+    "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+    "Comparing both logs afterwards: Z-basis bits agree with probability 0.000000, X-basis bits with probability 1.000000.",
+    "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+   ],
+   "probabilities": {
+    "0": 0.5,
+    "1": 0.5
+   },
+   "keyQubits": [
+    1
+   ],
+   "observables": {
+    "receiverPurity": 0.5,
+    "receiverBlochX": 0.0,
+    "receiverBlochY": 0.0,
+    "receiverBlochZ": 0.0,
+    "zBasisAgreement": 0.0,
+    "xBasisAgreement": 1.0
+   }
+  },
+  "Z": {
+   "experiment": "bell_signalling",
+   "engine": "exact_qiskit_local",
+   "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies Z on q0 (sender), q1 = receiver",
+   "qubits": 2,
+   "parameters": {
+    "senderGate": "Z"
+   },
+   "facts": [
+    "Receiver alone, EXACT (partial trace, not sampled): P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+    "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+    "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 0.000000.",
+    "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+   ],
+   "probabilities": {
+    "0": 0.5,
+    "1": 0.5
+   },
+   "keyQubits": [
+    1
+   ],
+   "observables": {
+    "receiverPurity": 0.5,
+    "receiverBlochX": 0.0,
+    "receiverBlochY": 0.0,
+    "receiverBlochZ": 0.0,
+    "zBasisAgreement": 1.0,
+    "xBasisAgreement": 0.0
+   }
+  }
+ },
+ "dryBits": {
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "circuitDescription": "prepare RY(1.930861) then RZ(-2.193779) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+  "qubits": 3,
+  "parameters": {
+   "state": "calibration",
+   "theta": 1.9308606905,
+   "phi": -2.1937793404
+  },
+  "facts": [
+   "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0. Choose the receiver's X and Z for these two bits.",
+   "The calibration state lies away from every axis of the Bloch sphere, so any wrong X/Z choice visibly lowers the receiver's fidelity.",
+   "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+  ],
+  "probabilities": {
+   "00": 0.25,
+   "01": 0.25,
+   "10": 0.25,
+   "11": 0.25
+  },
+  "keyQubits": [
+   1,
+   0
+  ],
+  "observables": {
+   "inputBlochX": -0.5460454882,
+   "inputBlochY": -0.7600623302,
+   "inputBlochZ": -0.3523344703
+  },
+  "measurementBits": {
+   "m0": 1,
+   "m1": 0
+  }
+ },
+ "dry": [
+  {
+   "request": {
+    "theta": 1.9308606905,
+    "phi": -2.1937793404,
+    "m0": 1,
+    "m1": 0,
+    "applyX": false,
+    "applyZ": false
+   },
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "prepare RY(1.930861) then RZ(-2.193779) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0; Bob applies no correction",
+    "qubits": 3,
+    "parameters": {
+     "state": "calibration",
+     "theta": 1.9308606905,
+     "phi": -2.1937793404,
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": false
+    },
+    "facts": [
+     "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0: the rule asks for X OFF, Z ON.",
+     "Receiver fidelity with the test state: 0.124140, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+     "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
+    ],
+    "probabilities": {
+     "00": 0.25,
+     "01": 0.25,
+     "10": 0.25,
+     "11": 0.25
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "fidelity": 0.124139579,
+    "observables": {
+     "branchProbability": 0.25,
+     "sourceFidelityAfterMeasurement": 0.6761672352,
+     "receiverBlochX": 0.5460454882,
+     "receiverBlochY": 0.7600623302,
+     "receiverBlochZ": -0.3523344703,
+     "inputBlochX": -0.5460454882,
+     "inputBlochY": -0.7600623302,
+     "inputBlochZ": -0.3523344703
+    },
+    "measurementBits": {
+     "m0": 1,
+     "m1": 0
+    }
+   }
+  },
+  {
+   "request": {
+    "theta": 1.9308606905,
+    "phi": -2.1937793404,
+    "m0": 1,
+    "m1": 0,
+    "applyX": false,
+    "applyZ": true
+   },
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "prepare RY(1.930861) then RZ(-2.193779) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0; Bob applies Z",
+    "qubits": 3,
+    "parameters": {
+     "state": "calibration",
+     "theta": 1.9308606905,
+     "phi": -2.1937793404,
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": true
+    },
+    "facts": [
+     "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0: the rule asks for X OFF, Z ON.",
+     "Receiver fidelity with the test state: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+     "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
+    ],
+    "probabilities": {
+     "00": 0.25,
+     "01": 0.25,
+     "10": 0.25,
+     "11": 0.25
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "fidelity": 1.0,
+    "observables": {
+     "branchProbability": 0.25,
+     "sourceFidelityAfterMeasurement": 0.6761672352,
+     "receiverBlochX": -0.5460454882,
+     "receiverBlochY": -0.7600623302,
+     "receiverBlochZ": -0.3523344703,
+     "inputBlochX": -0.5460454882,
+     "inputBlochY": -0.7600623302,
+     "inputBlochZ": -0.3523344703
+    },
+    "measurementBits": {
+     "m0": 1,
+     "m1": 0
+    }
+   }
+  },
+  {
+   "request": {
+    "theta": 1.9308606905,
+    "phi": -2.1937793404,
+    "m0": 1,
+    "m1": 0,
+    "applyX": true,
+    "applyZ": false
+   },
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "prepare RY(1.930861) then RZ(-2.193779) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0; Bob applies X",
+    "qubits": 3,
+    "parameters": {
+     "state": "calibration",
+     "theta": 1.9308606905,
+     "phi": -2.1937793404,
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": false
+    },
+    "facts": [
+     "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0: the rule asks for X OFF, Z ON.",
+     "Receiver fidelity with the test state: 0.577695, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+     "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
+    ],
+    "probabilities": {
+     "00": 0.25,
+     "01": 0.25,
+     "10": 0.25,
+     "11": 0.25
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "fidelity": 0.5776947458,
+    "observables": {
+     "branchProbability": 0.25,
+     "sourceFidelityAfterMeasurement": 0.6761672352,
+     "receiverBlochX": 0.5460454882,
+     "receiverBlochY": -0.7600623302,
+     "receiverBlochZ": 0.3523344703,
+     "inputBlochX": -0.5460454882,
+     "inputBlochY": -0.7600623302,
+     "inputBlochZ": -0.3523344703
+    },
+    "measurementBits": {
+     "m0": 1,
+     "m1": 0
+    }
+   }
+  },
+  {
+   "request": {
+    "theta": 1.9308606905,
+    "phi": -2.1937793404,
+    "m0": 1,
+    "m1": 0,
+    "applyX": true,
+    "applyZ": true
+   },
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "prepare RY(1.930861) then RZ(-2.193779) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0; Bob applies X then Z",
+    "qubits": 3,
+    "parameters": {
+     "state": "calibration",
+     "theta": 1.9308606905,
+     "phi": -2.1937793404,
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": true
+    },
+    "facts": [
+     "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0: the rule asks for X OFF, Z ON.",
+     "Receiver fidelity with the test state: 0.298166, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+     "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
+    ],
+    "probabilities": {
+     "00": 0.25,
+     "01": 0.25,
+     "10": 0.25,
+     "11": 0.25
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "fidelity": 0.2981656752,
+    "observables": {
+     "branchProbability": 0.25,
+     "sourceFidelityAfterMeasurement": 0.6761672352,
+     "receiverBlochX": -0.5460454882,
+     "receiverBlochY": 0.7600623302,
+     "receiverBlochZ": 0.3523344703,
+     "inputBlochX": -0.5460454882,
+     "inputBlochY": -0.7600623302,
+     "inputBlochZ": -0.3523344703
+    },
+    "measurementBits": {
+     "m0": 1,
+     "m1": 0
+    }
+   }
+  }
+ ],
+ "commit": {
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
+  "qubits": 3,
+  "parameters": {
+   "state": "token",
+   "seed": 11
+  },
+  "facts": [
+   "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z OFF.",
+   "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+   "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+   "The token has been consumed: this commit cannot be repeated in this run.",
+   "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+  ],
+  "probabilities": {
+   "00": 0.25,
+   "01": 0.25,
+   "10": 0.25,
+   "11": 0.25
+  },
+  "keyQubits": [
+   1,
+   0
+  ],
+  "fidelity": 1.0,
+  "observables": {
+   "branchProbability": 0.25
+  },
+  "measurementBits": {
+   "m0": 0,
+   "m1": 1
+  }
+ }
+}

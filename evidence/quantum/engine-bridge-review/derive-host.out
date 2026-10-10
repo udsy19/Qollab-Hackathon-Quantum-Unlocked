@@ -1,0 +1,4 @@
+source=host  states=8  compared=715  worst|diff|=4.982e-11  mismatches=0
+rule choices with F=1: 32/32   max F over the 96 wrong choices: 0.885080
+clone plus: purity mine=0.5
+clone phase: purity mine=0.5
