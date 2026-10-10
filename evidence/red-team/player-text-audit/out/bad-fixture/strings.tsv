@@ -1,0 +1,19 @@
+echo/data/story.js:2	RELAY READOUT m1
+echo/data/story.js:2	SOURCE READOUT m0
+echo/data/story.js:2	Receiver counts: 129 / 127 shots
+echo/data/story.js:3	Apply X if m0 = 1.
+echo/data/story.js:3	Apply Z if m1 = 1.
+echo/data/story.js:3	Result key 01
+echo/data/story.js:4	The entanglement sends the secret instantly.
+echo/data/story.js:4	You cloned the unknown state!
+echo/data/story.js:5	Certified quantum random bits.
+echo/data/story.js:5	The particle travelled across the city.
+echo/data/story.js:6	Retry the story token as often as you like.
+echo/data/story.js:6	Verified on IonQ hardware.
+echo/data/story.js:7	This game is WCAG 2.2 AA compliant.
+echo/data/story.js:7	Contact udaya@example.com
+echo/data/story.js:8	Team The Quantubians (NYU Tandon School of Engineering) ‐ Udaya (captain), George, Harman, Epa
+echo/data/story.js:9	LOCAL BELL‐HALF READOUT m1
+echo/data/teachback.js:1	Quiz
+echo/data/teachback.js:1	Because physics.
+echo/ui/hud.js:1	Ехасt

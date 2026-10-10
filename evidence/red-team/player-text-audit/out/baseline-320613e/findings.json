@@ -1,0 +1,92 @@
+[
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "Mission 2 receiver panel labelled EXACT",
+  "rule": "MISSING R-EXACT",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "OA:41 (4)",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "Team The Quantubians (NYU Tandon School of Engineering) — Udaya (captain), George, Harman, Epa",
+  "rule": "MISSING R-CREDITS",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "OA:50",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/main.css",
+  "line": 298,
+  "str": ".echo-ui[data-subtitles=\"off\"] .echo-dialogue { display: none; }",
+  "rule": "C-CAPTIONS-OFF",
+  "why": "a setting hides the dialogue captions; the owner ruled captions always on (setting = style only)",
+  "cite": "OA:41 \"Captions are always on\"; V:436",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/teachback.js",
+  "line": 46,
+  "str": "Entanglement sends the secret instantly.",
+  "rule": "F-FTL (voiced misconception, refuted)",
+  "why": "matches /\\b(message|signal|transmi\\w+|sen[dt]\\w*|deliver\\w*|commun\\w+)\\b[^.]{0,40}\\binstant\\w*\\b/i; refutation at line 47",
+  "cite": "V:135; V:511; ctx Truthful physics; V:283 \"misconception corrected\"",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/teachback.js",
+  "line": 65,
+  "str": "Teleportation moves the capsule, or leaves Rin a spare copy.",
+  "rule": "F-MATTER (voiced misconception, refuted)",
+  "why": "matches /\\b(teleport\\w*|beam\\w*)\\b[^.]{0,20}\\b(particle|atom|matter|person|body|rin|herself|himself|object|capsule|photon|people|you)\\b/i; refutation at line 66",
+  "cite": "V:135 (\"never conflate ... with material teleportation\"); V:127; V:283 \"misconception corrected\"",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/teachback.js",
+  "line": 92,
+  "str": "Entanglement delivers the message, but too slowly.",
+  "rule": "F-FTL (voiced misconception, refuted)",
+  "why": "matches /\\bentangl\\w*\\b[^.]{0,30}\\b(sends?|sent|transmits?|transmitted|carr(y|ies|ied)|delivers?|delivered|beams?|signals?|messages?|tells?)\\b(?![^.]{0,12}\\b(possible|nothing)\\b)/i; refutation at line 92",
+  "cite": "V:135; V:511; ctx Truthful physics; V:283 \"misconception corrected\"",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/teachback.js",
+  "line": 115,
+  "str": "TODO_OWNER: third-party assets and their licenses (art lane to list; none yet)",
+  "rule": "F-PLACEHOLDER",
+  "why": "matches /\\bTODO|FIXME|\\bTBD\\b|lorem ipsum|\\bplaceholder\\b/i",
+  "cite": "CLAUDE.md \"should not expose broken unfinished experiences in public build\"; V:1202",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "Quantum Unlocked",
+  "rule": "MISSING R-THEME",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "V:6; OA:47 (1)",
+  "sev": "LOW",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/objectives.js",
+  "line": 162,
+  "str": "First pass a dry run whose bits are not 00: the token can be measured only once.",
+  "rule": "C-RAW-KEY",
+  "why": "symmetric key, unlabeled (UX) (physics-oracle/out/endianness_table.txt)",
+  "cite": "V:454; V:428",
+  "sev": "LOW",
+  "owner": "story-ui"
+ }
+]

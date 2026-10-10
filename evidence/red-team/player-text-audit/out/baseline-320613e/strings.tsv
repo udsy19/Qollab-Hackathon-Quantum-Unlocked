@@ -1,0 +1,856 @@
+echo/data/objectives.js:9	FIND AN AUTHORIZED REPLICATION BOOTH
+echo/data/objectives.js:9	§4.1
+echo/data/objectives.js:10	TEST THE BOOTH ON |0> AND |1>
+echo/data/objectives.js:11	TEST THE BOOTH ON |+>
+echo/data/objectives.js:12	DECIDE WHAT TO DO ABOUT THE FAILED COPY
+echo/data/objectives.js:13	LEAVE THE BOOTH
+echo/data/objectives.js:14	FIND THE OLD ENTANGLEMENT RELAY
+echo/data/objectives.js:15	RESTORE THE ENTANGLEMENT RELAY
+echo/data/objectives.js:15	§6.3
+echo/data/objectives.js:16	TRY TO SEND A MESSAGE WITH THE PAIR ALONE
+echo/data/objectives.js:17	CHECK WHAT THE RECEIVER ACTUALLY SEES
+echo/data/objectives.js:18	TAKE THE AMBER LINE UP TO THE ROOFTOP
+echo/data/objectives.js:19	ROUTE THE AMBER LINE THROUGH THREE JUNCTIONS
+echo/data/objectives.js:20	OPEN THE TRANSMISSION CONSOLE
+echo/data/objectives.js:21	SET THE RECEIVER CORRECTIONS ON A TEST STATE
+echo/data/objectives.js:22	COMMIT THE ONE-WAY TRANSFER
+echo/data/objectives.js:23	TRANSFER IN PROGRESS
+echo/data/objectives.js:28	FREE_ROAM_ALLEY
+echo/data/objectives.js:30	inspect
+echo/data/objectives.js:30	Scan the street (Q). One shopfront on this block is still lit.
+echo/data/objectives.js:31	resource
+echo/data/objectives.js:31	Palisade replication booths copy things. Rin wants to test one.
+echo/data/objectives.js:32	operation
+echo/data/objectives.js:32	Walk to the glowing booth and press E.
+echo/data/objectives.js:36	CLONE_INTRO
+echo/data/objectives.js:38	inspect
+echo/data/objectives.js:38	Check the TEST INPUT row. Which states can the booth load?
+echo/data/objectives.js:39	resource
+echo/data/objectives.js:39	Start with the plain basis states |0> and |1>.
+echo/data/objectives.js:40	operation
+echo/data/objectives.js:40	Load |0> and press DUPLICATE. Then do the same with |1>.
+echo/data/objectives.js:44	CLONE_BASIS_PASSED
+echo/data/objectives.js:46	inspect
+echo/data/objectives.js:46	One test input has not been tried yet.
+echo/data/objectives.js:47	resource
+echo/data/objectives.js:47	|+> is a superposition, like the real token. 0 and 1 were special cases.
+echo/data/objectives.js:48	operation
+echo/data/objectives.js:48	Load |+> and press DUPLICATE.
+echo/data/objectives.js:52	CLONE_SUPERPOSITION_FAILED
+echo/data/objectives.js:54	inspect
+echo/data/objectives.js:54	Press WHY DID THAT FAIL? and read each output on its own.
+echo/data/objectives.js:55	resource
+echo/data/objectives.js:55	More power changes nothing. One unknown state cannot become two.
+echo/data/objectives.js:56	operation
+echo/data/objectives.js:56	Choose REROUTE, DO NOT DUPLICATE.
+echo/data/objectives.js:60	CLONE_UNDERSTOOD
+echo/data/objectives.js:62	inspect
+echo/data/objectives.js:62	Open the journal (Tab). VEGA left you something.
+echo/data/objectives.js:63	resource
+echo/data/objectives.js:63	VEGA sent coordinates for an old entanglement relay.
+echo/data/objectives.js:64	operation
+echo/data/objectives.js:64	Leave the booth and head for the substation passage.
+echo/data/objectives.js:68	RELAY_UNLOCKED
+echo/data/objectives.js:70	inspect
+echo/data/objectives.js:70	Follow the guide arrows. Scan (Q) if you lose them.
+echo/data/objectives.js:71	resource
+echo/data/objectives.js:71	The relay chamber is under the substation.
+echo/data/objectives.js:72	operation
+echo/data/objectives.js:72	Go down the substation passage and press E at the relay core.
+echo/data/objectives.js:76	RELAY_INTRO
+echo/data/objectives.js:78	inspect
+echo/data/objectives.js:78	Check the relay console. Which control is lit?
+echo/data/objectives.js:79	resource
+echo/data/objectives.js:79	The test rig needs an entangled pair before anything else.
+echo/data/objectives.js:80	operation
+echo/data/objectives.js:80	Press PREPARE BELL PAIR.
+echo/data/objectives.js:84	RELAY_BELL_CREATED
+echo/data/objectives.js:86	inspect
+echo/data/objectives.js:86	Your half has three actions: I, X and Z. The receiver panel is on the right.
+echo/data/objectives.js:87	resource
+echo/data/objectives.js:87	So far the pair is the only link you are using.
+echo/data/objectives.js:88	operation
+echo/data/objectives.js:88	Pick any sender action and press SEND.
+echo/data/objectives.js:92	RELAY_SEND_FAILED
+echo/data/objectives.js:94	inspect
+echo/data/objectives.js:94	Try I, X and Z in turn. Compare the receiver-only numbers each time.
+echo/data/objectives.js:95	resource
+echo/data/objectives.js:95	What does the receiver actually know? Only its own results.
+echo/data/objectives.js:96	operation
+echo/data/objectives.js:96	Open RECEIVER-ONLY DATA and confirm it reads 50% / 50%.
+echo/data/objectives.js:100	RELAY_UNDERSTOOD
+echo/data/objectives.js:102	inspect
+echo/data/objectives.js:102	VEGA's blueprint shows a second line. What colour is it?
+echo/data/objectives.js:103	resource
+echo/data/objectives.js:103	The amber classical line runs up to the rooftop tower.
+echo/data/objectives.js:104	operation
+echo/data/objectives.js:104	Take the elevator corridor up to the roof.
+echo/data/objectives.js:108	ROOFTOP_UNLOCKED
+echo/data/objectives.js:110	inspect
+echo/data/objectives.js:110	Scan (Q) the roof. Three junctions are dark.
+echo/data/objectives.js:111	resource
+echo/data/objectives.js:111	The amber line carries ordinary bits. It has to reach the mast.
+echo/data/objectives.js:112	operation
+echo/data/objectives.js:112	Press E at each junction, following the glow, until the mast lights.
+echo/data/objectives.js:116	LINK_REPAIRED
+echo/data/objectives.js:118	inspect
+echo/data/objectives.js:118	The console by the mast just woke up.
+echo/data/objectives.js:119	resource
+echo/data/objectives.js:119	You have both now: the blue Bell pair and the amber line.
+echo/data/objectives.js:120	operation
+echo/data/objectives.js:120	Press E at the transmission console to start a dry run.
+echo/data/objectives.js:124	TELEPORT_DRY_RUN
+echo/data/objectives.js:126	inspect
+echo/data/objectives.js:126	Read the two bits: m0 is the source readout, m1 is your Bell half.
+echo/data/objectives.js:127	resource
+echo/data/objectives.js:127	The amber line carries m0 and m1 to the receiver. Each bit controls one fix.
+echo/data/objectives.js:128	operation
+echo/data/objectives.js:128	Apply X if m1 = 1 and Z if m0 = 1.
+echo/data/objectives.js:132	TELEPORT_DRY_RUN_PASSED
+echo/data/objectives.js:134	inspect
+echo/data/objectives.js:134	Check the capsule. The token is still STATE PRESENT.
+echo/data/objectives.js:135	resource
+echo/data/objectives.js:135	Your corrections worked on a test state. The token can be measured only once.
+echo/data/objectives.js:136	operation
+echo/data/objectives.js:136	Press COMMIT ONE-WAY TRANSFER.
+echo/data/objectives.js:143	Two outputs, one entangled pair. Each output alone is random, not a copy of |+>.
+echo/data/objectives.js:144	Voltage raised. Same result. The limit is a rule of physics, not a power shortage.
+echo/data/objectives.js:147	Sender did nothing (I). Receiver-only data: 50% / 50%.
+echo/data/objectives.js:148	Sender flipped its half (X). The receiver alone still sees 50% / 50%.
+echo/data/objectives.js:149	Sender phase-flipped its half (Z). The receiver alone still sees 50% / 50%.
+echo/data/objectives.js:150	Receiver-only data: 50% / 50%. No decodable message.
+echo/data/objectives.js:151	The receiver sees random local results; the classical channel is still missing.
+echo/data/objectives.js:154	No signal reaches that junction yet. Patch the one the glow stops at.
+echo/data/objectives.js:157	m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.
+echo/data/objectives.js:158	m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.
+echo/data/objectives.js:159	X was on but m1 = 0. That X added a bit flip the bits never called for.
+echo/data/objectives.js:160	Z was on but m0 = 0. That Z added a phase flip the bits never called for.
+echo/data/objectives.js:161	On this test state that mistake happens to look harmless. It would fail on most others.
+echo/data/objectives.js:162	Commit locked. First pass a dry run whose bits are not 00: the token can be measured only once.
+echo/data/objectives.js:163	Transfer complete. The source was measured; there is nothing left to send.
+echo/data/objectives.js:174	00:00
+echo/data/objectives.js:174	00:01
+echo/data/objectives.js:174	extra_Z
+echo/data/objectives.js:174	00:10
+echo/data/objectives.js:174	extra_X
+echo/data/objectives.js:174	00:11
+echo/data/objectives.js:174	extra_X
+echo/data/objectives.js:174	extra_Z
+echo/data/objectives.js:175	01:00
+echo/data/objectives.js:175	missing_X
+echo/data/objectives.js:175	01:01
+echo/data/objectives.js:175	missing_X
+echo/data/objectives.js:175	extra_Z
+echo/data/objectives.js:175	01:10
+echo/data/objectives.js:175	01:11
+echo/data/objectives.js:175	extra_Z
+echo/data/objectives.js:176	10:00
+echo/data/objectives.js:176	missing_Z
+echo/data/objectives.js:176	10:01
+echo/data/objectives.js:176	10:10
+echo/data/objectives.js:176	extra_X
+echo/data/objectives.js:176	missing_Z
+echo/data/objectives.js:176	10:11
+echo/data/objectives.js:176	extra_X
+echo/data/objectives.js:177	11:00
+echo/data/objectives.js:177	missing_X
+echo/data/objectives.js:177	missing_Z
+echo/data/objectives.js:177	11:01
+echo/data/objectives.js:177	missing_X
+echo/data/objectives.js:177	11:10
+echo/data/objectives.js:177	missing_Z
+echo/data/objectives.js:177	11:11
+echo/data/objectives.js:182	ECHO // DISTRICT 09
+echo/data/objectives.js:182	§6.3
+echo/data/objectives.js:183	OBJECTIVE
+echo/data/objectives.js:184	GRID SHUTDOWN
+echo/data/objectives.js:184	§6.3
+echo/data/objectives.js:185	GRID ISOLATION ABORTED
+echo/data/objectives.js:187	ISOLATION HELD // AWAITING CONFIRMATION
+echo/data/objectives.js:188	Q-SOURCE
+echo/data/objectives.js:189	PRESERVED
+echo/data/objectives.js:189	§6.3
+echo/data/objectives.js:190	MEASURED / CONSUMED
+echo/data/objectives.js:191	[E] INTERACT
+echo/data/objectives.js:191	§6.3
+echo/data/objectives.js:192	HINT
+echo/data/objectives.js:193	HINT {n} OF 3
+echo/data/objectives.js:195	REPLICATION BOOTH
+echo/data/objectives.js:195	§9.4
+echo/data/objectives.js:196	QUANTUM RELAY
+echo/data/objectives.js:196	§9.4
+echo/data/objectives.js:197	LEGACY DATA LINK
+echo/data/objectives.js:197	§9.4
+echo/data/objectives.js:198	TRANSMISSION CONSOLE
+echo/data/objectives.js:202	WASD MOVE
+echo/data/objectives.js:203	SHIFT SPRINT
+echo/data/objectives.js:204	E INTERACT
+echo/data/objectives.js:205	Q FIELD SCAN
+echo/data/objectives.js:206	TAB JOURNAL
+echo/data/objectives.js:207	ESC PAUSE
+echo/data/objectives.js:211	PALISADE DUPLICATION SERVICES. CLASSICAL DATA COPIER. MAINTENANCE PORT OPEN.
+echo/data/objectives.js:212	ENTANGLEMENT RELAY. BELL HALVES IN COLD STORAGE. PARTNERS: VAULT RECEIVER. TEST RIG ON SITE.
+echo/data/objectives.js:213	LEGACY DATA LINK. CLASSICAL. THREE JUNCTIONS DARK.
+echo/data/objectives.js:214	TRANSMISSION CONSOLE. NEEDS: BELL PAIR + CLASSICAL LINK.
+echo/data/objectives.js:221	PALISADE / DUPLICATION UNIT / MAINTENANCE OVERRIDE
+echo/data/objectives.js:221	§6.4
+echo/data/objectives.js:222	TEST INPUT
+echo/data/objectives.js:223	PREPARED CALIBRATION STATE
+echo/data/objectives.js:223	§6.4
+echo/data/objectives.js:224	DUPLICATE
+echo/data/objectives.js:226	TWO BASIS VALUES MATCHED: YES
+echo/data/objectives.js:227	TWO INDEPENDENT COPIES: NO
+echo/data/objectives.js:227	§4.2
+echo/data/objectives.js:228	WHY DID THAT FAIL?
+echo/data/objectives.js:228	§6.4
+echo/data/objectives.js:229	TRY ANOTHER STATE
+echo/data/objectives.js:229	§6.4
+echo/data/objectives.js:230	SHOW ME WHY
+echo/data/objectives.js:231	SKIP DEMONSTRATION
+echo/data/objectives.js:232	INCREASE VOLTAGE
+echo/data/objectives.js:233	REROUTE, DO NOT DUPLICATE
+echo/data/objectives.js:234	CNOT copies a known computational-basis bit, but not an arbitrary unknown qubit.
+echo/data/objectives.js:234	§4.2
+echo/data/objectives.js:237	NACRE MUNICIPAL / ENTANGLEMENT RELAY / TEST RIG
+echo/data/objectives.js:238	PREPARE BELL PAIR
+echo/data/objectives.js:239	SENDER ACTION ON ITS HALF
+echo/data/objectives.js:240	SEND
+echo/data/objectives.js:241	RECEIVER-ONLY DATA
+echo/data/objectives.js:242	COMPARED PAIRED DATA
+echo/data/objectives.js:243	Needs both logs, brought together by an ordinary message.
+echo/data/objectives.js:244	ENTANGLEMENT READY
+echo/data/objectives.js:244	§4.3
+echo/data/objectives.js:245	CLASSICAL LINK: OFFLINE
+echo/data/objectives.js:248	ECHO // TRANSMISSION CONSOLE
+echo/data/objectives.js:248	§6.5
+echo/data/objectives.js:249	STATE
+echo/data/objectives.js:250	STATE PRESENT
+echo/data/objectives.js:250	§4.4
+echo/data/objectives.js:251	STATE MEASURED / CONSUMED
+echo/data/objectives.js:251	§4.4
+echo/data/objectives.js:252	BELL PAIR: READY
+echo/data/objectives.js:252	§6.5
+echo/data/objectives.js:253	CLASSICAL LINK ONLINE
+echo/data/objectives.js:253	§4.4
+echo/data/objectives.js:254	SOURCE
+echo/data/objectives.js:255	LOCAL BELL HALF
+echo/data/objectives.js:256	RECEIVER BELL HALF
+echo/data/objectives.js:257	EXECUTE BELL MEASUREMENT ON TEST STATE
+echo/data/objectives.js:257	§6.5
+echo/data/objectives.js:258	SOURCE READOUT m0
+echo/data/objectives.js:259	LOCAL BELL-HALF READOUT m1
+echo/data/objectives.js:260	RECEIVER CORRECTION PLAN
+echo/data/objectives.js:260	§6.5
+echo/data/objectives.js:261	IF m0 = {m0}, m1 = {m1}: X [{x}] Z [{z}]
+echo/data/objectives.js:262	VERIFY DRY RUN
+echo/data/objectives.js:262	§6.5
+echo/data/objectives.js:263	Receiver test fidelity
+echo/data/objectives.js:263	§6.5
+echo/data/objectives.js:264	COMMIT ONE-WAY TRANSFER
+echo/data/objectives.js:264	§4.4
+echo/data/objectives.js:265	STATE RECOVERED
+echo/data/objectives.js:265	§4.4
+echo/data/objectives.js:266	VAULT: AUTHORIZATION ACCEPTED
+echo/data/story.js:11	Rin Vale
+echo/data/story.js:11	courier, former Palisade quantum network technician
+echo/data/story.js:12	Mica Vale
+echo/data/story.js:12	Rin's sister, in the District Nine shelter (radio only)
+echo/data/story.js:13	VEGA
+echo/data/story.js:13	abandoned maintenance intelligence in old terminals
+echo/data/story.js:14	MIRROR
+echo/data/story.js:14	Palisade public-safety system voice
+echo/data/story.js:18	ECHO: ONE OF ONE
+echo/data/story.js:19	NACRE CITY // 02:17 AM
+echo/data/story.js:19	§4.1
+echo/data/story.js:20	NOTHING EVER HAS TO END
+echo/data/story.js:20	§4.1
+echo/data/story.js:21	CNOT copies a known computational-basis bit, but not an arbitrary unknown qubit.
+echo/data/story.js:21	§4.2
+echo/data/story.js:22	You didn't copy the information. You transferred it.
+echo/data/story.js:22	§4.4
+echo/data/story.js:23	ECHO / ONE OF ONE
+echo/data/story.js:23	§4.4
+echo/data/story.js:29	MIRROR
+echo/data/story.js:29	Public safety measure active. District Nine.
+echo/data/story.js:29	§4.1
+echo/data/story.js:30	MIRROR
+echo/data/story.js:30	Grid isolation in eleven minutes and fifty-nine seconds.
+echo/data/story.js:30	§4.1
+echo/data/story.js:31	MICA
+echo/data/story.js:31	Rin. Backup generator is dying. Did you get it?
+echo/data/story.js:31	§4.1
+echo/data/story.js:32	RIN
+echo/data/story.js:32	I have the authorization.
+echo/data/story.js:32	§4.1
+echo/data/story.js:33	MICA
+echo/data/story.js:33	Then copy it. Send one to the tower. Bring the other to me.
+echo/data/story.js:33	§4.1
+echo/data/story.js:34	RIN
+echo/data/story.js:34	I can't copy this one.
+echo/data/story.js:34	§4.1
+echo/data/story.js:34	looks at capsule
+echo/data/story.js:35	MICA
+echo/data/story.js:35	That's not funny.
+echo/data/story.js:35	§4.1
+echo/data/story.js:36	RIN
+echo/data/story.js:36	It wasn't supposed to be.
+echo/data/story.js:36	§4.1
+echo/data/story.js:37	MICA
+echo/data/story.js:37	Palisade copies everything. It says so on every billboard.
+echo/data/story.js:38	RIN
+echo/data/story.js:38	Palisade copies data. This is a qubit.
+echo/data/story.js:39	RIN
+echo/data/story.js:39	There's a booth on this block. I'll show you.
+echo/data/story.js:44	VEGA
+echo/data/story.js:44	Maintenance override accepted. Hello, courier.
+echo/data/story.js:45	VEGA
+echo/data/story.js:45	Test chamber only. Your token stays sealed in its capsule.
+echo/data/story.js:46	VEGA
+echo/data/story.js:46	I prepare fresh calibration states for every test. Try your old method first.
+echo/data/story.js:49	VEGA
+echo/data/story.js:49	|0> in, |00> out. |1> in, |11> out. Both basis values matched.
+echo/data/story.js:50	RIN
+echo/data/story.js:50	Zero and one always copy. That was never the problem.
+echo/data/story.js:51	VEGA
+echo/data/story.js:51	Then try a state that is not just 0 or 1.
+echo/data/story.js:54	VEGA
+echo/data/story.js:54	Two outputs. Not two copies.
+echo/data/story.js:55	VEGA
+echo/data/story.js:55	Read either output alone and it is 50/50 in every basis: pure noise.
+echo/data/story.js:56	VEGA
+echo/data/story.js:56	Together they form one entangled pair. Neither is a |+>.
+echo/data/story.js:57	VEGA
+echo/data/story.js:57	Your call, courier. More power, or a different route?
+echo/data/story.js:60	VEGA
+echo/data/story.js:60	It's not defective. You're asking the machine to make two unknowns out of one.
+echo/data/story.js:60	§4.2
+echo/data/story.js:61	RIN
+echo/data/story.js:61	Then we stop trying to make two.
+echo/data/story.js:61	§4.2
+echo/data/story.js:62	VEGA
+echo/data/story.js:62	There is an old entanglement relay under the substation. Coordinates sent.
+echo/data/story.js:67	MIRROR
+echo/data/story.js:67	District Nine shelter occupancy classified: evacuable.
+echo/data/story.js:68	MIRROR
+echo/data/story.js:68	Load shedding proceeding on schedule.
+echo/data/story.js:69	MICA
+echo/data/story.js:69	Rin?
+echo/data/story.js:69	§4.2
+echo/data/story.js:69	radio static
+echo/data/story.js:70	RIN
+echo/data/story.js:70	Still here. Copying is out. I'm finding another way.
+echo/data/story.js:75	VEGA
+echo/data/story.js:75	Relay maintenance core online. Fully awake, at last.
+echo/data/story.js:75	power switch wakes the relay; VEGA projects at full size
+echo/data/story.js:76	VEGA
+echo/data/story.js:76	This relay stores one half of many entangled pairs.
+echo/data/story.js:77	VEGA
+echo/data/story.js:77	Each partner half waits at the vault's receiver.
+echo/data/story.js:78	RIN
+echo/data/story.js:78	Palisade shared those pairs years ago, before any of this. Kept cold ever since.
+echo/data/story.js:79	VEGA
+echo/data/story.js:79	Don't spend vault pairs on experiments. Use the test rig.
+echo/data/story.js:80	VEGA
+echo/data/story.js:80	Same physics, with both halves in this room.
+echo/data/story.js:83	VEGA
+echo/data/story.js:83	Test pair ready. Left half is yours. The right half plays the receiver.
+echo/data/story.js:84	VEGA
+echo/data/story.js:84	The endpoints share a prepared resource. Correlation is not a message.
+echo/data/story.js:84	§4.3
+echo/data/story.js:85	RIN
+echo/data/story.js:85	If the pair can carry the token alone, we're done. Test it.
+echo/data/story.js:88	VEGA
+echo/data/story.js:88	Receiver-only data: 50% / 50%. No decodable message.
+echo/data/story.js:88	§4.3
+echo/data/story.js:89	VEGA
+echo/data/story.js:89	What does the receiver actually know?
+echo/data/story.js:89	§2.2
+echo/data/story.js:92	VEGA
+echo/data/story.js:92	Put both logs side by side: after I they always match.
+echo/data/story.js:93	VEGA
+echo/data/story.js:93	After X they never match. The pattern is real.
+echo/data/story.js:94	VEGA
+echo/data/story.js:94	But comparing logs takes an ordinary message. The receiver alone sees noise.
+echo/data/story.js:95	VEGA
+echo/data/story.js:95	You still need the message.
+echo/data/story.js:95	§2.2
+echo/data/story.js:96	VEGA
+echo/data/story.js:96	Old maintenance blueprint. A classical service line runs up to the rooftop tower.
+echo/data/story.js:97	MICA
+echo/data/story.js:97	So the secret can't just travel down that blue cable?
+echo/data/story.js:97	§4.3
+echo/data/story.js:98	RIN
+echo/data/story.js:98	The blue link makes transfer possible.
+echo/data/story.js:98	§4.3
+echo/data/story.js:99	RIN
+echo/data/story.js:99	The amber one tells the other side what to do.
+echo/data/story.js:99	§4.3
+echo/data/story.js:100	VEGA
+echo/data/story.js:100	Rooftop access unlocked. The amber line's far end is up there.
+echo/data/story.js:105	MIRROR
+echo/data/story.js:105	Grid isolation imminent. Shelter systems on reserve power.
+echo/data/story.js:106	MICA
+echo/data/story.js:106	The lights on our floor just went out. Rin, hurry.
+echo/data/story.js:107	VEGA
+echo/data/story.js:107	Three junctions between you and the mast. Patch the amber line through each.
+echo/data/story.js:110	VEGA
+echo/data/story.js:110	Classical link online. It carries ordinary bits at ordinary speed.
+echo/data/story.js:111	RIN
+echo/data/story.js:111	Blue for the pair. Amber for the bits. Now the console.
+echo/data/story.js:114	VEGA
+echo/data/story.js:114	Not the token yet. A fresh test state first.
+echo/data/story.js:115	VEGA
+echo/data/story.js:115	This console has a test rig. Both Bell halves stay here.
+echo/data/story.js:116	VEGA
+echo/data/story.js:116	Only COMMIT spends a vault pair.
+echo/data/story.js:117	VEGA
+echo/data/story.js:117	A Bell measurement on the source and your half gives two bits: m0 and m1.
+echo/data/story.js:118	VEGA
+echo/data/story.js:118	The amber line carries them to the receiver. You choose its fix.
+echo/data/story.js:121	VEGA
+echo/data/story.js:121	Receiver matches the test state. Those corrections were right.
+echo/data/story.js:122	VEGA
+echo/data/story.js:122	The live run gives its own bits. The receiver applies the same rule.
+echo/data/story.js:123	VEGA
+echo/data/story.js:123	Commit measures the token. There is no second try.
+echo/data/story.js:124	RIN
+echo/data/story.js:124	One of one.
+echo/data/story.js:127	VEGA
+echo/data/story.js:127	Bell measurement done. Two bits sent down the amber line.
+echo/data/story.js:128	VEGA
+echo/data/story.js:128	Receiver corrected. Your source was measured.
+echo/data/story.js:129	VEGA
+echo/data/story.js:129	The state now exists only at the vault.
+echo/data/story.js:130	MIRROR
+echo/data/story.js:130	Emergency authorization accepted. District Nine grid isolation aborted.
+echo/data/story.js:130	§4.4
+echo/data/story.js:133	MICA
+echo/data/story.js:133	Rin? Did you make it?
+echo/data/story.js:133	§4.4
+echo/data/story.js:134	RIN
+echo/data/story.js:134	No. I sent it.
+echo/data/story.js:134	§4.4
+echo/data/story.js:135	MICA
+echo/data/story.js:135	But you still have it, right?
+echo/data/story.js:135	§4.4
+echo/data/story.js:136	RIN
+echo/data/story.js:136	Not anymore.
+echo/data/story.js:136	§4.4
+echo/data/story.js:143	VEGA
+echo/data/story.js:143	Voltage up forty percent. Same result.
+echo/data/story.js:144	VEGA
+echo/data/story.js:144	Not a power problem. It is a rule of physics.
+echo/data/story.js:148	VEGA
+echo/data/story.js:148	Amber line patched at this end. The rest of it runs up to the roof.
+echo/data/story.js:152	VEGA
+echo/data/story.js:152	Not yet. The token gets one try. Prove a correction on a test state first.
+echo/data/story.js:156	VEGA
+echo/data/story.js:156	That test state is spent. Here is a fresh one. Check the rule again.
+echo/data/story.js:161	VEGA
+echo/data/story.js:161	Right, but 00 needs no fix. That proves nothing yet.
+echo/data/story.js:162	VEGA
+echo/data/story.js:162	Fresh test state. Run until the bits call for a fix.
+echo/data/story.js:166	MIRROR
+echo/data/story.js:166	Grid isolation held. Manual confirmation pending.
+echo/data/story.js:167	MICA
+echo/data/story.js:167	The clock hit zero. Backup is still holding. Hurry, Rin.
+echo/data/teachback.js:9	CLONE_UNDERSTOOD
+echo/data/teachback.js:9	THE COPY
+echo/data/teachback.js:9	CNOT copies a known computational-basis bit, but not an arbitrary unknown qubit.
+echo/data/teachback.js:9	§4.2
+echo/data/teachback.js:10	RELAY_UNDERSTOOD
+echo/data/teachback.js:10	THE CONNECTION
+echo/data/teachback.js:10	An entangled pair gives correlations, not messages. Alone, the receiver always sees 50/50.
+echo/data/teachback.js:11	TELEPORT_COMMITTED
+echo/data/teachback.js:11	THE TRANSFER
+echo/data/teachback.js:11	Bell pair + Bell measurement + two classical bits + X/Z corrections moved the state. The original was consumed.
+echo/data/teachback.js:15	DECLASSIFIED
+echo/data/teachback.js:18	copy
+echo/data/teachback.js:19	THE COPY
+echo/data/teachback.js:19	§4.5
+echo/data/teachback.js:20	Fed three prepared test states into a duplication booth: |0>, |1> and |+>.
+echo/data/teachback.js:21	The booth runs a CNOT from the input onto a blank |0>. For |0> and |1> the blank ends up matching. For |+> the two qubits become one entangled pair.
+echo/data/teachback.js:22	prepare input on q0 · CX(q0, q1)
+echo/data/teachback.js:24	|0> → |00>
+echo/data/teachback.js:25	|1> → |11>
+echo/data/teachback.js:26	|+> → (|00> + |11>)/√2
+echo/data/teachback.js:27	Purity of each output for |+>: 0.5 (an ideal, independent |+> has purity 1).
+echo/data/teachback.js:30	If a machine can copy 0 and 1, it can copy anything.
+echo/data/teachback.js:31	A copier can only be built for a known set of perfectly distinguishable states, like 0 and 1. No machine can perfectly copy an arbitrary unknown qubit: that is the no-cloning theorem. Ordinary data copies fine.
+echo/data/teachback.js:35	connection
+echo/data/teachback.js:36	THE CONNECTION
+echo/data/teachback.js:36	§4.5
+echo/data/teachback.js:37	Prepared an entangled test pair, applied I, X or Z to the sender half, and read the receiver half alone.
+echo/data/teachback.js:38	Whatever the sender did, the receiver's own results stayed 50/50. The sender's action only changed how the two logs line up when compared.
+echo/data/teachback.js:39	H(q0) · CX(q0, q1) · sender applies I, X or Z to q0 · measure q1
+echo/data/teachback.js:41	Receiver alone: P(0) = 0.5, P(1) = 0.5 for I, X and Z.
+echo/data/teachback.js:42	Receiver's reduced state: I/2 in every case.
+echo/data/teachback.js:43	Compared logs after I: results always match. After X: they always differ.
+echo/data/teachback.js:46	Entanglement sends the secret instantly.
+echo/data/teachback.js:47	An entangled pair is a shared resource, not a channel. Seeing the correlation needs both logs brought together by an ordinary message, which is no faster than any other signal.
+echo/data/teachback.js:51	transfer
+echo/data/teachback.js:52	THE TRANSFER
+echo/data/teachback.js:52	§4.5
+echo/data/teachback.js:53	Measured the source together with my Bell half, sent the two bits over the amber line, and set the receiver corrections. Then committed the real token once.
+echo/data/teachback.js:54	The Bell measurement destroyed the source's state and produced two random bits. The receiver's half became the source state up to a known flip, which the bits undid.
+echo/data/teachback.js:55	H(q1) · CX(q1, q2) · CX(q0, q1) · H(q0) · measure q0 → m0, q1 → m1 · X on q2 if m1 = 1 · Z on q2 if m0 = 1
+echo/data/teachback.js:57	m0 = 0, m1 = 0: no correction
+echo/data/teachback.js:58	m0 = 0, m1 = 1: X
+echo/data/teachback.js:59	m0 = 1, m1 = 0: Z
+echo/data/teachback.js:60	m0 = 1, m1 = 1: X then Z
+echo/data/teachback.js:61	Receiver fidelity with the test state: 1 in every branch, ideal maths.
+echo/data/teachback.js:63	The verification circuit replaces the measurement and the bits with controlled gates (CX(q1, q2), CZ(q0, q2)). That is the deferred-measurement principle, a valid check of the maths. It is not how separated stations work: in the story the corrections ride on two classical bits.
+echo/data/teachback.js:65	Teleportation moves the capsule, or leaves Rin a spare copy.
+echo/data/teachback.js:66	Only quantum information moved, and the original was consumed by the measurement. The physical capsule stayed on Rin's wrist, now without the state.
+echo/data/teachback.js:70	Puzzle numbers come from exact Qiskit statevector maths running locally in your browser. Simulator counts are samples drawn by a classical simulation of the circuit.
+echo/data/teachback.js:76	Why didn't the copying machine work on the unknown state?
+echo/data/teachback.js:77	§4.5
+echo/data/teachback.js:78	Its CNOT only copies 0 and 1. On a superposition it makes an entangled pair instead, and no machine can perfectly copy an arbitrary unknown qubit.
+echo/data/teachback.js:80	No machine can perfectly copy an arbitrary unknown qubit; CNOT only copies 0 and 1.
+echo/data/teachback.js:80	Yes. The |+> test made one entangled pair, not two copies.
+echo/data/teachback.js:81	The booth needed more power.
+echo/data/teachback.js:81	Raising the voltage changed nothing. It is a rule of physics, not a power limit.
+echo/data/teachback.js:82	Quantum states cannot be stored at all.
+echo/data/teachback.js:82	Rin's capsule stores one fine. The rule is about copying an unknown state, not storing it.
+echo/data/teachback.js:86	Why was entanglement alone insufficient?
+echo/data/teachback.js:87	§4.5
+echo/data/teachback.js:88	The receiver's own results are 50/50 whatever the sender does. A pattern only shows when both logs are compared, and that needs an ordinary message.
+echo/data/teachback.js:90	The receiver's results alone stay 50/50, so they carry no message.
+echo/data/teachback.js:90	Yes. Correlation is not a message.
+echo/data/teachback.js:91	The entangled pair was too old and had decayed.
+echo/data/teachback.js:91	The pair worked: compared logs showed perfect correlation. It still could not carry a message alone.
+echo/data/teachback.js:92	Entanglement delivers the message, but too slowly.
+echo/data/teachback.js:92	It delivers no message at all. The receiver alone sees 50/50 whatever the sender does.
+echo/data/teachback.js:96	What did the classical bits control after the Bell measurement?
+echo/data/teachback.js:97	§4.5
+echo/data/teachback.js:98	Which correction the receiver applies: X if m1 = 1, Z if m0 = 1. Without them the receiver cannot know which fix its half needs.
+echo/data/teachback.js:100	The receiver corrections: X if m1 = 1, Z if m0 = 1.
+echo/data/teachback.js:100	Yes. Two bits pick one of four fixes.
+echo/data/teachback.js:101	They carried the quantum state itself.
+echo/data/teachback.js:101	Two bits cannot hold a qubit. The state needed the Bell pair; the bits only said how to finish.
+echo/data/teachback.js:102	They told the vault the password.
+echo/data/teachback.js:102	The vault checked the recovered state. The bits only chose the X and Z corrections.
+echo/data/teachback.js:110	title
+echo/data/teachback.js:110	ECHO: ONE OF ONE
+echo/data/teachback.js:111	team
+echo/data/teachback.js:111	Team The Quantubians (NYU Tandon School of Engineering): Udaya (captain), George, Harman, Epa
+echo/data/teachback.js:112	support
+echo/data/teachback.js:112	This effort is supported by Qollab & IonQ
+echo/data/teachback.js:113	license
+echo/data/teachback.js:113	Code: MIT License, udsy19 and contributors
+echo/data/teachback.js:114	libraries
+echo/data/teachback.js:114	Built with three.js (MIT) and Qiskit (Apache-2.0), running in Pyodide (MPL-2.0) on Qollab.
+echo/data/teachback.js:115	assets
+echo/data/teachback.js:115	TODO_OWNER: third-party assets and their licenses (art lane to list; none yet)
+echo/data/teachback.js:116	thanks
+echo/data/teachback.js:116	Thank you for playing.
+echo/ui/accessibility.js:4	low
+echo/ui/accessibility.js:4	med
+echo/ui/accessibility.js:4	high
+echo/ui/accessibility.js:7	function
+echo/ui/accessibility.js:7	(prefers-reduced-motion: reduce)
+echo/ui/accessibility.js:15	med
+echo/ui/accessibility.js:37	echo-ui
+echo/ui/accessibility.js:38	on
+echo/ui/accessibility.js:38	off
+echo/ui/accessibility.js:39	on
+echo/ui/accessibility.js:39	off
+echo/ui/accessibility.js:42	--echo-text-scale
+echo/ui/accessibility.js:46	button:not([disabled]), input:not([disabled]), select:not([disabled]), [href], [tabindex]:not([tabindex="-1"])
+echo/ui/accessibility.js:54	Tab
+echo/ui/dialogue.js:4	./accessibility.js
+echo/ui/dialogue.js:10	section
+echo/ui/dialogue.js:10	echo-dialogue
+echo/ui/dialogue.js:11	aria-label
+echo/ui/dialogue.js:11	Dialogue
+echo/ui/dialogue.js:12	false
+echo/ui/dialogue.js:13	echo-dialogue__speaker
+echo/ui/dialogue.js:14	echo-dialogue__text
+echo/ui/dialogue.js:16	aria-hidden
+echo/ui/dialogue.js:16	true
+echo/ui/dialogue.js:17	echo-sr-only
+echo/ui/dialogue.js:18	aria-live
+echo/ui/dialogue.js:18	polite
+echo/ui/dialogue.js:19	div
+echo/ui/dialogue.js:19	echo-dialogue__footer
+echo/ui/dialogue.js:20	span
+echo/ui/dialogue.js:20	echo-dialogue__page
+echo/ui/dialogue.js:21	button
+echo/ui/dialogue.js:21	echo-dialogue__next echo-button
+echo/ui/dialogue.js:22	button
+echo/ui/dialogue.js:23	<kbd class="echo-key">Enter</kbd> <span>Continue</span>
+echo/ui/dialogue.js:38	[data-reduced-motion="on"]
+echo/ui/dialogue.js:79	‹…›/‹…›
+echo/ui/dialogue.js:80	‹…›: ‹…›
+echo/ui/dialogue.js:103	true
+echo/ui/dialogue.js:110	false
+echo/ui/dialogue.js:164	keydown
+echo/ui/dialogue.js:170	click
+echo/ui/dialogue.js:176	Enter
+echo/ui/dialogue.js:179	[data-menu-open="true"]
+echo/ui/dialogue.js:183	keydown
+echo/ui/dialogue.js:188	‹…›/‹…›
+echo/ui/hud.js:3	./accessibility.js
+echo/ui/hud.js:9	string
+echo/ui/hud.js:13	‹…›:‹…›
+echo/ui/hud.js:16	ECHO // DISTRICT 09
+echo/ui/hud.js:16	GRID SHUTDOWN
+echo/ui/hud.js:17	div
+echo/ui/hud.js:17	echo-hud
+echo/ui/hud.js:18	true
+echo/ui/hud.js:20	div
+echo/ui/hud.js:20	echo-hud__top
+echo/ui/hud.js:21	section
+echo/ui/hud.js:21	echo-hud__objective
+echo/ui/hud.js:22	aria-label
+echo/ui/hud.js:22	Objective
+echo/ui/hud.js:23	echo-hud__brand
+echo/ui/hud.js:24	echo-hud__objnum
+echo/ui/hud.js:25	echo-hud__objtext
+echo/ui/hud.js:28	aria-live
+echo/ui/hud.js:28	polite
+echo/ui/hud.js:30	div
+echo/ui/hud.js:30	echo-hud__timer
+echo/ui/hud.js:31	span
+echo/ui/hud.js:31	echo-hud__timerlabel
+echo/ui/hud.js:32	span
+echo/ui/hud.js:32	echo-hud__timervalue
+echo/ui/hud.js:32	--:--
+echo/ui/hud.js:33	role
+echo/ui/hud.js:33	timer
+echo/ui/hud.js:37	div
+echo/ui/hud.js:37	echo-hud__tooltip
+echo/ui/hud.js:38	role
+echo/ui/hud.js:38	status
+echo/ui/hud.js:39	false
+echo/ui/hud.js:41	div
+echo/ui/hud.js:41	echo-hud__bottom
+echo/ui/hud.js:42	div
+echo/ui/hud.js:42	echo-hud__capsule echo-status
+echo/ui/hud.js:43	span
+echo/ui/hud.js:43	echo-status__glyph
+echo/ui/hud.js:44	aria-hidden
+echo/ui/hud.js:44	true
+echo/ui/hud.js:45	span
+echo/ui/hud.js:45	echo-status__text
+echo/ui/hud.js:47	aria-live
+echo/ui/hud.js:47	polite
+echo/ui/hud.js:49	div
+echo/ui/hud.js:49	echo-hud__prompt
+echo/ui/hud.js:50	kbd
+echo/ui/hud.js:50	echo-key
+echo/ui/hud.js:51	span
+echo/ui/hud.js:51	echo-hud__promptlabel
+echo/ui/hud.js:53	false
+echo/ui/hud.js:64	OBJECTIVE ‹…›
+echo/ui/hud.js:70	available
+echo/ui/hud.js:71	inactive
+echo/ui/hud.js:76	INTERACT
+echo/ui/hud.js:79	true
+echo/ui/hud.js:82	false
+echo/ui/hud.js:88	true
+echo/ui/hud.js:93	false
+echo/ui/hud.js:96	true
+echo/ui/hud.js:96	false
+echo/ui/hud.js:103	Q-SOURCE: PRESERVED
+echo/ui/hud.js:103	available
+echo/ui/menu.js:3	./accessibility.js
+echo/ui/menu.js:6	W A S D
+echo/ui/menu.js:6	Move
+echo/ui/menu.js:7	Mouse
+echo/ui/menu.js:7	Look around
+echo/ui/menu.js:8	Shift
+echo/ui/menu.js:8	Sprint
+echo/ui/menu.js:9	Interact
+echo/ui/menu.js:10	Field scan
+echo/ui/menu.js:11	Tab
+echo/ui/menu.js:11	Journal
+echo/ui/menu.js:12	Enter / Space
+echo/ui/menu.js:12	Continue dialogue
+echo/ui/menu.js:13	Esc
+echo/ui/menu.js:13	Pause / back
+echo/ui/menu.js:16	Low
+echo/ui/menu.js:16	Medium
+echo/ui/menu.js:16	High
+echo/ui/menu.js:19	button
+echo/ui/menu.js:19	echo-button echo-menu__item
+echo/ui/menu.js:20	button
+echo/ui/menu.js:26	div
+echo/ui/menu.js:26	echo-menu__panel ‹…›
+echo/ui/menu.js:28	h2
+echo/ui/menu.js:28	echo-menu__title
+echo/ui/menu.js:29	echo-menu-‹…›-title
+echo/ui/menu.js:41	div
+echo/ui/menu.js:41	echo-menu
+echo/ui/menu.js:42	role
+echo/ui/menu.js:42	dialog
+echo/ui/menu.js:43	aria-modal
+echo/ui/menu.js:43	true
+echo/ui/menu.js:45	aria-label
+echo/ui/menu.js:45	Menu
+echo/ui/menu.js:46	false
+echo/ui/menu.js:49	div
+echo/ui/menu.js:49	echo-menu__panel echo-title
+echo/ui/menu.js:50	title
+echo/ui/menu.js:51	echo-title__kicker
+echo/ui/menu.js:51	NACRE CITY // 02:17 AM
+echo/ui/menu.js:52	h1
+echo/ui/menu.js:52	echo-title__logo
+echo/ui/menu.js:53	echo-menu-title-title
+echo/ui/menu.js:54	span
+echo/ui/menu.js:54	echo-title__echo
+echo/ui/menu.js:54	ECHO
+echo/ui/menu.js:54	span
+echo/ui/menu.js:54	echo-title__sub
+echo/ui/menu.js:54	ONE OF ONE
+echo/ui/menu.js:55	nav
+echo/ui/menu.js:55	echo-menu__list
+echo/ui/menu.js:56	aria-label
+echo/ui/menu.js:56	Main menu
+echo/ui/menu.js:57	Start
+echo/ui/menu.js:57	start
+echo/ui/menu.js:57	Settings
+echo/ui/menu.js:57	settings
+echo/ui/menu.js:57	Controls
+echo/ui/menu.js:57	controls
+echo/ui/menu.js:58	echo-title__credit
+echo/ui/menu.js:58	This effort is supported by Qollab & IonQ
+echo/ui/menu.js:61	pause
+echo/ui/menu.js:61	Paused
+echo/ui/menu.js:62	nav
+echo/ui/menu.js:62	echo-menu__list
+echo/ui/menu.js:63	aria-label
+echo/ui/menu.js:63	Pause menu
+echo/ui/menu.js:64	Resume
+echo/ui/menu.js:64	resume
+echo/ui/menu.js:64	Settings
+echo/ui/menu.js:64	settings
+echo/ui/menu.js:64	Controls
+echo/ui/menu.js:64	controls
+echo/ui/menu.js:64	Restart
+echo/ui/menu.js:64	restart
+echo/ui/menu.js:67	settings
+echo/ui/menu.js:67	Settings
+echo/ui/menu.js:68	form
+echo/ui/menu.js:68	echo-settings
+echo/ui/menu.js:69	submit
+echo/ui/menu.js:72	div
+echo/ui/menu.js:72	echo-settings__row
+echo/ui/menu.js:73	label
+echo/ui/menu.js:73	echo-settings__label
+echo/ui/menu.js:81	input
+echo/ui/menu.js:81	echo-toggle
+echo/ui/menu.js:82	checkbox
+echo/ui/menu.js:87	input
+echo/ui/menu.js:87	echo-range
+echo/ui/menu.js:88	range
+echo/ui/menu.js:91	subtitles
+echo/ui/menu.js:92	reducedMotion
+echo/ui/menu.js:93	textScale
+echo/ui/menu.js:94	output
+echo/ui/menu.js:94	echo-settings__value
+echo/ui/menu.js:95	select
+echo/ui/menu.js:95	echo-select
+echo/ui/menu.js:96	quality
+echo/ui/menu.js:98	option
+echo/ui/menu.js:102	volume
+echo/ui/menu.js:103	output
+echo/ui/menu.js:103	echo-settings__value
+echo/ui/menu.js:104	echo-set-textScale
+echo/ui/menu.js:105	echo-set-volume
+echo/ui/menu.js:107	Subtitles
+echo/ui/menu.js:107	echo-set-subtitles
+echo/ui/menu.js:108	Reduced motion
+echo/ui/menu.js:108	echo-set-reducedMotion
+echo/ui/menu.js:109	Text size
+echo/ui/menu.js:109	echo-set-textScale
+echo/ui/menu.js:110	Quality
+echo/ui/menu.js:110	echo-set-quality
+echo/ui/menu.js:111	Volume
+echo/ui/menu.js:111	echo-set-volume
+echo/ui/menu.js:113	div
+echo/ui/menu.js:113	echo-menu__list
+echo/ui/menu.js:114	Back
+echo/ui/menu.js:114	back
+echo/ui/menu.js:121	‹…›%
+echo/ui/menu.js:124	‹…›%
+echo/ui/menu.js:127	input
+echo/ui/menu.js:130	checkbox
+echo/ui/menu.js:136	controls
+echo/ui/menu.js:136	Controls
+echo/ui/menu.js:137	dl
+echo/ui/menu.js:137	echo-controls
+echo/ui/menu.js:139	dt
+echo/ui/menu.js:140	kbd
+echo/ui/menu.js:140	echo-key
+echo/ui/menu.js:141	dd
+echo/ui/menu.js:143	div
+echo/ui/menu.js:143	echo-menu__list
+echo/ui/menu.js:144	Back
+echo/ui/menu.js:144	back
+echo/ui/menu.js:154	aria-labelledby
+echo/ui/menu.js:154	echo-menu-‹…›-title
+echo/ui/menu.js:155	aria-label
+echo/ui/menu.js:156	true
+echo/ui/menu.js:157	true
+echo/ui/menu.js:158	settings
+echo/ui/menu.js:164	true
+echo/ui/menu.js:171	false
+echo/ui/menu.js:173	aria-labelledby
+echo/ui/menu.js:174	aria-label
+echo/ui/menu.js:174	Menu
+echo/ui/menu.js:175	false
+echo/ui/menu.js:191	[data-action="‹…›"]
+echo/ui/menu.js:198	true
+echo/ui/menu.js:200	true
+echo/ui/menu.js:204	title
+echo/ui/menu.js:208	pause
+echo/ui/menu.js:210	settings
+echo/ui/menu.js:211	controls
+echo/ui/menu.js:224	keydown
+echo/ui/menu.js:229	click
+echo/ui/menu.js:230	[data-action]
+echo/ui/menu.js:232	start
+echo/ui/menu.js:236	resume
+echo/ui/menu.js:239	restart
+echo/ui/menu.js:242	settings
+echo/ui/menu.js:242	settings
+echo/ui/menu.js:243	controls
+echo/ui/menu.js:243	controls
+echo/ui/menu.js:244	back
+echo/ui/menu.js:250	Escape
+echo/ui/menu.js:253	pause
+echo/ui/menu.js:256	title
+echo/ui/menu.js:261	Escape
+echo/ui/menu.js:266	keydown
+echo/main.css:16	Segoe UI
+echo/main.css:16	Helvetica Neue
+echo/main.css:17	Bahnschrift
+echo/main.css:17	DIN Alternate
+echo/main.css:17	DIN Condensed
+echo/main.css:17	Arial Narrow
+echo/main.css:18	SF Mono
+echo/main.css:18	Liberation Mono
+echo/main.css:32	top
+echo/main.css:32	middle
+echo/main.css:32	dialogue
+echo/main.css:32	bottom
+echo/main.css:102	inactive
+echo/main.css:103	available
+echo/main.css:104	complete
+echo/main.css:105	error
+echo/main.css:152	on
+echo/main.css:153	on
+echo/main.css:154	on
+echo/main.css:155	on
+echo/main.css:180	false
+echo/main.css:255	false
+echo/main.css:256	false
+echo/main.css:292	false
+echo/main.css:298	off
+echo/main.css:310	mica
+echo/main.css:311	mica
+echo/main.css:312	mirror
+echo/main.css:313	mirror
+echo/main.css:353	false
+echo/main.css:359	title

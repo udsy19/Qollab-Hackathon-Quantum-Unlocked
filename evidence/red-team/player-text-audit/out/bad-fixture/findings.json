@@ -1,0 +1,372 @@
+[
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "LOCAL BELL-HALF READOUT m1",
+  "rule": "MISSING R-M1-LABEL",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "OA:41 (1); V:417",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "Mission 2 receiver panel labelled EXACT",
+  "rule": "MISSING R-EXACT",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "OA:41 (4)",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "Team The Quantubians (NYU Tandon School of Engineering) — Udaya (captain), George, Harman, Epa",
+  "rule": "MISSING R-CREDITS",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "OA:50",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "rule stated: X if m1 = 1",
+  "rule": "MISSING R-RULE-X",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "V:263; V:453; ctx Truthful physics",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "rule stated: Z if m0 = 1",
+  "rule": "MISSING R-RULE-Z",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "V:263; V:453",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "four X/Z choices: labelled set, or independent X and Z switches",
+  "rule": "MISSING R-CHOICES-4",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "OA overseer rulings gameplay consult 3; V:419-421; V:427",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "m0, m1 shown before the X/Z choice",
+  "rule": "MISSING R-BITS-FIRST",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "OA:41 (2); V:413-421",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 2,
+  "str": "RELAY READOUT m1",
+  "rule": "F-RELAY-M1",
+  "why": "matches /\\bRELAY\\s+(BELL[- ]HALF\\s+)?READ\\s*-?OUT\\b/i",
+  "cite": "OA:41 (1); oracle P5",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 2,
+  "str": "Receiver counts: 129 / 127 shots",
+  "rule": "F-RECEIVER-SAMPLED",
+  "why": "matches /\\breceiver\\b[^.\\n]{0,40}\\b(shots?|counts?|sampled|samples)\\b/i",
+  "cite": "OA:41 (4) \"exact partial_trace probabilities only ... no sampled counts there\"",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 3,
+  "str": "Apply X if m0 = 1.",
+  "rule": "C-RULE-SWAP",
+  "why": "X bound to m0 or Z bound to m1: /\\bX\\b(?:(?!m[01])[^.,;\\n]){0,20}\\b(if|iff|when|on)\\b\\s*m0\\b/",
+  "cite": "V:453; V:263",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 3,
+  "str": "Apply Z if m1 = 1.",
+  "rule": "C-RULE-SWAP",
+  "why": "X bound to m0 or Z bound to m1: /\\bZ\\b(?:(?!m[01])[^.,;\\n]){0,20}\\b(if|iff|when|on)\\b\\s*m1\\b/",
+  "cite": "V:453; V:263",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 4,
+  "str": "The entanglement sends the secret instantly.",
+  "rule": "F-FTL",
+  "why": "matches /\\b(message|signal|transmi\\w+|sen[dt]\\w*|deliver\\w*|commun\\w+)\\b[^.]{0,40}\\binstant\\w*\\b/i",
+  "cite": "V:135; V:511; ctx Truthful physics",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 4,
+  "str": "You cloned the unknown state!",
+  "rule": "F-CLONE",
+  "why": "matches /\\b(cloned?|copied|duplicated|replicated)\\b[^.]{0,30}\\b(unknown|arbitrary|the token|the authori[sz]ation|the secret|\\|ψ|ψ|the state)\\b/i",
+  "cite": "V:135 (\"never show a second independent copy of an unknown state\"); V:225",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 5,
+  "str": "Certified quantum random bits.",
+  "rule": "F-RANDOM",
+  "why": "matches /\\bcertif\\w*\\b[^.]{0,20}\\brandom\\w*/i",
+  "cite": "V:135; V:511",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 5,
+  "str": "The particle travelled across the city.",
+  "rule": "F-MATTER",
+  "why": "matches /\\b(particle|photon|atom|matter|capsule|qubit itself)\\b[^.]{0,20}\\b(travel\\w*|moved|flew|went|jump\\w*|arriv\\w*|crossed)\\b/i",
+  "cite": "V:135 (\"never conflate ... with material teleportation\"); V:127",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 6,
+  "str": "Retry the story token as often as you like.",
+  "rule": "F-TOKEN-REUSE",
+  "why": "matches /\\b(re-?run|retry|try again|reuse|re-?measure|replay|second attempt|another attempt|redo)\\b[^.]{0,40}\\b(story token|token|authori[sz]ation|live state|story state)\\b/i",
+  "cite": "V:267; V:505-507; CLAUDE.md \"consumed ONCE\"; OA overseer gameplay consult 3",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 6,
+  "str": "Verified on IonQ hardware.",
+  "rule": "F-RAN-ON",
+  "why": "matches /\\b(ran|run|runs|running|executed|computed|measured|verified|processed|performed|teleported)\\b[^.]{0,20}\\b(on|by|via|using|through)\\b\\s+(an?\\s+|the\\s+)?(ionq|qollab|real quantum|quantum (hardware|computer|processor)|qpu|trapped[- ]ion)/i",
+  "cite": "qollab-runtime.md; V:30; Q:49; ctx Only the overseer touches Qollab",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 7,
+  "str": "Contact udaya@example.com",
+  "rule": "F-EMAIL",
+  "why": "matches /[A-Za-z0-9._%+-]+@[A-Za-z0-9-]+\\.[A-Za-z]{2,}/",
+  "cite": "OA:50 (\"Never include anyone's email\")",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 8,
+  "str": "'Team The Quantubians (NYU Tandon School of Engineering) ‐ Udaya (captain), George, Harman, Epa',",
+  "rule": "HOMOGLYPH",
+  "why": "CONFUSABLE hyphen lookalike U+2010",
+  "cite": "gate-independence law 13a; exact owner strings OA:41, OA:50",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 9,
+  "str": "'LOCAL BELL‐HALF READOUT m1',",
+  "rule": "HOMOGLYPH",
+  "why": "CONFUSABLE hyphen lookalike U+2010",
+  "cite": "gate-independence law 13a; exact owner strings OA:41, OA:50",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/ui/hud.js",
+  "line": 1,
+  "str": "export const x = \"Ехасt\";",
+  "rule": "HOMOGLYPH",
+  "why": "CONFUSABLE Cyrillic letter U+415",
+  "cite": "gate-independence law 13a; exact owner strings OA:41, OA:50",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/ui/hud.js",
+  "line": 1,
+  "str": "export const x = \"Ехасt\";",
+  "rule": "HOMOGLYPH",
+  "why": "CONFUSABLE Cyrillic letter U+445",
+  "cite": "gate-independence law 13a; exact owner strings OA:41, OA:50",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/ui/hud.js",
+  "line": 1,
+  "str": "export const x = \"Ехасt\";",
+  "rule": "HOMOGLYPH",
+  "why": "CONFUSABLE Cyrillic letter U+430",
+  "cite": "gate-independence law 13a; exact owner strings OA:41, OA:50",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/ui/hud.js",
+  "line": 1,
+  "str": "export const x = \"Ехасt\";",
+  "rule": "HOMOGLYPH",
+  "why": "CONFUSABLE Cyrillic letter U+441",
+  "cite": "gate-independence law 13a; exact owner strings OA:41, OA:50",
+  "sev": "HIGH",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "This effort is supported by Qollab & IonQ",
+  "rule": "MISSING R-ATTRIB",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "V:1205; V:1124; Q:78",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "udsy19 and contributors",
+  "rule": "MISSING R-LICENSE-HOLDER",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "OA:50; ctx Licensing",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "MIT license named",
+  "rule": "MISSING R-MIT",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "V:1201; CLAUDE.md Non-negotiable",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "required clear learning text",
+  "rule": "MISSING R-CLONE-LEARN",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "V:225",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "teach-back Q1: why copying failed",
+  "rule": "MISSING R-TB-Q1",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "V:286",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "teach-back Q2: why entanglement alone insufficient",
+  "rule": "MISSING R-TB-Q2",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "V:287",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "teach-back Q3: what the classical bits controlled",
+  "rule": "MISSING R-TB-Q3",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "V:288",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(question absent)",
+  "line": 0,
+  "str": "TB-A1-NOCLONE",
+  "rule": "MISSING TB-A1-NOCLONE",
+  "why": "no answer literal after the question carries all the truth markers",
+  "cite": "V:286; V:225; V:458",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(question absent)",
+  "line": 0,
+  "str": "TB-A2-NOSIGNAL",
+  "rule": "MISSING TB-A2-NOSIGNAL",
+  "why": "no answer literal after the question carries all the truth markers",
+  "cite": "V:287; V:237; V:241",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(question absent)",
+  "line": 0,
+  "str": "TB-A3-BITS",
+  "rule": "MISSING TB-A3-BITS",
+  "why": "no answer literal after the question carries all the truth markers",
+  "cite": "V:288; V:263; V:453",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 3,
+  "str": "Result key 01",
+  "rule": "C-RAW-KEY",
+  "why": "asymmetric raw key, no m0/m1 naming: Qiskit key order is m1 m0 (physics-oracle/out/endianness_table.txt)",
+  "cite": "V:454; V:428",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "echo/data/story.js",
+  "line": 7,
+  "str": "This game is WCAG 2.2 AA compliant.",
+  "rule": "F-WCAG",
+  "why": "matches /\\bWCAG\\b/i",
+  "cite": "OA:47 (2) \"targets WCAG 2.2 AA\" only for checks actually run",
+  "sev": "MED",
+  "owner": "story-ui"
+ },
+ {
+  "file": "(absent)",
+  "line": 0,
+  "str": "Quantum Unlocked",
+  "rule": "MISSING R-THEME",
+  "why": "required string not found in any scanned literal (exact bytes)",
+  "cite": "V:6; OA:47 (1)",
+  "sev": "LOW",
+  "owner": "story-ui"
+ }
+]

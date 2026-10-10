@@ -1,0 +1,121 @@
+{
+ "root": "/var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.hyC1NTpv39",
+ "files": [
+  "echo/data/objectives.js",
+  "echo/data/story.js",
+  "echo/data/teachback.js",
+  "echo/ui/accessibility.js",
+  "echo/ui/dialogue.js",
+  "echo/ui/hud.js",
+  "echo/ui/menu.js",
+  "echo/main.css"
+ ],
+ "strings": 856,
+ "nonAscii": 125,
+ "findings": 9,
+ "bySev": {
+  "HIGH": 3,
+  "MED": 4,
+  "LOW": 2
+ },
+ "required": [
+  {
+   "id": "R-M1-LABEL",
+   "ok": true,
+   "at": "echo/data/objectives.js:259"
+  },
+  {
+   "id": "R-M0-LABEL",
+   "ok": true,
+   "at": "echo/data/objectives.js:258"
+  },
+  {
+   "id": "R-EXACT",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-ATTRIB",
+   "ok": true,
+   "at": "echo/data/teachback.js:112"
+  },
+  {
+   "id": "R-CREDITS",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-LICENSE-HOLDER",
+   "ok": true,
+   "at": "echo/data/teachback.js:113"
+  },
+  {
+   "id": "R-MIT",
+   "ok": true,
+   "at": "echo/data/teachback.js:113"
+  },
+  {
+   "id": "R-THEME",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-CLONE-LEARN",
+   "ok": true,
+   "at": "echo/data/objectives.js:234"
+  },
+  {
+   "id": "R-RULE-X",
+   "ok": true,
+   "at": "echo/data/objectives.js:128"
+  },
+  {
+   "id": "R-RULE-Z",
+   "ok": true,
+   "at": "echo/data/objectives.js:128"
+  },
+  {
+   "id": "R-CHOICES-4",
+   "ok": true,
+   "at": "echo/data/objectives.js:261"
+  },
+  {
+   "id": "R-BITS-FIRST",
+   "ok": true,
+   "at": "echo/data/objectives.js:261"
+  },
+  {
+   "id": "R-TB-Q1",
+   "ok": true,
+   "at": "echo/data/teachback.js:76"
+  },
+  {
+   "id": "R-TB-Q2",
+   "ok": true,
+   "at": "echo/data/teachback.js:86"
+  },
+  {
+   "id": "R-TB-Q3",
+   "ok": true,
+   "at": "echo/data/teachback.js:96"
+  }
+ ],
+ "teachback": [
+  {
+   "id": "TB-A1-NOCLONE",
+   "ok": true,
+   "at": "echo/data/teachback.js:78"
+  },
+  {
+   "id": "TB-A2-NOSIGNAL",
+   "ok": true,
+   "at": "echo/data/teachback.js:90"
+  },
+  {
+   "id": "TB-A3-BITS",
+   "ok": true,
+   "at": "echo/data/teachback.js:98"
+  }
+ ],
+ "negatedOk": 2
+}

@@ -1,0 +1,117 @@
+{
+ "root": "/Users/udsy/agent-org/lanes/red-team/wt/player-text-audit/evidence/red-team/player-text-audit/fixtures/bad",
+ "files": [
+  "echo/data/story.js",
+  "echo/data/teachback.js",
+  "echo/ui/hud.js",
+  "echo/main.css"
+ ],
+ "strings": 19,
+ "nonAscii": 6,
+ "findings": 37,
+ "bySev": {
+  "HIGH": 24,
+  "MED": 12,
+  "LOW": 1
+ },
+ "required": [
+  {
+   "id": "R-M1-LABEL",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-M0-LABEL",
+   "ok": true,
+   "at": "echo/data/story.js:2"
+  },
+  {
+   "id": "R-EXACT",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-ATTRIB",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-CREDITS",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-LICENSE-HOLDER",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-MIT",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-THEME",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-CLONE-LEARN",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-RULE-X",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-RULE-Z",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-CHOICES-4",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-BITS-FIRST",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-TB-Q1",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-TB-Q2",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "R-TB-Q3",
+   "ok": false,
+   "at": ""
+  }
+ ],
+ "teachback": [
+  {
+   "id": "TB-A1-NOCLONE",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "TB-A2-NOSIGNAL",
+   "ok": false,
+   "at": ""
+  },
+  {
+   "id": "TB-A3-BITS",
+   "ok": false,
+   "at": ""
+  }
+ ],
+ "negatedOk": 0
+}
