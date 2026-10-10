@@ -29,7 +29,7 @@ qiskit 2.5.2 and Node, all locally. **Not run in Pyodide or on Qollab.** Evidenc
    r_P². Platform's contract already fixed `GENERIC_MAX_WRONG_FIDELITY = 0.9`, which means |r_P| ≤ 0.949, a
    wrong choice scores ≤ 0.9, and the receiver's arrow moves by ≥ 36.9°. The engine uses the same bound. It
    therefore accepts every state that platform's `randomGenericState()` can send. A stricter engine bound
-   (|r| ≤ 0.9 was tried first) would have refused about 6% of the game's own requests.
+   (|r| ≤ 0.9 was tried first) would have refused 17% of the game's own requests (200,000-draw Monte Carlo of `randomGenericState`'s rule, measured in this session).
 2. **Echoed angles must not be rounded.** `formats.plain` rounded every float to 10 decimals. JS angles carry
    about 16 significant digits, and the contract checks `parameters.theta` against the request to 1e-12, so
    every JS-drawn dry run would have been rejected. Parameters are now echoed exactly. The mutation
