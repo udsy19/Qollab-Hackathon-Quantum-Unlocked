@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **35 notes** over 10 folders.
+Measured 2026-10-10: **36 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -95,6 +95,7 @@ What exists outside this repo — competitor teardowns, library evaluations and 
 Folder README: [[Research/README]]
 
 - [[Research/README|Research/]]
+- [[Research/judging-rubric|Judging rubric: what the Qollab × IonQ judges say they weigh, and what each trait looks like for ECHO]]
 - [[Research/qollab-platform-and-submission|Qollab platform, runtime and hackathon submission: what a judge sees and does]]
 
 ## `Sessions/`
