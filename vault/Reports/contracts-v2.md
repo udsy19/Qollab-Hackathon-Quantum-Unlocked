@@ -11,17 +11,17 @@ supersedes: "[[Reports/shared-contracts]]"
 v2 extends the platform-owned `echo/contracts.js` and `echo/CONTRACTS.md` (v1: [[Reports/shared-contracts]]).
 It folds in the owner's 2026-10-10 rulings, which are listed in the platform lane's `owner-answers.md`
 under "13 lane design questions", "red-team physics ambiguities + captions", "overseer relay from story-ui" and "gameplay
-consult 3". Branch `lane/platform/contracts-v2`. Measured on commit 0cd03da.
+consult 3". Branch `lane/platform/contracts-v2`. Measured on commit 340f45d.
 
 ## What was measured
 
 | check | command | result |
 |---|---|---|
 | Qiskit ground truth | `python3 tools/contract-check/teleport_oracle.py --check` (Qiskit 2.5.2) | exit 0. On the test state ry(1.137) rz(0.44) and 3 random generic states, F = 1 on exactly 4/16 (m0, m1, X, Z) combinations, the §7.1 rule. Max wrong F is 0.674 / 0.576 / 0.478 / 0.415. Every branch has probability 1/4 |
-| red first | v1 module (`git show 4e1b2ed:echo/contracts.js`) against the v2 gate | exit 1, 465 FAILs: dry run 350, event sources 33, refusal grid 40, settings 20, validator 10, marginal 3, edges 5, happy path 2, strict tables 2 |
-| green | `node tools/contract-check/check.mjs` | exit 0, 1082/1082 |
-| sabotage | `python3 tools/contract-check/sabotage.py` | exit 0: 46 cases, 40 red, 6 declared nulls, 0 mismatches |
-| browser | headless Chrome 155 on `tools/contract-check/browser.html` (own port 8763) | two-phase dry run rendered from Qiskit rows; served sha256 `26f52ae4…` equals `shasum` of the file |
+| red first | v1 module (`git show 4e1b2ed:echo/contracts.js`) against the v2 gate | exit 1, 478 FAILs (609/1087 pass): dry run 359, event sources 33, refusal grid 41, settings 20, validator 12, marginal 4, edges 5, happy path 2, strict tables 2 |
+| green | `node tools/contract-check/check.mjs` | exit 0, 1087/1087 |
+| sabotage | `python3 tools/contract-check/sabotage.py` | exit 0: 49 cases, 43 red, 6 declared nulls, 0 mismatches |
+| browser | headless Chrome 155 on `tools/contract-check/browser.html` (own port 8763) | two-phase dry run rendered from Qiskit rows; served sha256 `4dd92ff3…` equals `shasum` of the file |
 | Qollab caps | `node tools/qollab-caps/check.mjs --root echo` | exit 1, only `entry-index` and `entry-main` (the G0 files are not on this branch) |
 
 ## Findings worth keeping
@@ -37,6 +37,9 @@ consult 3". Branch `lane/platform/contracts-v2`. Measured on commit 0cd03da.
   scores exactly 1, so the lesson is fake there. The validator refuses those requests.
 - **A v1 null is closed.** Rebinding `teleport_terminal` to `TELEPORT_DRY_RUN`/`CORRECT_CALIBRATION` is now red,
   because `EVENT_SOURCES` says CORRECT_CALIBRATION comes from an experiment result, not from E.
+- **`in` on a frozen table accepts inherited names.** In v1, `engine: "constructor"` and `experiment: "toString"`
+  validated, and `transition(s, "constructor")` was refused instead of thrown. An adversarial review found this, and
+  `Object.hasOwn` fixes it. The gate was red first (5 FAILs, `06-red-review-findings.log`).
 - **Remaining nulls (blind spots):** the verdict guards one at a time (above); `EVENT_SOURCES` entries that are
   inferred rather than owner-ruled (e.g. ANIMATION_END); default setting values (validated, not pinned); renaming
   a §9.3 world-change id; the Map-specific hint text.
