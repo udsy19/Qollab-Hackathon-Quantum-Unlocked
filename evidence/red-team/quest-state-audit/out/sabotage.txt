@@ -1,0 +1,26 @@
+baseline red (unpatched copy): [GAME-EDGES,GAME-EXTRA,CONTRACT-EDGES,PARITY,TOKEN-LATCH,DRY-00,FRESH,ACK]
+AS-EXPECTED break S1                 want red=[GAME-STATES] newly red=[GAME-STATES]  — CREDITS made unreachable in state.js
+AS-EXPECTED break S2                 want red=[CONTRACT-STATES] newly red=[CONTRACT-STATES,CONTRACT-EXTRA]  — CREDITS made unreachable in contracts.js
+AS-EXPECTED break S3                 want red=[CONTRACT-EXTRA,CONTRACT-NOSKIP,CONTRACT-ENDING-ENTRY] newly red=[CONTRACT-EXTRA,CONTRACT-NOSKIP,CONTRACT-ENDING-ENTRY]  — TITLE --CHEAT--> ENDING in contracts.js
+AS-EXPECTED break S4                 want red=[GAME-NOSKIP] newly red=[GAME-NOSKIP]  — FREE_ROAM_ALLEY --SHORTCUT--> RELAY_UNLOCKED (skips the clone mission)
+AS-EXPECTED break S5                 want red=[GAME-ENDING-ENTRY,GAME-NOSKIP] newly red=[GAME-NOSKIP,GAME-ENDING-ENTRY]  — LINK_REPAIRED --WARP--> ENDING
+AS-EXPECTED break S6                 want red=[CONTRACT-NOSKIP] newly red=[CONTRACT-STATES,CONTRACT-EXTRA,CONTRACT-NOSKIP]  — contracts EXIT_BOOTH jumps to RELAY_UNDERSTOOD (skips the relay mission)
+AS-EXPECTED break S7                 want red=[CONTRACT-ENDING-ENTRY] newly red=[CONTRACT-EXTRA,CONTRACT-NOSKIP,CONTRACT-ENDING-ENTRY]  — contracts TELEPORT_DRY_RUN_PASSED --SKIP_ANIM--> ENDING
+AS-EXPECTED break S8a                want red=[REFUSED] newly red=[REFUSED]  — TELEPORT_COMMITTED --ABORT--> TELEPORT_DRY_RUN_PASSED in state.js (its load-time commitIsOneShot guard should refuse to load)  (REFUSED: cannot import audited modules: quest TRANSITIONS violate the one-shot commit: TELEPORT_DRY_RUN_PASSED is reachable again from TELEPORT_COMMITTED without passing TITLE)
+AS-EXPECTED break S8b                want red=[GAME-COMMIT-ONCE] newly red=[GAME-COMMIT-ONCE]  — same re-arm edge AND the load-time guard disabled (enabling step, law 15)
+AS-EXPECTED break S9                 want red=[CONTRACT-COMMIT-ONCE] newly red=[CONTRACT-EXTRA,CONTRACT-COMMIT-ONCE]  — contracts TELEPORT_COMMITTED --ABORT--> TELEPORT_DRY_RUN_PASSED
+AS-EXPECTED break S10                want red=[TOKEN-ELSEWHERE] newly red=[TOKEN-ELSEWHERE]  — dry run no longer refuses the story token
+AS-EXPECTED break S11                want red=[ERR-COMMIT] newly red=[ERR-COMMIT]  — an empty/errored result is treated as a commit
+AS-EXPECTED break S12                want red=[DRY-RULE,PLAYTHROUGH] newly red=[ERR-COMMIT,DRY-RULE,PLAYTHROUGH]  — X/Z rule swapped (X iff m0, Z iff m1)
+AS-EXPECTED break S13                want red=[PLAYTHROUGH] newly red=[PLAYTHROUGH]  — fidelity threshold lowered 0.999999 -> 0.4 (T2): the clone mission (F=0.5 on |+>) can no longer fail
+AS-EXPECTED break S13n               want red=[] newly red=[]  — NULL PROBE: teleport-side threshold only — dry-run fidelity gate removed; expected NOT to go red because the rule also matches corrections
+AS-EXPECTED break S14                want red=[PLAYTHROUGH,GAME-NOSKIP,GAME-STATES] newly red=[GAME-STATES,GAME-NOSKIP,GAME-COMMIT-ONCE,ERR-COMMIT,PLAYTHROUGH]  — VIEW_RECEIVER_MARGINAL loops back to RELAY_SEND_FAILED (ending unreachable)
+AS-EXPECTED fix   F-ALL              want red=[] red=[]  — all minimal fixes applied: expect 0 red
+AS-EXPECTED l1o   L-TABLES_GAME      want red=[GAME-EDGES,GAME-EXTRA,PARITY] red=[GAME-EDGES,GAME-EXTRA,PARITY]  — all fixes except TABLES_GAME
+AS-EXPECTED l1o   L-TABLES_CONTRACT  want red=[CONTRACT-EDGES,PARITY] red=[CONTRACT-EDGES,PARITY]  — all fixes except TABLES_CONTRACT
+AS-EXPECTED l1o   L-LATCH            want red=[TOKEN-LATCH] red=[TOKEN-LATCH]  — all fixes except LATCH
+AS-EXPECTED l1o   L-BITS00           want red=[DRY-00] red=[DRY-00]  — all fixes except BITS00
+AS-EXPECTED l1o   L-FRESH            want red=[FRESH] red=[FRESH]  — all fixes except FRESH
+AS-EXPECTED l1o   L-ACK              want red=[ACK] red=[ACK]  — all fixes except ACK
+
+23 scenarios: 23 as expected, 0 unexpected

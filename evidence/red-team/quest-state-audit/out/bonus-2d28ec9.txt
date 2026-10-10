@@ -1,0 +1,60 @@
+FAIL GAME-STATES            [V§9.1]
+       - gameplay state.js: doc state TELEPORT_COMMITTED unreachable from BOOT
+       - gameplay state.js: doc state ENDING unreachable from BOOT
+       - gameplay state.js: doc state DECLASSIFIED unreachable from BOOT
+       - gameplay state.js: doc state CREDITS unreachable from BOOT
+FAIL GAME-EDGES             [V§9.2 + R13.1/R13.12]
+       - TELEPORT_DRY_RUN_PASSED --COMMIT_TRANSFER--> REFUSED, want TELEPORT_COMMITTED (V§9.2 + V§7.4 (token measured here, once))
+       - TELEPORT_COMMITTED unreachable, cannot test ANIMATION_END (V§9.2)
+       - ENDING unreachable, cannot test OPEN_SCIENCE (V§9.2)
+       - ENDING unreachable, cannot test OPEN_CREDITS (V§9.2)
+       - DECLASSIFIED unreachable, cannot test OPEN_CREDITS (R13.1)
+       - DECLASSIFIED unreachable, cannot test * (R13.1 (event name unspecified))
+       - ENDING unreachable, cannot test RESTART (R13.12 + V§9.5 (target unspecified))
+PASS GAME-EXTRA             [V§9.2 transition(): anything else refused]
+PASS CONTRACT-STATES        [V§9.1]
+FAIL CONTRACT-EDGES         [V§9.2 + R13.1/R13.12]
+       - DECLASSIFIED has no edge to ENDING (R13.1 (event name unspecified))
+       - ENDING --RESTART--> refused and no reset() on this module (R13.12 + V§9.5 (target unspecified))
+PASS CONTRACT-EXTRA         [V§9.2 transition(): anything else refused]
+FAIL PARITY                 [owner relay "gameplay imports its quest table from echo/contracts.js"]
+       - TELEPORT_DRY_RUN_PASSED --COMMIT_TRANSFER--> gameplay REFUSED vs contracts TELEPORT_COMMITTED
+       - TELEPORT_COMMITTED --ANIMATION_END--> gameplay REFUSED vs contracts ENDING
+       - ENDING --OPEN_SCIENCE--> gameplay REFUSED vs contracts DECLASSIFIED
+       - ENDING --OPEN_CREDITS--> gameplay REFUSED vs contracts CREDITS
+       - DECLASSIFIED --OPEN_CREDITS--> gameplay REFUSED vs contracts CREDITS
+FAIL GAME-NOSKIP            [V§9.2 chain; CLAUDE.md "Playable"]
+       - ENDING not reachable at all
+PASS GAME-ENDING-ENTRY      [V§9.2 + R13.1]
+FAIL GAME-COMMIT-ONCE       [V§7.4, V§9.3 idempotence]
+       - first COMMIT_TRANSFER refused
+PASS CONTRACT-NOSKIP        [V§9.2 chain; CLAUDE.md "Playable"]
+PASS CONTRACT-ENDING-ENTRY  [V§9.2 + R13.1]
+PASS CONTRACT-COMMIT-ONCE   [V§7.4, V§9.3 idempotence]
+PASS TOKEN-ELSEWHERE        [V§7.4: the token is measured only at the final commit]
+PASS TOKEN-LATCH            [V§7.4 "do not let the player re-run teleportation of the already-measured token"; RG3.1 "latched once recorded"]
+FAIL ERR-COMMIT             [RG3.1: an errored commit records nothing; retry allowed]
+       - a good commit after errors yields null, want COMMIT_TRANSFER
+FAIL DRY-RULE               [V§7.4 + oracle physics; CLAUDE.md "all four conditional correction choices"]
+       - m0=0 m1=1 correct (X=true,Z=false) F=1.000000 refused
+       - m0=1 m1=0 correct (X=false,Z=true) F=1.000000 refused
+       - m0=1 m1=1 correct (X=true,Z=true) F=1.000000 refused
+PASS DRY-00                 [RG3.2: COMMIT unlocks only after a correct dry run whose bits are NOT 00]
+PASS FRESH                  [R13.11: a wrong dry run retries on a FRESH calibration state]
+PASS ACK                    [R13.13: acknowledgements advance only after the result panel was shown]
+FAIL PLAYTHROUGH            [V§9.2 legal path, results through missionRules; CLAUDE.md "Playable"]
+       - CLONE_INTRO: rule refused {"state":"zero"}
+       - CLONE_INTRO: rule refused {"state":"plus"}
+       - CLONE_INTRO refused EXPLANATION_READ
+       - CLONE_INTRO refused EXIT_BOOTH
+       - CLONE_INTRO refused REACH_RELAY
+       - CLONE_INTRO: rule refused {"senderGate":"I"}
+       - CLONE_INTRO: rule refused {"senderGate":"X"}
+       - CLONE_INTRO refused VIEW_RECEIVER_MARGINAL
+       - CLONE_INTRO refused OPEN_ROOFTOP
+       - CLONE_INTRO refused REPAIR_CLASSICAL_LINK
+       - CLONE_INTRO refused RUN_DRY_TEST
+       - CLONE_INTRO: rule refused {"stateId":"calibration_1","correctionX":true,"correctionZ":true,"theta":1.1250864437156354,"phi":3.796379608094701}
+       ... 3 more
+
+21 checks: 12 green, 9 red

@@ -1,0 +1,154 @@
+[
+  {
+    "id": "GAME-STATES",
+    "source": "V§9.1",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "GAME-EDGES",
+    "source": "V§9.2 + R13.1/R13.12",
+    "verdict": "FAIL",
+    "fails": [
+      "BOOT --BOOT_COMPLETE--> REFUSED, want TITLE (R13.1)",
+      "DECLASSIFIED has no edge to ENDING (R13.1 (event name unspecified))"
+    ]
+  },
+  {
+    "id": "GAME-EXTRA",
+    "source": "V§9.2 transition(): anything else refused",
+    "verdict": "FAIL",
+    "fails": [
+      "gameplay state.js: undocumented edge BOOT --BOOTED--> TITLE",
+      "gameplay state.js: undocumented edge DECLASSIFIED --RESTART--> TITLE",
+      "gameplay state.js: undocumented edge CREDITS --OPEN_SCIENCE--> DECLASSIFIED",
+      "gameplay state.js: undocumented edge CREDITS --RESTART--> TITLE"
+    ]
+  },
+  {
+    "id": "CONTRACT-STATES",
+    "source": "V§9.1",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "CONTRACT-EDGES",
+    "source": "V§9.2 + R13.1/R13.12",
+    "verdict": "FAIL",
+    "fails": [
+      "DECLASSIFIED has no edge to ENDING (R13.1 (event name unspecified))",
+      "ENDING --RESTART--> refused and no reset() on this module (R13.12 + V§9.5 (target unspecified))"
+    ]
+  },
+  {
+    "id": "CONTRACT-EXTRA",
+    "source": "V§9.2 transition(): anything else refused",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "PARITY",
+    "source": "owner relay \"gameplay imports its quest table from echo/contracts.js\"",
+    "verdict": "FAIL",
+    "fails": [
+      "BOOT --BOOT_COMPLETE--> gameplay REFUSED vs contracts TITLE",
+      "BOOT --BOOTED--> gameplay TITLE vs contracts REFUSED",
+      "DECLASSIFIED --RESTART--> gameplay TITLE vs contracts REFUSED",
+      "CREDITS --OPEN_SCIENCE--> gameplay DECLASSIFIED vs contracts REFUSED",
+      "CREDITS --RESTART--> gameplay TITLE vs contracts REFUSED"
+    ]
+  },
+  {
+    "id": "GAME-NOSKIP",
+    "source": "V§9.2 chain; CLAUDE.md \"Playable\"",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "GAME-ENDING-ENTRY",
+    "source": "V§9.2 + R13.1",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "GAME-COMMIT-ONCE",
+    "source": "V§7.4, V§9.3 idempotence",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "CONTRACT-NOSKIP",
+    "source": "V§9.2 chain; CLAUDE.md \"Playable\"",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "CONTRACT-ENDING-ENTRY",
+    "source": "V§9.2 + R13.1",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "CONTRACT-COMMIT-ONCE",
+    "source": "V§7.4, V§9.3 idempotence",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "TOKEN-ELSEWHERE",
+    "source": "V§7.4: the token is measured only at the final commit",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "TOKEN-LATCH",
+    "source": "V§7.4 \"do not let the player re-run teleportation of the already-measured token\"; RG3.1 \"latched once recorded\"",
+    "verdict": "FAIL",
+    "fails": [
+      "after a recorded commit result (F=0.117) in TELEPORT_DRY_RUN_PASSED, a SECOND story-token measurement yields COMMIT_TRANSFER -> token measured twice"
+    ]
+  },
+  {
+    "id": "ERR-COMMIT",
+    "source": "RG3.1: an errored commit records nothing; retry allowed",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "DRY-RULE",
+    "source": "V§7.4 + oracle physics; CLAUDE.md \"all four conditional correction choices\"",
+    "verdict": "PASS",
+    "fails": []
+  },
+  {
+    "id": "DRY-00",
+    "source": "RG3.2: COMMIT unlocks only after a correct dry run whose bits are NOT 00",
+    "verdict": "FAIL",
+    "fails": [
+      "bits m0=0 m1=0 with no corrections (F=1.000000) yields CORRECT_CALIBRATION -> COMMIT unlocked without the player applying X or Z"
+    ]
+  },
+  {
+    "id": "FRESH",
+    "source": "R13.11: a wrong dry run retries on a FRESH calibration state",
+    "verdict": "FAIL",
+    "fails": [
+      "after a wrong dry run on calibration_A, a retry on the SAME state (same stateId, theta, phi) yields CORRECT_CALIBRATION"
+    ]
+  },
+  {
+    "id": "ACK",
+    "source": "R13.13: acknowledgements advance only after the result panel was shown",
+    "verdict": "FAIL",
+    "fails": [
+      "EXPLANATION_READ accepted in CLONE_SUPERPOSITION_FAILED with no result-panel signal of any kind (0 ms after entry)",
+      "VIEW_RECEIVER_MARGINAL accepted in RELAY_SEND_FAILED with no result-panel signal of any kind (0 ms after entry)"
+    ]
+  },
+  {
+    "id": "PLAYTHROUGH",
+    "source": "V§9.2 legal path, results through missionRules; CLAUDE.md \"Playable\"",
+    "verdict": "PASS",
+    "fails": []
+  }
+]

@@ -1,0 +1,544 @@
+[
+  {
+    "kind": "break",
+    "id": "S1",
+    "want": [
+      "GAME-STATES"
+    ],
+    "why": "CREDITS made unreachable in state.js",
+    "patches": 1,
+    "observed": [
+      "GAME-STATES",
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "PARITY",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "GAME-STATES"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S2",
+    "want": [
+      "CONTRACT-STATES"
+    ],
+    "why": "CREDITS made unreachable in contracts.js",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-STATES",
+      "CONTRACT-EDGES",
+      "CONTRACT-EXTRA",
+      "PARITY",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "CONTRACT-STATES",
+      "CONTRACT-EXTRA"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S3",
+    "want": [
+      "CONTRACT-EXTRA",
+      "CONTRACT-NOSKIP",
+      "CONTRACT-ENDING-ENTRY"
+    ],
+    "why": "TITLE --CHEAT--> ENDING in contracts.js",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "CONTRACT-EXTRA",
+      "PARITY",
+      "CONTRACT-NOSKIP",
+      "CONTRACT-ENDING-ENTRY",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "CONTRACT-EXTRA",
+      "CONTRACT-NOSKIP",
+      "CONTRACT-ENDING-ENTRY"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S4",
+    "want": [
+      "GAME-NOSKIP"
+    ],
+    "why": "FREE_ROAM_ALLEY --SHORTCUT--> RELAY_UNLOCKED (skips the clone mission)",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "PARITY",
+      "GAME-NOSKIP",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "GAME-NOSKIP"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S5",
+    "want": [
+      "GAME-ENDING-ENTRY",
+      "GAME-NOSKIP"
+    ],
+    "why": "LINK_REPAIRED --WARP--> ENDING",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "PARITY",
+      "GAME-NOSKIP",
+      "GAME-ENDING-ENTRY",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "GAME-NOSKIP",
+      "GAME-ENDING-ENTRY"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S6",
+    "want": [
+      "CONTRACT-NOSKIP"
+    ],
+    "why": "contracts EXIT_BOOTH jumps to RELAY_UNDERSTOOD (skips the relay mission)",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-STATES",
+      "CONTRACT-EDGES",
+      "CONTRACT-EXTRA",
+      "PARITY",
+      "CONTRACT-NOSKIP",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "CONTRACT-STATES",
+      "CONTRACT-EXTRA",
+      "CONTRACT-NOSKIP"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S7",
+    "want": [
+      "CONTRACT-ENDING-ENTRY"
+    ],
+    "why": "contracts TELEPORT_DRY_RUN_PASSED --SKIP_ANIM--> ENDING",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "CONTRACT-EXTRA",
+      "PARITY",
+      "CONTRACT-NOSKIP",
+      "CONTRACT-ENDING-ENTRY",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "CONTRACT-EXTRA",
+      "CONTRACT-NOSKIP",
+      "CONTRACT-ENDING-ENTRY"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S8a",
+    "want": [
+      "REFUSED"
+    ],
+    "why": "TELEPORT_COMMITTED --ABORT--> TELEPORT_DRY_RUN_PASSED in state.js (its load-time commitIsOneShot guard should refuse to load)",
+    "patches": 1,
+    "observed": [
+      "REFUSED"
+    ],
+    "newRed": [
+      "REFUSED"
+    ],
+    "note": "REFUSED: cannot import audited modules: quest TRANSITIONS violate the one-shot commit: TELEPORT_DRY_RUN_PASSED is reachable again from TELEPORT_COMMITTED without passing TITLE",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S8b",
+    "want": [
+      "GAME-COMMIT-ONCE"
+    ],
+    "why": "same re-arm edge AND the load-time guard disabled (enabling step, law 15)",
+    "patches": 2,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "PARITY",
+      "GAME-COMMIT-ONCE",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "GAME-COMMIT-ONCE"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S9",
+    "want": [
+      "CONTRACT-COMMIT-ONCE"
+    ],
+    "why": "contracts TELEPORT_COMMITTED --ABORT--> TELEPORT_DRY_RUN_PASSED",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "CONTRACT-EXTRA",
+      "PARITY",
+      "CONTRACT-COMMIT-ONCE",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "CONTRACT-EXTRA",
+      "CONTRACT-COMMIT-ONCE"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S10",
+    "want": [
+      "TOKEN-ELSEWHERE"
+    ],
+    "why": "dry run no longer refuses the story token",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "PARITY",
+      "TOKEN-ELSEWHERE",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "TOKEN-ELSEWHERE"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S11",
+    "want": [
+      "ERR-COMMIT"
+    ],
+    "why": "an empty/errored result is treated as a commit",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "PARITY",
+      "TOKEN-LATCH",
+      "ERR-COMMIT",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [
+      "ERR-COMMIT"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S12",
+    "want": [
+      "DRY-RULE",
+      "PLAYTHROUGH"
+    ],
+    "why": "X/Z rule swapped (X iff m0, Z iff m1)",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "PARITY",
+      "ERR-COMMIT",
+      "DRY-RULE",
+      "DRY-00",
+      "ACK",
+      "PLAYTHROUGH"
+    ],
+    "newRed": [
+      "ERR-COMMIT",
+      "DRY-RULE",
+      "PLAYTHROUGH"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S13",
+    "want": [
+      "PLAYTHROUGH"
+    ],
+    "why": "fidelity threshold lowered 0.999999 -> 0.4 (T2): the clone mission (F=0.5 on |+>) can no longer fail",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "PARITY",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK",
+      "PLAYTHROUGH"
+    ],
+    "newRed": [
+      "PLAYTHROUGH"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S13n",
+    "want": [],
+    "why": "NULL PROBE: teleport-side threshold only — dry-run fidelity gate removed; expected NOT to go red because the rule also matches corrections",
+    "patches": 1,
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "PARITY",
+      "TOKEN-LATCH",
+      "DRY-00",
+      "FRESH",
+      "ACK"
+    ],
+    "newRed": [],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "break",
+    "id": "S14",
+    "want": [
+      "PLAYTHROUGH",
+      "GAME-NOSKIP",
+      "GAME-STATES"
+    ],
+    "why": "VIEW_RECEIVER_MARGINAL loops back to RELAY_SEND_FAILED (ending unreachable)",
+    "patches": 1,
+    "observed": [
+      "GAME-STATES",
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "CONTRACT-EDGES",
+      "PARITY",
+      "GAME-NOSKIP",
+      "GAME-COMMIT-ONCE",
+      "ERR-COMMIT",
+      "DRY-00",
+      "FRESH",
+      "ACK",
+      "PLAYTHROUGH"
+    ],
+    "newRed": [
+      "GAME-STATES",
+      "GAME-NOSKIP",
+      "GAME-COMMIT-ONCE",
+      "ERR-COMMIT",
+      "PLAYTHROUGH"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "fix",
+    "id": "F-ALL",
+    "want": [],
+    "why": "all minimal fixes applied: expect 0 red",
+    "patches": 14,
+    "observed": [],
+    "newRed": [],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "l1o",
+    "id": "L-TABLES_GAME",
+    "why": "all fixes except TABLES_GAME",
+    "patches": 10,
+    "want": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "PARITY"
+    ],
+    "observed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "PARITY"
+    ],
+    "newRed": [
+      "GAME-EDGES",
+      "GAME-EXTRA",
+      "PARITY"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "l1o",
+    "id": "L-TABLES_CONTRACT",
+    "why": "all fixes except TABLES_CONTRACT",
+    "patches": 12,
+    "want": [
+      "CONTRACT-EDGES",
+      "PARITY"
+    ],
+    "observed": [
+      "CONTRACT-EDGES",
+      "PARITY"
+    ],
+    "newRed": [
+      "CONTRACT-EDGES",
+      "PARITY"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "l1o",
+    "id": "L-LATCH",
+    "why": "all fixes except LATCH",
+    "patches": 12,
+    "want": [
+      "TOKEN-LATCH"
+    ],
+    "observed": [
+      "TOKEN-LATCH"
+    ],
+    "newRed": [
+      "TOKEN-LATCH"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "l1o",
+    "id": "L-BITS00",
+    "why": "all fixes except BITS00",
+    "patches": 13,
+    "want": [
+      "DRY-00"
+    ],
+    "observed": [
+      "DRY-00"
+    ],
+    "newRed": [
+      "DRY-00"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "l1o",
+    "id": "L-FRESH",
+    "why": "all fixes except FRESH",
+    "patches": 12,
+    "want": [
+      "FRESH"
+    ],
+    "observed": [
+      "FRESH"
+    ],
+    "newRed": [
+      "FRESH"
+    ],
+    "note": "",
+    "ok": true
+  },
+  {
+    "kind": "l1o",
+    "id": "L-ACK",
+    "why": "all fixes except ACK",
+    "patches": 11,
+    "want": [
+      "ACK"
+    ],
+    "observed": [
+      "ACK"
+    ],
+    "newRed": [
+      "ACK"
+    ],
+    "note": "",
+    "ok": true
+  }
+]
