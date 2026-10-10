@@ -1,0 +1,10 @@
+scanned 25 files under /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nWuBuJveI2/echo
+live backend.run call sites: 5
+  SITE    /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nWuBuJveI2/echo/game/alias.js:2: export const go = () => b.run(null)
+  SITE    /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nWuBuJveI2/echo/game/destr.js:2: export const go = () => run(null)
+  SITE    /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nWuBuJveI2/echo/main.js:114: const job = await backend.run(circuit, { shots: 256 });
+  SITE    /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nWuBuJveI2/echo/quantum/extra2.py:2: return getattr(backend, "run")(None, shots=256)
+  SITE    /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nWuBuJveI2/echo/quantum/qollab_job.py:168: job = backend.run(build_bell_verification_circuit(), shots=shots)
+  alias   /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nWuBuJveI2/echo/game/alias.js: b
+  alias   /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.nWuBuJveI2/echo/game/destr.js: __run__
+exit 1

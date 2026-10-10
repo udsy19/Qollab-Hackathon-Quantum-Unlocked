@@ -1,0 +1,8 @@
+quest walk (real) on /tmp/clr-merged/echo
+  BOOT -BOOT_COMPLETE-> TITLE
+  TITLE -START-> OPENING
+  OPENING -FINISHED-> FREE_ROAM_ALLEY
+  FREE_ROAM_ALLEY -OPEN_CLONE_BOOTH-> CLONE_INTRO
+STALL at CLONE_INTRO: need a basis-state copy that succeeded
+1 stall(s); ended in CLONE_INTRO after 4 transitions; commit=idle (walk could not continue)
+exit 1

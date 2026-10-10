@@ -1,0 +1,28 @@
+quest walk (real, stalls bridged) on /tmp/clr-merged/echo
+  BOOT -BOOT_COMPLETE-> TITLE
+  TITLE -START-> OPENING
+  OPENING -FINISHED-> FREE_ROAM_ALLEY
+  FREE_ROAM_ALLEY -OPEN_CLONE_BOOTH-> CLONE_INTRO
+    [bridged CLONE_INTRO with the control's result to keep walking]
+  CLONE_INTRO -BASIS_DEMO_OK-> CLONE_BASIS_PASSED
+    [bridged CLONE_BASIS_PASSED with the control's result to keep walking]
+  CLONE_BASIS_PASSED -SUPERPOSITION_DEMO_FAILED-> CLONE_SUPERPOSITION_FAILED
+  CLONE_SUPERPOSITION_FAILED -EXPLANATION_READ-> CLONE_UNDERSTOOD
+  CLONE_UNDERSTOOD -EXIT_BOOTH-> RELAY_UNLOCKED
+  RELAY_UNLOCKED -REACH_RELAY-> RELAY_INTRO
+  RELAY_INTRO -PREPARE_BELL_PAIR-> RELAY_BELL_CREATED
+  RELAY_BELL_CREATED -ATTEMPT_NO_SIGNALLING-> RELAY_SEND_FAILED
+  RELAY_SEND_FAILED -VIEW_RECEIVER_MARGINAL-> RELAY_UNDERSTOOD
+  RELAY_UNDERSTOOD -OPEN_ROOFTOP-> ROOFTOP_UNLOCKED
+  ROOFTOP_UNLOCKED -REPAIR_CLASSICAL_LINK-> LINK_REPAIRED
+  LINK_REPAIRED -RUN_DRY_TEST-> TELEPORT_DRY_RUN
+    [bridged TELEPORT_DRY_RUN with the control's result to keep walking]
+  TELEPORT_DRY_RUN -CORRECT_CALIBRATION-> TELEPORT_DRY_RUN_PASSED
+  second commitTransfer: ok=false, engine calls=0, reason=commit already measured_refused_awaiting_ruling
+STALL at CLONE_INTRO: need a basis-state copy that succeeded
+STALL at CLONE_BASIS_PASSED: need a superposition copy attempt
+STALL at TELEPORT_DRY_RUN: corrections do not match m0=1, m1=0
+STALL at TELEPORT_DRY_RUN_PASSED: need the story-token transfer
+  commit status: measured_refused_awaiting_ruling (token spent; the machine refuses any retry — the quest is stuck for this session)
+4 stall(s); ended in TELEPORT_DRY_RUN_PASSED after 16 transitions; commit=measured_refused_awaiting_ruling (walk could not continue)
+exit 1

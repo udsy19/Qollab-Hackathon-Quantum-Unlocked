@@ -1,0 +1,2 @@
+receiver_marginal_keys_swapped ['FAILED tests/test_contract_conformance.py::test_every_bridge_result_passes_the_platform_validator', 'FAILED tests/test_entanglement.py::test_receiver_is_q1_and_the_gate_acts_on_q0']
+clone_reports_source_twice ['FAILED tests/test_cloning.py::test_source_and_copy_are_labelled_by_qubit - as...', 'FAILED tests/test_contract_conformance.py::test_every_bridge_result_passes_the_platform_validator']
