@@ -94,12 +94,27 @@ async function pushInto(yaw, ms) {
   await sleep(200);
   return (await dbg()).player;
 }
-async function terminal(events) {
-  for (const e of events) {
-    await page.waitForSelector(`#term-actions button[data-event="${e}"]`, { timeout: 3000 });
-    await page.click(`#term-actions button[data-event="${e}"]`);
-    await sleep(100);
-  }
+// Drive gameplay-quest-core's dev terminal by its button text, waiting for each fake-quantum call.
+async function tbtn(text, expectState) {
+  const ok = await page.evaluate((t) => {
+    const b = [...document.querySelectorAll('#term-host button')].find((x) => x.textContent.trim() === t && !x.disabled);
+    if (b) b.click();
+    return Boolean(b);
+  }, text);
+  if (!ok) throw new Error(`no enabled terminal button "${text}" in ${(await dbg()).state}`);
+  await page.waitForFunction(() => ![...document.querySelectorAll('#term-host .dt-actions button')].some((b) => b.disabled), { timeout: 5000 });
+  await sleep(50);
+  const st = (await dbg()).state;
+  if (expectState) check(`terminal "${text}" → ${expectState}`, st === expectState, st);
+}
+async function calibrate() {
+  await tbtn('Bell-measure a calibration qubit');
+  await page.evaluate(() => {
+    const m = document.querySelector('#term-host .dt-actions span').textContent.match(/m0=(\d) m1=(\d)/);
+    document.getElementById('dt-x').checked = m[2] === '1'; // X iff m1 = 1
+    document.getElementById('dt-z').checked = m[1] === '1'; // Z iff m0 = 1
+  });
+  await tbtn('Apply & verify', 'TELEPORT_DRY_RUN_PASSED');
 }
 async function closeTerminal() { await page.click('#term-close'); await sleep(150); }
 async function pressE() { await page.keyboard.press('KeyE'); await sleep(250); }
@@ -191,7 +206,9 @@ await walkTo(3.6, -11.5, { tol: 0.2 });
 await pressE();
 check('E opens booth terminal, quest → CLONE_INTRO', (await dbg()).state === 'CLONE_INTRO');
 await shot('06-booth-terminal');
-await terminal(['BASIS_DEMO_OK', 'SUPERPOSITION_DEMO_FAILED', 'EXPLANATION_READ']);
+await tbtn('Duplicate zero', 'CLONE_BASIS_PASSED');
+await tbtn('Duplicate plus', 'CLONE_SUPERPOSITION_FAILED');
+await tbtn('Read the scan', 'CLONE_UNDERSTOOD');
 await closeTerminal();
 check('clone mission → CLONE_UNDERSTOOD', (await dbg()).state === 'CLONE_UNDERSTOOD');
 await walkTo(0, -18);
@@ -215,14 +232,15 @@ s = await dbg();
 check('prompt at relay core', s.focus === 'relay_core' && await promptVisible(), JSON.stringify(s.player));
 await shot('08-relay-prompt');
 await pressE();
-await terminal(['PREPARE_BELL_PAIR']);
+await tbtn('Sender I', 'RELAY_BELL_CREATED');
 await closeTerminal();
 await walkTo(3, -44);
 await turnTo(Math.atan2(-(-4 - 3), -(-50 + 44)));
 await shot('09-relay-conduit-lit');
 await walkTo(0, -47.5, { tol: 0.2 });
 await pressE();
-await terminal(['ATTEMPT_NO_SIGNALLING', 'VIEW_RECEIVER_MARGINAL']);
+await tbtn('Sender X', 'RELAY_SEND_FAILED');
+await tbtn('Read receiver panel', 'RELAY_UNDERSTOOD');
 await closeTerminal();
 check('relay mission → RELAY_UNDERSTOOD', (await dbg()).state === 'RELAY_UNDERSTOOD');
 await walkTo(2.5, -46);
@@ -253,10 +271,9 @@ await walkTo(30, -44.2, { tol: 0.15 });
 s = await dbg();
 check('prompt at teleport terminal', s.focus === 'teleport_terminal');
 await pressE();
-await terminal(['CORRECT_CALIBRATION']);
-await closeTerminal();
-await pressE();
-await terminal(['COMMIT_TRANSFER']);
+check('E at terminal → TELEPORT_DRY_RUN', (await dbg()).state === 'TELEPORT_DRY_RUN');
+await calibrate();
+await tbtn('COMMIT TRANSFER (story token, once)');
 check('commit → TELEPORT_COMMITTED', (await dbg()).state === 'TELEPORT_COMMITTED');
 await sleep(300);
 await shot('13-commit-wave-start');
@@ -265,11 +282,14 @@ await shot('14-commit-city-lit');
 await page.waitForFunction(() => window.__echo.debug.state === 'ENDING', { timeout: 8000 });
 await shot('15-ending');
 
-// --- Pause is checked on a fresh run after restart
-await page.click('#end-restart');
+// --- RESTART via credits (a quest transition, not quest:reset) must also reset the world
+await page.click('#end-credits');
+await sleep(200);
+await shot('16a-credits');
+await page.click('#credits-restart');
 await sleep(400);
 s = await dbg();
-check('Restart → TITLE, player at spawn, doors closed', s.state === 'TITLE' && Math.abs(s.player.z - 2) < 0.01 && s.doors.every((d) => !d.open && d.t === 0), JSON.stringify(s.player));
+check('Credits → RESTART → TITLE, player at spawn, doors closed', s.state === 'TITLE' && Math.abs(s.player.z - 2) < 0.01 && s.doors.every((d) => !d.open && d.t === 0), JSON.stringify(s.player));
 await shot('16-restart-title');
 await page.click('#play');
 await sleep(400);
@@ -284,6 +304,16 @@ check('no movement while paused', Math.abs((await dbg()).player.z - p.z) < 1e-6)
 await page.click('#resume');
 await sleep(200);
 check('Resume unpauses', !(await page.evaluate(() => window.__echo.paused)));
+// Restart from the pause menu (game.reset → quest:reset).
+await walkTo(0, -6);
+await page.keyboard.press('Escape');
+await sleep(300);
+await page.click('#restart');
+await sleep(400);
+s = await dbg();
+check('Pause → Restart → TITLE, player at spawn', s.state === 'TITLE' && Math.abs(s.player.z - 2) < 0.01 && s.camera.yaw === 0, JSON.stringify(s.player));
+await page.click('#play');
+await sleep(300);
 
 // FPS over a 3 s idle in the alley.
 await sleep(3000);

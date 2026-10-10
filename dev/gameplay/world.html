@@ -1,7 +1,8 @@
 <!doctype html>
 <!-- Dev harness for echo/game (NOT part of the Qollab upload). Serve the worktree root on port 8612:
      python3 -m http.server 8612   →   http://localhost:8612/dev/gameplay/world.html
-     The terminal panel here is a STUB that only emits mission events; story-ui owns the real terminals. -->
+     Terminals are gameplay-quest-core's dev terminal over its fake quantum adapter (dev only); story-ui
+     owns the real terminals. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -23,6 +24,9 @@
   #readout { position: fixed; left: 10px; top: 10px; background: rgba(7, 11, 18, 0.7); padding: 6px 10px; white-space: pre; }
   #hint { position: fixed; right: 10px; top: 10px; background: rgba(7, 11, 18, 0.7); padding: 6px 10px; color: #9fb0c4; }
   [hidden] { display: none !important; }
+  .dt-state { color: #56e4f2; margin-bottom: 6px; } .dt-note { color: #f3ae62; min-height: 1.4em; margin: 6px 0; }
+  .dt-result { max-height: 160px; overflow: auto; font-size: 11px; background: #070b12; padding: 6px; }
+  button:disabled { opacity: 0.4; }
 </style>
 </head>
 <body>
@@ -33,48 +37,39 @@
 
 <div id="title" class="overlay"><div class="panel"><h1>ECHO: ONE OF ONE</h1><p>gameplay harness</p><button id="play">PLAY</button></div></div>
 <div id="pause" class="overlay" hidden><div class="panel"><h1>PAUSED</h1><button id="resume">Resume</button><button id="restart">Restart</button></div></div>
-<div id="terminal" class="overlay" hidden><div class="panel"><h1 id="term-title"></h1><p>STUB terminal — emits mission events only.</p><div id="term-actions"></div><button id="term-close">Close</button></div></div>
-<div id="ending" class="overlay" hidden><div class="panel"><h1>ENDING</h1><p>The city is lit.</p><button id="end-restart">Restart</button></div></div>
+<div id="terminal" class="overlay" hidden><div class="panel"><h1 id="term-title"></h1><p>DEV terminal (fake quantum) — not the product UI.</p><div id="term-host"></div><button id="term-close">Close</button></div></div>
+<div id="ending" class="overlay" hidden><div class="panel"><h1>ENDING</h1><p>The city is lit.</p><button id="end-credits">Credits</button><button id="end-restart">Restart</button></div></div>
+<div id="credits" class="overlay" hidden><div class="panel"><h1>CREDITS</h1><button id="credits-restart">Restart</button></div></div>
 
 <script type="module">
 import { startGame, BUILD } from '../../echo/game/app.js';
+import { createFakeQuantum } from './fakeQuantum.js';
+import { mountDevTerminal } from './devTerminal.js';
 
 const $ = (id) => document.getElementById(id);
-const STUB_EVENTS = {
-  copy_booth: ['BASIS_DEMO_OK', 'SUPERPOSITION_DEMO_FAILED', 'EXPLANATION_READ'],
-  relay_core: ['PREPARE_BELL_PAIR', 'ATTEMPT_NO_SIGNALLING', 'VIEW_RECEIVER_MARGINAL'],
-  classical_socket: [],
-  teleport_terminal: ['CORRECT_CALIBRATION', 'COMMIT_TRANSFER'],
-};
-let fps = { fps: 0, calls: 0 };
+let fps = { fps: 0, ms: 0, calls: 0 };
 
 const ui = {
-  mount({ bus, quest, game }) {
+  mount({ bus, quest, quantum, game }) {
     window.__echo = game;
     let termId = null;
+    mountDevTerminal($('term-host'), { machine: quest, bus, quantum });
     const show = () => {
       $('title').hidden = quest.state !== 'TITLE';
       $('ending').hidden = quest.state !== 'ENDING';
+      $('credits').hidden = quest.state !== 'CREDITS';
       $('pause').hidden = !game.paused;
       $('terminal').hidden = !termId;
-      if (termId) {
-        $('term-title').textContent = termId;
-        const box = $('term-actions');
-        box.replaceChildren(...STUB_EVENTS[termId].filter((e) => quest.can(e)).map((e) => {
-          const b = document.createElement('button');
-          b.textContent = e;
-          b.dataset.event = e;
-          b.onclick = () => quest.send(e);
-          return b;
-        }));
-      }
+      $('term-title').textContent = termId ?? '';
     };
     const closeTerminal = () => { termId = null; show(); bus.emit('ui:terminal:close'); };
     bus.on('ui:prompt', (p) => { $('prompt').hidden = !p; $('prompt-label').textContent = p ? p.label : ''; });
     bus.on('ui:terminal:open', ({ id }) => { termId = id; show(); });
     bus.on('ui:pause', show);
     bus.on('quest:transition', ({ to }) => {
+      // Stands in for narrative: close the terminal on commit, end the transfer animation after 5 s.
       if (to === 'TELEPORT_COMMITTED') { closeTerminal(); setTimeout(() => quest.send('ANIMATION_END'), 5000); }
+      if (to === 'TITLE') termId = null;
       show();
     });
     bus.on('quest:reset', () => { termId = null; show(); });
@@ -83,6 +78,8 @@ const ui = {
     $('resume').onclick = () => { game.resume(); show(); };
     $('restart').onclick = () => game.reset();
     $('end-restart').onclick = () => game.reset();
+    $('end-credits').onclick = () => quest.send('OPEN_CREDITS');
+    $('credits-restart').onclick = () => quest.send('RESTART');
     $('term-close').onclick = closeTerminal;
     setInterval(() => {
       const p = game.debug.player;
@@ -92,7 +89,7 @@ const ui = {
   },
 };
 
-startGame({ root: $('game-root'), quantum: null, ui });
+startGame({ root: $('game-root'), quantum: createFakeQuantum({ delayMs: 150 }), ui });
 </script>
 </body>
 </html>

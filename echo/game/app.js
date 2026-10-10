@@ -1,4 +1,5 @@
-import { createEventBus, createQuestMachine, STATES } from './questStandin.js';
+import { createEventBus } from './eventBus.js';
+import { createQuestMachine, QUEST_STATES as STATES } from './state.js';
 import { createRenderer } from '../scene/renderer.js';
 import { buildDistrict } from '../scene/district.js';
 import { createPlayer } from '../scene/player.js';
@@ -8,7 +9,7 @@ import { createFollowCamera } from './camera.js';
 import { createInteractions } from './interactions.js';
 
 // Read back from the served page to prove which build a screenshot came from.
-export const BUILD = 'wc-0001-f';
+export const BUILD = 'wc-0001-h';
 
 const FIXED_DT = 1 / 60;
 const MAX_STEPS = 6;
@@ -62,6 +63,8 @@ export function startGame({ root, quantum, ui } = {}) {
   }
 
   offs.push(bus.on('quest:transition', ({ to }) => {
+    // RESTART (from credits/declassified) arrives as a transition, not quest:reset — same full reset.
+    if (to === 'TITLE') { resetWorld(); return; }
     world.applyQuestState(to);
     if (to === 'TELEPORT_COMMITTED') follow.setShot(world.finalShot);
     if (!explorableState()) { input.unlock(); interactions.clear(); controller.halt(); }

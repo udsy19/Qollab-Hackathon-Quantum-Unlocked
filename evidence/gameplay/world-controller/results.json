@@ -1,0 +1,188 @@
+{
+  "build": "wc-0001-h",
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)",
+  "readout": "build wc-0001-h  fps 24  ms 0.19  calls 95\nstate FREE_ROAM_ALLEY\npos 0.00, 2.00  focus -",
+  "results": [
+    {
+      "name": "title shown at TITLE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "PLAY → FREE_ROAM_ALLEY",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mouse drag (+200 px) orbits the camera",
+      "ok": true,
+      "detail": "yaw 0.00 → -0.52"
+    },
+    {
+      "name": "prompt at booth when near + facing",
+      "ok": true,
+      "detail": "{\"x\":3.7217025232119485,\"z\":-11.49767487864322,\"heading\":-1.4425182929191296,\"speed\":9.66071013855113e-11}"
+    },
+    {
+      "name": "no prompt behind pylon (in range, facing)",
+      "ok": true,
+      "detail": "dist=2.16 heading=-2.37"
+    },
+    {
+      "name": "SABOTAGE pylon collider off → same spot now prompts",
+      "ok": true,
+      "detail": "focus=copy_booth"
+    },
+    {
+      "name": "restore pylon → no prompt again",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "door A blocks before CLONE_UNDERSTOOD",
+      "ok": true,
+      "detail": "z=-25.85"
+    },
+    {
+      "name": "SABOTAGE door A collider off → player passes the door line",
+      "ok": true,
+      "detail": "z=-28.52"
+    },
+    {
+      "name": "all colliders off → walkable guard still holds the map edge",
+      "ok": true,
+      "detail": "x=-2.49 z=-28.61"
+    },
+    {
+      "name": "E opens booth terminal, quest → CLONE_INTRO",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal \"Duplicate zero\" → CLONE_BASIS_PASSED",
+      "ok": true,
+      "detail": "CLONE_BASIS_PASSED"
+    },
+    {
+      "name": "terminal \"Duplicate plus\" → CLONE_SUPERPOSITION_FAILED",
+      "ok": true,
+      "detail": "CLONE_SUPERPOSITION_FAILED"
+    },
+    {
+      "name": "terminal \"Read the scan\" → CLONE_UNDERSTOOD",
+      "ok": true,
+      "detail": "CLONE_UNDERSTOOD"
+    },
+    {
+      "name": "clone mission → CLONE_UNDERSTOOD",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "door A open after CLONE_UNDERSTOOD",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "EXIT_BOOTH trigger → RELAY_UNLOCKED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "door B blocks before RELAY_UNDERSTOOD",
+      "ok": true,
+      "detail": "x=8.85"
+    },
+    {
+      "name": "prompt at relay core",
+      "ok": true,
+      "detail": "{\"x\":-0.04087709966248403,\"z\":-47.52801379127318,\"heading\":0.8580549478821469,\"speed\":0.07411691177812746}"
+    },
+    {
+      "name": "terminal \"Sender I\" → RELAY_BELL_CREATED",
+      "ok": true,
+      "detail": "RELAY_BELL_CREATED"
+    },
+    {
+      "name": "terminal \"Sender X\" → RELAY_SEND_FAILED",
+      "ok": true,
+      "detail": "RELAY_SEND_FAILED"
+    },
+    {
+      "name": "terminal \"Read receiver panel\" → RELAY_UNDERSTOOD",
+      "ok": true,
+      "detail": "RELAY_UNDERSTOOD"
+    },
+    {
+      "name": "relay mission → RELAY_UNDERSTOOD",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "OPEN_ROOFTOP trigger → ROOFTOP_UNLOCKED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "prompt at classical socket",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "socket → LINK_REPAIRED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "prompt at teleport terminal",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "E at terminal → TELEPORT_DRY_RUN",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal \"Apply & verify\" → TELEPORT_DRY_RUN_PASSED",
+      "ok": true,
+      "detail": "TELEPORT_DRY_RUN_PASSED"
+    },
+    {
+      "name": "commit → TELEPORT_COMMITTED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Credits → RESTART → TITLE, player at spawn, doors closed",
+      "ok": true,
+      "detail": "{\"x\":0,\"z\":2,\"heading\":0,\"speed\":0}"
+    },
+    {
+      "name": "Esc pauses",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no movement while paused",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Resume unpauses",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Pause → Restart → TITLE, player at spawn",
+      "ok": true,
+      "detail": "{\"x\":0,\"z\":2,\"heading\":0,\"speed\":0}"
+    },
+    {
+      "name": "no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "errors": []
+}
