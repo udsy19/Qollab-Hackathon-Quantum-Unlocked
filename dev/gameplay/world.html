@@ -98,6 +98,10 @@ const quantum = createDevEngine({ delayMs: 150 });
 window.__engine = quantum; // dev fault injection for the playthrough
 const game = startGame({ root: $('game-root'), quantum, ui });
 game.quest.send('BOOT_COMPLETE', 'boot'); // platform's main.js does this once Pyodide and the scene are ready
+// Stands in for main.js's `await game.ended` (Qollab stops listening once main.js returns): the
+// harness records when, and with what, the promise settles.
+window.__ended = 'pending';
+Promise.resolve(game.ended).then((r) => { window.__ended = r ?? 'settled-with-nothing'; });
 </script>
 </body>
 </html>

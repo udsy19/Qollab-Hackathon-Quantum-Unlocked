@@ -10,7 +10,7 @@ import { createFollowCamera } from './camera.js';
 import { createInteractions } from './interactions.js';
 
 // Read back from the served page to prove which build a screenshot came from.
-export const BUILD = 'v2p-0006-b';
+export const BUILD = 'qi-0011-a';
 
 const FIXED_DT = 1 / 60;
 const MAX_STEPS = 6;
@@ -27,6 +27,11 @@ const LAST_EXPLORE = QUEST_STATE_LIST.indexOf(S.TELEPORT_DRY_RUN_PASSED);
  * · `perf:fps` {fps,ms,calls}.
  * The quest starts in BOOT: platform sends BOOT_COMPLETE (via 'boot') once Pyodide and the scene are
  * ready. `ui.mount({ bus, quest, quantum, game })`, if present, is called once after boot.
+ *
+ * Returns the game object; `game.ended` is a promise that settles only at CREDITS
+ * ({reason:'credits', state}) or on `game.dispose()` ({reason:'stop', state}). main.js must
+ * `await game.ended`: on Qollab, once main.js returns the page stops listening to the frame
+ * (console, Probabilities, the IonQ proxy — platform report 0005).
  */
 export function startGame({ root, quantum, ui } = {}) {
   const bus = createEventBus();
@@ -43,10 +48,13 @@ export function startGame({ root, quantum, ui } = {}) {
   let terminalOpen = false;
   let lockLostAt = -1;
   const offs = [];
+  let finish;
+  const ended = new Promise((resolve) => { finish = resolve; });
 
   const rank = () => QUEST_STATE_LIST.indexOf(quest.state);
   const explorableState = () => rank() >= FIRST_EXPLORE && rank() <= LAST_EXPLORE;
-  const exploring = () => explorableState() && !terminalOpen && !paused;
+  // Unfocused = the focus overlay is up (input.js): nothing moves until the player clicks back in.
+  const exploring = () => explorableState() && !terminalOpen && !paused && input.focused;
 
   function setPaused(p) {
     if (p === paused) return;
@@ -72,6 +80,7 @@ export function startGame({ root, quantum, ui } = {}) {
     if (to === RESET_STATE) { resetWorld(); return; }
     world.applyQuestState(to);
     if (to === S.TELEPORT_COMMITTED) follow.setShot(world.finalShot);
+    if (to === S.CREDITS) finish({ reason: 'credits', state: to });
     if (!explorableState()) { input.unlock(); interactions.clear(); controller.halt(); }
   }));
   offs.push(bus.on(BUS_EVENTS.OPEN_TERMINAL, () => {
@@ -90,7 +99,6 @@ export function startGame({ root, quantum, ui } = {}) {
   input.on(document, 'pointerlockchange', () => {
     if (!input.locked && exploring()) { lockLostAt = performance.now(); setPaused(true); }
   });
-  input.on(window, 'blur', () => { if (exploring()) setPaused(true); });
 
   function step(dt) {
     if (input.consume('Escape')) {
@@ -99,6 +107,7 @@ export function startGame({ root, quantum, ui } = {}) {
     }
     if (!exploring()) {
       input.consume('KeyE');
+      controller.halt(); // so no residual stride carries on after a blur, a terminal or a pause
       return;
     }
     const [mdx, mdy] = input.takeMouse();
@@ -162,6 +171,7 @@ export function startGame({ root, quantum, ui } = {}) {
     bus,
     quest,
     BUILD,
+    ended,
     get paused() { return paused; },
     get terminalOpen() { return terminalOpen; },
     pause: () => setPaused(true),
@@ -182,6 +192,7 @@ export function startGame({ root, quantum, ui } = {}) {
       colliders: world.colliders,
     },
     dispose() {
+      finish({ reason: 'stop', state: quest.state });
       cancelAnimationFrame(raf);
       offs.forEach((off) => off());
       input.dispose();
