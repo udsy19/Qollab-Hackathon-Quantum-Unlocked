@@ -1,0 +1,14 @@
+hardcoded-backend/main.js:1 hardcoded-backend IonQProvider: backend names must come from the injected backend, never from code
+hardcoded-backend/main.js:1 import-specifier bare import "qiskit_ionq" is not three, three/addons/*, postprocessing, and echo/qiskit_ionq.py does not exist
+hardcoded-backend/main.js:2 hardcoded-backend "ionq_simulator" looks like a backend id (inside a string literal)
+hardcoded-backend/main.js:3 hardcoded-backend "ionq" looks like a backend id (inside a string literal)
+  info: hardcoded-backend/main.js:1 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: backend.run: 0 call site(s) in scanned code
+LIMITATIONS (not covered by any rule above):
+  - backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+  - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
+scanned 2 files (2 code files) under /Users/udsy/agent-org/lanes/platform/wt/echo-caps-gate/tools/qollab-caps/fixtures/hardcoded-backend
+RED: 4 failure(s) across 2 rule(s): hardcoded-backend, import-specifier

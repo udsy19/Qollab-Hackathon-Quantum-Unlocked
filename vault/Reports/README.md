@@ -1,8 +1,8 @@
 ---
 type: dashboard
 status: current
-date: 2026-10-09
-updated: 2026-10-09
+date: 2026-10-10
+updated: 2026-10-10
 ---
 
 # `Reports/`
@@ -14,8 +14,11 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (0)
+## Notes here (3)
 
+- [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
+- [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
+- [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
 ## Below this folder
 

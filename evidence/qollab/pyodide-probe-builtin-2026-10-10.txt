@@ -1,0 +1,16 @@
+Qollab draft https://qollab.xyz/u/udsy/echo-one-of-one (Python project, temporary probe main.py), Built-in simulator (24q), run 2026-10-09 ~23:40 ET by the overseer. Console, verbatim:
+
+Loading packages…
+Loading project files…
+Compiling / initializing runtime…
+Running...
+3.14.2 (main, Sep 14 2026, 03:03:51) [Clang 23.0.0git (https:/github.com/llvm/llvm-project e5927fecf8a6ce89e1a4eac5b8 2.5.2
+{np.str_('00'): np.float64(0.4999999999999999), np.str_('11'): np.float64(0.4999999999999999)}
+[[0.5, 0.0], [0.0, 0.5]]
+0.4999999999999999
+q_0: ┤ H ├──■──   /  q_1: ─────┤ X ├   (text drawing)
+BasicSimulator basic_simulator
+{'11': 37, '00': 27}
+Traceback (most recent call last):
+NameError: name 'main' is not defined. Did you mean: 'min'?
+(run time 1.6 s)

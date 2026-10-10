@@ -1,0 +1,1086 @@
+{
+ "_comment": "Fixtures for tools/contract-check/check.mjs. Bad cases name a substring the validator's error must contain.",
+ "good": [
+  {
+   "name": "cloning plus, exact",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   }
+  },
+  {
+   "name": "bell marginal X, sum within 1e-9",
+   "result": {
+    "experiment": "bell_signalling",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1); X(q0)",
+    "qubits": 2,
+    "parameters": {
+     "senderGate": "X"
+    },
+    "probabilities": {
+     "0": 0.4999999998,
+     "1": 0.5
+    },
+    "keyQubits": [
+     1
+    ],
+    "facts": [
+     "Receiver-only data: 50% / 50%. No decodable message."
+    ]
+   }
+  },
+  {
+   "name": "teleportation result m0=1 m1=0, fidelity float-rounded above 1",
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
+    "qubits": 3,
+    "parameters": {
+     "stateId": "plus",
+     "correctionX": false,
+     "correctionZ": true
+    },
+    "fidelity": 1.0000000000000002,
+    "measurementBits": {
+     "m0": 1,
+     "m1": 0
+    },
+    "facts": [
+     "Receiver test fidelity 1.000000 for this branch."
+    ]
+   }
+  },
+  {
+   "name": "backend_verification: the one selected-backend job, 256 shots",
+   "result": {
+    "experiment": "backend_verification",
+    "engine": "qollab_selected_backend",
+    "circuitDescription": "H(q0); CX(q0,q1); measure both",
+    "qubits": 2,
+    "parameters": {
+     "shots": 256,
+     "backend": "basic_simulator"
+    },
+    "counts": {
+     "00": 130,
+     "11": 126
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "facts": [
+     "Sampled on the selected backend; counts, not exact probabilities."
+    ]
+   }
+  },
+  {
+   "name": "documented preview",
+   "result": {
+    "experiment": "cloning",
+    "engine": "documented_preview",
+    "circuitDescription": "CX(q0,q1) on |0>",
+    "qubits": 2,
+    "parameters": {
+     "state": "zero"
+    },
+    "probabilities": {
+     "00": 1
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "facts": [
+     "Documented preview, not a fresh calculation."
+    ]
+   }
+  }
+ ],
+ "bad": [
+  {
+   "name": "unknown engine",
+   "result": {
+    "experiment": "cloning",
+    "engine": "ionq_hardware",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "engine"
+  },
+  {
+   "name": "probabilities sum to 0.9",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.4
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "sum"
+  },
+  {
+   "name": "probabilities off by 2e-9 (tolerance is 1e-9)",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.500000002
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "sum"
+  },
+  {
+   "name": "negative probability that still sums to 1",
+   "result": {
+    "experiment": "bell_signalling",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1); X(q0)",
+    "qubits": 2,
+    "parameters": {
+     "senderGate": "X"
+    },
+    "probabilities": {
+     "0": 1.2,
+     "1": -0.2
+    },
+    "keyQubits": [
+     1
+    ],
+    "facts": [
+     "Receiver-only data: 50% / 50%. No decodable message."
+    ]
+   },
+   "expectError": "probabilities"
+  },
+  {
+   "name": "counts under exact_qiskit_local",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z",
+    "counts": {
+     "00": 1,
+     "11": 1
+    }
+   },
+   "expectError": "counts"
+  },
+  {
+   "name": "measurementBits m0=2",
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
+    "qubits": 3,
+    "parameters": {
+     "stateId": "plus",
+     "correctionX": false,
+     "correctionZ": true
+    },
+    "fidelity": 1.0000000000000002,
+    "measurementBits": {
+     "m0": 2,
+     "m1": 0
+    },
+    "facts": [
+     "Receiver test fidelity 1.000000 for this branch."
+    ]
+   },
+   "expectError": "m0"
+  },
+  {
+   "name": "measurementBits m1 as string",
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
+    "qubits": 3,
+    "parameters": {
+     "stateId": "plus",
+     "correctionX": false,
+     "correctionZ": true
+    },
+    "fidelity": 1.0000000000000002,
+    "measurementBits": {
+     "m0": 0,
+     "m1": "1"
+    },
+    "facts": [
+     "Receiver test fidelity 1.000000 for this branch."
+    ]
+   },
+   "expectError": "m1"
+  },
+  {
+   "name": "measurementBits missing m1",
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
+    "qubits": 3,
+    "parameters": {
+     "stateId": "plus",
+     "correctionX": false,
+     "correctionZ": true
+    },
+    "fidelity": 1.0000000000000002,
+    "measurementBits": {
+     "m0": 0
+    },
+    "facts": [
+     "Receiver test fidelity 1.000000 for this branch."
+    ]
+   },
+   "expectError": "m1"
+  },
+  {
+   "name": "missing facts",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "facts"
+  },
+  {
+   "name": "empty facts",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "facts"
+  },
+  {
+   "name": "unknown experiment",
+   "result": {
+    "experiment": "cloning_v2",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "experiment"
+  },
+  {
+   "name": "misspelt key measurmentBits",
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
+    "qubits": 3,
+    "parameters": {
+     "stateId": "plus",
+     "correctionX": false,
+     "correctionZ": true
+    },
+    "fidelity": 1.0000000000000002,
+    "measurementBits": {
+     "m0": 1,
+     "m1": 0
+    },
+    "facts": [
+     "Receiver test fidelity 1.000000 for this branch."
+    ],
+    "measurmentBits": {
+     "m0": 0,
+     "m1": 0
+    }
+   },
+   "expectError": "measurmentBits"
+  },
+  {
+   "name": "probabilities without keyQubits",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "keyQubits"
+  },
+  {
+   "name": "probability key longer than keyQubits",
+   "result": {
+    "experiment": "bell_signalling",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1); X(q0)",
+    "qubits": 2,
+    "parameters": {
+     "senderGate": "X"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1
+    ],
+    "facts": [
+     "Receiver-only data: 50% / 50%. No decodable message."
+    ]
+   },
+   "expectError": "key"
+  },
+  {
+   "name": "keyQubits index outside the register",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     2,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "keyQubits"
+  },
+  {
+   "name": "non-integer counts",
+   "result": {
+    "experiment": "backend_verification",
+    "engine": "qollab_selected_backend",
+    "circuitDescription": "H(q0); CX(q0,q1); measure both",
+    "qubits": 2,
+    "parameters": {
+     "shots": 256
+    },
+    "counts": {
+     "00": 130.5,
+     "11": 125.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "facts": [
+     "Sampled on the selected backend; counts, not exact probabilities."
+    ]
+   },
+   "expectError": "counts"
+  },
+  {
+   "name": "selected backend carrying exact probabilities",
+   "result": {
+    "experiment": "backend_verification",
+    "engine": "qollab_selected_backend",
+    "circuitDescription": "H(q0); CX(q0,q1); measure both",
+    "qubits": 2,
+    "parameters": {
+     "shots": 256
+    },
+    "counts": {
+     "00": 130,
+     "11": 126
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "facts": [
+     "Sampled on the selected backend; counts, not exact probabilities."
+    ],
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    }
+   },
+   "expectError": "probabilities"
+  },
+  {
+   "name": "selected backend without counts",
+   "result": {
+    "experiment": "backend_verification",
+    "engine": "qollab_selected_backend",
+    "circuitDescription": "H(q0); CX(q0,q1); measure both",
+    "qubits": 2,
+    "parameters": {
+     "shots": 256
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "facts": [
+     "Sampled on the selected backend; counts, not exact probabilities."
+    ]
+   },
+   "expectError": "counts"
+  },
+  {
+   "name": "fidelity 1.5",
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "Bell pair H(q1) CX(q1,q2); CX(q0,q1) H(q0); measure q0->m0, q1->m1; Z on q2",
+    "qubits": 3,
+    "parameters": {
+     "stateId": "plus",
+     "correctionX": false,
+     "correctionZ": true
+    },
+    "fidelity": 1.5,
+    "measurementBits": {
+     "m0": 1,
+     "m1": 0
+    },
+    "facts": [
+     "Receiver test fidelity 1.000000 for this branch."
+    ]
+   },
+   "expectError": "fidelity"
+  },
+  {
+   "name": "qubits 0",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 0,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "qubits"
+  },
+  {
+   "name": "nested object in parameters",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": {
+      "theta": 1
+     }
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "parameters"
+  },
+  {
+   "name": "missing circuitDescription",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "circuitDescription"
+  },
+  {
+   "name": "observables with a non-number",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": "0.5"
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   },
+   "expectError": "observables"
+  },
+  {
+   "name": "documented_preview carrying counts",
+   "expectError": "counts",
+   "result": {
+    "experiment": "cloning",
+    "engine": "documented_preview",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z",
+    "counts": {
+     "00": 2,
+     "11": 2
+    }
+   }
+  },
+  {
+   "name": "Mission 2 receiver result with sampled counts",
+   "expectError": "counts",
+   "result": {
+    "experiment": "bell_signalling",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1); X(q0)",
+    "qubits": 2,
+    "parameters": {
+     "senderGate": "X"
+    },
+    "probabilities": {
+     "0": 0.4999999998,
+     "1": 0.5
+    },
+    "keyQubits": [
+     1
+    ],
+    "facts": [
+     "Receiver-only data: 50% / 50%. No decodable message."
+    ],
+    "counts": {
+     "0": 128,
+     "1": 128
+    }
+   }
+  },
+  {
+   "name": "Mission 2 receiver result from the selected backend",
+   "expectError": "bell_signalling",
+   "result": {
+    "experiment": "bell_signalling",
+    "engine": "qollab_selected_backend",
+    "circuitDescription": "H(q0); CX(q0,q1); X(q0)",
+    "qubits": 2,
+    "parameters": {
+     "senderGate": "X"
+    },
+    "keyQubits": [
+     1
+    ],
+    "facts": [
+     "Receiver-only data: 50% / 50%. No decodable message."
+    ],
+    "counts": {
+     "0": 128,
+     "1": 128
+    }
+   }
+  },
+  {
+   "name": "Mission 2 receiver result as a documented preview (not EXACT)",
+   "expectError": "bell_signalling",
+   "result": {
+    "experiment": "bell_signalling",
+    "engine": "documented_preview",
+    "circuitDescription": "H(q0); CX(q0,q1); X(q0)",
+    "qubits": 2,
+    "parameters": {
+     "senderGate": "X"
+    },
+    "probabilities": {
+     "0": 0.4999999998,
+     "1": 0.5
+    },
+    "keyQubits": [
+     1
+    ],
+    "facts": [
+     "Receiver-only data: 50% / 50%. No decodable message."
+    ]
+   }
+  },
+  {
+   "name": "Mission 2 receiver result without probabilities",
+   "expectError": "probabilities",
+   "result": {
+    "experiment": "bell_signalling",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1); X(q0)",
+    "qubits": 2,
+    "parameters": {
+     "senderGate": "X"
+    },
+    "facts": [
+     "Receiver-only data: 50% / 50%. No decodable message."
+    ]
+   }
+  },
+  {
+   "name": "Mission 2 probabilities that do not cover the receiver q1",
+   "expectError": "receiver",
+   "result": {
+    "experiment": "bell_signalling",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1); X(q0)",
+    "qubits": 2,
+    "parameters": {
+     "senderGate": "X"
+    },
+    "probabilities": {
+     "0": 0.4999999998,
+     "1": 0.5
+    },
+    "keyQubits": [
+     0
+    ],
+    "facts": [
+     "Receiver-only data: 50% / 50%. No decodable message."
+    ]
+   }
+  },
+  {
+   "name": "bell_signalling sampled on the selected backend (old v1 shape)",
+   "expectError": "backend_verification",
+   "result": {
+    "experiment": "bell_signalling",
+    "engine": "qollab_selected_backend",
+    "circuitDescription": "H(q0); CX(q0,q1); measure both",
+    "qubits": 2,
+    "parameters": {
+     "shots": 256,
+     "backend": "basic_simulator"
+    },
+    "counts": {
+     "00": 130,
+     "11": 126
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "facts": [
+     "Sampled on the selected backend; counts, not exact probabilities."
+    ]
+   }
+  },
+  {
+   "name": "backend_verification computed locally",
+   "expectError": "backend_verification",
+   "result": {
+    "experiment": "backend_verification",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1); measure both",
+    "qubits": 2,
+    "parameters": {
+     "shots": 256,
+     "backend": "basic_simulator"
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "facts": [
+     "Sampled on the selected backend; counts, not exact probabilities."
+    ],
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    }
+   }
+  },
+  {
+   "name": "backend_verification with 1024 shots",
+   "expectError": "shots",
+   "result": {
+    "experiment": "backend_verification",
+    "engine": "qollab_selected_backend",
+    "circuitDescription": "H(q0); CX(q0,q1); measure both",
+    "qubits": 2,
+    "parameters": {
+     "shots": 1024
+    },
+    "counts": {
+     "00": 130,
+     "11": 126
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "facts": [
+     "Sampled on the selected backend; counts, not exact probabilities."
+    ]
+   }
+  },
+  {
+   "name": "backend_verification without a shots parameter",
+   "expectError": "shots",
+   "result": {
+    "experiment": "backend_verification",
+    "engine": "qollab_selected_backend",
+    "circuitDescription": "H(q0); CX(q0,q1); measure both",
+    "qubits": 2,
+    "parameters": {},
+    "counts": {
+     "00": 130,
+     "11": 126
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "facts": [
+     "Sampled on the selected backend; counts, not exact probabilities."
+    ]
+   }
+  },
+  {
+   "name": "measurementBits on a cloning result",
+   "expectError": "measurementBits",
+   "result": {
+    "experiment": "cloning",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z",
+    "measurementBits": {
+     "m0": 0,
+     "m1": 1
+    }
+   }
+  },
+  {
+   "name": "the old bell_verification name",
+   "expectError": "experiment",
+   "result": {
+    "experiment": "bell_verification",
+    "engine": "qollab_selected_backend",
+    "circuitDescription": "H(q0); CX(q0,q1); measure both",
+    "qubits": 2,
+    "parameters": {
+     "shots": 256,
+     "backend": "basic_simulator"
+    },
+    "counts": {
+     "00": 130,
+     "11": 126
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "facts": [
+     "Sampled on the selected backend; counts, not exact probabilities."
+    ]
+   }
+  },
+  {
+   "name": "engine \"constructor\" (an inherited property name, not a table entry)",
+   "expectError": "engine",
+   "result": {
+    "experiment": "cloning",
+    "engine": "constructor",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   }
+  },
+  {
+   "name": "experiment \"toString\" (an inherited property name)",
+   "expectError": "experiment",
+   "result": {
+    "experiment": "toString",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   }
+  }
+ ]
+}
