@@ -1,0 +1,23 @@
+70 distinct strings (numbers masked); those with watch-words:
+- [pyodide.engine.tele.facts] The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.
+- [pyodide.engine.tele.facts] The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.
+- [pyodide.engine.withheld.facts] The quantum half of the link carries no message on its own.
+- [pyodide.engine.deferred.facts] Mathematical verification by the deferred-measurement principle: the measurements and classical corrections are replaced by equivalent controlled gates.
+- [pyodide.engine.deferred.facts] This is not a physical teleportation link; in the story the corrections travel as two classical bits.
+- [pyodide.engine.clone.plus.circuitDescription] prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)
+- [pyodide.engine.clone.plus.facts] Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity #.
+- [pyodide.engine.clone.plus.facts] Each output alone has purity #; an independent copy of a pure state would have purity 1.
+- [pyodide.engine.clone.plus.facts] The two outputs are entangled with each other, not copies of the input.
+- [pyodide.engine.clone.plus.facts] No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states.
+- [pyodide.engine.clone.phase.circuitDescription] prepare (|0>+i|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)
+- [pyodide.engine.clone.minus.circuitDescription] prepare |-> = (|0>-|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)
+- [pyodide.engine.clone.zero.circuitDescription] prepare |0> on q0 (source); CX(q0 -> q1 blank copy)
+- [pyodide.engine.clone.zero.facts] Two matching basis values: this input was already a Z-basis state, so the circuit only copied a known classical value.
+- [pyodide.engine.clone.bloch_a.circuitDescription] prepare RY(#) then RZ(#) on |0> on q0 (source); CX(q0 -> q1 blank copy)
+- [pyodide.engine.relay.I.facts] Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.
+- [pyodide.engine.relay.I.facts] That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information.
+- [pyodide.bridge.draws.r.facts] One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does.
+- [pyodide.bridge.commit1.r.facts] Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.
+- [pyodide.bridge.pythonRetryAfterCommit.message] quantum.teleportation.TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again.
+- [host.cloning.one.circuitDescription] prepare |1> on q0 (source); CX(q0 -> q1 blank copy)
+- [host.commit.facts] Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z OFF.
