@@ -1,0 +1,7 @@
+kind	name	sha	ref	note
+pin	platform	0fc2721b293b9c78ebd06e7fe93244df3deb401a	lane/platform/integration	shell main.js/index.html + tools/ (runner, assembler)
+pin	quantum	807cc395276e81a01ed00f8d14bd463c8c11f9a0	lane/quantum/integration	tip when fetched 00:55 ET; tip moved to 24e0ba7 during the run (not measured)
+pin	story-ui	19084703d674d5462286d09b4b1b46d248dc8ec7	lane/story-ui/integration	
+pin	gameplay	7c4741bb9df1bdf44da7255a7fe5af8226c58978	lane/gameplay/integration	variant A
+pin	art	38776b7772b7087166de694697a1df092343b983	lane/art/integration	
+pin	gameplay-v2	cb803ff7eed91512642f98795da9c1b74b93353c	lane/gameplay/gameplay-world-v2-port	variant B; fetched 00:55 ET (origin had 6660774, local ref cb803ff); tip moved to 7792382 during the run (not measured)
