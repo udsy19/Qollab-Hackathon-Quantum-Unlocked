@@ -30,7 +30,7 @@ its citation, and is never read from the module:
 - `BIT_LABELS` (m1 is ruled; m0 comes from the vision §7.4 Beat 2 text, because there is no owner ruling for it)
 - the correction rule
 - `EXPERIMENTS.backend_verification`
-- `GENERIC_MAX_WRONG_FIDELITY` = 0.9. This is a design value, not an owner ruling. The Qiskit oracle's worst wrong choice measured **0.674089**.
+- `GENERIC_MAX_WRONG_FIDELITY` = 0.9. This is a design value, not an owner ruling. The Qiskit oracle's worst wrong choice measured **0.673960** (max over the 48 wrong rows of `teleport-fixtures.json`).
 
 It also adds two behaviour probes:
 
