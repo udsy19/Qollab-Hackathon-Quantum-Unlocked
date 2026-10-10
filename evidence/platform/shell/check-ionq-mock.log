@@ -1,0 +1,23 @@
+PASS  main.js ran to the end without error  — ready in 7.0s
+PASS  build token visible  — shell-2026-10-10c
+PASS  served build matches --expect-build  — shell-2026-10-10c
+PASS  backend name rendered from injected backend  — basic_simulator
+PASS  runner sandbox: localStorage and POST blocked, no WebSocket/Worker  — {"storage":"blocked","post":"blocked","websocket":"undefined","worker":"undefined"}
+PASS  story-ui menu is mounted inside #echo-ui and shows the title  — {"visible":"true","screen":"title","h1":"ECHOONE OF ONE"}
+PASS  quest shows BOOT —BOOT_COMPLETE→ TITLE  — BOOT —BOOT_COMPLETE→ TITLE
+PASS  Start closes the menu  — {"visible":"false","screen":null,"h1":"ECHOONE OF ONE"}
+PASS  quest shows TITLE —START→ OPENING  — TITLE —START→ OPENING
+PASS  Three.js canvas paints the room once the menu closes (cyan pixels in the middle > 20000)  — {"w":1400,"h":936,"cyan":75590}
+PASS  Esc after Start opens the pause menu  — {"visible":"true","screen":"pause","h1":"ECHOONE OF ONE"}
+PASS  quality low → canvas pixel ratio 1  — {"ratio":1,"strip":"quality low · pixel ratio 1 · shadows off"}
+PASS  quality high → canvas pixel ratio 1.75  — {"ratio":1.75,"strip":"quality high · pixel ratio 1.75 · shadows on"}
+PASS  quantum module answers through the bridge: |+> copy overlap 0.5, purity 0.5  — Quantum module ready (exact local Qiskit). Copy test on |+>: overlap with two copies 0.500000, each output purity 0.500000.
+PASS  first press: counts from one job, 256 shots  — {"11":136,"00":120}
+PASS  first press: only 00/11, each 88..168 of 256  — {"11":136,"00":120}
+FAIL  first press: the result passes the shared contract (status "Done")  — 1 job done, but its result breaks the shared contract: experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification"; engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification"
+PASS  runner counted exactly 1 backend.run after first press  — 1
+PASS  second press: page shows a visible refusal  — Refused: this run has already used its one selected-backend job. Press Stop, then Run, to send another.
+PASS  second press: runner saw no second backend.run  — {"jobs":1,"refused":0}
+PASS  Restart returns to the title screen  — {"visible":"true","screen":"title","h1":"ECHOONE OF ONE"}
+PASS  quest shows OPENING → TITLE (reset)  — OPENING → TITLE (reset)
+21/22 checks passed

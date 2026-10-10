@@ -1,0 +1,21 @@
+PASS  main.js ran to the end without error  — ready in 8.6s
+PASS  build token visible  — shell-2026-10-10c
+PASS  backend name rendered from injected backend  — basic_simulator
+PASS  runner sandbox: localStorage and POST blocked, no WebSocket/Worker  — {"storage":"blocked","post":"blocked","websocket":"undefined","worker":"undefined"}
+PASS  story-ui menu is mounted inside #echo-ui and shows the title  — {"visible":"true","screen":"title","h1":"ECHOONE OF ONE"}
+PASS  quest shows BOOT —BOOT_COMPLETE→ TITLE  — BOOT —BOOT_COMPLETE→ TITLE
+PASS  Start closes the menu  — {"visible":"false","screen":null,"h1":"ECHOONE OF ONE"}
+PASS  quest shows TITLE —START→ OPENING  — TITLE —START→ OPENING
+PASS  Three.js canvas paints the room once the menu closes (cyan pixels in the middle > 20000)  — {"w":1400,"h":936,"cyan":75568}
+PASS  Esc after Start opens the pause menu  — {"visible":"true","screen":"pause","h1":"ECHOONE OF ONE"}
+PASS  quality low → canvas pixel ratio 1  — {"ratio":1,"strip":"quality low · pixel ratio 1 · shadows off"}
+PASS  quality high → canvas pixel ratio 1.75  — {"ratio":1.75,"strip":"quality high · pixel ratio 1.75 · shadows on"}
+FAIL  quantum module answers through the bridge: |+> copy overlap 0.5, purity 0.5  — Scientific module error in quantum.cloning.run_calibration: Error: cloning.run_calibration broke the shared contract: result must be a plain object, got a Map (Pyodide toJs() without { dict_converter: Object.fromEntries })
+FAIL  first press: counts from one job, 256 shots  — {}
+FAIL  first press: only 00/11, each 88..168 of 256  — {}
+PASS  runner counted exactly 1 backend.run after first press  — 1
+PASS  second press: page shows a visible refusal  — Refused: this run has already used its one selected-backend job. Press Stop, then Run, to send another.
+PASS  second press: runner saw no second backend.run  — {"jobs":1,"refused":0}
+PASS  Restart returns to the title screen  — {"visible":"true","screen":"title","h1":"ECHOONE OF ONE"}
+PASS  quest shows OPENING → TITLE (reset)  — OPENING → TITLE (reset)
+17/20 checks passed

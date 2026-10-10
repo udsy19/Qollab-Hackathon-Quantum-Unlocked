@@ -195,6 +195,8 @@ const CLONE_PLUS = { overlap: 0.5, purity: 0.5 };
     // Binomial(256, 0.5): sd = 8, so 88..168 is +-5 sd; a non-Bell circuit fails it.
     check('first press: only 00/11, each 88..168 of 256', Object.keys(counts).every((k) => k === '00' || k === '11') &&
       counts['00'] >= 88 && counts['00'] <= 168 && counts['11'] >= 88 && counts['11'] <= 168, counts);
+    const firstStatus = await text('echo-verify-status');
+    check('first press: the result passes the shared contract (status "Done")', /^Done: 1 job/.test(firstStatus || ''), firstStatus);
     check('runner counted exactly 1 backend.run after first press', (await page.evaluate(() => window.__runner.jobs)) === 1, await page.evaluate(() => window.__runner.jobs));
     await frame.click('#echo-verify');
     await sleep(2500);

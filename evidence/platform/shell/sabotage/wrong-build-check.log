@@ -1,0 +1,3 @@
+PASS  main.js ran to the end without error  — ready in 12.5s
+FAIL  build token visible  — null
+ABORT: served build null is not the expected not-the-served-build

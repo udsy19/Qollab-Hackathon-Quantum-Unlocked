@@ -1,0 +1,7 @@
+PASS  main.js ran to the end without error  — ready in 7.1s
+PASS  build token visible  — shell-2026-10-10c
+PASS  backend name rendered from injected backend  — basic_simulator
+PASS  runner sandbox: localStorage and POST blocked, no WebSocket/Worker  — {"storage":"blocked","post":"blocked","websocket":"undefined","worker":"undefined"}
+FAIL  story-ui menu is mounted inside #echo-ui and shows the title  — {"visible":"false","screen":null,"h1":"ECHOONE OF ONE"}
+PASS  quest shows BOOT —BOOT_COMPLETE→ TITLE  — BOOT —BOOT_COMPLETE→ TITLE
+NO VERDICT: Node is either not clickable or not an Element

@@ -1,0 +1,7 @@
+PASS  main.js ran to the end without error  — ready in 14.2s
+FAIL  build token visible  — null
+FAIL  backend name rendered from injected backend  — null
+PASS  runner sandbox: localStorage and POST blocked, no WebSocket/Worker  — {"storage":"blocked","post":"blocked","websocket":"undefined","worker":"undefined"}
+FAIL  story-ui menu is mounted inside #echo-ui and shows the title  — null
+FAIL  quest shows BOOT —BOOT_COMPLETE→ TITLE  — null
+NO VERDICT: No element found for selector: #echo-ui [data-action="start"]
