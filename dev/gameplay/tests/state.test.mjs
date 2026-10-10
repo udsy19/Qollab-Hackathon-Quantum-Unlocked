@@ -310,7 +310,7 @@ test('F4: a commit call that errors measured nothing, so it may be retried once 
 test('F4: a commit result that came back but was refused latches: no second request, quest does not move', async () => {
   const { m } = await machineIn('TELEPORT_DRY_RUN_PASSED');
   let calls = 0;
-  const bad = { ...goodCommit(), parameters: { stateId: 'story_token', correctionX: false, correctionZ: false } };
+  const bad = { ...goodCommit(), parameters: { stateId: 'story_token', applyX: false, applyZ: false } };
   const r = await m.commitTransfer(async () => { calls++; return bad; });
   assert.equal(r.ok, false);
   assert.equal(m.commit, COMMIT_STATUS.MEASURED_REFUSED);

@@ -1,0 +1,469 @@
+{
+  "build": "v2p-0006-a",
+  "port": 8647,
+  "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)",
+  "readout": "build v2p-0006-a  fps 24  ms 0.52  calls 95\nstate FREE_ROAM_ALLEY\npos 0.00, 2.00  focus -",
+  "results": [
+    {
+      "name": "run 1: title shown at TITLE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 1: PLAY → FREE_ROAM_ALLEY",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "mouse drag (+200 px) orbits the camera",
+      "ok": true,
+      "detail": "yaw 0.00 → -0.52"
+    },
+    {
+      "name": "run 1: prompt at booth when near + facing",
+      "ok": true,
+      "detail": "{\"x\":3.573172520034621,\"z\":-11.481418008103645,\"heading\":-1.5484638665439057,\"speed\":0.00421681410698575}"
+    },
+    {
+      "name": "no prompt behind pylon (in range, facing)",
+      "ok": true,
+      "detail": "dist=2.22 heading=-2.34"
+    },
+    {
+      "name": "SABOTAGE pylon collider off → same spot now prompts (check flips)",
+      "ok": true,
+      "detail": "focus=copy_booth"
+    },
+    {
+      "name": "restore pylon → no prompt again",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "door A blocks before corridor_door_opens",
+      "ok": true,
+      "detail": "z=-25.85"
+    },
+    {
+      "name": "SABOTAGE door A collider off → player passes the door line (check flips)",
+      "ok": true,
+      "detail": "z=-28.47"
+    },
+    {
+      "name": "run 1: E opens booth terminal, quest → CLONE_INTRO",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal \"Duplicate zero\" → CLONE_BASIS_PASSED",
+      "ok": true,
+      "detail": "CLONE_BASIS_PASSED"
+    },
+    {
+      "name": "terminal \"Duplicate plus\" → CLONE_SUPERPOSITION_FAILED",
+      "ok": true,
+      "detail": "CLONE_SUPERPOSITION_FAILED"
+    },
+    {
+      "name": "run 1: |+> copy shows fidelity 0.5 from exact_qiskit_local",
+      "ok": true,
+      "detail": "exact_qiskit_local F=0.5"
+    },
+    {
+      "name": "run 1: EXPLANATION_READ refused before the result panel (ruling 13)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal \"EXPLANATION_READ\" → CLONE_UNDERSTOOD",
+      "ok": true,
+      "detail": "CLONE_UNDERSTOOD"
+    },
+    {
+      "name": "run 1: EXIT_BOOTH sent from a terminal is refused (EVENT_SOURCES)",
+      "ok": true,
+      "detail": "EXIT_BOOTH comes from gameplay via world_trigger, not terminal_acknowledgement"
+    },
+    {
+      "name": "run 1: no EXIT_BOOTH button in the world terminal",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 1: corridor_door_opens in force and door A open",
+      "ok": true,
+      "detail": "[\"booth_indicator_red_fades\",\"corridor_door_opens\",\"objective_target_glows\"]"
+    },
+    {
+      "name": "run 1: EXIT_BOOTH world trigger → RELAY_UNLOCKED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "door B blocks before rooftop_access_unlocked",
+      "ok": true,
+      "detail": "x=8.85"
+    },
+    {
+      "name": "run 1: prompt at relay core",
+      "ok": true,
+      "detail": "{\"x\":0.13838574292876316,\"z\":-47.39875606107765,\"heading\":-5.447318074595779,\"speed\":0.01449052115419366}"
+    },
+    {
+      "name": "terminal \"Sender I\" → RELAY_BELL_CREATED",
+      "ok": true,
+      "detail": "RELAY_BELL_CREATED"
+    },
+    {
+      "name": "run 1: cyan_conduit_illuminates in force",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal \"Sender X\" → RELAY_SEND_FAILED",
+      "ok": true,
+      "detail": "RELAY_SEND_FAILED"
+    },
+    {
+      "name": "run 1: receiver marginal after X is exactly 1/2, 1/2 (exact_qiskit_local)",
+      "ok": true,
+      "detail": "{\"0\":0.5,\"1\":0.5}"
+    },
+    {
+      "name": "terminal \"VIEW_RECEIVER_MARGINAL\" → RELAY_UNDERSTOOD",
+      "ok": true,
+      "detail": "RELAY_UNDERSTOOD"
+    },
+    {
+      "name": "run 1: rooftop_access_unlocked in force and door B open",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 1: OPEN_ROOFTOP from an interactable is refused (EVENT_SOURCES)",
+      "ok": true,
+      "detail": "OPEN_ROOFTOP comes from gameplay via world_trigger, not interactable"
+    },
+    {
+      "name": "run 1: OPEN_ROOFTOP world trigger → ROOFTOP_UNLOCKED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 1: prompt at classical socket",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 1: socket → LINK_REPAIRED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 1: prompt at teleport_terminal",
+      "ok": true,
+      "detail": "{\"x\":30.012649340912283,\"z\":-44.164591236310535,\"heading\":-3.070495309054346,\"speed\":0.055897351385364655}"
+    },
+    {
+      "name": "run 1: E at terminal → TELEPORT_DRY_RUN",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 1: COMMIT not offered before a passed dry run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 1: bits shown before corrections, all four choices offered",
+      "ok": true,
+      "detail": "m0=1 m1=1"
+    },
+    {
+      "name": "run 1: phase 1 carries bits and no fidelity, on a generic calibration state",
+      "ok": true,
+      "detail": "{\"theta\":2.1591913875446145,\"phi\":3.1125558873206476}"
+    },
+    {
+      "name": "terminal \"Apply Z\" → TELEPORT_DRY_RUN",
+      "ok": true,
+      "detail": "TELEPORT_DRY_RUN"
+    },
+    {
+      "name": "run 1: wrong dry run visibly fails (Qiskit fidelity ≤ 0.9) and stays in TELEPORT_DRY_RUN",
+      "ok": true,
+      "detail": "F=0.691362126341 θ=2.159 φ=3.113 — dry run (Z): no progress — wrong correction for m0=1, m1=1: calibrate again on a fresh state · fidelity shown 0.691362126341"
+    },
+    {
+      "name": "run 1: correct dry run → TELEPORT_DRY_RUN_PASSED, every attempt on a fresh state",
+      "ok": true,
+      "detail": "2 distinct states"
+    },
+    {
+      "name": "run 1: commit → TELEPORT_COMMITTED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 1: a second commit is refused (token consumed once)",
+      "ok": true,
+      "detail": "commit already committed"
+    },
+    {
+      "name": "run 1: city_lighting_wave in force",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 1: ANIMATION_END → ENDING",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "ENDING → RESTART → TITLE: player at spawn, doors closed, no world change in force",
+      "ok": true,
+      "detail": "{\"state\":\"TITLE\",\"player\":{\"x\":0,\"z\":2,\"heading\":0,\"speed\":0},\"changes\":[]}"
+    },
+    {
+      "name": "run 2: title shown at TITLE",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: PLAY → FREE_ROAM_ALLEY",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: prompt at booth when near + facing",
+      "ok": true,
+      "detail": "{\"x\":3.6122626851203745,\"z\":-11.494756761960975,\"heading\":-1.6507127783500506,\"speed\":0.04480007908973229}"
+    },
+    {
+      "name": "run 2: E opens booth terminal, quest → CLONE_INTRO",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal \"Duplicate zero\" → CLONE_BASIS_PASSED",
+      "ok": true,
+      "detail": "CLONE_BASIS_PASSED"
+    },
+    {
+      "name": "terminal \"Duplicate plus\" → CLONE_SUPERPOSITION_FAILED",
+      "ok": true,
+      "detail": "CLONE_SUPERPOSITION_FAILED"
+    },
+    {
+      "name": "run 2: |+> copy shows fidelity 0.5 from exact_qiskit_local",
+      "ok": true,
+      "detail": "exact_qiskit_local F=0.5"
+    },
+    {
+      "name": "run 2: EXPLANATION_READ refused before the result panel (ruling 13)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal \"EXPLANATION_READ\" → CLONE_UNDERSTOOD",
+      "ok": true,
+      "detail": "CLONE_UNDERSTOOD"
+    },
+    {
+      "name": "run 2: EXIT_BOOTH sent from a terminal is refused (EVENT_SOURCES)",
+      "ok": true,
+      "detail": "EXIT_BOOTH comes from gameplay via world_trigger, not terminal_acknowledgement"
+    },
+    {
+      "name": "run 2: no EXIT_BOOTH button in the world terminal",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: corridor_door_opens in force and door A open",
+      "ok": true,
+      "detail": "[\"booth_indicator_red_fades\",\"corridor_door_opens\",\"objective_target_glows\"]"
+    },
+    {
+      "name": "run 2: EXIT_BOOTH world trigger → RELAY_UNLOCKED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: prompt at relay core",
+      "ok": true,
+      "detail": "{\"x\":0.009506052641344036,\"z\":-47.46939209005386,\"heading\":-0.061935035285674005,\"speed\":0.022199465457370934}"
+    },
+    {
+      "name": "terminal \"Sender I\" → RELAY_BELL_CREATED",
+      "ok": true,
+      "detail": "RELAY_BELL_CREATED"
+    },
+    {
+      "name": "run 2: cyan_conduit_illuminates in force",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "terminal \"Sender X\" → RELAY_SEND_FAILED",
+      "ok": true,
+      "detail": "RELAY_SEND_FAILED"
+    },
+    {
+      "name": "run 2: receiver marginal after X is exactly 1/2, 1/2 (exact_qiskit_local)",
+      "ok": true,
+      "detail": "{\"0\":0.5,\"1\":0.5}"
+    },
+    {
+      "name": "terminal \"VIEW_RECEIVER_MARGINAL\" → RELAY_UNDERSTOOD",
+      "ok": true,
+      "detail": "RELAY_UNDERSTOOD"
+    },
+    {
+      "name": "run 2: rooftop_access_unlocked in force and door B open",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: OPEN_ROOFTOP from an interactable is refused (EVENT_SOURCES)",
+      "ok": true,
+      "detail": "OPEN_ROOFTOP comes from gameplay via world_trigger, not interactable"
+    },
+    {
+      "name": "run 2: OPEN_ROOFTOP world trigger → ROOFTOP_UNLOCKED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: prompt at classical socket",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: socket → LINK_REPAIRED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: prompt at teleport_terminal",
+      "ok": true,
+      "detail": "{\"x\":29.990596336944822,\"z\":-44.14671164184735,\"heading\":-3.1807999234380806,\"speed\":0.014966395012359735}"
+    },
+    {
+      "name": "run 2: E at terminal → TELEPORT_DRY_RUN",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: COMMIT not offered before a passed dry run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: bits shown before corrections, all four choices offered",
+      "ok": true,
+      "detail": "m0=1 m1=1"
+    },
+    {
+      "name": "run 2: phase 1 carries bits and no fidelity, on a generic calibration state",
+      "ok": true,
+      "detail": "{\"theta\":2.8178367839414706,\"phi\":1.7316972892806737}"
+    },
+    {
+      "name": "terminal \"Apply Z\" → TELEPORT_DRY_RUN",
+      "ok": true,
+      "detail": "TELEPORT_DRY_RUN"
+    },
+    {
+      "name": "run 2: wrong dry run visibly fails (Qiskit fidelity ≤ 0.9) and stays in TELEPORT_DRY_RUN",
+      "ok": true,
+      "detail": "F=0.00259761151 θ=2.818 φ=1.732 — dry run (Z): no progress — wrong correction for m0=1, m1=1: calibrate again on a fresh state · fidelity shown 0.00259761151"
+    },
+    {
+      "name": "run 2: correct dry run → TELEPORT_DRY_RUN_PASSED, every attempt on a fresh state",
+      "ok": true,
+      "detail": "3 distinct states"
+    },
+    {
+      "name": "run 2: commit → TELEPORT_COMMITTED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: a second commit is refused (token consumed once)",
+      "ok": true,
+      "detail": "commit already committed"
+    },
+    {
+      "name": "run 2: city_lighting_wave in force",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "run 2: ANIMATION_END → ENDING",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "CREDITS → Restart (resetGame) → TITLE: player at spawn, world reset",
+      "ok": true,
+      "detail": "{\"state\":\"TITLE\",\"player\":{\"x\":0,\"z\":2,\"heading\":0,\"speed\":0}}"
+    },
+    {
+      "name": "Esc pauses",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no movement while paused",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Resume unpauses",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "Pause → Restart → TITLE, player at spawn",
+      "ok": true,
+      "detail": "{\"x\":0,\"z\":2,\"heading\":0,\"speed\":0}"
+    },
+    {
+      "name": "no page errors in the main run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "control (copy, unbroken): WORLD_CHANGES id renamed in the subscriber check passes",
+      "ok": true,
+      "detail": "[{\"id\":\"door_alley\",\"open\":true,\"t\":1},{\"id\":\"door_relay\",\"open\":false,\"t\":0}]"
+    },
+    {
+      "name": "SABOTAGE WORLD_CHANGES id renamed in the subscriber (alley door: corridor_door_opens → corridor_door_open) → check goes red",
+      "ok": true,
+      "detail": "world did not boot | page error: TypeError: unknown WORLD_CHANGES id \"corridor_door_open\"; known: booth_indicator_red_fades, corridor_door_opens, objective_target_glows, cyan_conduit_illuminate"
+    },
+    {
+      "name": "control (copy, unbroken): reset handler removed check passes",
+      "ok": true,
+      "detail": "state=TITLE z=2.00"
+    },
+    {
+      "name": "SABOTAGE reset handler removed (app.js: QUEST_STATE_CHANGED to RESET_STATE no longer resets the world) → check goes red",
+      "ok": true,
+      "detail": "state=TITLE z=-0.88"
+    },
+    {
+      "name": "control (copy, unbroken): EVENT_SOURCES gate removed check passes",
+      "ok": true,
+      "detail": "send ok=false state=CLONE_UNDERSTOOD"
+    },
+    {
+      "name": "SABOTAGE EVENT_SOURCES gate removed (state.js accepts any via) → check goes red",
+      "ok": true,
+      "detail": "send ok=true state=RELAY_UNLOCKED"
+    }
+  ],
+  "errors": []
+}

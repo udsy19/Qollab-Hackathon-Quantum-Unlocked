@@ -1,0 +1,17 @@
+# this branch's echo/ + echo/{index.html,main.js,main.css} from lane/platform/integration@45a45f2 (a disposable copy at /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.1ayo3xuSQz)
+echo/main.js:17 import-unresolved relative import "./ui/menu.js" resolves to ui/menu.js, which is not in the upload
+echo/main.js:18 import-unresolved relative import "./ui/hud.js" resolves to ui/hud.js, which is not in the upload
+echo/main.js:19 import-unresolved relative import "./ui/dialogue.js" resolves to ui/dialogue.js, which is not in the upload
+echo/main.js:20 import-unresolved relative import "./ui/accessibility.js" resolves to ui/accessibility.js, which is not in the upload
+echo/main.js:21 import-specifier bare import "quantum.cloning" is not three, three/addons/*, postprocessing, and echo/quantum/cloning.py does not exist
+echo/main.js:22 import-specifier bare import "quantum.qollab_job" is not three, three/addons/*, postprocessing, and echo/quantum/qollab_job.py does not exist
+  info: backend.run: exactly one call site, echo/main.js:199
+LIMITATIONS (not covered by any rule above):
+  - backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+  - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
+scanned 20 files (18 code files) under /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.1ayo3xuSQz/echo
+RED: 6 failure(s) across 2 rule(s): import-unresolved, import-specifier
+exit 1

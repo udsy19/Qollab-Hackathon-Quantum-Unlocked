@@ -2,7 +2,8 @@
 // including the bad paths: spam, injected bridge failure, acknowledgement before the panel, wrong
 // corrections retried on a fresh state, a failed commit retried, RESTART from ENDING, a stale
 // result after resetGame(), and an engine fault that latches the commit.
-// Usage: node dev/gameplay/playthrough.mjs <port> <outDir>   (a server must be serving the repo root)
+// Usage: node dev/gameplay/playthrough.mjs <port> <outDir>
+//   (serve with `python3 dev/gameplay/dev_engine.py <port>`: the repo root + the real-Qiskit dev engine)
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
 import { mkdirSync } from 'node:fs';
@@ -48,13 +49,12 @@ async function step(text, expectState) {
 async function dryRun(correct) {
   await step('Bell-measure a fresh calibration qubit');
   const bits = await page.evaluate(() => {
-    const m = document.querySelector('.dt-bits').textContent.match(/m0=(\d) .* m1=(\d)/);
+    const m = document.querySelector('.dt-bits').textContent.match(/m0 = (\d) .* m1 = (\d)/);
     return { m0: +m[1], m1: +m[2] };
   });
-  let x = bits.m1 === 1; let z = bits.m0 === 1;
+  let x = bits.m1 === 1; const z = bits.m0 === 1;
   if (!correct) x = !x; // one wrong correction: visibly wrong on a generic state
-  await page.evaluate((x, z) => { document.getElementById('dt-x').checked = x; document.getElementById('dt-z').checked = z; }, x, z);
-  await step('Apply & verify');
+  await step(`Apply ${x && z ? 'X then Z' : x ? 'X' : z ? 'Z' : 'no correction'}`);
   const r = await page.evaluate(() => JSON.parse(document.querySelector('.dt-result').textContent));
   return { bits, fidelity: r.fidelity, theta: r.parameters.theta, phi: r.parameters.phi };
 }
@@ -101,7 +101,8 @@ await step('RUN_DRY_TEST', 'TELEPORT_DRY_RUN');
 
 const wrong = await dryRun(false);
 steps.push(`wrong dry run: bits ${JSON.stringify(wrong.bits)} state theta=${wrong.theta} phi=${wrong.phi} fidelity shown ${wrong.fidelity}`);
-if (await state() !== 'TELEPORT_DRY_RUN' || !(wrong.fidelity < 0.82)) await fail('a wrong dry run did not visibly fail');
+// contracts' GENERIC_MAX_WRONG_FIDELITY: on a generic state every wrong choice scores at most 0.9.
+if (await state() !== 'TELEPORT_DRY_RUN' || !(wrong.fidelity <= 0.9)) await fail('a wrong dry run did not visibly fail');
 await shot('dry-run-wrong-correction-visibly-fails');
 let pass = null; const attempts = [wrong];
 for (let i = 0; i < 20 && (await state()) === 'TELEPORT_DRY_RUN'; i++) {
@@ -159,7 +160,7 @@ if (again.ok || again.calls !== 0) await fail('a second commit request reached t
 if (await latch() !== 'measured_refused_awaiting_ruling' || (await state()) !== 'TELEPORT_DRY_RUN_PASSED') await fail('latch broke');
 await shot('commit-measured-but-refused-latched');
 
-// ---- session 2: title -> credits via DECLASSIFIED, RESTART from CREDITS
+// ---- session 2: title -> credits via DECLASSIFIED, restart (resetGame) from CREDITS
 await click('resetGame()');
 await playTo('TELEPORT_DRY_RUN_PASSED');
 await step('COMMIT TRANSFER (story token, once)', 'TELEPORT_COMMITTED');
@@ -167,7 +168,7 @@ await step('ANIMATION_END', 'ENDING');
 await step('OPEN_SCIENCE', 'DECLASSIFIED');
 await step('OPEN_CREDITS', 'CREDITS');
 await shot('credits');
-await step('RESTART', 'TITLE');
+await step('RESTART (resetGame)', 'TITLE'); // CREDITS is terminal (contracts v2): its restart is resetGame()
 await shot('restart-from-credits-title-session-3');
 
 const log = await page.$eval('#log', (n) => n.innerText);

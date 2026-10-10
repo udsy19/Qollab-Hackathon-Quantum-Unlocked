@@ -16,7 +16,7 @@
   html, body { margin: 0; height: 100%; background: #070b12; color: #eaf3f6; font: 14px/1.4 ui-monospace, Menlo, monospace; overflow: hidden; }
   #game-root { position: fixed; inset: 0; }
   .overlay { position: fixed; inset: 0; display: grid; place-items: center; background: rgba(7, 11, 18, 0.78); }
-  .panel { background: #132035; border: 1px solid #56e4f2; padding: 24px 28px; min-width: 320px; }
+  .panel { background: #132035; border: 1px solid #56e4f2; padding: 24px 28px; min-width: 320px; max-width: min(1100px, 90vw); box-sizing: border-box; }
   h1 { font-size: 28px; letter-spacing: 0.2em; margin: 0 0 16px; color: #56e4f2; }
   button { font: inherit; background: #070b12; color: #eaf3f6; border: 1px solid #56e4f2; padding: 8px 14px; margin: 4px 4px 0 0; cursor: pointer; }
   button:focus-visible { outline: 3px solid #f3ae62; outline-offset: 2px; }
@@ -26,7 +26,8 @@
   #hint { position: fixed; right: 10px; top: 10px; background: rgba(7, 11, 18, 0.7); padding: 6px 10px; color: #9fb0c4; }
   [hidden] { display: none !important; }
   .dt-state { color: #56e4f2; margin-bottom: 6px; } .dt-note { color: #f3ae62; min-height: 1.4em; margin: 6px 0; }
-  .dt-result { max-height: 160px; overflow: auto; font-size: 11px; background: #070b12; padding: 6px; }
+  .dt-result { max-height: 160px; overflow: auto; font-size: 11px; background: #070b12; padding: 6px; white-space: pre-wrap; overflow-wrap: anywhere; }
+  .dt-bits { color: #f3ae62; font-size: 16px; margin: 6px 0; }
   button:disabled { opacity: 0.4; }
 </style>
 </head>

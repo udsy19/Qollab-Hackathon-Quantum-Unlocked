@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- DEV-ONLY harness. Serve the repo root on your own port (python3 -m http.server <port>) and open /dev/gameplay/harness.html -->
+<!-- DEV-ONLY harness. Serve with the dev engine on your own port (python3 dev/gameplay/dev_engine.py <port>) and open /dev/gameplay/harness.html -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -20,21 +20,21 @@
 </style>
 </head>
 <body>
-<h1 style="font-size:16px">ECHO quest harness — dev only, fake quantum (documented_preview)</h1>
+<h1 style="font-size:16px">ECHO quest harness — dev only, dev engine (Qiskit in local CPython)</h1>
 <div class="row"><button id="reset">resetGame()</button> <button id="fail">fail next quantum call</button> <button id="fault">engine fault on next commit</button> <button id="spam">repeat last accepted event 5×</button></div>
 <div id="term"></div>
 <h2 style="font-size:14px">bus log</h2>
 <div id="log"></div>
 <script type="module">
-import { BUS_EVENTS } from '../../echo/contracts.js';
+import { BUS_EVENTS, EVENT_SOURCES } from '../../echo/contracts.js';
 import { createEventBus } from '../../echo/game/eventBus.js';
 import { createQuestMachine, worldChangesFor } from '../../echo/game/state.js';
-import { createFakeQuantum } from './fakeQuantum.js';
+import { createDevEngine } from './devEngine.js';
 import { mountDevTerminal } from './devTerminal.js';
 
 const bus = createEventBus();
 const machine = createQuestMachine(bus);
-const quantum = createFakeQuantum({ delayMs: 200 });
+const quantum = createDevEngine({ delayMs: 200 }); // serve with dev/gameplay/dev_engine.py
 const log = document.getElementById('log');
 const write = (t) => { const d = document.createElement('div'); d.textContent = t; log.prepend(d); };
 let lastEvent = null;
@@ -50,7 +50,7 @@ document.getElementById('fault').onclick = () => { quantum.faultNextCommit(); wr
 document.getElementById('spam').onclick = () => {
   // Pressing E again after it worked: every repeat must be refused and emit nothing.
   const ev = lastEvent;
-  const results = Array.from({ length: 5 }, () => machine.send(ev).ok);
+  const results = Array.from({ length: 5 }, () => machine.send(ev, EVENT_SOURCES[ev].via).ok);
   write(`repeated ${ev} ×5 -> ok: ${results.join(',')}`);
   term.render();
 };
