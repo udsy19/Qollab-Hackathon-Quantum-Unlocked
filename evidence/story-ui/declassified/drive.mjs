@@ -1,7 +1,7 @@
 // Gate for Declassified mode (vision §4.5, §6). Drives harness/declassified.html with REAL key
 // presses (CDP Input events) and asserts what a player would see.
 // Exit 0 green · 1 red · 2 refused (harness did not load, or zero checks).
-// Usage: node drive.mjs [outDir] [--root <repo root to serve>]   (serves on port 8771 only)
+// Usage: node drive.mjs [outDir] [--root <repo root to serve>] [--port <n>]   (serves on 8771 unless --port)
 //
 // Independence: expected copy comes from echo/data/teachback.js read here in Node, expected numbers
 // from the harness's run record re-formatted here, the credits team line from the owner's ruling
@@ -19,7 +19,8 @@ const argRoot = process.argv.indexOf('--root');
 const repo = path.resolve(argRoot > 0 ? process.argv[argRoot + 1] : path.join(here, '../../..'));
 const out = path.resolve(process.argv[2] && !process.argv[2].startsWith('--') ? process.argv[2] : here);
 fs.mkdirSync(out, { recursive: true });
-const PORT = 8771;
+const argPort = process.argv.indexOf('--port');
+const PORT = argPort > 0 ? Number(process.argv[argPort + 1]) : 8771;
 const refuse = (m) => { console.log(`REFUSED: ${m}`); process.exit(2); };
 
 // ---------------------------------------------------------------- independent expectations
@@ -28,7 +29,7 @@ const vision = fs.readFileSync(path.join(repo, 'ECHO_MASTER_VISION.md'), 'utf8')
 const ek = vision.match(/type EngineKind = ([^;]+);/);
 if (!ek) refuse('EngineKind not found in vision §8.4');
 const ENGINE_KINDS = [...ek[1].matchAll(/'([a-z_]+)'/g)].map((m) => m[1]);
-const TEAM = 'Team The Quantubians (NYU Tandon School of Engineering): Udaya (captain), George, Harman, Epa';
+const TEAM = 'Team The Quantubians (NYU Tandon School of Engineering) \u2014 Udaya (captain), George, Harman, Epa';
 const ket = (s) => s.replace(/\|([^|<>\s]{1,8})>/g, '|$1⟩');
 const norm = (s) => s.replace(/\s+/g, ' ').trim();
 const fmt = (x) => String(Number(x.toFixed(6)));
