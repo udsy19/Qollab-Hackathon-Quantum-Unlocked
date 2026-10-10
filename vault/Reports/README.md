@@ -14,10 +14,11 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (2)
+## Notes here (3)
 
 - [[Reports/physics-code-audit|Physics code audit: the oracle graded against ECHO's real quantum code]]
 - [[Reports/physics-oracle-audit|Physics oracle and spec audit — ground truth for ECHO's quantum puzzles]]
+- [[Reports/quest-state-audit|Quest-state audit: can the quest reach the ending only honestly?]]
 
 ## Below this folder
 
