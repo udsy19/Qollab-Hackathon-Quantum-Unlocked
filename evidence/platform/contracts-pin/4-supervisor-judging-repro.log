@@ -1,0 +1,17 @@
+=== copy with: FIDELITY_PASS = 0.9
+  FAIL  PIN FIDELITY_PASS must be 0.999999 (vision §7.4 "receiver reduced-state fidelity ≥0.999999"; owner-answers § overseer relay: "fidelity threshold is ≥0.999999"); got 0.9
+contract-check: RED — 1116/1117 checks passed (contracts: /tmp/cpt/contracts.js)
+exit 1
+=== copy with: BACKEND_SHOTS = 1024
+  FAIL  good: backend_verification: the one selected-backend job, 256 shots (errors: ["backend_verification parameters.shots must be the 1024 requested, got number 256"])
+  FAIL  bad: backend_verification with 1024 shots → an error mentioning "shots" (got [])
+  FAIL  PIN BACKEND_SHOTS must be 256 (owner-answers § 13 lane design questions #9: "the one backend job uses 256 shots"); got 1024
+contract-check: RED — 1114/1117 checks passed (contracts: /tmp/cpt/contracts.js)
+exit 1
+=== copy with: m1: 'RELAY READOUT m1'
+  FAIL  PIN BIT_LABELS.m1 must be "LOCAL BELL-HALF READOUT m1" (owner-answers § red-team physics ambiguities (1): m1 is labelled "LOCAL BELL-HALF READOUT m1" everywhere); got "RELAY READOUT m1"
+contract-check: RED — 1116/1117 checks passed (contracts: /tmp/cpt/contracts.js)
+exit 1
+=== real file
+contract-check: GREEN — 1117/1117 checks passed (contracts: /Users/udsy/agent-org/lanes/platform/wt/contracts-pin-thresholds/echo/contracts.js)
+exit 0

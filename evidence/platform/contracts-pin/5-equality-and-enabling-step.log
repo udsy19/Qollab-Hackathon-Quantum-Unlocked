@@ -1,0 +1,11 @@
+# equality at the threshold, probed through the real dryRunVerdict (contracts.js @ 43be7d9)
+F=1 passed=true errors=[]
+F=0.9999995 passed=true errors=[]
+F=0.999999 passed=false errors=["phase-2 result fidelity 0.999999 disagrees with the physics of this branch and choice (expected 1.000000000)"]
+F=0.9999990000001 passed=true errors=[]
+F=0.99999899 passed=false errors=["phase-2 result fidelity 0.99999899 disagrees with the physics of this branch and choice (expected 1.000000000)"]
+1 - FIDELITY_PASS = 0.0000010000000000287557  > FIDELITY_CROSSCHECK_TOLERANCE 0.000001 ? true
+# enabling-step falsification: pin() sabotaged to always pass, graded on the FIDELITY_PASS=0.9 copy
+1
+contract-check: GREEN — 1117/1117 checks passed (contracts: /tmp/cpt/contracts.js)
+exit 0 (GREEN expected: the pin is the only detector of a lone FIDELITY_PASS drift)

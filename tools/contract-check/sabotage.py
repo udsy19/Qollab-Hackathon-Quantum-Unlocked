@@ -92,11 +92,38 @@ CASES = [
     ("verdict ignores the rule AND passes at fidelity 0.5",
      [("expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS", "res.fidelity >= FIDELITY_PASS"),
       ("export const FIDELITY_PASS = 0.999999", "export const FIDELITY_PASS = 0.5")], None, "RED"),
-    # Known blind spots — reported as nulls, not hidden.
+    # Owner-ruled values (contracts-pin-thresholds): each drift must go red on its PIN line, which
+    # names the constant and the ruling. The first was a declared null in contracts-v2.
+    ("FIDELITY_PASS 0.999999 -> 0.5 (was a v2 null)",
+     "export const FIDELITY_PASS = 0.999999", "export const FIDELITY_PASS = 0.5", "RED"),
+    ("FIDELITY_PASS 0.999999 -> 0.9 (consult 5 reproduction)",
+     "export const FIDELITY_PASS = 0.999999", "export const FIDELITY_PASS = 0.9", "RED"),
+    ("FIDELITY_PASS 0.999999 -> 0.99999",
+     "export const FIDELITY_PASS = 0.999999", "export const FIDELITY_PASS = 0.99999", "RED"),
+    ("FIDELITY_PASS tightened to 1 (no Qiskit run reaches exactly 1 reliably)",
+     "export const FIDELITY_PASS = 0.999999", "export const FIDELITY_PASS = 1", "RED"),
+    ("BACKEND_SHOTS 256 -> 1024", "export const BACKEND_SHOTS = 256", "export const BACKEND_SHOTS = 1024", "RED"),
+    ("BIT_LABELS m0/m1 swapped", "BIT_LABELS = Object.freeze({ m0: 'SOURCE READOUT m0', m1: 'LOCAL BELL-HALF READOUT m1' })",
+     "BIT_LABELS = Object.freeze({ m0: 'LOCAL BELL-HALF READOUT m1', m1: 'SOURCE READOUT m0' })", "RED"),
+    ("BIT_LABELS.m1 back to the superseded 'RELAY READOUT m1'", "m1: 'LOCAL BELL-HALF READOUT m1' })", "m1: 'RELAY READOUT m1' })", "RED"),
+    ("TELEPORT_TEST_STATE phi 0.44 -> 0.4", "Object.freeze({ theta: 1.137, phi: 0.44 })", "Object.freeze({ theta: 1.137, phi: 0.4 })", "RED"),
+    ("test-state circuit order rz then ry (Bloch loses phi)",
+     "return { x: Math.sin(theta) * Math.cos(phi), y: Math.sin(theta) * Math.sin(phi), z: Math.cos(theta) }",
+     "return { x: Math.sin(theta), y: 0 * phi, z: Math.cos(theta) }", "RED"),
+    ("backend job experiment id renamed", "'teleportation', 'backend_verification'])", "'teleportation', 'backend_check'])", "RED"),
+    ("GENERIC_MAX_WRONG_FIDELITY 0.9 -> 0.95 (design value, pinned)",
+     "export const GENERIC_MAX_WRONG_FIDELITY = 0.9", "export const GENERIC_MAX_WRONG_FIDELITY = 0.95", "RED"),
+    ("verdict literal 0.9 AND cross-check tolerance 0.2 (export untouched)",
+     [("&& res.fidelity >= FIDELITY_PASS", "&& res.fidelity >= 0.9"),
+      ("export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6", "export const FIDELITY_CROSSCHECK_TOLERANCE = 0.2")], None, "RED"),
+    # Known blind spots — reported as nulls, not hidden. Both are EQUIVALENT mutants: a result reaches
+    # the verdict only after the 1e-6 physics cross-check and the generic-state guard, so on every
+    # valid input a wrong choice already scores <= 0.9 and a right one >= 1 - 1e-6. The verdict's own
+    # rule term and its own threshold literal are therefore unobservable; the exported VALUES are pinned.
     ("verdict ignores the rule (Qiskit fidelity alone gates the pass)",
      "expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS", "res.fidelity >= FIDELITY_PASS", "NULL"),
-    ("verdict pass threshold loosened to 0.5 (the rule alone gates the pass)",
-     "export const FIDELITY_PASS = 0.999999", "export const FIDELITY_PASS = 0.5", "NULL"),
+    ("verdict uses a literal 0.9 instead of FIDELITY_PASS (export still 0.999999)",
+     "&& res.fidelity >= FIDELITY_PASS", "&& res.fidelity >= 0.9", "NULL"),
     ("ANIMATION_END moved to story-ui (an inferred source, not owner-ruled)",
      "  ANIMATION_END: SOURCE('gameplay', 'cinematic'),", "  ANIMATION_END: SOURCE('story-ui', 'cinematic'),", "NULL"),
     ("default volume 80 -> 50 (defaults are not pinned, only validated)",
@@ -131,5 +158,6 @@ with tempfile.TemporaryDirectory() as tmp:
         flag = "ok " if got == expect else "MISMATCH"
         mismatches += got != expect
         print(f"{flag}  {got:4}  (expected {expect:4}, {fails:3} FAIL lines)  {name}")
-print(f"sabotage: {len(CASES)} cases, {mismatches} mismatch(es)")
+reds = sum(1 for c in CASES if c[3] == "RED")
+print(f"sabotage: {len(CASES)} cases ({reds} expected red, {len(CASES) - reds} declared nulls), {mismatches} mismatch(es)")
 sys.exit(1 if mismatches else 0)
