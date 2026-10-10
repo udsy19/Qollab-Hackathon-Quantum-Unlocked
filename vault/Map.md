@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **47 notes** over 10 folders.
+Measured 2026-10-10: **48 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -88,6 +88,7 @@ Folder README: [[Reports/README]]
 - [[Reports/quantum-physics-review|Quantum physics review: the engine's numbers check out, four gaps in what the tests can see]]
 - [[Reports/quantum-vs-contracts-v2|Quantum engine and bridge.js vs contracts v2 and the platform gates]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
+- [[Reports/tests-caps-clean|Quantum tests no longer trip the Qollab caps gate]]
 
 ## `Reports/audits/`
 

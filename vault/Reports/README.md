@@ -14,7 +14,7 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (10)
+## Notes here (11)
 
 - [[Reports/contract-conformance|Quantum bridge results vs the platform's ExperimentResult validator]]
 - [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
@@ -26,6 +26,7 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 - [[Reports/quantum-physics-review|Quantum physics review: the engine's numbers check out, four gaps in what the tests can see]]
 - [[Reports/quantum-vs-contracts-v2|Quantum engine and bridge.js vs contracts v2 and the platform gates]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
+- [[Reports/tests-caps-clean|Quantum tests no longer trip the Qollab caps gate]]
 
 ## Below this folder
 
