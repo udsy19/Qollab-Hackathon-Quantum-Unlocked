@@ -14,7 +14,7 @@ import { fileURLToPath } from 'node:url'
 const HERE = dirname(fileURLToPath(import.meta.url))
 const orig = readFileSync(join(HERE, 'check.mjs'), 'utf8')
 const RULES = ['file-count', 'file-size', 'html-document-tag', 'html-script', 'html-stylesheet', 'entry-main', 'entry-index', 'storage',
-  'network-write', 'network-api', 'import-specifier', 'import-unresolved', 'backend-run-count', 'backend-run-python', 'hardcoded-backend', 'hardcoded-secret']
+  'network-write', 'network-api', 'import-specifier', 'import-unresolved', 'backend-run-count', 'backend-run-site', 'backend-run-escape', 'hardcoded-backend', 'hardcoded-secret']
 
 const MUT = [
   ...RULES.map((r) => [`drop rule ${r}`, 'function report(file, line, rule, msg) {', `function report(file, line, rule, msg) { if (rule === '${r}') return;`]),
@@ -36,10 +36,50 @@ const MUT = [
   ['three/addons accepted nowhere', "spec.startsWith('three/addons/') ||", ''],
   ['https URLs not accepted', "/^https:\\/\\//.test(spec)", 'false'],
   ['relative imports not resolved', "if (!relSet.has(target))", 'if (false)'],
-  ['backend.run bracket form ignored', "eachMatch(nc, /\\bbackend\\s*\\[", "eachMatch('', /\\bbackend\\s*\\["],
   ['"inside a string literal" tag removed', "(inStr ? ' (inside a string literal)' : '')", "''"],
   ['entry-main/index checks swapped to always-present', "if (!relSet.has('main.js'))", "if (false)"],
   ['fetch non-literal method info removed', "eachMatch(cd, /\\bfetch\\s*\\(", "eachMatch('', /\\bfetch\\s*\\("],
+  // ---- backend.run taint analysis (rule 8): disable each detector in turn
+  ['backend seed name removed', "const obj = new Set(['backend'])", "const obj = new Set()"],
+  ['alias assignment not followed', "if (id) grow(kind === 'fn' ? T.fn : T.obj, id[1])", 'if (false) grow(T.obj, id[1])'],
+  ['computed-store container not tainted', " ?? /^([A-Za-z_$][\\w$]*)\\s*(?:\\?\\.)?\\s*\\[/.exec(t)", ''],
+  ['destructured run not followed', "if (key === 'run') {", 'if (false) {'],
+  ['destructuring escape removed', "if (!kv || pattern.trim().startsWith('[')) { if (record)", "if (!kv || pattern.trim().startsWith('[')) { if (false)"],
+  ["bracket ['run'] obtain ignored", "if (s.text !== 'run' || s.interp) continue", 'continue'],
+  ['optional chaining ?. not walked', "if (cd[c - 1] === '?') c--", ''],
+  ['.run.call/.apply not a call', "/^\\.\\s*(call|apply)\\s*\\(/.test(rest)", 'false'],
+  ['.run.bind not a site', "if (/^\\.\\s*bind\\b/.test(rest))", 'if (false)'],
+  ['stored-never-called run not counted', "if (!sites.some((s) => s.rel === b.rel", "if (false && !sites.some((s) => s.rel === b.rel"],
+  ['calls of a run alias not counted', "{ if (record) record({ off: m.index, form: `call of ${m[0]}", "{ if (false) record({ off: m.index, form: `call of ${m[0]}"],
+  ['computed access on backend ignored', "if (record) record({ off: m.index, form: 'computed property", "if (false) record({ off: m.index, form: 'computed property"],
+  ['Reflect.get / getattr / vars not reflective', "if (kind === 'obj' && fname && pos === 0 && ((owner === 'Reflect'", "if (false && ((owner === 'Reflect'"],
+  ['attrgetter/methodcaller ignored', "if (!js) eachMatch(cd, /\\b(attrgetter|methodcaller)", "if (false) eachMatch(cd, /\\b(attrgetter|methodcaller)"],
+  ['Python __getattribute__/__dict__ ignored', "if (o.reflective) { record({ off: o.off, form: o.form }); continue }", "if (o.reflective) continue"],
+  ['argument -> parameter flow off', "if (addParam(lang + fname, key, kind)) grew = true", "if (false) grew = true"],
+  ['tainted parameters never applied', "if (!ms.length) continue", 'continue'],
+  ['tree-wide fixpoint stops after one round', "if (paramState() === before) break", 'break'],
+  ['Python class -> __init__ not followed', ": !declaredPy.has(fname) // Python", ": false // Python"],
+  ['inline callbacks not tainted', "if (!mm) return\n", "return\n"],
+  ['array containers not followed', "!(prevId && KEYWORDS.has(prevId.name))) return; vs = o; callbacks(close + 1); continue }", "!(prevId && KEYWORDS.has(prevId.name))) return; return }"],
+  ['object-literal containers not followed', "/\\breturn$/.test(cd.slice(Math.max(0, b - 6), b))) { vs = o; callbacks(close + 1); continue }", "/\\breturn$/.test(cd.slice(Math.max(0, b - 6), b))) { return }"],
+  ['wrapper call results not followed', "if (WRAPPERS.has(fname))", 'if (false)'],
+  ['for-of binding not tainted', "if (head) { grow(T.obj, head[1]); return }", 'if (head) return'],
+  ['default parameter not tainted', "if (dflt) grow(", "if (false) grow("],
+  ['walrus / parenthesised assignment not followed', "if (!attached && ctx.eq >= 0) {", "if (false) {"],
+  ['unresolved callee is not an escape', "if (!(lang ? declaredPy : declaredFns).has(fname) &&", "if (false &&"],
+  ['returned backend is not an escape', "/^(?:return|yield|throw|export\\s+default)\\b/.test(head) || /=>\\s*$/.test(head)) escape(", "false) escape("],
+  ['eval/new Function/exec not an escape', "if (record) eachMatch(cd, js ? /(?<![.\\w$])eval", "if (false) eachMatch(cd, js ? /(?<![.\\w$])eval"],
+  ['count threshold 1 -> 2', "if (sites.length > 1) sites.forEach", "if (sites.length > 2) sites.forEach"],
+  ['ruled site anywhere in bridge.js', "s.off > ruledBody[0] && s.off < ruledBody[1]", 'true'],
+  ['ruled file is main.js', "const RULED = 'quantum/bridge.js'", "const RULED = 'main.js'"],
+  // ---- the false-positive narrowing: off (over-fires) and too wide (hides real hits)
+  ['reachability narrowing off', "const executable = (rel) => reachDoubt !== null || reachable.has(rel)", 'const executable = (rel) => true'],
+  ['nothing is reachable', "const executable = (rel) => reachDoubt !== null || reachable.has(rel)", 'const executable = (rel) => false'],
+  ['computed-name load ignored', "if (doubt) reachDoubt = doubt", 'if (false) reachDoubt = doubt'],
+  ['JS -> Python edges dropped', "else if (/^[A-Za-z_]\\w*(\\.[A-Za-z_]\\w*)*$/.test(spec)) out.push(...pyModule(spec))", ''],
+  ['Python import edges dropped', "if (n && n !== '*') out.push(", "if (false) out.push("],
+  ['docstring narrowing off', "if (h.inStr && p && p.kind === 'py' && bareStatementString(p, h.off))", 'if (false)'],
+  ['docstring narrowing ignores brackets', "return depth === 0", 'return true'],
 ]
 
 let nulls = 0

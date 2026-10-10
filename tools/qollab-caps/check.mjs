@@ -15,6 +15,11 @@
 // ARE findings (a bracket access like window['localStorage'] must not slip through) and are tagged
 // "inside a string literal" so a human can triage. What a lexical check cannot see is printed under
 // LIMITATIONS on every run — a rule that cannot be sound is named, never silently passed.
+// Two narrowings, both scoped to string-literal hits only (code always fires): a file main.js can never
+// load (computed from the import graph; any computed-name load switches the narrowing off), and a Python
+// string that is a statement on its own (a docstring). Those hits print as `info: … not graded`.
+//
+// BACKEND.RUN (rules backend-run-count, -site, -escape) is a taint analysis, not a word match: see rule 8.
 
 import { readdirSync, lstatSync, readFileSync, existsSync } from 'node:fs'
 import { dirname, join, resolve, relative, basename, posix } from 'node:path'
@@ -546,6 +551,7 @@ function analyse(p, decls, T, record) { // one pass: grows T, records sites when
   // (1) obtain `run` as a member: x.run, x?.run, x['run'], x?.['run']
   const obtains = []
   eachMatch(cd, /(?<!\.)(\?\.|\.)\s*run(?![\w$])/, (m) => obtains.push({ off: m.index, recvEnd: m.index, after: m.index + m[0].length, form: 'member .run' }))
+  if (!js) eachMatch(cd, /\.\s*(__getattribute__|__getattr__|__dict__)(?![\w$])/, (m) => obtains.push({ off: m.index, recvEnd: m.index, after: m.index + m[0].length, form: `${m[1]} on a backend value (reflective)`, reflective: true }))
   if (js) {
     for (const s of p.strings) {
       if (s.text !== 'run' || s.interp) continue
@@ -563,6 +569,7 @@ function analyse(p, decls, T, record) { // one pass: grows T, records sites when
     const ch = chainBefore(cd, o.recvEnd)
     if (!ch.segs.some(taintedSeg)) continue
     if (!record) continue
+    if (o.reflective) { record({ off: o.off, form: o.form }); continue }
     const a = skipFwd(cd, o.after)
     const rest = cd.slice(a, a + 12)
     if (cd[a] === '(' || /^\.\s*(call|apply)\s*\(/.test(rest) || (js && /^\?\.\s*\(/.test(rest))) { record({ off: o.off, form: `${o.form} called` }); continue }
@@ -594,6 +601,9 @@ function analyse(p, decls, T, record) { // one pass: grows T, records sites when
     if (s && s.text !== 'run' && !first.slice(q).replace(/^(['"])\s*\1/, '').trim()) return
     if (record) record({ off: m.index, form: `${m[1]}(${s ? `'${s.text}'` : 'a computed name'}) (reflective access to run)` })
   })
+  // (3b) code built at runtime can reach backend.run without any text the analysis could follow (the builtins
+  // only: re.compile / model.eval() are methods, not code builders)
+  if (record) eachMatch(cd, js ? /(?<![.\w$])eval\s*\(|\bnew\s+Function\b|(?<![.\w$])Function\s*\(/ : /(?<![.\w])(?:eval|exec|compile)\s*\(/, (m) => record({ off: m.index, escape: true, form: `reachable through ${m[0].replace(/\s*\($/, '')}(), code built at runtime` }))
   // (4) every place a backend-carrying value, or a run function, flows
   for (const kind of ['obj', 'fn']) {
     const names = kind === 'obj' ? T.obj : T.fn
@@ -626,6 +636,7 @@ function analyse(p, decls, T, record) { // one pass: grows T, records sites when
             return
           }
           const attached = cd[b - 1] && (IDC.test(cd[b - 1]) || cd[b - 1] === ')' || cd[b - 1] === ']') && !(prevId && KEYWORDS.has(prevId.name))
+          if (!attached && ctx.eq >= 0) { const w = identBefore(cd, skipBack(cd, ctx.eq - (cd[ctx.eq - 1] === ':' ? 1 : 0))); if (w) grow(kind === 'fn' ? T.fn : T.obj, w.name); return } // (d := backend), (d = backend)
           if (!attached) { // parenthesised expression or a keyword's parentheses: for (x of <value>) binds x
             const head = /\bfor\s*$/.test(cd.slice(Math.max(0, b - 4), b)) && /^\s*(?:const|let|var)?\s*([A-Za-z_$][\w$]*)\s+(?:of|in)\b/.exec(cd.slice(o + 1, vs))
             if (head) { grow(T.obj, head[1]); return }
@@ -655,10 +666,10 @@ function analyse(p, decls, T, record) { // one pass: grows T, records sites when
           const kw = ctx.eq >= 0 ? identBefore(cd, skipBack(cd, ctx.eq)) : null
           const key = kw && !js ? `kw:${kw.name}` : pos
           if (addParam(lang + fname, key, kind)) grew = true
-          const isNew = /\bnew\s+$/.test(cd.slice(Math.max(0, callee.start - 8), callee.start))
-          if (isNew && addParam('constructor', key, kind)) grew = true
+          const isNew = js ? /\bnew\s+$/.test(cd.slice(Math.max(0, callee.start - 8), callee.start)) : !declaredPy.has(fname) // Python: S(backend) may be a class
+          if (isNew && addParam(js ? 'constructor' : '__init__', key, kind)) grew = true
           if (WRAPPERS.has(fname)) { vs = callee.start; callbacks(close + 1); continue } // the result IS the value: follow it
-          if (!(lang ? declaredPy : declaredFns).has(fname) && !(isNew && declaredFns.has('constructor'))) escape(`passed to ${fname}(), which no ${lang ? 'Python ' : ''}file in the upload defines`)
+          if (!(lang ? declaredPy : declaredFns).has(fname) && !(isNew && (js ? declaredFns.has('constructor') : declaredPy.has('__init__')))) escape(`passed to ${fname}(), which no ${lang ? 'Python ' : ''}file in the upload defines`)
           return // a defined function: its parameter carries the value from here (taintedParams)
         }
         if (cd[o] === '[') { if (cd[b - 1] && (IDC.test(cd[b - 1]) || cd[b - 1] === ')' || cd[b - 1] === ']') && !(prevId && KEYWORDS.has(prevId.name))) return; vs = o; callbacks(close + 1); continue }
@@ -675,7 +686,11 @@ function analyse(p, decls, T, record) { // one pass: grows T, records sites when
       }
       const lhs = cd.slice(stmtStart, ctx.eq).trim().replace(/^(?:export\s+)?(?:const|let|var)\s+/, '').replace(/:$/, '')
       if ((lhs.startsWith('{') || lhs.startsWith('[')) && js) { destructure(p, lhs, stmtStart, T.obj, T.fn, kind, record); return }
-      for (const part of lhs.split(',')) { const id = /([A-Za-z_$][\w$]*)\s*$/.exec(part.trim()); if (id) grow(kind === 'fn' ? T.fn : T.obj, id[1]) }
+      for (const part of lhs.split(',')) {
+        const t = part.trim()
+        const id = /([A-Za-z_$][\w$]*)\s*$/.exec(t) ?? /^([A-Za-z_$][\w$]*)\s*(?:\?\.)?\s*\[/.exec(t) // o[k] = backend: the container o carries it
+        if (id) grow(kind === 'fn' ? T.fn : T.obj, id[1])
+      }
     })
   }
   return grew
@@ -735,7 +750,8 @@ infos.push(sites.length === 1 ? `backend.run: exactly one site, ${loc(sites[0].r
 
 // ------------------------------------------------------------------ output
 const LIMITATIONS = [
-  'backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".',
+  'backend.run is counted per SITE, not per execution: the one ruled site inside a loop, or called twice without its memo, is one site. The runtime guard (bridge.js memo) is the only proof of "one job".',
+  'backend is followed by NAME, flow- and scope-insensitively, through aliases, containers, destructuring, reflection, callbacks and call arguments (tree-wide, by function name). Flows it cannot follow are RED (backend-run-escape), not passed. Runtime-built code (eval, new Function, exec, compile) is RED. Not followed and not flagged: a backend stored through a setter, Object.defineProperty or a Map (m.set(k, backend); m.get(k).run()), and a backend reached through a global the runtime injects under another name.',
   'Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.',
   'Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.',
   'Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.',

@@ -1,0 +1,23 @@
+  info: caps-optA.1oxW/data/teachback.js:112 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/quantum/qollab_job.py:1 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/quantum/qollab_job.py:157 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/tests/test_formats.py:112 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/tests/test_qollab_job.py:89 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/tests/test_qollab_job.py:93 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/tests/test_qollab_job.py:96 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/tests/test_qollab_job.py:168 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/tests/test_qollab_job.py:210 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/tests/test_qollab_job.py:211 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-optA.1oxW/ui/menu.js:58 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: backend.run: exactly one site, caps-optA.1oxW/quantum/bridge.js:129 (member .run called)
+LIMITATIONS (not covered by any rule above):
+  - backend.run is counted per SITE, not per execution: the one ruled site inside a loop, or called twice without its memo, is one site. The runtime guard (bridge.js memo) is the only proof of "one job".
+  - backend is followed by NAME, flow- and scope-insensitively, through aliases, containers, destructuring, reflection, callbacks and call arguments (tree-wide, by function name). Flows it cannot follow are RED (backend-run-escape), not passed. Runtime-built code (eval, new Function, exec, compile) is RED. Not followed and not flagged: a backend stored through a setter, Object.defineProperty or a Map (m.set(k, backend); m.get(k).run()), and a backend reached through a global the runtime injects under another name.
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+  - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
+scanned 41 files (35 code files) under /tmp/caps-optA.1oxW
+GREEN: no static Qollab rule broken (see LIMITATIONS for what this cannot prove)

@@ -45,16 +45,19 @@ const FORMS = {
   'js-computed': two('main.js:4'), 'js-bind': two('main.js:3'), 'js-alias-chain': two('main.js:6'), 'js-object-prop': two('main.js:4'),
   'js-alias-called-twice': [...two('main.js:4'), 'main.js:5 backend-run-count', 'main.js:5 backend-run-site'],
   'py-alias': two('q/mod.py:3'), 'py-param-flow': two('q/mod.py:2'), 'py-getattr-computed': two('q/mod.py:2'), 'py-attrgetter': two('q/mod.py:4'),
+  'py-walrus': two('q/mod.py:3'), 'py-dunder': two('q/mod.py:2'), 'py-class-init': two('q/mod.py:6'),
   'site-outside-bridge': ['main.js:1 backend-run-site'],
   // flows the analysis cannot follow are red (an unfollowed flow could reach run): a library no file defines, a return value
   'escape-unresolved': ['main.js:4 backend-run-escape', 'main.js:6 backend-run-escape'],
+  'js-eval': ['main.js:3 backend-run-escape'], 'js-computed-store': two('main.js:5'),
+  'js-run-stored-escapes': two('main.js:3'), 'js-default-param': two('main.js:4'),
   'site-in-bridge-wrong-fn': ['quantum/bridge.js:7 backend-run-site'],
   'ok-ruled-site': [],
   // false positives: a forbidden word only inside a string, in a file main.js never loads or in a docstring
   'fp-test-asserts-absence': [], 'fp-docstring': [],
   // ...and the controls the narrowing must not reach: code, a reachable test file, a parenthesised value, a computed import
   'fp-control-test-code': ['tests/test_leak.py:1 hardcoded-secret'],
-  'fp-control-reachable-test': ['tests/helper.py:1 hardcoded-secret'],
+  'fp-control-reachable-test': ['tests/helper.py:1 hardcoded-secret', 'tests/helper2.py:1 hardcoded-secret'], // JS->py and py->py edges
   'fp-control-paren-string': ['q/engine.py:2 hardcoded-backend'],
   'fp-control-dynamic-import': ['tests/test_job.py:10 hardcoded-backend', 'tests/test_job.py:10 hardcoded-secret', 'tests/test_job.py:16 network-api', 'tests/test_job.py:16 storage'],
 }
