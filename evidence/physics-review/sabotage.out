@@ -1,0 +1,27 @@
+| mutation | breaks | pytest exit / tail | review derive.py | suite verdict |
+|---|---|---|---|---|
+| `z-iff-m1` | rule: Z iff m1, X iff m0 everywhere (expected_corrections) | 1 `30 failed, 365 passed in 0.93s` | green | RED |
+| `live-commit-swapped` | live_commit alone applies the swapped rule | 1 `1 failed, 394 passed in 0.84s` | green | RED |
+| `no-bell-cx` | Bell measurement drops CX(q0,q1) | 1 `276 failed, 119 passed in 7.35s` | red | RED |
+| `no-bellpair-h` | Bell pair prepared without H(q1) | 1 `297 failed, 98 passed in 3.77s` | red | RED |
+| `deferred-cz-wrong-control` | deferred CZ controlled by q1 instead of q0 | 1 `14 failed, 381 passed in 0.92s` | red | RED |
+| `deferred-cx-wrong-control` | deferred CX controlled by q0 instead of q1 | 1 `14 failed, 381 passed in 0.91s` | red | RED |
+| `correction-order-ZX` | Bob applies Z before X | 0 `395 passed in 0.81s` | green | NULL (green) |
+| `correction-as-Y` | X+Z correction replaced by a single Y | 0 `395 passed in 0.81s` | green | NULL (green) |
+| `branch-prob-index-swap` | branch probability keys read m1 + 2*m0 | 0 `395 passed in 0.81s` | green | NULL (green) |
+| `sampler-hardcoded-uniform` | sampler ignores Qiskit, uses hardcoded 1/4 (the 'scripted random' trap) | 0 `395 passed in 0.86s` | green | NULL (green) |
+| `source-left-is-bob` | sourceFidelityAfterMeasurement reads Bob instead of q0 | 1 `100 failed, 295 passed in 1.27s` | red | RED |
+| `bob-bloch-uncorrected` | branch model reports Bob's Bloch vector BEFORE the correction | 0 `395 passed in 0.91s` | red | NULL (green) |
+| `bloch-y-sign` | bloch_vector flips <Y> (a conjugation bug) | 0 `395 passed in 1.26s` | red | NULL (green) |
+| `prep-order-rz-first` | generic states prepared RZ then RY (vision §10.5 says RY then RZ) | 1 `10 failed, 385 passed in 1.42s` | red | RED |
+| `withheld-one-branch` | corrections_withheld reports branch m0=0,m1=0 instead of the average | 1 `7 failed, 388 passed in 1.67s` | red | RED |
+| `clone-blank-is-plus` | booth's blank copy qubit starts in |+>, not |0> | 1 `14 failed, 381 passed in 1.77s` | red | RED |
+| `clone-by-purity` | copy verdict from source purity (correct physics, different derivation) | 0 `395 passed in 1.58s` | green | NULL (green) |
+| `clone-loose-threshold` | copy verdict threshold 0.4 instead of 1-1e-9 | 1 `5 failed, 390 passed in 1.68s` | green | RED |
+| `clone-by-name-variant` | copy verdict: name in a hard list incl. the review's own names | 0 `395 passed in 1.09s` | green | NULL (green) |
+| `clone-amp-key-swap` | amplitude keys swap source/copy | 0 `395 passed in 1.09s` | green | NULL (green) |
+| `relay-partial-bell` | relay pair is RY(pi/3) not H: not maximally entangled | 1 `7 failed, 388 passed in 1.36s` | red | RED |
+| `relay-xagree-one-H` | X-basis comparison rotates only the sender | 1 `1 failed, 394 passed in 1.21s` | red | RED |
+| `relay-label-swap` | joint probability keys swap sender/receiver | 0 `395 passed in 1.31s` | green | NULL (green) |
+| `relay-sender-Z-on-receiver` | sender's Z applied to the receiver's qubit | 0 `395 passed in 1.19s` | green | NULL (green) |
+| `job-endianness` | count keys read leftmost char as clbit 0 | 1 `6 failed, 389 passed in 1.57s` | green | RED |
