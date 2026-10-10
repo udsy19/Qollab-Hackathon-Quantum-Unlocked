@@ -1,0 +1,94 @@
+
+### bloch_a: theta=1.137, phi=0.44, Bloch r=[0.820951, 0.386488, 0.420319]
+  OK  m0=0 m1=0 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[1.0, 0.176668, 0.67396, 0.149373] engine=[1.0, 0.176668, 0.67396, 0.149373] |d|=5.0e-11
+  OK  m0=0 m1=0 closed form r_P^2: mine=[1.0, 0.176668, 0.67396, 0.149373] engine=[1.0, 0.176668, 0.67396, 0.149373] |d|=5.0e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[0.820951, 0.386488, 0.420319] engine=[0.820951, 0.386488, 0.420319] |d|=3.7e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[0.820951, 0.386488, 0.420319] engine=[0.820951, 0.386488, 0.420319] |d|=3.7e-11
+  OK  m0=0 m1=1 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[0.67396, 0.149373, 1.0, 0.176668] engine=[0.67396, 0.149373, 1.0, 0.176668] |d|=5.0e-11
+  OK  m0=0 m1=1 closed form r_P^2: mine=[0.67396, 0.149373, 1.0, 0.176668] engine=[0.67396, 0.149373, 1.0, 0.176668] |d|=5.0e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[0.820951, -0.386488, -0.420319] engine=[0.820951, -0.386488, -0.420319] |d|=3.7e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[0.820951, 0.386488, 0.420319] engine=[0.820951, 0.386488, 0.420319] |d|=3.7e-11
+  OK  m0=1 m1=0 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[0.176668, 1.0, 0.149373, 0.67396] engine=[0.176668, 1.0, 0.149373, 0.67396] |d|=5.0e-11
+  OK  m0=1 m1=0 closed form r_P^2: mine=[0.176668, 1.0, 0.149373, 0.67396] engine=[0.176668, 1.0, 0.149373, 0.67396] |d|=5.0e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[-0.820951, -0.386488, 0.420319] engine=[-0.820951, -0.386488, 0.420319] |d|=3.7e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[0.820951, 0.386488, 0.420319] engine=[0.820951, 0.386488, 0.420319] |d|=3.7e-11
+  OK  m0=1 m1=1 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[0.149373, 0.67396, 0.176668, 1.0] engine=[0.149373, 0.67396, 0.176668, 1.0] |d|=5.0e-11
+  OK  m0=1 m1=1 closed form r_P^2: mine=[0.149373, 0.67396, 0.176668, 1.0] engine=[0.149373, 0.67396, 0.176668, 1.0] |d|=5.0e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[-0.820951, 0.386488, -0.420319] engine=[-0.820951, 0.386488, -0.420319] |d|=3.7e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[0.820951, 0.386488, 0.420319] engine=[0.820951, 0.386488, 0.420319] |d|=3.7e-11
+  OK  branch probabilities: mine=[0.25, 0.25, 0.25, 0.25] engine=[0.25, 0.25, 0.25, 0.25] |d|=0.0e+00
+  OK  withheld Bob rho (re): mine=[0.5, 0.0, 0.0, 0.5] engine=[0.5, 0.0, 0.0, 0.5] |d|=5.6e-17
+  OK  deferred cx=0 cz=0: mine=[0.5] engine=[0.5] |d|=0.0e+00
+  OK  deferred cx=0 cz=1: mine=[0.83698] engine=[0.83698] |d|=2.9e-11
+  OK  deferred cx=1 cz=0: mine=[0.588334] engine=[0.588334] |d|=2.5e-11
+  OK  deferred cx=1 cz=1: mine=[1.0] engine=[1.0] |d|=0.0e+00
+  OK  clone purities [src,copy]: mine=[0.588334, 0.588334] engine=[0.588334, 0.588334] |d|=2.5e-11
+  OK  clone fidelities [src,copy,joint]: mine=[0.588334, 0.588334, 0.55148] engine=[0.588334, 0.588334, 0.55148] |d|=4.6e-11
+  closed form purity 1-2|a|^2|b|^2 = 0.588334; isTwoIndependentCopies=False
+
+### bloch_b: theta=2.3, phi=-1.9, Bloch r=[-0.241079, -0.705661, -0.666276]
+  OK  m0=0 m1=0 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[1.0, 0.443924, 0.058119, 0.497957] engine=[1.0, 0.443924, 0.058119, 0.497957] |d|=4.9e-11
+  OK  m0=0 m1=0 closed form r_P^2: mine=[1.0, 0.443924, 0.058119, 0.497957] engine=[1.0, 0.443924, 0.058119, 0.497957] |d|=4.9e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[-0.241079, -0.705661, -0.666276] engine=[-0.241079, -0.705661, -0.666276] |d|=4.8e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[-0.241079, -0.705661, -0.666276] engine=[-0.241079, -0.705661, -0.666276] |d|=4.8e-11
+  OK  m0=0 m1=1 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[0.058119, 0.497957, 1.0, 0.443924] engine=[0.058119, 0.497957, 1.0, 0.443924] |d|=4.9e-11
+  OK  m0=0 m1=1 closed form r_P^2: mine=[0.058119, 0.497957, 1.0, 0.443924] engine=[0.058119, 0.497957, 1.0, 0.443924] |d|=4.9e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[-0.241079, 0.705661, 0.666276] engine=[-0.241079, 0.705661, 0.666276] |d|=4.8e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[-0.241079, -0.705661, -0.666276] engine=[-0.241079, -0.705661, -0.666276] |d|=4.8e-11
+  OK  m0=1 m1=0 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[0.443924, 1.0, 0.497957, 0.058119] engine=[0.443924, 1.0, 0.497957, 0.058119] |d|=4.9e-11
+  OK  m0=1 m1=0 closed form r_P^2: mine=[0.443924, 1.0, 0.497957, 0.058119] engine=[0.443924, 1.0, 0.497957, 0.058119] |d|=4.9e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[0.241079, 0.705661, -0.666276] engine=[0.241079, 0.705661, -0.666276] |d|=4.8e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[-0.241079, -0.705661, -0.666276] engine=[-0.241079, -0.705661, -0.666276] |d|=4.8e-11
+  OK  m0=1 m1=1 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[0.497957, 0.058119, 0.443924, 1.0] engine=[0.497957, 0.058119, 0.443924, 1.0] |d|=4.9e-11
+  OK  m0=1 m1=1 closed form r_P^2: mine=[0.497957, 0.058119, 0.443924, 1.0] engine=[0.497957, 0.058119, 0.443924, 1.0] |d|=4.9e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[0.241079, -0.705661, 0.666276] engine=[0.241079, -0.705661, 0.666276] |d|=4.8e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[-0.241079, -0.705661, -0.666276] engine=[-0.241079, -0.705661, -0.666276] |d|=4.8e-11
+  OK  branch probabilities: mine=[0.25, 0.25, 0.25, 0.25] engine=[0.25, 0.25, 0.25, 0.25] |d|=0.0e+00
+  OK  withheld Bob rho (re): mine=[0.5, -0.0, -0.0, 0.5] engine=[0.5, 0.0, 0.0, 0.5] |d|=1.1e-16
+  OK  deferred cx=0 cz=0: mine=[0.5] engine=[0.5] |d|=0.0e+00
+  OK  deferred cx=0 cz=1: mine=[0.529059] engine=[0.529059] |d|=2.6e-11
+  OK  deferred cx=1 cz=0: mine=[0.721962] engine=[0.721962] |d|=3.4e-11
+  OK  deferred cx=1 cz=1: mine=[1.0] engine=[1.0] |d|=2.2e-16
+  OK  clone purities [src,copy]: mine=[0.721962, 0.721962] engine=[0.721962, 0.721962] |d|=3.4e-11
+  OK  clone fidelities [src,copy,joint]: mine=[0.721962, 0.721962, 0.549428] engine=[0.721962, 0.721962, 0.549428] |d|=3.4e-11
+  closed form purity 1-2|a|^2|b|^2 = 0.721962; isTwoIndependentCopies=False
+
+### rv_c: theta=0.7, phi=2.1, Bloch r=[-0.325231, 0.556095, 0.764842]
+  OK  m0=0 m1=0 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[1.0, 0.584984, 0.105775, 0.309241] engine=[1.0, 0.584984, 0.105775, 0.309241] |d|=5.0e-11
+  OK  m0=0 m1=0 closed form r_P^2: mine=[1.0, 0.584984, 0.105775, 0.309241] engine=[1.0, 0.584984, 0.105775, 0.309241] |d|=5.0e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[-0.325231, 0.556095, 0.764842] engine=[-0.325231, 0.556095, 0.764842] |d|=1.6e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[-0.325231, 0.556095, 0.764842] engine=[-0.325231, 0.556095, 0.764842] |d|=1.6e-11
+  OK  m0=0 m1=1 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[0.105775, 0.309241, 1.0, 0.584984] engine=[0.105775, 0.309241, 1.0, 0.584984] |d|=5.0e-11
+  OK  m0=0 m1=1 closed form r_P^2: mine=[0.105775, 0.309241, 1.0, 0.584984] engine=[0.105775, 0.309241, 1.0, 0.584984] |d|=5.0e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[-0.325231, -0.556095, -0.764842] engine=[-0.325231, -0.556095, -0.764842] |d|=1.6e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[-0.325231, 0.556095, 0.764842] engine=[-0.325231, 0.556095, 0.764842] |d|=1.6e-11
+  OK  m0=1 m1=0 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[0.584984, 1.0, 0.309241, 0.105775] engine=[0.584984, 1.0, 0.309241, 0.105775] |d|=5.0e-11
+  OK  m0=1 m1=0 closed form r_P^2: mine=[0.584984, 1.0, 0.309241, 0.105775] engine=[0.584984, 1.0, 0.309241, 0.105775] |d|=5.0e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[0.325231, -0.556095, 0.764842] engine=[0.325231, -0.556095, 0.764842] |d|=1.6e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[-0.325231, 0.556095, 0.764842] engine=[-0.325231, 0.556095, 0.764842] |d|=1.6e-11
+  OK  m0=1 m1=1 p=0.250000 fid[--,-Z,X-,XZ] (ax,az order): mine=[0.309241, 0.105775, 0.584984, 1.0] engine=[0.309241, 0.105775, 0.584984, 1.0] |d|=5.0e-11
+  OK  m0=1 m1=1 closed form r_P^2: mine=[0.309241, 0.105775, 0.584984, 1.0] engine=[0.309241, 0.105775, 0.584984, 1.0] |d|=5.0e-11
+  OK    Bob conditional Bloch (uncorrected): mine=[0.325231, 0.556095, -0.764842] engine=[0.325231, 0.556095, -0.764842] |d|=1.6e-11
+  OK    Bob corrected Bloch == psi Bloch: mine=[-0.325231, 0.556095, 0.764842] engine=[-0.325231, 0.556095, 0.764842] |d|=1.6e-11
+  OK  branch probabilities: mine=[0.25, 0.25, 0.25, 0.25] engine=[0.25, 0.25, 0.25, 0.25] |d|=0.0e+00
+  OK  withheld Bob rho (re): mine=[0.5, 0.0, 0.0, 0.5] engine=[0.5, 0.0, 0.0, 0.5] |d|=2.2e-16
+  OK  deferred cx=0 cz=0: mine=[0.5] engine=[0.5] |d|=1.7e-16
+  OK  deferred cx=0 cz=1: mine=[0.552888] engine=[0.552888] |d|=4.5e-11
+  OK  deferred cx=1 cz=0: mine=[0.792492] engine=[0.792492] |d|=2.5e-11
+  OK  deferred cx=1 cz=1: mine=[1.0] engine=[1.0] |d|=3.3e-16
+  OK  clone purities [src,copy]: mine=[0.792492, 0.792492] engine=[0.792492, 0.792492] |d|=2.5e-11
+  OK  clone fidelities [src,copy,joint]: mine=[0.792492, 0.792492, 0.654994] engine=[0.792492, 0.792492, 0.654994] |d|=3.4e-11
+  closed form purity 1-2|a|^2|b|^2 = 0.792492; isTwoIndependentCopies=False
+
+### relay (Bell pair q0 sender, q1 receiver)
+  OK  I: receiver marginal: mine=[0.5, 0.5] engine=[0.5, 0.5] |d|=1.1e-16
+  OK  I: [zAgree, xAgree]: mine=[1.0, 1.0] engine=[1.0, 1.0] |d|=4.4e-16
+  OK  I: joint probs sender/receiver: mine=[0.5, 0.0, 0.0, 0.5] engine=[0.5, 0.0, 0.0, 0.5] |d|=1.1e-16
+  OK  X: receiver marginal: mine=[0.5, 0.5] engine=[0.5, 0.5] |d|=1.1e-16
+  OK  X: [zAgree, xAgree]: mine=[0.0, 1.0] engine=[0.0, 1.0] |d|=4.4e-16
+  OK  X: joint probs sender/receiver: mine=[0.0, 0.5, 0.5, 0.0] engine=[0.0, 0.5, 0.5, 0.0] |d|=1.1e-16
+  OK  Z: receiver marginal: mine=[0.5, 0.5] engine=[0.5, 0.5] |d|=1.1e-16
+  OK  Z: [zAgree, xAgree]: mine=[1.0, 0.0] engine=[1.0, 0.0] |d|=2.2e-16
+  OK  Z: joint probs sender/receiver: mine=[0.5, 0.0, 0.0, 0.5] engine=[0.5, 0.0, 0.0, 0.5] |d|=1.1e-16
+
+WORST |mine - engine| over every compared number: 4.99e-11
