@@ -99,8 +99,19 @@ export function mountDevTerminal(root, { machine, bus, quantum }) {
     }));
   }
 
+  // A measured, refused commit (§7.4): the token is gone, so the only honest way on is a new
+  // session (§9.5). Stub for story-ui's scientific-module error.
+  function faultPanel(fault) {
+    return el('div', { className: 'dt-fault', role: 'alert' },
+      el('strong', { textContent: 'SCIENTIFIC MODULE ERROR' }),
+      el('p', { textContent: 'The story token was measured and consumed by this commit. Verification failed, so the transfer is not reported as a success. A measured token cannot be measured again.' }),
+      el('p', { className: 'dt-fault-reason', textContent: `Refusal: ${fault.reason}` }),
+      el('p', { textContent: 'RESTART begins a new session with a fresh story token.' }));
+  }
+
   function render() {
     const s = machine.state;
+    const fault = machine.commitFault;
     const latched = machine.commit !== COMMIT_STATUS.IDLE;
     root.replaceChildren(
       el('div', { className: 'dt-state', textContent: `quest: ${s}   objective: ${objectiveFor(s)}   session: ${machine.epoch}` }),
@@ -108,8 +119,9 @@ export function mountDevTerminal(root, { machine, bus, quantum }) {
       el('div', { className: 'dt-actions' },
         ...actionButtons(s), ...experimentButtons(s),
         ...(ACK_STATES.has(s) ? [el('button', { textContent: 'story-ui stub: show result panel', disabled: busy || panelShown, onclick: () => { panelShown = true; machine.resultPanelShown(); note = 'result panel on screen'; render(); } })] : []),
-        ...(ENDING_STATES.has(s) ? [el('button', { textContent: 'RESTART', disabled: busy, onclick: () => { machine.resetGame(); } })] : [])),
+        ...(ENDING_STATES.has(s) || fault?.restartOffered ? [el('button', { textContent: 'RESTART', disabled: busy, onclick: () => { machine.resetGame(); } })] : [])),
       el('div', { className: 'dt-note', textContent: note }),
+      ...(fault ? [faultPanel(fault)] : []),
       ...(panelShown && lastResult ? [el('div', { className: 'dt-panel', textContent: `RESULT PANEL (stub): ${lastResult.facts.join(' ')}` })] : []),
       el('pre', { className: 'dt-result', textContent: lastResult ? JSON.stringify(lastResult, null, 1) : '' }),
     );

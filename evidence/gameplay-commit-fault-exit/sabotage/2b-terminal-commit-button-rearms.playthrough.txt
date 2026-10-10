@@ -1,0 +1,66 @@
+BOOT_COMPLETE -> TITLE [latch idle] | BOOT_COMPLETE: {"ok":true,"state":"TITLE"}
+START -> OPENING [latch idle] | START: {"ok":true,"state":"OPENING"}
+SKIP -> FREE_ROAM_ALLEY [latch idle] | SKIP: {"ok":true,"state":"FREE_ROAM_ALLEY"}
+OPEN_CLONE_BOOTH -> CLONE_INTRO [latch idle] | OPEN_CLONE_BOOTH: {"ok":true,"state":"CLONE_INTRO"}
+Duplicate plus -> CLONE_INTRO [latch idle] | clone plus: no progress — need a basis-state copy that succeeded · fidelity shown 0.5
+Duplicate zero -> CLONE_BASIS_PASSED [latch idle] | clone zero: BASIS_DEMO_OK -> CLONE_BASIS_PASSED · fidelity shown 1
+Duplicate plus -> CLONE_BASIS_PASSED [latch idle] | clone plus: ERROR — injected: bridge timed out. Nothing changed; try again.
+Duplicate plus -> CLONE_SUPERPOSITION_FAILED [latch idle] | clone plus: SUPERPOSITION_DEMO_FAILED -> CLONE_SUPERPOSITION_FAILED · fidelity shown 0.5
+EXPLANATION_READ -> CLONE_SUPERPOSITION_FAILED [latch idle] | EXPLANATION_READ: {"ok":false,"state":"CLONE_SUPERPOSITION_FAILED","reason":"EXPLANATION_READ needs the result panel on screen first"}
+story-ui stub: show result panel -> CLONE_SUPERPOSITION_FAILED [latch idle] | result panel on screen
+EXPLANATION_READ -> CLONE_UNDERSTOOD [latch idle] | EXPLANATION_READ: {"ok":true,"state":"CLONE_UNDERSTOOD"}
+EXIT_BOOTH -> RELAY_UNLOCKED [latch idle] | EXIT_BOOTH: {"ok":true,"state":"RELAY_UNLOCKED"}
+REACH_RELAY -> RELAY_INTRO [latch idle] | REACH_RELAY: {"ok":true,"state":"RELAY_INTRO"}
+Sender I -> RELAY_BELL_CREATED [latch idle] | bell I: PREPARE_BELL_PAIR -> RELAY_BELL_CREATED
+Sender X -> RELAY_SEND_FAILED [latch idle] | bell X: ATTEMPT_NO_SIGNALLING -> RELAY_SEND_FAILED
+story-ui stub: show result panel -> RELAY_SEND_FAILED [latch idle] | result panel on screen
+VIEW_RECEIVER_MARGINAL -> RELAY_UNDERSTOOD [latch idle] | VIEW_RECEIVER_MARGINAL: {"ok":true,"state":"RELAY_UNDERSTOOD"}
+OPEN_ROOFTOP -> ROOFTOP_UNLOCKED [latch idle] | OPEN_ROOFTOP: {"ok":true,"state":"ROOFTOP_UNLOCKED"}
+REPAIR_CLASSICAL_LINK -> LINK_REPAIRED [latch idle] | REPAIR_CLASSICAL_LINK: {"ok":true,"state":"LINK_REPAIRED"}
+RUN_DRY_TEST -> TELEPORT_DRY_RUN [latch idle] | RUN_DRY_TEST: {"ok":true,"state":"TELEPORT_DRY_RUN"}
+Bell-measure a fresh calibration qubit -> TELEPORT_DRY_RUN [latch idle] | attempt 1: bits m0=0 m1=1
+Apply & verify -> TELEPORT_DRY_RUN [latch idle] | dry run: no progress — corrections do not match m0=0, m1=1 · fidelity shown 0.131388205499
+wrong dry run: bits {"m0":0,"m1":1} state theta=2.4691963690487793 phi=-0.949671232938968 fidelity shown 0.131388205499
+Bell-measure a fresh calibration qubit -> TELEPORT_DRY_RUN [latch idle] | attempt 2: bits m0=0 m1=0
+Apply & verify -> TELEPORT_DRY_RUN [latch idle] | dry run: no progress — correct, but bits 00 need no correction: calibrate again on a run that needs X or Z · fidelity shown 1
+Bell-measure a fresh calibration qubit -> TELEPORT_DRY_RUN [latch idle] | attempt 3: bits m0=0 m1=0
+Apply & verify -> TELEPORT_DRY_RUN [latch idle] | dry run: no progress — correct, but bits 00 need no correction: calibrate again on a run that needs X or Z · fidelity shown 1
+Bell-measure a fresh calibration qubit -> TELEPORT_DRY_RUN [latch idle] | attempt 4: bits m0=0 m1=0
+Apply & verify -> TELEPORT_DRY_RUN [latch idle] | dry run: no progress — correct, but bits 00 need no correction: calibrate again on a run that needs X or Z · fidelity shown 1
+Bell-measure a fresh calibration qubit -> TELEPORT_DRY_RUN [latch idle] | attempt 5: bits m0=1 m1=0
+Apply & verify -> TELEPORT_DRY_RUN_PASSED [latch idle] | dry run: CORRECT_CALIBRATION -> TELEPORT_DRY_RUN_PASSED · fidelity shown 1
+dry-run attempts 5, distinct calibration states 5; passing bits {"m0":1,"m1":0}
+COMMIT TRANSFER (story token, once) -> TELEPORT_DRY_RUN_PASSED [latch idle] | commit: refused (idle) — commit call failed, nothing was measured: injected: bridge timed out
+COMMIT TRANSFER (story token, once) -> TELEPORT_COMMITTED [latch committed] | commit: COMMIT_TRANSFER -> TELEPORT_COMMITTED
+direct send('COMMIT_TRANSFER') -> {"ok":false,"state":"TELEPORT_COMMITTED","reason":"COMMIT_TRANSFER is sent only by commitTransfer()"}
+ANIMATION_END -> ENDING [latch committed] | ANIMATION_END: {"ok":true,"state":"ENDING"}
+RESTART -> TITLE [latch idle] | resetGame(): ENDING -> TITLE, session 1
+START -> OPENING [latch idle] | START: {"ok":true,"state":"OPENING"}
+SKIP -> FREE_ROAM_ALLEY [latch idle] | SKIP: {"ok":true,"state":"FREE_ROAM_ALLEY"}
+OPEN_CLONE_BOOTH -> CLONE_INTRO [latch idle] | OPEN_CLONE_BOOTH: {"ok":true,"state":"CLONE_INTRO"}
+stale result after resetGame -> CLONE_INTRO | clone zero: result DROPPED (stale) — asked in CLONE_INTRO (session 1); the quest has moved on
+Duplicate zero -> CLONE_BASIS_PASSED [latch idle] | clone zero: BASIS_DEMO_OK -> CLONE_BASIS_PASSED · fidelity shown 1
+Duplicate plus -> CLONE_SUPERPOSITION_FAILED [latch idle] | clone plus: SUPERPOSITION_DEMO_FAILED -> CLONE_SUPERPOSITION_FAILED · fidelity shown 0.5
+story-ui stub: show result panel -> CLONE_SUPERPOSITION_FAILED [latch idle] | result panel on screen
+EXPLANATION_READ -> CLONE_UNDERSTOOD [latch idle] | EXPLANATION_READ: {"ok":true,"state":"CLONE_UNDERSTOOD"}
+EXIT_BOOTH -> RELAY_UNLOCKED [latch idle] | EXIT_BOOTH: {"ok":true,"state":"RELAY_UNLOCKED"}
+REACH_RELAY -> RELAY_INTRO [latch idle] | REACH_RELAY: {"ok":true,"state":"RELAY_INTRO"}
+Sender I -> RELAY_BELL_CREATED [latch idle] | bell I: PREPARE_BELL_PAIR -> RELAY_BELL_CREATED
+Sender X -> RELAY_SEND_FAILED [latch idle] | bell X: ATTEMPT_NO_SIGNALLING -> RELAY_SEND_FAILED
+story-ui stub: show result panel -> RELAY_SEND_FAILED [latch idle] | result panel on screen
+VIEW_RECEIVER_MARGINAL -> RELAY_UNDERSTOOD [latch idle] | VIEW_RECEIVER_MARGINAL: {"ok":true,"state":"RELAY_UNDERSTOOD"}
+OPEN_ROOFTOP -> ROOFTOP_UNLOCKED [latch idle] | OPEN_ROOFTOP: {"ok":true,"state":"ROOFTOP_UNLOCKED"}
+REPAIR_CLASSICAL_LINK -> LINK_REPAIRED [latch idle] | REPAIR_CLASSICAL_LINK: {"ok":true,"state":"LINK_REPAIRED"}
+RUN_DRY_TEST -> TELEPORT_DRY_RUN [latch idle] | RUN_DRY_TEST: {"ok":true,"state":"TELEPORT_DRY_RUN"}
+Bell-measure a fresh calibration qubit -> TELEPORT_DRY_RUN [latch idle] | attempt 1: bits m0=0 m1=1
+Apply & verify -> TELEPORT_DRY_RUN_PASSED [latch idle] | dry run: CORRECT_CALIBRATION -> TELEPORT_DRY_RUN_PASSED · fidelity shown 1
+COMMIT TRANSFER (story token, once) -> TELEPORT_DRY_RUN_PASSED [latch measured_refused] | commit: refused (measured_refused) — corrections do not match m0=1, m1=0
+file:///Users/udsy/agent-org/lanes/gameplay/wt/gameplay-commit-fault-exit/dev/gameplay/playthrough.mjs:36
+const fail = async (msg) => { console.log(steps.join('\n')); throw new Error(`${msg} (state ${await state()}, note: ${await note()})`); };
+                                                                   ^
+
+Error: a latched commit is still offered (state TELEPORT_DRY_RUN_PASSED, note: commit: refused (measured_refused) — corrections do not match m0=1, m1=0)
+    at fail (file:///Users/udsy/agent-org/lanes/gameplay/wt/gameplay-commit-fault-exit/dev/gameplay/playthrough.mjs:36:68)
+    at async file:///Users/udsy/agent-org/lanes/gameplay/wt/gameplay-commit-fault-exit/dev/gameplay/playthrough.mjs:159:59
+
+Node.js v26.7.0
