@@ -5,7 +5,7 @@
 // file's bytes, and the physics values are re-derived here from closed forms, not read from the
 // engine.
 //   drive.cjs --port N --dest DIR --expect-build TOKEN --scenario conformant|fault --out DIR --tag NAME
-// `fault`: pb_spy plays a lying engine (pb_fault=1); the bridge must refuse every lie, loudly.
+// `fault`: pb_spy plays a lying engine (assembled with --fault); the bridge must refuse every lie, loudly.
 // Exit: 0 green · 1 red · 2 no verdict.
 const path = require('node:path');
 const fs = require('node:fs');
@@ -72,7 +72,7 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
     const t0 = Date.now();
     // Unconditional fresh load (law 16): no cache, new browser profile every run.
     await page.setCacheEnabled(false);
-    await page.goto(`http://127.0.0.1:${port}/?autorun=1&backend=ionq-mock${scenario === 'fault' ? '&pb_fault=1' : ''}`, { waitUntil: 'load' });
+    await page.goto(`http://127.0.0.1:${port}/?autorun=1&backend=ionq-mock`, { waitUntil: 'load' });
     for (;;) {
       const st = await page.evaluate(() => window.__runner && window.__runner.status).catch(() => null);
       if (st === 'done' || st === 'error') break;
@@ -120,6 +120,7 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
     // Universal invariant: anything handed on must be valid when re-checked from the bytes.
     if (c.ok && !c.hook) check(`${c.label}: delivered value re-validates in Node`, c.nodeVerdict.length === 0 && !c.shape.isMap && c.shape.factsIsArray && !c.shape.proxyFields.length, c.nodeVerdict.length ? c.nodeVerdict : c.shape);
   }
+  check(`spy fault mode is ${scenario === 'fault'} (the scenario being graded)`, dump.spy.fault === (scenario === 'fault'), dump.spy.fault);
   const by = (label) => dump.calls.find((c) => c.label === label);
   const r = (label) => (by(label) && by(label).ok ? by(label).result : {});
   const s = dump.spy.counts;

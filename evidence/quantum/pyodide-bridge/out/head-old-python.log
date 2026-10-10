@@ -1,0 +1,16 @@
+assembled /private/tmp/pb-run-yoqFC1 (python lane/quantum/contract-conformance, sabotage none, token pb-head-old-python-20261010T002041-13971)
+FAIL  main.js (harness) ran to the end without error  — Traceback (most recent call last):
+  File "/lib/python314.zip/_pyodide/_base.py", line 619, in eval_code_async
+    await CodeRunner(
+    ...<10 lines>...
+    .run_async(globals, locals)
+  File "/lib/python314.zip/_pyodide/_base.py", line 420, in run_async
+    coroutine = eval(self.code, globals, locals)
+  File "<exec>", line 1, in <module>
+  File "/home/pyodide/project/pb_spy.py", line 42, in <module>
+    _original_verify = qollab_job.run_backend_verification_once
+                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'quantum.qollab_job' has no attribute 'run_backend_verification_once'. Did you mean: 'run_bell_verification_once'?
+
+FAIL  served build token rendered  — none rendered (…); run error above
+run.sh head-old-python → exit 1

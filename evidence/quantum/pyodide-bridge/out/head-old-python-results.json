@@ -1,0 +1,12 @@
+[
+  {
+    "name": "main.js (harness) ran to the end without error",
+    "ok": false,
+    "detail": "Traceback (most recent call last):\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 619, in eval_code_async\n    await CodeRunner(\n    ...<10 lines>...\n    .run_async(globals, locals)\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 420, in run_async\n    coroutine = eval(self.code, globals, locals)\n  File \"<exec>\", line 1, in <module>\n  File \"/home/pyodide/project/pb_spy.py\", line 42, in <module>\n    _original_verify = qollab_job.run_backend_verification_once\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'quantum.qollab_job' has no attribute 'run_backend_verification_once'. Did you mean: 'run_bell_verification_once'?\n"
+  },
+  {
+    "name": "served build token rendered",
+    "ok": false,
+    "detail": "none rendered (…); run error above"
+  }
+]

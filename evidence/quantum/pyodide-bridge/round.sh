@@ -25,12 +25,12 @@ row() { # tag scenario expected-exit [assemble flags]
   echo "$tag: exit $code (want $want) $v ${checks}"
 }
 for i in 1 2 3; do PB_SHOT_TO="${PB_RENDERS:+$PB_RENDERS/runner-bridge-harness-final-$i.png}" row "final-$i" conformant 0 --python-from "$PY"; done
-row fault fault 0 --python-from "$PY"
+row fault fault 0 --python-from "$PY" --fault
 row head-old-bridge conformant 1 --python-from "$PY" --bridge "$OLD_BRIDGE"
 row head-old-python conformant 1 --python-from "$OLD_PY_REF"
 for s in bare-toJs no-toJs no-memo plain-call no-theta-passthrough no-latch restart-no-python restart-resets-memo; do
   row "sab-$s" conformant 1 --python-from "$PY" --sabotage "$s"
 done
-row sab-swallow-validator fault 1 --python-from "$PY" --sabotage swallow-validator
+row sab-swallow-validator fault 1 --python-from "$PY" --sabotage swallow-validator --fault
 rm -f "$OLD_BRIDGE"
 mv "$SUM.tmp" "$SUM"; cat "$SUM"

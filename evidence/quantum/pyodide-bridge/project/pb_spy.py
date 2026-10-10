@@ -11,7 +11,8 @@ ConnectionError, because the HTTP request can only be awaited on a stack entered
 callPromising. `run_sync` has the same requirement (JSPI stack switching), so a plain call fails
 here for the same structural reason. It is an emulation of the mechanism, not of IonQ.
 
-With `pb_fault=1` in the URL it also plays a FAULTY engine, so the bridge's validators have something
+Assembled with `--fault` (assemble.sh rewrites FAULT below; the runner forwards no URL flag to
+the frame) it also plays a FAULTY engine, so the bridge's validators have something
 to refuse: a dry-run branch reports fidelity 1.0 for a wrong X/Z choice (the success-on-a-wrong-choice
 lie the contract's cross-check exists for), and the backend job comes back under the pre-ruling name
 "bell_verification". The physics underneath is unchanged.
@@ -32,17 +33,19 @@ import quantum.teleportation as teleportation
 IMPORT_SECONDS = time.perf_counter() - _T0
 
 NETWORK_MOCK = "backend=ionq-mock" in str(js.location.search)
-FAULT = "pb_fault=1" in str(js.location.search)
+FAULT = False  # assemble.sh --fault sets this True in the disposable copy
 COUNTS = {"backendRunAttempts": 0, "backendRunCompleted": 0, "verificationCalls": 0, "commitCalls": 0,
           "commitsCompleted": 0, "resetCalls": 0, "branchCalls": 0}
 BRANCH_ARGS = []  # what teleport_branch actually received, so a dropped angle is visible below the bridge
 EVENTS = []
 
 _original_run = BasicSimulator.run
-_original_verify = qollab_job.run_backend_verification_once
-_original_commit = teleportation.live_commit
-_original_reset = teleportation.reset_story_token
-_original_branch = teleportation.teleport_branch
+# getattr: a pre-hardening engine (the head-old-python control) lacks some of these; the spy must
+# not be the thing that fails, so a missing function is simply not wrapped (and counts stay 0).
+_original_verify = getattr(qollab_job, "run_backend_verification_once", None)
+_original_commit = getattr(teleportation, "live_commit", None)
+_original_reset = getattr(teleportation, "reset_story_token", None)
+_original_branch = getattr(teleportation, "teleport_branch", None)
 
 
 def _spied_run(self, *args, **kwargs):
@@ -92,10 +95,12 @@ def _spied_branch(*args, **kwargs):
 
 
 BasicSimulator.run = _spied_run
-qollab_job.run_backend_verification_once = _spied_verify
-teleportation.live_commit = _spied_commit
-teleportation.reset_story_token = _spied_reset
-teleportation.teleport_branch = _spied_branch
+for _module, _name, _original, _spied in ((qollab_job, "run_backend_verification_once", _original_verify, _spied_verify),
+                                          (teleportation, "live_commit", _original_commit, _spied_commit),
+                                          (teleportation, "reset_story_token", _original_reset, _spied_reset),
+                                          (teleportation, "teleport_branch", _original_branch, _spied_branch)):
+    if _original is not None:
+        setattr(_module, _name, _spied)
 
 
 def snapshot():
@@ -109,8 +114,8 @@ def direct_second_commit():
     """Python's own latch, seen past the bridge's JS latch: call the ORIGINAL live_commit once more."""
     try:
         _original_commit()
-    except teleportation.TokenAlreadyConsumed as e:
-        return {"refused": True, "error": type(e).__name__}
+    except Exception as e:  # only TokenAlreadyConsumed counts as Python's latch; anything else is reported
+        return {"refused": type(e).__name__ == "TokenAlreadyConsumed", "error": f"{type(e).__name__}: {e}"}
     return {"refused": False, "error": None}
 
 
