@@ -1,4 +1,5 @@
 import { firstHit } from './controller.js';
+import { BUS_EVENTS } from '../contracts.js';
 
 // Which device, if any, the player may interact with (vision §3.1): within INTERACT_RANGE on the
 // ground plane, facing it, nothing solid in between, and the quest in one of the device's states.
@@ -44,8 +45,8 @@ export function createInteractions({ anchors, colliders, bus, quest }) {
     interact() {
       if (!focus) return false;
       const { id, action } = focus;
-      if (action && quest.can(action)) quest.send(action);
-      bus.emit('ui:terminal:open', { id, state: quest.state });
+      if (action && quest.can(action, 'interactable')) quest.send(action, 'interactable');
+      bus.emit(BUS_EVENTS.OPEN_TERMINAL, { id });
       return true;
     },
   };

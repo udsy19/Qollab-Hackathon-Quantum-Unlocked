@@ -1,6 +1,10 @@
 // Substation Passage (~15 m × 5 m) + Sector B — Relay Chamber (~18 m × 18 m), vision §5.1.
+import { INTERACTABLE_BINDINGS } from '../contracts.js';
+
 export function buildRelay(kit) {
   const { mats, THREE, scene } = kit;
+  const CONDUIT = kit.changeId('cyan_conduit_illuminates');
+  const SCHEMATIC = kit.changeId('amber_schematic_visible');
 
   // Connector: low ceiling and pipes — the change of scale says "passage", not "street".
   kit.floor(-2.5, 2.5, -41.2, -25.8, { name: 'connector', ceiling: 4.2 });
@@ -20,7 +24,7 @@ export function buildRelay(kit) {
   kit.wall(9, 10, -47.5, -41, 10);
   kit.box({ x: 9.5, z: -50, w: 1, d: 5, h: 5.6, y: 4.4, mat: mats.wall, collide: false });
   kit.box({ x: 0, z: -41.3, w: 5, d: 0.6, h: 5.6, y: 4.4, mat: mats.wall, collide: false });
-  kit.door({ id: 'door_relay', x: 9.5, z: -50, w: 0.6, d: 5, openAt: 'RELAY_UNDERSTOOD' });
+  kit.door({ id: 'door_relay', x: 9.5, z: -50, w: 0.6, d: 5, openOn: 'rooftop_access_unlocked' });
 
   // Circular plinth, core pillar and rings: the chamber's landmark silhouette.
   const plinth = new THREE.Mesh(new THREE.CylinderGeometry(3.2, 3.4, 0.35, 32), mats.metal);
@@ -42,7 +46,7 @@ export function buildRelay(kit) {
   kit.anchor('relay_core', 0, 1.2, -48.2, {
     label: 'QUANTUM RELAY',
     requiredQuest: ['RELAY_UNLOCKED', 'RELAY_INTRO', 'RELAY_BELL_CREATED', 'RELAY_SEND_FAILED'],
-    action: 'REACH_RELAY',
+    action: INTERACTABLE_BINDINGS.relay_core.action,
   });
 
   // Three tall cooling columns.
@@ -56,19 +60,19 @@ export function buildRelay(kit) {
 
   // Conduit from the west wall into the core: dark until the Bell pair exists (§9.3).
   const conduit = kit.box({ x: -5.3, z: -50, w: 7.4, d: 0.3, h: 0.06, mat: mats.dim, collide: false });
-  // Amber schematic on the north wall: appears when the rooftop is unlocked (§9.3).
+  // Amber schematic on the north wall: appears with the rooftop access (§9.3).
   const schematic = kit.box({ x: 0, z: -58.92, w: 6, d: 0.04, h: 3, y: 3, mat: mats.amber, collide: false });
 
   const trig = { minX: -2.5, maxX: 2.5, minZ: -38, maxZ: -29, event: 'EXIT_BOOTH' };
   let spin = 0.3;
   return {
     triggers: [trig],
-    react({ reached }) {
-      const lit = reached('RELAY_BELL_CREATED');
+    react({ has }) {
+      const lit = has(CONDUIT);
       conduit.material = lit ? mats.cyan : mats.dim;
       for (const r of rings) r.material = lit ? mats.cyan : ringMatIdle;
       spin = lit ? 1.6 : 0.3;
-      schematic.visible = reached('RELAY_UNDERSTOOD');
+      schematic.visible = has(SCHEMATIC);
     },
     update(dt) {
       rings.forEach((r, i) => { r.rotation.z += dt * spin * (i % 2 ? -1 : 1); });

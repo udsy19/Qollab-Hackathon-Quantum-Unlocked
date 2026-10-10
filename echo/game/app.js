@@ -1,5 +1,6 @@
 import { createEventBus } from './eventBus.js';
-import { createQuestMachine, QUEST_STATES as STATES } from './state.js';
+import { createQuestMachine } from './state.js';
+import { QUEST_STATE_LIST, QUEST_STATES as S, BUS_EVENTS, RESET_STATE } from '../contracts.js';
 import { createRenderer } from '../scene/renderer.js';
 import { buildDistrict } from '../scene/district.js';
 import { createPlayer } from '../scene/player.js';
@@ -9,26 +10,29 @@ import { createFollowCamera } from './camera.js';
 import { createInteractions } from './interactions.js';
 
 // Read back from the served page to prove which build a screenshot came from.
-export const BUILD = 'wc-0001-h';
+export const BUILD = 'v2p-0006-a';
 
 const FIXED_DT = 1 / 60;
 const MAX_STEPS = 6;
-const FIRST_EXPLORE = STATES.indexOf('FREE_ROAM_ALLEY');
-const LAST_EXPLORE = STATES.indexOf('TELEPORT_DRY_RUN_PASSED');
+const FIRST_EXPLORE = QUEST_STATE_LIST.indexOf(S.FREE_ROAM_ALLEY);
+const LAST_EXPLORE = QUEST_STATE_LIST.indexOf(S.TELEPORT_DRY_RUN_PASSED);
 
 /**
  * Boot the 3D world into `root` and run it.
  *
- * Bus events the game EMITS (for ui/): `ui:prompt` {id,label,key}|null · `ui:terminal:open` {id,state}
- * · `ui:pause` {paused} · `perf:fps` {fps,ms,calls}.
- * Bus events the game LISTENS to: `ui:terminal:close` · plus the quest's own `quest:transition` / `quest:reset`.
- * `ui.mount({ bus, quest, quantum, game })`, if present, is called once after boot.
+ * Contract bus events (echo/contracts.js BUS_EVENTS): the game EMITS `OPEN_TERMINAL` {id} when E is
+ * pressed at an interactable, and LISTENS to `CLOSE_TERMINAL` {id} and the machine's
+ * `QUEST_STATE_CHANGED` {from,to,event}, on which the §9.3 world changes are applied.
+ * Gameplay-only bus events (not contracts): `ui:prompt` {id,label,key}|null · `ui:pause` {paused}
+ * · `perf:fps` {fps,ms,calls}.
+ * The quest starts in BOOT: platform sends BOOT_COMPLETE (via 'boot') once Pyodide and the scene are
+ * ready. `ui.mount({ bus, quest, quantum, game })`, if present, is called once after boot.
  */
 export function startGame({ root, quantum, ui } = {}) {
   const bus = createEventBus();
   const quest = createQuestMachine(bus);
   const view = createRenderer(root);
-  const world = buildDistrict(view.scene, { states: STATES });
+  const world = buildDistrict(view.scene);
   const player = createPlayer(view.scene);
   const input = createInput(view.canvas);
   const controller = createController({ group: player.group, ...world });
@@ -40,7 +44,7 @@ export function startGame({ root, quantum, ui } = {}) {
   let lockLostAt = -1;
   const offs = [];
 
-  const rank = () => STATES.indexOf(quest.state);
+  const rank = () => QUEST_STATE_LIST.indexOf(quest.state);
   const explorableState = () => rank() >= FIRST_EXPLORE && rank() <= LAST_EXPLORE;
   const exploring = () => explorableState() && !terminalOpen && !paused;
 
@@ -62,22 +66,22 @@ export function startGame({ root, quantum, ui } = {}) {
     interactions.clear();
   }
 
-  offs.push(bus.on('quest:transition', ({ to }) => {
-    // RESTART (from credits/declassified) arrives as a transition, not quest:reset — same full reset.
-    if (to === 'TITLE') { resetWorld(); return; }
+  offs.push(bus.on(BUS_EVENTS.QUEST_STATE_CHANGED, ({ to }) => {
+    // Every arrival at RESET_STATE is a full §9.5 reset: resetGame() (pause menu, credits) and the
+    // ENDING screen's RESTART edge alike.
+    if (to === RESET_STATE) { resetWorld(); return; }
     world.applyQuestState(to);
-    if (to === 'TELEPORT_COMMITTED') follow.setShot(world.finalShot);
+    if (to === S.TELEPORT_COMMITTED) follow.setShot(world.finalShot);
     if (!explorableState()) { input.unlock(); interactions.clear(); controller.halt(); }
   }));
-  offs.push(bus.on('quest:reset', resetWorld));
-  offs.push(bus.on('ui:terminal:open', () => {
+  offs.push(bus.on(BUS_EVENTS.OPEN_TERMINAL, () => {
     terminalOpen = true;
     input.unlock();
     input.clear();
     controller.halt();
     interactions.clear();
   }));
-  offs.push(bus.on('ui:terminal:close', () => {
+  offs.push(bus.on(BUS_EVENTS.CLOSE_TERMINAL, () => {
     terminalOpen = false;
     if (explorableState() && !paused) input.lock();
   }));
@@ -110,7 +114,8 @@ export function startGame({ root, quantum, ui } = {}) {
 
     for (const t of world.triggers) {
       const p = controller.pos;
-      if (p.x >= t.minX && p.x <= t.maxX && p.z >= t.minZ && p.z <= t.maxZ && quest.can(t.event)) quest.send(t.event);
+      // Movement events come from gameplay world triggers (EVENT_SOURCES via 'world_trigger').
+      if (p.x >= t.minX && p.x <= t.maxX && p.z >= t.minZ && p.z <= t.maxZ && quest.can(t.event, 'world_trigger')) quest.send(t.event, 'world_trigger');
     }
     interactions.update(controller.pos, controller.heading);
     if (input.consume('KeyE')) interactions.interact();
@@ -150,7 +155,6 @@ export function startGame({ root, quantum, ui } = {}) {
     }
   }
 
-  quest.send('BOOTED');
   resetWorld();
   raf = requestAnimationFrame(frame);
 
@@ -163,7 +167,7 @@ export function startGame({ root, quantum, ui } = {}) {
     pause: () => setPaused(true),
     resume() { setPaused(false); if (exploring()) input.lock(); },
     // Restart to title (vision §9.5): quest, player transform, camera, world, pointer lock, prompts.
-    reset: () => quest.reset(),
+    reset: () => quest.resetGame(),
     // Read-only view for harnesses and tests.
     debug: {
       get state() { return quest.state; },
@@ -171,6 +175,8 @@ export function startGame({ root, quantum, ui } = {}) {
       get focus() { return interactions.focus?.id ?? null; },
       get camera() { const p = view.camera.position; return { x: p.x, y: p.y, z: p.z, yaw: follow.yaw, pulledIn: follow.pulledIn }; },
       doors: () => world.doors.map((d) => ({ id: d.id, open: d.open, t: d.t })),
+      // The WORLD_CHANGES ids in force (§9.3), as the world derived them from the quest state.
+      changes: () => world.activeChanges,
       anchors: () => Object.keys(world.anchors),
       // Live collider list, exposed so a harness can sabotage a disposable page and prove its checks bite.
       colliders: world.colliders,

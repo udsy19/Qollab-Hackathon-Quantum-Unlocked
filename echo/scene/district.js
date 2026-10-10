@@ -1,4 +1,6 @@
 import * as THREE from 'three';
+import { QUEST_STATE_LIST, WORLD_CHANGES } from '../contracts.js';
+import { worldChangesFor } from '../game/state.js';
 import { buildAlley } from './alley.js';
 import { buildRelay } from './relay.js';
 import { buildRooftop } from './rooftop.js';
@@ -7,9 +9,9 @@ import { buildRooftop } from './rooftop.js';
 // alley facing -Z. Collision is 2D: every collider is an XZ box; `low` boxes (guard rails) block
 // movement but not the camera or line of sight.
 //
-//   Rain Alley        x[-6,6]   z[4,-26]     door A at z=-26 (opens at CLONE_UNDERSTOOD)
+//   Rain Alley        x[-6,6]   z[4,-26]     door A at z=-26 (opens on corridor_door_opens)
 //   Substation pass.  x[-2.5,2.5] z[-26,-41]  trigger EXIT_BOOTH
-//   Relay Chamber     x[-9,9]   z[-41,-59]   door B at x=9  (opens at RELAY_UNDERSTOOD)
+//   Relay Chamber     x[-9,9]   z[-41,-59]   door B at x=9  (opens on rooftop_access_unlocked)
 //   Elevator corridor x[9,17]   z[-47.5,-52.5] trigger OPEN_ROOFTOP
 //   Rooftop           x[17,39]  z[-40,-60]
 
@@ -68,13 +70,13 @@ function createKit(scene) {
     anchor(id, x, y, z, spec) {
       anchors[id] = { id, position: new THREE.Vector3(x, y, z), ...spec };
     },
-    // Sliding door: open when the quest has reached `openAt` (derived from state, so idempotent).
-    door({ id, x, z, w, d, h = 4.2, openAt }) {
+    // Sliding door: open while the world change `openOn` is in force (derived from state, so idempotent).
+    door({ id, x, z, w, d, h = 4.2, openOn }) {
       const mesh = kit.box({ x, z, w, d, h, mat: mats.door, id });
       mesh.matrixAutoUpdate = true;
       const collider = colliders[colliders.length - 1];
       const strip = kit.box({ x, z, w: w + 0.06, d: d + 0.06, h: 0.12, y: h + 0.1, mat: mats.coral, collide: false });
-      const door = { id, mesh, strip, collider, openAt, h, open: false, t: 0 };
+      const door = { id, mesh, strip, collider, openOn: changeId(openOn), h, open: false, t: 0 };
       doors.push(door);
       return door;
     },
@@ -84,9 +86,26 @@ function createKit(scene) {
 
 const lerp = (a, b, k) => a + (b - a) * k;
 
-export function buildDistrict(scene, { states }) {
-  const rank = (s) => states.indexOf(s);
+// §9.3 world changes by their contracts ids. A scene file names the ids it reacts to through
+// `changeId`, which throws on a name contracts does not define, so a typo or a rename fails at build
+// time instead of leaving a door shut forever.
+const KNOWN_CHANGES = new Set(Object.values(WORLD_CHANGES).flat());
+export function changeId(id) {
+  if (!KNOWN_CHANGES.has(id)) throw new TypeError(`unknown WORLD_CHANGES id "${id}"; known: ${[...KNOWN_CHANGES].join(', ')}`);
+  return id;
+}
+// The changes in force in `state`: those of entering it and of every state before it in §9.1 order
+// (the quest only moves forward until a reset). Derived from the state alone, so applying it twice
+// is a no-op (§9.3 idempotence) and a reset to TITLE clears every one (§9.5).
+export function activeChanges(state) {
+  const r = QUEST_STATE_LIST.indexOf(state);
+  return new Set(QUEST_STATE_LIST.slice(0, r + 1).flatMap(worldChangesFor));
+}
+
+export function buildDistrict(scene) {
+  const rank = (s) => QUEST_STATE_LIST.indexOf(s);
   const kit = createKit(scene);
+  kit.changeId = changeId;
 
   // Graybox readability light only; art's lighting.js replaces this.
   scene.add(new THREE.HemisphereLight(0x8aa6d6, 0x1a1e2e, 2.2));
@@ -97,18 +116,20 @@ export function buildDistrict(scene, { states }) {
   const spaces = [buildAlley(kit), buildRelay(kit), buildRooftop(kit)];
   const triggers = spaces.flatMap((s) => s.triggers ?? []);
 
-  let reached = () => false;
-  // Derive every world reaction from the current quest state. Calling this twice with the same state is a
-  // no-op, which is what makes the §9.3 reactions idempotent and §9.5 reset deterministic.
+  let active = new Set();
+  // Derive every world reaction from the WORLD_CHANGES ids in force. Calling this twice with the same
+  // state is a no-op, which is what makes the §9.3 reactions idempotent and §9.5 reset deterministic.
+  // `before(s)` is for guidance only (the door-A arrow), never for a §9.3 consequence.
   function applyQuestState(state, { instant = false } = {}) {
-    const r = rank(state);
-    reached = (s) => r >= rank(s);
+    active = activeChanges(state);
+    const has = (id) => active.has(id);
+    const before = (s) => rank(state) < rank(s);
     for (const d of kit.doors) {
-      d.open = reached(d.openAt);
+      d.open = has(d.openOn);
       d.collider.enabled = !d.open;
       if (instant) d.t = d.open ? 1 : 0;
     }
-    for (const s of spaces) s.react?.({ reached, state, instant });
+    for (const s of spaces) s.react?.({ has, before, state, instant });
   }
 
   function update(dt, t) {
@@ -130,6 +151,7 @@ export function buildDistrict(scene, { states }) {
     // Final skyline shot at commit: over the east rail, across the city to the fiber's skyline node.
     finalShot: { position: [25, 4.2, -45], target: [80, 4, -95] },
     applyQuestState,
+    get activeChanges() { return [...active]; },
     update,
   };
 }

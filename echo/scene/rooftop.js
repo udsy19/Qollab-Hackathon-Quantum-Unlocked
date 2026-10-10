@@ -1,3 +1,5 @@
+import { INTERACTABLE_BINDINGS } from '../contracts.js';
+
 // Elevator corridor (~8 m × 5 m) + Sector C — Rooftop Terminal (~22 m × 20 m), vision §5.1.
 // The rooftop floor is the top of a tall block; the city around it is instanced boxes whose facade
 // strips light in a wave from the rooftop outward at TELEPORT_COMMITTED (§9.3).
@@ -7,6 +9,10 @@ const WAVE_SPEED = 45; // m/s
 const BANDS = 3;
 
 export function buildRooftop(kit) {
+  const LINK = kit.changeId('amber_light_travels_to_skyline_node');
+  const SOURCE_OFF = kit.changeId('capsule_source_indicator_off');
+  const VAULT_GREEN = kit.changeId('vault_status_green');
+  const CITY_WAVE = kit.changeId('city_lighting_wave');
   const { mats, THREE, scene } = kit;
 
   // Elevator corridor.
@@ -36,7 +42,7 @@ export function buildRooftop(kit) {
   kit.box({ x: 21.5, z: -57.9, w: 1.2, d: 0.8, h: 1.1, mat: mats.metal, id: 'classical_socket' });
   const socketLamp = kit.box({ x: 21.5, z: -57.48, w: 0.7, d: 0.04, h: 0.3, y: 0.7, mat: mats.amber, collide: false });
   kit.anchor('classical_socket', 21.5, 1.2, -57.3, {
-    label: 'LEGACY DATA LINK', requiredQuest: ['ROOFTOP_UNLOCKED'], action: 'REPAIR_CLASSICAL_LINK',
+    label: 'LEGACY DATA LINK', requiredQuest: ['ROOFTOP_UNLOCKED'], action: INTERACTABLE_BINDINGS.classical_socket.action,
   });
 
   // Teleport terminal with the story-token capsule and the vault status lamp.
@@ -49,7 +55,7 @@ export function buildRooftop(kit) {
   kit.anchor('teleport_terminal', 30, 1.2, -43.6, {
     label: 'TELEPORT TERMINAL',
     requiredQuest: ['LINK_REPAIRED', 'TELEPORT_DRY_RUN', 'TELEPORT_DRY_RUN_PASSED'],
-    action: 'RUN_DRY_TEST',
+    action: INTERACTABLE_BINDINGS.teleport_terminal.action,
   });
 
   // Amber fiber from the socket out to a remote skyline node; a pulse runs along it once repaired.
@@ -125,15 +131,15 @@ export function buildRooftop(kit) {
 
   return {
     triggers: [trig],
-    react({ reached, instant }) {
-      linkOn = reached('LINK_REPAIRED');
+    react({ has, instant }) {
+      linkOn = has(LINK);
       fiber.material = linkOn ? mats.amber : mats.dim;
       node.material = linkOn ? mats.amber : mats.dim;
       socketLamp.material = linkOn ? mats.cyan : mats.amber;
       pulse.visible = linkOn;
-      const committed = reached('TELEPORT_COMMITTED');
-      capsule.material = committed ? mats.dim : mats.cyan;
-      vaultLamp.material = committed ? mats.cyan : mats.coral;
+      capsule.material = has(SOURCE_OFF) ? mats.dim : mats.cyan;
+      vaultLamp.material = has(VAULT_GREEN) ? mats.cyan : mats.coral;
+      const committed = has(CITY_WAVE);
       if (!committed) { waveT = -1; paintCity(-1); }
       else if (instant) { waveT = -1; paintCity(Infinity); }
       else if (waveT < 0 && litCount < bodies.length) waveT = 0;

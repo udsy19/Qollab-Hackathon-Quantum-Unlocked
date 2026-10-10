@@ -1,8 +1,9 @@
 <!doctype html>
-<!-- Dev harness for echo/game (NOT part of the Qollab upload). Serve the worktree root on port 8612:
-     python3 -m http.server 8612   →   http://localhost:8612/dev/gameplay/world.html
-     Terminals are gameplay-quest-core's dev terminal over its fake quantum adapter (dev only); story-ui
-     owns the real terminals. -->
+<!-- Dev harness for echo/game (NOT part of the Qollab upload). Serve the worktree root AND the dev
+     engine (real Qiskit in local CPython) from one process, on your own port:
+     python3 dev/gameplay/dev_engine.py 8641   →   http://127.0.0.1:8641/dev/gameplay/world.html
+     Terminals are the dev terminal (dev only); story-ui owns the real terminals. This page also
+     stands in for platform's main.js (BOOT_COMPLETE) and story-ui's menus and cinematic timer. -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -37,13 +38,14 @@
 
 <div id="title" class="overlay"><div class="panel"><h1>ECHO: ONE OF ONE</h1><p>gameplay harness</p><button id="play">PLAY</button></div></div>
 <div id="pause" class="overlay" hidden><div class="panel"><h1>PAUSED</h1><button id="resume">Resume</button><button id="restart">Restart</button></div></div>
-<div id="terminal" class="overlay" hidden><div class="panel"><h1 id="term-title"></h1><p>DEV terminal (fake quantum) — not the product UI.</p><div id="term-host"></div><button id="term-close">Close</button></div></div>
+<div id="terminal" class="overlay" hidden><div class="panel"><h1 id="term-title"></h1><p>DEV terminal (dev engine: Qiskit in local CPython) — not the product UI.</p><div id="term-host"></div><button id="term-close">Close</button></div></div>
 <div id="ending" class="overlay" hidden><div class="panel"><h1>ENDING</h1><p>The city is lit.</p><button id="end-credits">Credits</button><button id="end-restart">Restart</button></div></div>
 <div id="credits" class="overlay" hidden><div class="panel"><h1>CREDITS</h1><button id="credits-restart">Restart</button></div></div>
 
 <script type="module">
 import { startGame, BUILD } from '../../echo/game/app.js';
-import { createFakeQuantum } from './fakeQuantum.js';
+import { BUS_EVENTS } from '../../echo/contracts.js';
+import { createDevEngine } from './devEngine.js';
 import { mountDevTerminal } from './devTerminal.js';
 
 const $ = (id) => document.getElementById(id);
@@ -53,7 +55,8 @@ const ui = {
   mount({ bus, quest, quantum, game }) {
     window.__echo = game;
     let termId = null;
-    mountDevTerminal($('term-host'), { machine: quest, bus, quantum });
+    // In the world, the terminal stands in for story-ui's acknowledgements only: doors are walked through.
+    mountDevTerminal($('term-host'), { machine: quest, bus, quantum, sources: ['terminal_acknowledgement'] });
     const show = () => {
       $('title').hidden = quest.state !== 'TITLE';
       $('ending').hidden = quest.state !== 'ENDING';
@@ -62,24 +65,25 @@ const ui = {
       $('terminal').hidden = !termId;
       $('term-title').textContent = termId ?? '';
     };
-    const closeTerminal = () => { termId = null; show(); bus.emit('ui:terminal:close'); };
+    const closeTerminal = () => { const id = termId; termId = null; show(); if (id) bus.emit(BUS_EVENTS.CLOSE_TERMINAL, { id }); };
     bus.on('ui:prompt', (p) => { $('prompt').hidden = !p; $('prompt-label').textContent = p ? p.label : ''; });
-    bus.on('ui:terminal:open', ({ id }) => { termId = id; show(); });
+    bus.on(BUS_EVENTS.OPEN_TERMINAL, ({ id }) => { termId = id; show(); });
     bus.on('ui:pause', show);
-    bus.on('quest:transition', ({ to }) => {
+    bus.on(BUS_EVENTS.QUEST_STATE_CHANGED, ({ to }) => {
       // Stands in for narrative: close the terminal on commit, end the transfer animation after 5 s.
-      if (to === 'TELEPORT_COMMITTED') { closeTerminal(); setTimeout(() => quest.send('ANIMATION_END'), 5000); }
+      if (to === 'TELEPORT_COMMITTED') { closeTerminal(); setTimeout(() => quest.send('ANIMATION_END', 'cinematic'), 5000); }
       if (to === 'TITLE') termId = null;
       show();
     });
-    bus.on('quest:reset', () => { termId = null; show(); });
     bus.on('perf:fps', (f) => { fps = f; });
-    $('play').onclick = () => { quest.send('START'); quest.send('SKIP'); $('play').blur(); show(); };
+    $('play').onclick = () => { quest.send('START', 'menu'); quest.send('SKIP', 'dialogue'); $('play').blur(); show(); };
     $('resume').onclick = () => { game.resume(); show(); };
     $('restart').onclick = () => game.reset();
-    $('end-restart').onclick = () => game.reset();
-    $('end-credits').onclick = () => quest.send('OPEN_CREDITS');
-    $('credits-restart').onclick = () => quest.send('RESTART');
+    // ENDING offers RESTART as a table edge (owner ruling 12); CREDITS is terminal, so its restart is
+    // resetGame(), like the pause menu's.
+    $('end-restart').onclick = () => quest.send('RESTART', 'menu');
+    $('end-credits').onclick = () => quest.send('OPEN_CREDITS', 'menu');
+    $('credits-restart').onclick = () => game.reset();
     $('term-close').onclick = closeTerminal;
     setInterval(() => {
       const p = game.debug.player;
@@ -89,7 +93,10 @@ const ui = {
   },
 };
 
-startGame({ root: $('game-root'), quantum: createFakeQuantum({ delayMs: 150 }), ui });
+const quantum = createDevEngine({ delayMs: 150 });
+window.__engine = quantum; // dev fault injection for the playthrough
+const game = startGame({ root: $('game-root'), quantum, ui });
+game.quest.send('BOOT_COMPLETE', 'boot'); // platform's main.js does this once Pyodide and the scene are ready
 </script>
 </body>
 </html>
