@@ -1,0 +1,20 @@
+| row | sabotage | fixture | replay | verdict |
+|---|---|---|---|---|
+| S0 | control: no edit (the copy itself must stay green) | synth-control-ideal.fixture.json | exit 0, 0 FAIL | expected null: as-expected |
+| S1 | parser reads clbit 0 from the LEFT of the key | synth-control-ideal.fixture.json | exit 1, 1 FAIL | expected red: as-expected |
+|    |   FAIL  control: dominant key decodes to q0=1, q1=0  (key '10', keyQubits [1, 0] -> {1: 1, 0: 0}) | | | |
+| S1b | same reversal, Bell run (00/11 are symmetric: the Bell run alone cannot see it) | synth-bell-ideal.fixture.json | exit 0, 0 FAIL | expected null: as-expected |
+| S2 | clbit<-qubit map swapped | synth-control-forte-1.fixture.json | exit 1, 1 FAIL | expected red: as-expected |
+|    |   FAIL  control: dominant key decodes to q0=1, q1=0  (key '10', keyQubits [1, 0] -> {1: 1, 0: 0}) | | | |
+| S3 | key order flipped AND declared in keyQubits (self-consistent, not a defect) | synth-control-ideal.fixture.json | exit 0, 0 FAIL | expected null: as-expected |
+| S4 | once-per-run flag never set | synth-bell-ideal.fixture.json | exit 1, 2 FAIL | expected red: as-expected |
+|    |   FAIL  second verification in the same run refused, no 2nd submit  (second call returned a result) | | | |
+|    |   FAIL  exactly one job submitted  (2) | | | |
+| S5 | server reports X(q0) in histogram bit 1 (an MSB-first IonQ convention) | synth-control-ideal.fixture.json | exit 1, 2 FAIL | expected red: as-expected |
+|    |   FAIL  control: dominant key decodes to q0=1, q1=0  (key '10', keyQubits [1, 0] -> {1: 1, 0: 0}) | | | |
+|    |   FAIL  control: qiskit-ionq raw key has clbit 0 rightmost  (raw dominant '10') | | | |
+| S6 | noisy run with no 01/10 at all (noise check must not be vacuous) | synth-bell-aria-1.fixture.json | exit 1, 1 FAIL | expected red: as-expected |
+|    |   FAIL  bell noisy: 0.80 <= correlated fraction < 1  (256/256 = 1.0000) | | | |
+| S7 | ideal run that leaks into 01 | synth-bell-ideal.fixture.json | exit 1, 1 FAIL | expected red: as-expected |
+|    |   FAIL  bell ideal: correlated fraction == 1  (245/256) | | | |
+| S8 | IonQ echoes no qiskit_header: qiskit-ionq falls back to the identity map, which IS the map of this circuit (predicted null) | synth-bell-ideal.fixture.json | exit 0, 0 FAIL | expected null: as-expected |

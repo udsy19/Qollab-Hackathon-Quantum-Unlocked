@@ -1,0 +1,82 @@
+{
+  "label": "SYNTHETIC fixture: hand-typed histogram, NOT an IonQ response; exercises the local IonQ simulator (off Qollab) client path only",
+  "provenance": "synthetic",
+  "circuit": "bell",
+  "noise_model": "aria-1",
+  "shots": 256,
+  "qiskit_ionq": "1.1.1",
+  "submit_payload": {
+    "type": "ionq.circuit.v1",
+    "backend": "simulator",
+    "shots": 256,
+    "name": "echo_bell_verification",
+    "input": {
+      "gateset": "qis",
+      "qubits": 2,
+      "circuit": [
+        {
+          "gate": "h",
+          "targets": [
+            0
+          ]
+        },
+        {
+          "gate": "x",
+          "targets": [
+            1
+          ],
+          "controls": [
+            0
+          ]
+        }
+      ]
+    },
+    "metadata": {
+      "shots": "256",
+      "sampler_seed": "None",
+      "qiskit_header": "H4sIADy6yWoC/12OXQrCMBAGr1LyLBL76FVKWbZxbQOb/ypU8e5uKgT1Lcw3s+SpHLmQNygc1qLOXX/o1MxhQoa4YCFB+qgFeki3yTbHo6ubIrMEmIgZ7pTt1RpcbfBKDJNphmIfVJNhUEZgP451YTkEjJJ9bVqmz+u0W+mvT63fP/LTp9an1jvCAg5jpEuVdOWvN9AgHNrwAAAA",
+      "user_agent": "qiskit-ionq/1.1.1 (qiskit/2.5.2) os/Darwin (python/3.13.0)"
+    },
+    "noise": {
+      "model": "aria-1",
+      "seed": null
+    }
+  },
+  "responses": {
+    "submit_job": [
+      {
+        "id": "synthetic-0000",
+        "status": "submitted"
+      }
+    ],
+    "retrieve_job": [
+      {
+        "id": "synthetic-0000",
+        "status": "completed",
+        "metadata": {
+          "shots": "256",
+          "sampler_seed": "None",
+          "qiskit_header": "H4sIADy6yWoC/12OXQrCMBAGr1LyLBL76FVKWbZxbQOb/ypU8e5uKgT1Lcw3s+SpHLmQNygc1qLOXX/o1MxhQoa4YCFB+qgFeki3yTbHo6ubIrMEmIgZ7pTt1RpcbfBKDJNphmIfVJNhUEZgP451YTkEjJJ9bVqmz+u0W+mvT63fP/LTp9an1jvCAg5jpEuVdOWvN9AgHNrwAAAA",
+          "user_agent": "qiskit-ionq/1.1.1 (qiskit/2.5.2) os/Darwin (python/3.13.0)"
+        },
+        "stats": {
+          "qubits": 2,
+          "circuits": 1
+        },
+        "results": {
+          "probabilities": {
+            "url": "/v0.4/jobs/synthetic-0000/results/probabilities"
+          }
+        }
+      }
+    ],
+    "get_results": [
+      {
+        "0": 0.49,
+        "3": 0.47,
+        "1": 0.02,
+        "2": 0.02
+      }
+    ]
+  }
+}

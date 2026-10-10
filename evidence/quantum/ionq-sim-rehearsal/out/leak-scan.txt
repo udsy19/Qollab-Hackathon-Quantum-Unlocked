@@ -1,0 +1,3 @@
+# leak scan of evidence/quantum/ionq-sim-rehearsal (key file absent on this host, so its exact prefix/length could not be grepped)
+$ grep -rEn '(IONQ_API_KEY|QISKIT_IONQ_API_TOKEN|IONQ_API_TOKEN)=|Authorization|apiKey [A-Za-z0-9]|[A-Za-z0-9]{32,}' evidence/quantum/ionq-sim-rehearsal --exclude=leak-scan.txt | grep -v qiskit_header
+matches-exit=1 (1 = no match)
