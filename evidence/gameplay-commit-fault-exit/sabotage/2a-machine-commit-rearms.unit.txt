@@ -1,0 +1,83 @@
+✔ on/emit is synchronous and delivers the payload in subscription order (4.412084ms)
+✔ off function unsubscribes only that listener and is safe to call twice (0.219209ms)
+✔ a throwing listener does not stop the others, and the error is reported (0.660458ms)
+✔ unsubscribing during emit does not skip the next listener (0.19775ms)
+✔ emit with no listeners is a no-op (0.177417ms)
+✔ a listener subscribed during emit is not called until the next emit (0.117208ms)
+✔ every result passes platform validateExperimentResult and says documented_preview in engine and facts (15.017708ms)
+✔ §7.2 cloning: basis states copy, |+> and phase states do not (7.407708ms)
+✔ §7.3 no-signalling: receiver marginal (keyQubits [1]) is 1/2,1/2 for I, X and Z; joint correlations differ I vs X (4.200209ms)
+✔ §7.4 teleportation: fidelity 1 iff X==m1 and Z==m0, on named and random generic states (135.447834ms)
+✔ rulings 7/11: every dry run draws a fresh generic state, and every wrong X/Z on it shows fidelity <= 0.81 (356.540875ms)
+✔ randomGenericState stays off every Pauli axis (2.068875ms)
+✔ commitStoryToken is one atomic call: live bits, rule corrections, fidelity 1, and the token angles are not shown (0.290292ms)
+✔ Bell bits are sampled uniformly over the four outcomes (0.092042ms)
+✔ injectable failure rejects the next call only, then the adapter recovers (3.461625ms)
+✔ async delay is real: a call does not resolve synchronously (31.000875ms)
+✔ unknown inputs are refused, not defaulted (9.647542ms)
+✔ expectedCorrections is the §7.1 rule: X iff m1=1, Z iff m0=1 (1.25725ms)
+✔ hasExperiment names exactly the states a result can advance (0.118375ms)
+✔ F6: malformed input is refused with a reason, never thrown, in every state (0.880375ms)
+✔ cloning: basis copy advances CLONE_INTRO; superposition failure advances CLONE_BASIS_PASSED; not the reverse (8.98125ms)
+✔ relay: any Bell result prepares the pair; only a local X/Z attempt with an exact 50/50 receiver is the failed send (4.93125ms)
+✔ F7: contradictory or mislabelled receiver probabilities are refused (1.613ms)
+✔ dry run: advances only with corrections matching the bits AND fidelity ~1, on a non-00 run (ruling consult 3) (27.114375ms)
+✔ the story token is never a calibration, and calibration is never a commit (4.953291ms)
+✔ states without an experiment never map a result to an event (1.444584ms)
+✔ every §9.1 state has exactly one objective id (states from the doc, not the map) (2.334166ms)
+✔ the mission states point the player at the right place (0.118416ms)
+✔ the real §9.2 parses to 18 rows / 20 edges (the a1_table.py Python parser agrees), every row accounted for (1.588042ms)
+✔ a row at any indentation is read, not dropped (3.747917ms)
+✔ a row the parser cannot read throws with its line, instead of passing with an edge missing (0.69475ms)
+✔ an unclosed or missing transitions object throws (0.211833ms)
+✔ the one quest table: contracts QUEST_STATE_LIST is exactly §9.1, in order (4.559792ms)
+✔ contracts TRANSITIONS is exactly §9.2 + the owner-accepted additions (missing or skip edge both fail) (0.293583ms)
+✔ the machine emits the contracts bus name, and only it (0.092416ms)
+✔ full walk BOOT -> CREDITS: one QUEST_STATE_CHANGED {from,to,event} per step, nothing else (1.200625ms)
+✔ every illegal (state, known event) pair is refused and emits nothing; unknown names throw and emit nothing (29.113292ms)
+✔ every legal spec edge is accepted from its state (0.531041ms)
+✔ pressing E again at booth, relay or socket does nothing (0.14175ms)
+✔ commitIsOneShot holds on the contracts table and fails on a re-commit edge or a second commit edge (0.130042ms)
+✔ resetGame() from every state: TITLE, a new epoch, one QUEST_STATE_CHANGED with event null, and the run replays (1.157292ms)
+✔ RESTART from ENDING (owner ruling 12), DECLASSIFIED and CREDITS is resetGame(), and a second run commits again (0.692041ms)
+✔ F2: a send() inside a listener is delivered after the outer change reaches every listener (0.142ms)
+✔ F2: resetGame() inside a listener is delivered after the outer change, never before it (0.086917ms)
+✔ F2: a listener sending a refused event mid-delivery is judged against the queued state (0.057792ms)
+✔ F3: a result asked before resetGame() is stale even when the new session is back in the same state (ABA) (0.193667ms)
+✔ F3: a current result does advance (the ticket is not stale by default) (0.201958ms)
+✔ F4: COMMIT_TRANSFER cannot be sent directly, only through commitTransfer() (0.102625ms)
+✔ F4: while a commit is in flight a second request never reaches the engine (0.102541ms)
+✔ F4: a commit call that errors measured nothing, so it may be retried once more (owner ruling, consult 3) (0.118542ms)
+✖ F4: a measured, refused commit spends the token, says why, offers RESTART, and the next session commits (0.609417ms)
+✔ F4: no fault is exposed on a clean or an errored commit (0.0905ms)
+✔ F4: a commit result that lands after resetGame() neither commits nor latches the new session (0.070792ms)
+✔ ruling 13: EXPLANATION_READ / VIEW_RECEIVER_MARGINAL advance only after the result panel was shown in that state (0.0815ms)
+✔ ruling 13: a panel shown in an earlier state or session does not unlock a later acknowledgement (0.10675ms)
+✔ worldChangesFor names the §9.3 consequences per state and nothing for the rest (0.056958ms)
+ℹ tests 56
+ℹ suites 0
+ℹ pass 55
+ℹ fail 1
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 683.997541
+
+✖ failing tests:
+
+test at dev/gameplay/tests/state.test.mjs:280:1
+✖ F4: a measured, refused commit spends the token, says why, offers RESTART, and the next session commits (0.609417ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  true !== false
+  
+      at TestContext.<anonymous> (file:///private/tmp/gcfe-sab.kvWW/dev/gameplay/tests/state.test.mjs:295:38)
+      at async Test.run (node:internal/test_runner/test:1404:7)
+      at async Test.processPendingSubtests (node:internal/test_runner/test:969:7) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: true,
+    expected: false,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }

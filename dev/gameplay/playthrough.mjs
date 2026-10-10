@@ -1,7 +1,8 @@
 // DEV-ONLY: plays the harness in headless Chrome by clicking its buttons, the way a person would,
 // including the bad paths: spam, injected bridge failure, acknowledgement before the panel, wrong
 // corrections retried on a fresh state, a failed commit retried, RESTART from ENDING, a stale
-// result after resetGame(), and an engine fault that latches the commit.
+// result after resetGame(), and an engine fault after measurement: the commit latches, the honest
+// error offers RESTART, and the next session commits.
 // Usage: node dev/gameplay/playthrough.mjs <port> <outDir>   (a server must be serving the repo root)
 import { createRequire } from 'node:module';
 import { execSync } from 'node:child_process';
@@ -19,6 +20,14 @@ await page.setViewport({ width: 1100, height: 900 });
 const errors = [];
 page.on('pageerror', (e) => errors.push(e.message));
 await page.goto(`http://127.0.0.1:${port}/dev/gameplay/harness.html?t=${Date.now()}`, { waitUntil: 'networkidle0' });
+// Engine commit calls per session, counted at the quantum adapter (outside the machine), so the
+// one-measurement-per-token claim does not rest on the machine's own latch.
+await page.evaluate(() => {
+  const h = window.__harness; const real = h.quantum.commitStoryToken;
+  h.commitCalls = {};
+  h.quantum.commitStoryToken = (...a) => { h.commitCalls[h.machine.epoch] = (h.commitCalls[h.machine.epoch] ?? 0) + 1; return real(...a); };
+});
+const commitCalls = () => page.evaluate(() => ({ ...window.__harness.commitCalls }));
 
 const state = () => page.evaluate(() => window.__harness.machine.state);
 const latch = () => page.evaluate(() => window.__harness.machine.commit);
@@ -142,12 +151,16 @@ steps.push(`stale result after resetGame -> ${await state()} | ${await note()}`)
 if (await state() !== 'CLONE_INTRO' || !/DROPPED/.test(await note())) await fail('stale result was not dropped');
 await shot('reset-mid-call-stale-result-dropped');
 
-// ---- session 1 continues: the commit result comes back wrong -> latched, never re-offered
+// ---- session 1 continues: the commit result comes back wrong -> latched, honest error, RESTART
 await playTo('TELEPORT_DRY_RUN_PASSED');
 await click('engine fault on next commit');
 await step('COMMIT TRANSFER (story token, once)', 'TELEPORT_DRY_RUN_PASSED');
-if (await latch() !== 'measured_refused_awaiting_ruling') await fail('a measured, refused commit did not latch');
+if (await latch() !== 'measured_refused') await fail('a measured, refused commit did not latch');
 if (await enabled('COMMIT TRANSFER (story token, once)')) await fail('a latched commit is still offered');
+const faultText = await page.$eval('.dt-fault', (n) => n.innerText).catch(() => '');
+steps.push(`fault panel: ${faultText.replace(/\n+/g, ' | ')}`);
+if (!/measured and consumed/.test(faultText) || !/Verification failed/.test(faultText) || !/Refusal: \S/.test(faultText)) await fail('no honest scientific-module error');
+if (!(await enabled('RESTART'))) await fail('a measured, refused commit stranded the player: no RESTART offered');
 // Under the button: the machine itself refuses, and the engine is never called again.
 const again = await page.evaluate(async () => {
   let calls = 0;
@@ -156,20 +169,29 @@ const again = await page.evaluate(async () => {
 });
 steps.push(`direct commitTransfer() while latched -> ${JSON.stringify(again)}`);
 if (again.ok || again.calls !== 0) await fail('a second commit request reached the engine');
-if (await latch() !== 'measured_refused_awaiting_ruling' || (await state()) !== 'TELEPORT_DRY_RUN_PASSED') await fail('latch broke');
-await shot('commit-measured-but-refused-latched');
+if (await latch() !== 'measured_refused' || (await state()) !== 'TELEPORT_DRY_RUN_PASSED') await fail('latch broke');
+await shot('commit-measured-refused-honest-error-restart-offered');
 
-// ---- session 2: title -> credits via DECLASSIFIED, RESTART from CREDITS
-await click('resetGame()');
+// ---- session 2: RESTART from the fault, a fresh token commits; title -> credits via DECLASSIFIED
+const faultSession = await page.evaluate(() => window.__harness.machine.epoch);
+await step('RESTART', 'TITLE');
+if (await latch() !== 'idle' || await page.$('.dt-fault')) await fail('RESTART did not start a clean session');
 await playTo('TELEPORT_DRY_RUN_PASSED');
 await step('COMMIT TRANSFER (story token, once)', 'TELEPORT_COMMITTED');
 await step('ANIMATION_END', 'ENDING');
+await shot('after-fault-restart-next-session-reaches-ending');
 await step('OPEN_SCIENCE', 'DECLASSIFIED');
 await step('OPEN_CREDITS', 'CREDITS');
 await shot('credits');
 await step('RESTART', 'TITLE');
-await shot('restart-from-credits-title-session-3');
+await shot('restart-from-credits-title');
 
+const calls = await commitCalls();
+steps.push(`engine commit calls per session: ${JSON.stringify(calls)} (fault session ${faultSession})`);
+// Session 0: one errored call (nothing measured) + its retry. The fault session and the session
+// RESTART opened from it: exactly one engine call each.
+const want = { 0: 2, [faultSession]: 1, [faultSession + 1]: 1 };
+if (JSON.stringify(calls) !== JSON.stringify(want)) await fail(`engine commit calls ${JSON.stringify(calls)}, expected ${JSON.stringify(want)}`);
 const log = await page.$eval('#log', (n) => n.innerText);
 console.log(steps.join('\n'));
 console.log('--- page errors:', errors.length ? errors : 'none');
