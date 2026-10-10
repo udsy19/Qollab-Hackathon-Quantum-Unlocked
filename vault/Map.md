@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **36 notes** over 10 folders.
+Measured 2026-10-10: **37 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -77,6 +77,7 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 Folder README: [[Reports/README]]
 
 - [[Reports/README|Reports/]]
+- [[Reports/physics-code-audit|Physics code audit: the oracle graded against ECHO's real quantum code]]
 - [[Reports/physics-oracle-audit|Physics oracle and spec audit — ground truth for ECHO's quantum puzzles]]
 
 ## `Reports/audits/`
