@@ -405,14 +405,51 @@ ok(Math.abs(xRow.fidelity - wrongOrderF) > 0.1 &&
   errs(call(C.validateTeleportCorrectionResult, orderReq, orderRes(wrongOrderF))).some(x => x.includes('fidelity')),
   `PIN TELEPORT_TEST_STATE circuit order is ry then rz (owner-answers § red-team physics ambiguities (3)): Qiskit F=${xRow.fidelity} accepted, rz-then-ry F=${wrongOrderF.toFixed(6)} refused`)
 
-// The verdict's effective floor, probed on a correct, non-00 choice with only the fidelity varied:
-// at and above 1 - 5e-7 it passes; at 0.99999 and 0.9 it must not. Equality at exactly 0.999999 is
-// NOT probed: the 1e-6 cross-check refuses it by 2.9e-17 of rounding (reports/0006), a finding
-// reported to the supervisor, not encoded here as expected behaviour.
+// The cross-check tolerance and the rounding epsilon (contracts-fidelity-band). Neither is owner-ruled;
+// both are DERIVED here from the ruled band, never read back from the module. The cross-check must
+// accept every correct result the §7.4 band accepts, so its tolerance is the band width 1 - 0.999999
+// (law 12: a guard the same size as its band, compared without slack, refused F = 0.999999 itself,
+// because 1 - 0.999999 = 1e-6 + 2.9e-17 in doubles). The epsilon absorbs that rounding: it must
+// exceed the measured analytic/Qiskit disagreement on the oracle fixtures and sit far below the band.
+const BAND = 1e-6  // 1 - 0.999999, vision §7.4
+pin('FIDELITY_CROSSCHECK_TOLERANCE', C.FIDELITY_CROSSCHECK_TOLERANCE, BAND,
+  'derived: the §7.4 pass band width 1 - 0.999999 (a wider cross-check accepts forged fidelities; a narrower one refuses correct ones)')
+pin('FIDELITY_EPSILON', C.FIDELITY_EPSILON, 1e-12,
+  'derived: float rounding allowance, above the oracle/analytic disagreement and 1e6 below the band')
+const handBloch = (th, ph) => ({ x: Math.sin(th) * Math.cos(ph), y: Math.sin(th) * Math.sin(ph), z: Math.cos(th) })
+const handF = (st, r) => {
+  const b = handBloch(st.theta, st.phi), ex = (r.m1 === 1) !== r.applyX, ez = (r.m0 === 1) !== r.applyZ
+  return ex && ez ? b.y ** 2 : ex ? b.x ** 2 : ez ? b.z ** 2 : 1
+}
+const oracleGap = Math.max(...T.states.flatMap(st => st.rows.map(r => Math.abs(handF(st, r) - r.fidelity))))
+ok(oracleGap < 1e-12 && 1e-12 * 1e6 <= BAND,
+  `FIDELITY_EPSILON 1e-12 exceeds the measured hand-analytic/Qiskit disagreement ${oracleGap.toExponential(2)} over ${T.states.length} oracle states, and is ≤ band/1e6`)
+
+// Forged fidelities: a number that lies about the physics by more than the band is refused by the
+// CROSS-CHECK itself (the error names it), on a wrong choice (where the verdict cannot help) and on
+// the right one. Gaps 1e-5 … 0.05 sit inside a tolerance loosened to 1e-2 or 1e-1, outside the real one.
+for (const gap of [1e-5, 1e-3, 0.05]) {
+  for (const [sign, what] of [[1, 'above'], [-1, 'below']]) {
+    const f = xRow.fidelity + sign * gap
+    const e = errs(call(C.validateTeleportCorrectionResult, orderReq, orderRes(f)))
+    ok(e.some(x => x.includes('disagrees with the physics')),
+      `cross-check refuses a forged wrong-choice fidelity ${gap} ${what} Qiskit's ${xRow.fidelity} (got ${JSON.stringify(e)})`)
+  }
+}
 const okRow = ts.rows.find(r => r.m0 === 1 && r.m1 === 1 && r.applyX && r.applyZ)
 const vReq = { theta: 1.137, phi: 0.44, m0: 1, m1: 1, applyX: true, applyZ: true }
 const vRes = f => dryRes({ m0: 1, m1: 1 }, { applyX: true, applyZ: true }, f, 'floor probe')
-for (const [f, want] of [[okRow.fidelity, true], [0.9999995, true], [0.99999, false], [0.9, false]]) {
+for (const gap of [1e-5, 1e-3, 0.05]) {
+  const e = errs(call(C.validateTeleportCorrectionResult, vReq, vRes(okRow.fidelity - gap)))
+  ok(e.some(x => x.includes('disagrees with the physics')),
+    `cross-check refuses a forged right-choice fidelity ${gap} below Qiskit's ${okRow.fidelity} (got ${JSON.stringify(e)})`)
+}
+
+// The verdict's effective floor, probed on a correct, non-00 choice with only the fidelity varied.
+// Exactly 0.999999, and 0.999999 less 1e-15 of rounding noise, PASS ("≥0.999999", vision §7.4);
+// 0.999999 less 1e-9 (a thousand epsilons), 0.99999 and 0.9 do not.
+for (const [f, want] of [[okRow.fidelity, true], [0.9999995, true], [0.999999, true], [0.999999 - 1e-15, true],
+  [0.999999 - 1e-9, false], [0.99999, false], [0.9, false]]) {
   const got = call(C.dryRunVerdict, vReq, vRes(f))?.passed
   ok(got === want, `PIN verdict floor FIDELITY_PASS 0.999999 (vision §7.4): correct choice at F=${f} ${want ? 'passes' : 'does not pass'} (got ${JSON.stringify(got)})`)
 }

@@ -69,7 +69,7 @@ CASES = [
     ("swap the correction rule (X iff m0, Z iff m1)", "return { applyX: m1 === 1, applyZ: m0 === 1 }",
      "return { applyX: m0 === 1, applyZ: m1 === 1 }", "RED"),
     ("fidelity cross-check removed (a forged success is accepted)",
-     "  if (Math.abs(res.fidelity - want) > FIDELITY_CROSSCHECK_TOLERANCE) {", "  if (false) {", "RED"),
+     "  if (Math.abs(res.fidelity - want) > FIDELITY_CROSSCHECK_TOLERANCE + FIDELITY_EPSILON) {", "  if (false) {", "RED"),
     ("physics cross-check swaps x and z", "return ex && ez ? b.y ** 2 : ex ? b.x ** 2 : ez ? b.z ** 2 : 1",
      "return ex && ez ? b.y ** 2 : ex ? b.z ** 2 : ez ? b.x ** 2 : 1", "RED"),
     ("phase 1 may report fidelity before the choice",
@@ -116,6 +116,26 @@ CASES = [
     ("verdict literal 0.9 AND cross-check tolerance 0.2 (export untouched)",
      [("&& res.fidelity >= FIDELITY_PASS", "&& res.fidelity >= 0.9"),
       ("export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6", "export const FIDELITY_CROSSCHECK_TOLERANCE = 0.2")], None, "RED"),
+    # Cross-check tolerance and rounding epsilon (contracts-fidelity-band). The tolerance loosenings
+    # must go red on the forged-fidelity probes, not only on the PIN line.
+    ("cross-check tolerance 1e-6 -> 1e-1 (supervisor's consult-6 null)",
+     "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6", "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-1", "RED"),
+    ("cross-check tolerance 1e-6 -> 1e-2",
+     "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6", "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-2", "RED"),
+    ("cross-check tolerance 1e-6 -> 1e-5",
+     "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6", "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-5", "RED"),
+    ("cross-check tolerance 1e-6 -> 2e-6 (PIN only: no forged probe sits between 2e-6 and 1e-5)",
+     "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6", "export const FIDELITY_CROSSCHECK_TOLERANCE = 2e-6", "RED"),
+    ("cross-check tolerance tightened 1e-6 -> 1e-9 (refuses a correct F = 0.999999)",
+     "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6", "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-9", "RED"),
+    ("cross-check drops the epsilon (the reports/0006 equality defect)",
+     "> FIDELITY_CROSSCHECK_TOLERANCE + FIDELITY_EPSILON) {", "> FIDELITY_CROSSCHECK_TOLERANCE) {", "RED"),
+    ("verdict drops the epsilon (F = 0.999999 - 1e-15 refused)",
+     "&& res.fidelity >= FIDELITY_PASS - FIDELITY_EPSILON\n", "&& res.fidelity >= FIDELITY_PASS\n", "RED"),
+    ("FIDELITY_EPSILON 1e-12 -> 1e-9", "export const FIDELITY_EPSILON = 1e-12", "export const FIDELITY_EPSILON = 1e-9", "RED"),
+    ("FIDELITY_EPSILON 1e-12 -> 0", "export const FIDELITY_EPSILON = 1e-12", "export const FIDELITY_EPSILON = 0", "RED"),
+    ("verdict epsilon sign flipped (+ instead of -)",
+     "&& res.fidelity >= FIDELITY_PASS - FIDELITY_EPSILON\n", "&& res.fidelity >= FIDELITY_PASS + FIDELITY_EPSILON\n", "RED"),
     # Known blind spots — reported as nulls, not hidden. Both are EQUIVALENT mutants: a result reaches
     # the verdict only after the 1e-6 physics cross-check and the generic-state guard, so on every
     # valid input a wrong choice already scores <= 0.9 and a right one >= 1 - 1e-6. The verdict's own
@@ -124,6 +144,10 @@ CASES = [
      "expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS", "res.fidelity >= FIDELITY_PASS", "NULL"),
     ("verdict uses a literal 0.9 instead of FIDELITY_PASS (export still 0.999999)",
      "&& res.fidelity >= FIDELITY_PASS", "&& res.fidelity >= 0.9", "NULL"),
+    # Equivalent: >= vs > differ only at F exactly 0.999999 - 1e-12 to the last bit, which neither
+    # Qiskit (1 ± 1e-15 on a right choice) nor any probe value produces.
+    ("verdict floor >= becomes > (strict)",
+     "&& res.fidelity >= FIDELITY_PASS - FIDELITY_EPSILON\n", "&& res.fidelity > FIDELITY_PASS - FIDELITY_EPSILON\n", "NULL"),
     ("ANIMATION_END moved to story-ui (an inferred source, not owner-ruled)",
      "  ANIMATION_END: SOURCE('gameplay', 'cinematic'),", "  ANIMATION_END: SOURCE('story-ui', 'cinematic'),", "NULL"),
     ("default volume 80 -> 50 (defaults are not pinned, only validated)",

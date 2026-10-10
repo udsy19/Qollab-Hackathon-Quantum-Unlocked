@@ -1,0 +1,34 @@
+## A: pin() disarmed (ok(true || ...)), tolerance 1e-1 and 1e-2 copies — forged probes alone
+1
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.00001 above Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.00001 below Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.001 above Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.001 below Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.05 above Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.05 below Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged right-choice fidelity 0.00001 below Qiskit's 1 (got [])
+  FAIL  cross-check refuses a forged right-choice fidelity 0.001 below Qiskit's 1 (got [])
+  FAIL  cross-check refuses a forged right-choice fidelity 0.05 below Qiskit's 1 (got [])
+contract-check: RED — 1123/1132 checks passed (contracts: /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp
+exit (see exit-code table at the end)
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.00001 above Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.00001 below Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.001 above Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged wrong-choice fidelity 0.001 below Qiskit's 0.673959741857 (got [])
+  FAIL  cross-check refuses a forged right-choice fidelity 0.00001 below Qiskit's 1 (got [])
+  FAIL  cross-check refuses a forged right-choice fidelity 0.001 below Qiskit's 1 (got [])
+contract-check: RED — 1126/1132 checks passed (contracts: /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp
+exit (see exit-code table at the end)
+## B: forged probes disarmed (always true), pin armed — tolerance 1e-1
+2
+  FAIL  PIN FIDELITY_CROSSCHECK_TOLERANCE must be 0.000001 (derived: the §7.4 pass band width 1 - 0.999999 (a 
+contract-check: RED — 1131/1132 checks passed (contracts: /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp
+exit (see exit-code table at the end)
+## C: both disarmed — tolerance 1e-1 (expected GREEN: proves these two are the only detectors)
+contract-check: GREEN — 1132/1132 checks passed (contracts: /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/t
+exit (see exit-code table at the end)
+## exit codes (verdict lines above in this file)
+variant a on t1: exit 1
+variant a on t2: exit 1
+variant b on t1: exit 1
+variant c on t1: exit 0
