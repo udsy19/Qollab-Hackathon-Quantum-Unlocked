@@ -5,6 +5,7 @@ int / float / bool. numpy scalars are converted; complex numbers, NaN/inf and ar
 instead of leaking a proxy or an unserialisable value into the game.
 """
 import math
+import re
 
 import numpy as np
 
@@ -17,9 +18,17 @@ EXPERIMENTS = ("cloning", "bell_signalling", "teleportation", "backend_verificat
 PROBABILITY_TOLERANCE = 1e-9  # the platform validator's tolerance
 DECIMALS = 10
 
-# Vision §2.4 / §7.5: phrases no result string may carry.
+# Vision §2.4 / §7.5: phrases no result string may carry. Matched on `_normalised` text, so a hyphen,
+# underscore, line break or extra space cannot hide one (review 0013 S3: "faster-than-light" passed).
 FORBIDDEN_PHRASES = ("certified random", "certified quantum", "instant message", "instantly", "faster than light",
-                     "unhackable", "quantum advantage", "transmits the secret")
+                     "unhackable", "quantum advantage", "transmits the secret", "ftl", "teleports matter",
+                     "teleported matter")
+
+
+def _normalised(text):
+    """Lower-case, every run of non-letters/digits -> one space, with a leading space so a phrase matches
+    only from the start of a word ("ftl" not inside "draftless") yet still as a prefix ("certified randomness")."""
+    return f" {re.sub(r'[^a-z0-9]+', ' ', text.lower()).strip()}"
 
 
 def plain(value, path="result", decimals=DECIMALS):
@@ -138,9 +147,9 @@ def experiment_result(*, experiment, engine, circuit_description, qubits, parame
         result["createdAt"] = str(created_at)
 
     for path, s in _strings(result):
-        low = s.lower()
+        text = _normalised(s)
         for phrase in FORBIDDEN_PHRASES:
-            if phrase in low:
+            if f" {phrase}" in text:
                 raise ValueError(f"{path}: forbidden claim {phrase!r}")
     return result
 

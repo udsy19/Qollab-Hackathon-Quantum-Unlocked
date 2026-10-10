@@ -144,7 +144,8 @@ def test_counts_allowed_for_selected_backend():
     assert r["counts"] == {"00": 130, "11": 126} and "probabilities" not in r
 
 
-ALLOWED_IMPORTS = {"qiskit", "qiskit.quantum_info", "numpy", "math", "random", "__future__"}
+# `re` is pure-Python stdlib, bundled with every Pyodide (the overclaim guard normalises with it).
+ALLOWED_IMPORTS = {"qiskit", "qiskit.quantum_info", "numpy", "math", "random", "re", "__future__"}
 
 
 def test_quantum_modules_import_only_pyodide_safe_packages():

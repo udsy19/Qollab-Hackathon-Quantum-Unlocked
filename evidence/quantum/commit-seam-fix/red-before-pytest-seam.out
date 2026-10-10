@@ -1,0 +1,25 @@
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       Failed: DID NOT RAISE ValueError
+
+echo/tests/test_commit_seam.py:197: Failed
+=========================== short test summary info ============================
+FAILED echo/tests/test_commit_seam.py::test_the_story_commit_passes_validate_commit_result_on_every_branch
+FAILED echo/tests/test_commit_seam.py::test_the_commit_validator_bites_on_real_output
+FAILED echo/tests/test_commit_seam.py::test_the_python_story_token_id_is_the_contracts_constant
+FAILED echo/tests/test_commit_seam.py::test_cloning_reports_the_two_copy_fidelity_at_top_level[zero]
+FAILED echo/tests/test_commit_seam.py::test_cloning_reports_the_two_copy_fidelity_at_top_level[one]
+FAILED echo/tests/test_commit_seam.py::test_cloning_reports_the_two_copy_fidelity_at_top_level[plus]
+FAILED echo/tests/test_commit_seam.py::test_cloning_reports_the_two_copy_fidelity_at_top_level[minus]
+FAILED echo/tests/test_commit_seam.py::test_cloning_reports_the_two_copy_fidelity_at_top_level[phase]
+FAILED echo/tests/test_commit_seam.py::test_cloning_reports_the_two_copy_fidelity_at_top_level[bloch_a]
+FAILED echo/tests/test_commit_seam.py::test_cloning_reports_the_two_copy_fidelity_at_top_level[bloch_b]
+FAILED echo/tests/test_commit_seam.py::test_cloning_fidelity_drives_mission_one_through_the_contract_band
+FAILED echo/tests/test_commit_seam.py::test_a_wrong_correction_never_claims_delivery
+FAILED echo/tests/test_commit_seam.py::test_the_overclaim_guard_survives_hyphens_spacing_and_case[travelled faster-than-light over the entangled link]
+FAILED echo/tests/test_commit_seam.py::test_the_overclaim_guard_survives_hyphens_spacing_and_case[Faster  Than\nLight]
+FAILED echo/tests/test_commit_seam.py::test_the_overclaim_guard_survives_hyphens_spacing_and_case[FASTER_THAN_LIGHT]
+FAILED echo/tests/test_commit_seam.py::test_the_overclaim_guard_survives_hyphens_spacing_and_case[sent an instant-message]
+FAILED echo/tests/test_commit_seam.py::test_the_overclaim_guard_survives_hyphens_spacing_and_case[an FTL link]
+FAILED echo/tests/test_commit_seam.py::test_the_overclaim_guard_survives_hyphens_spacing_and_case[Rin teleports matter]
+FAILED echo/tests/test_commit_seam.py::test_the_overclaim_guard_survives_hyphens_spacing_and_case[certified-random bits]
+19 failed, 4 passed in 2.34s

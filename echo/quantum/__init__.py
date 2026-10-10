@@ -25,9 +25,11 @@ STATES = {
     # The story token (vision §7.4): a fixed generic point, Bloch r = (-0.773, -0.454, -0.443), so
     # every wrong correction would score r_P^2 <= 0.60. Its angles never appear in a result: its
     # label says nothing, and only `teleportation.live_commit` may prepare it (story_token=True).
-    "token": ((("ry", 2.03), ("rz", -2.61)), "the story token (never shown)"),
+    "story_token": ((("ry", 2.03), ("rz", -2.61)), "the story token (never shown)"),
 }
-TOKEN = "token"
+# Platform's STORY_TOKEN_ID (echo/contracts.js): the one name for the token, also the commit's
+# `parameters.stateId`. test_commit_seam pins the two together.
+STORY_TOKEN_ID = "story_token"
 # A dry run's state: fresh random angles, passed explicitly from the bits call to the corrections
 # call (never held here between calls).
 CALIBRATION = "calibration"
@@ -38,6 +40,8 @@ CALIBRATION = "calibration"
 # GENERIC_MAX_WRONG_FIDELITY (echo/contracts.js, contracts-v2), so the engine accepts exactly the
 # states the contract lets the game send.
 GENERIC_MAX_WRONG_FIDELITY = 0.9
+# Platform's FIDELITY_PASS (§7.4 ideal-validation band); test_commit_seam pins the two together.
+FIDELITY_PASS = 0.999999
 
 
 def calibration_gates(theta, phi):
@@ -60,10 +64,10 @@ def state_gates(state, theta=None, phi=None, story_token=False):
         return gates, f"RY({float(theta):.6f}) then RZ({float(phi):.6f}) on |0>"
     if theta is not None or phi is not None:
         raise ValueError(f"angles are only accepted for state {CALIBRATION!r}, not {state!r}")
-    if state == TOKEN and not story_token:
+    if state == STORY_TOKEN_ID and not story_token:
         raise ValueError("the story token is not a calibration state: it is consumed once, at the final commit")
     if state not in STATES:
-        raise ValueError(f"unknown prepared state {state!r}; choose one of {sorted(set(STATES) - {TOKEN})} or {CALIBRATION!r}")
+        raise ValueError(f"unknown prepared state {state!r}; choose one of {sorted(set(STATES) - {STORY_TOKEN_ID})} or {CALIBRATION!r}")
     return STATES[state]
 
 

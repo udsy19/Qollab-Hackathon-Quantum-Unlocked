@@ -20,14 +20,18 @@ import * as teleportation from 'quantum.teleportation';
 import * as qollabJob from 'quantum.qollab_job';
 import {
   validateExperimentResult, validateTeleportBitsResult, validateTeleportCorrectionResult, makeCorrectionRequest,
+  validateCommitResult,
 } from '../contracts.js';
 
+// `returned`: Python's call completed and its result was then refused (by conversion or the contract).
+// For every call but the story commit this changes nothing; for the commit it means the token is gone.
 export class ScientificModuleError extends Error {
-  constructor(label, errors, cause) {
+  constructor(label, errors, cause, { returned = false } = {}) {
     super(`${label}: ${errors.join('; ')}`, cause ? { cause } : undefined);
     this.name = 'ScientificModuleError';
     this.label = label;
     this.errors = errors;
+    this.returned = returned;
   }
 }
 
@@ -47,16 +51,21 @@ const lastLine = (err) => String(err?.message ?? err).trim().split('\n').pop();
 // `validate` defaults to the ExperimentResult contract; the dry-run phases pass the stricter
 // two-phase validators, which also re-check the angles, the bits and the fidelity's physics.
 async function callEngine(label, fn, args, validate = validateExperimentResult) {
-  let result;
+  let proxy, result;
   try {
-    result = toPlain(await fn.callPromising(...args));
+    proxy = await fn.callPromising(...args);
   } catch (err) {
     throw new ScientificModuleError(label, [lastLine(err)], err);
+  }
+  try {
+    result = toPlain(proxy);
+  } catch (err) {
+    throw new ScientificModuleError(label, [lastLine(err)], err, { returned: true });
   }
   const errors = validate(result);
   if (errors.length) {
     console.error(`quantum bridge: ${label} returned a result the contract rejects: ${errors.join('; ')}`);
-    throw new ScientificModuleError(label, errors);
+    throw new ScientificModuleError(label, errors, undefined, { returned: true });
   }
   return result;
 }
@@ -91,18 +100,26 @@ export function teleportDryRun(calibration, correctionX, correctionZ) {
     (result) => validateTeleportCorrectionResult(req, result));
 }
 
-// The story transfer (§7.4): the hidden token is measured once. A call that returned a valid result
-// is latched, so every later call gets that same recorded result; Python refuses a second
-// live_commit on its own as well. A call that failed measured nothing, so it unlatches and the
-// player may retry (overseer ruling 2026-10-10, gameplay item 1).
+// The story transfer (§7.4): the hidden token is measured once, and the result must pass platform's
+// validateCommitResult. Python latches the token when live_commit RETURNS (teleportation.py), so:
+// - a call whose Python raised measured nothing: it unlatches and the player may retry (overseer
+//   ruling 2026-10-10, gameplay item 1), error.tokenConsumed === false;
+// - a call refused AFTER Python returned, or Python's own TokenAlreadyConsumed, has consumed the token
+//   (review 0013 S1): it stays latched, every later call gets the same rejection without measuring
+//   again, and error.tokenConsumed === true. Only RESTART (resetStoryToken) re-arms it;
+// - a valid result is latched, so every later call gets that same recorded result.
+const CONSUMED_NOTE = 'the story token was consumed by this commit and cannot be committed again; restart for a new story';
 let commit = null;
 export function commitTransfer() {
   if (commit) return commit;
-  const attempt = callEngine('live commit', teleportation.live_commit, []);
-  commit = attempt;
-  attempt.catch(() => {
-    if (commit === attempt) commit = null;
+  const attempt = callEngine('live commit', teleportation.live_commit, [], validateCommitResult).catch((err) => {
+    const consumed = err.returned || /^(\S+\.)?TokenAlreadyConsumed\b/.test(err.errors?.[0] ?? '');
+    const error = consumed ? new ScientificModuleError(err.label, [...err.errors, CONSUMED_NOTE], err, { returned: err.returned }) : err;
+    error.tokenConsumed = consumed;
+    if (!consumed && commit === attempt) commit = null;
+    throw error;
   });
+  commit = attempt;
   return attempt;
 }
 

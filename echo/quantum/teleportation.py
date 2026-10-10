@@ -25,8 +25,8 @@ import numpy as np
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import DensityMatrix, Statevector, partial_trace, state_fidelity
 
-from . import (CALIBRATION, GENERIC_MAX_WRONG_FIDELITY, TOKEN, bloch_vector, prepare, probability_table, state_gates,
-               target_state)
+from . import (CALIBRATION, FIDELITY_PASS, GENERIC_MAX_WRONG_FIDELITY, STORY_TOKEN_ID, bloch_vector, prepare,
+               probability_table, state_gates, target_state)
 from .formats import experiment_result
 
 BRANCHES = ((0, 0), (0, 1), (1, 0), (1, 1))  # (m0, m1), the order the sampler walks
@@ -41,7 +41,7 @@ _token_consumed = False
 
 
 class TokenAlreadyConsumed(RuntimeError):
-    """Raised by a second live_commit in the same run: re-teleporting a measured token would copy it."""
+    """Raised by a second live_commit in the same run: the token was measured once and is gone."""
 
 
 def expected_corrections(m0, m1):
@@ -163,14 +163,20 @@ def _fidelity_fact(what, fidelity):
             "it prepared; the fidelity of a single unknown qubit cannot be measured.")
 
 
-def _source_fact(m0, source_fidelity):
+def _source_fact(m0, source_fidelity, receiver_fidelity):
     # Physics review F3: after H(q0), m0 is 50/50 for EVERY input, so a basis state matching the
     # leftover |m0> is a coincidence of the readout, never a reason the source kept the state.
+    # Review 0013 S5: where the state now is follows the receiver's COMPUTED fidelity. After a wrong
+    # X/Z the receiver holds the state turned by a leftover Pauli, not the state itself.
+    readout = f"The source qubit was read out as m0 = {m0} and left in |{m0}>; the readout was random (50/50)"
     if source_fidelity < 1 - 1e-9:
-        return (f"The source qubit was read out as m0 = {m0} and left in |{m0}>; the readout was random (50/50), "
-                "so the source no longer holds the state: the only copy is at the receiver.")
-    return (f"The source qubit was read out as m0 = {m0} and left in |{m0}>; "
-            "the readout was random (50/50) and happened to match this basis state. The source does not keep the state.")
+        source = f"{readout}, so the source no longer holds the state"
+    else:
+        source = f"{readout} and happened to match this basis state. The source does not keep the state"
+    if receiver_fidelity >= FIDELITY_PASS:
+        return f"{source}: it now exists only at the receiver."
+    return (f"{source}, and the receiver does not hold it either: its qubit is the state turned by the wrong X/Z "
+            f"(fidelity {receiver_fidelity:.6f}). Only the correction the two bits call for would recover it.")
 
 
 def _parameters(state, theta, phi, **extra):
@@ -223,11 +229,11 @@ def teleport_branch(state, m0, m1, apply_x, apply_z, theta=None, phi=None):
     follows = rule == {"applyX": bool(apply_x), "applyZ": bool(apply_z)}
     facts = [f"{_bits_text(m0, m1)}: the rule asks for X {_on(rule['applyX'])}, Z {_on(rule['applyZ'])}.",
              _fidelity_fact("test state", b["fidelity"])]
-    if not follows and b["fidelity"] > 0.999999:
+    if not follows and b["fidelity"] >= FIDELITY_PASS:
         # Optional fact (owner ruling): only a named axis state can hide a mistake; calibration states cannot.
         facts.append("This mistake does not show on this state: it is unchanged by the wrong correction. "
                      "On a general state it would.")
-    facts.append(_source_fact(m0, b["sourceFidelityAfterMeasurement"]))
+    facts.append(_source_fact(m0, b["sourceFidelityAfterMeasurement"], b["fidelity"]))
     fix = " then ".join(g for g, on in (("X", apply_x), ("Z", apply_z)) if on) or "no correction"
     return experiment_result(
         experiment="teleportation",
@@ -251,10 +257,6 @@ def teleport_branch(state, m0, m1, apply_x, apply_z, theta=None, phi=None):
     )
 
 
-def _commit_parameters(seed):
-    return {"state": TOKEN} if seed is None else {"state": TOKEN, "seed": seed}
-
-
 def live_commit(seed=None, rng=None):
     """The story transfer (vision §7.4): ONE atomic local exact call. A fresh live Bell measurement
     on the hidden token, the calibrated rule applied to THOSE bits, and the fidelity. The token is
@@ -265,28 +267,34 @@ def live_commit(seed=None, rng=None):
     it); its branch table is 1/4 everywhere for every input, so it reveals nothing."""
     global _token_consumed
     if _token_consumed:
-        raise TokenAlreadyConsumed("The story token was already measured by the final commit in this run. "
-                                   "Teleporting it again would mean a second copy existed; restart to play again.")
+        raise TokenAlreadyConsumed("The story token was already measured by the final commit in this run, so it "
+                                   "cannot be committed again; restart for a new story and a new token.")
     rng = rng or random.Random(_check_seed(seed))
-    gates, _ = state_gates(TOKEN, story_token=True)
+    gates, _ = state_gates(STORY_TOKEN_ID, story_token=True)
     probs, m0, m1 = _sample(gates, rng)
     rule = expected_corrections(m0, m1)
-    b = _branch(gates, m0, m1, rule["applyX"], rule["applyZ"])
+    apply_x, apply_z = rule["applyX"], rule["applyZ"]
+    b = _branch(gates, m0, m1, apply_x, apply_z)
+    # platform's commit contract (echo/CONTRACTS.md § The one story commit): the token's one name, and
+    # the corrections the receiver actually applied in `_branch` above.
+    parameters = {"stateId": STORY_TOKEN_ID, "applyX": apply_x, "applyZ": apply_z}
+    if seed is not None:
+        parameters["seed"] = seed
     result = experiment_result(
         experiment="teleportation",
         engine="exact_qiskit_local",
         circuit_description=(f"prepare the story token on q0; {PROTOCOL}; measure {M0_LABEL}, {M1_LABEL}; "
                              f"Bob applies X iff {M1_LABEL} = 1, Z iff {M0_LABEL} = 1"),
         qubits=3,
-        parameters=_commit_parameters(seed),
+        parameters=parameters,
         probabilities=probs,
         key_qubits=BRANCH_KEY_QUBITS,
         measurement_bits={"m0": m0, "m1": m1},
         fidelity=b["fidelity"],
         facts=[f"Live bits {_bits_text(m0, m1)} travelled over the classical link; the receiver applied "
-               f"X {_on(rule['applyX'])}, Z {_on(rule['applyZ'])}.",
+               f"X {_on(apply_x)}, Z {_on(apply_z)}.",
                _fidelity_fact("token", b["fidelity"]),
-               _source_fact(m0, b["sourceFidelityAfterMeasurement"]),
+               _source_fact(m0, b["sourceFidelityAfterMeasurement"], b["fidelity"]),
                "The token has been consumed: this commit cannot be repeated in this run.",
                SAMPLE_FACT],
         observables={"branchProbability": b["branchProbability"]},

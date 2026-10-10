@@ -1,0 +1,25 @@
+tmp_path = PosixPath('/private/var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/pytest-of-udsy/pytest-540/test_a_commit_whose_python_cal0')
+
+    def test_a_commit_whose_python_call_raised_may_be_retried(tmp_path):
+        v = run_bridge_scenarios(tmp_path)["pythonRaised"]
+>       assert v["first"]["ok"] is False and v["first"]["tokenConsumed"] is False, v
+                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'tokenConsumed'
+
+echo/tests/test_bridge_commit.py:125: KeyError
+_____ test_pythons_own_refusal_of_a_second_commit_is_reported_as_consumed ______
+
+tmp_path = PosixPath('/private/var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/pytest-of-udsy/pytest-540/test_pythons_own_refusal_of_a_0')
+
+    def test_pythons_own_refusal_of_a_second_commit_is_reported_as_consumed(tmp_path):
+        v = run_bridge_scenarios(tmp_path)["alreadyConsumed"]
+>       assert v["first"]["tokenConsumed"] is True, v
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E       KeyError: 'tokenConsumed'
+
+echo/tests/test_bridge_commit.py:131: KeyError
+=========================== short test summary info ============================
+FAILED echo/tests/test_bridge_commit.py::test_a_commit_rejected_after_python_returned_stays_consumed_and_is_not_retried
+FAILED echo/tests/test_bridge_commit.py::test_a_commit_whose_python_call_raised_may_be_retried
+FAILED echo/tests/test_bridge_commit.py::test_pythons_own_refusal_of_a_second_commit_is_reported_as_consumed
+3 failed, 1 passed in 1.66s

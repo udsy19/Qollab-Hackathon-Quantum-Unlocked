@@ -1,0 +1,16 @@
+contracts main@47a2466 gameplay 372847e@372847e engine /Users/udsy/agent-org/lanes/quantum/wt/commit-seam-fix/echo (tree HEAD b18b878+dirty)
+PASS  cloning(zero)                      CLONE_INTRO              got BASIS_DEMO_OK              want BASIS_DEMO_OK  
+PASS  cloning(one)                       CLONE_INTRO              got BASIS_DEMO_OK              want BASIS_DEMO_OK  
+PASS  cloning(plus)                      CLONE_BASIS_PASSED       got SUPERPOSITION_DEMO_FAILED  want SUPERPOSITION_DEMO_FAILED  
+PASS  cloning(phase)                     CLONE_BASIS_PASSED       got SUPERPOSITION_DEMO_FAILED  want SUPERPOSITION_DEMO_FAILED  
+PASS  relay(I)                           RELAY_INTRO              got PREPARE_BELL_PAIR          want PREPARE_BELL_PAIR  
+PASS  relay(X)                           RELAY_BELL_CREATED       got ATTEMPT_NO_SIGNALLING      want ATTEMPT_NO_SIGNALLING  
+PASS  relay(Z)                           RELAY_BELL_CREATED       got ATTEMPT_NO_SIGNALLING      want ATTEMPT_NO_SIGNALLING  
+PASS  dry m0=1 m1=0 X=false Z=false      TELEPORT_DRY_RUN         got null                       want null  
+PASS  dry m0=1 m1=0 X=false Z=true       TELEPORT_DRY_RUN         got CORRECT_CALIBRATION        want CORRECT_CALIBRATION  
+PASS  dry m0=1 m1=0 X=true Z=false       TELEPORT_DRY_RUN         got null                       want null  
+PASS  dry m0=1 m1=0 X=true Z=true        TELEPORT_DRY_RUN         got null                       want null  
+PASS  live_commit                        TELEPORT_DRY_RUN_PASSED  got COMMIT_TRANSFER            want COMMIT_TRANSFER  
+validateCommitResult(live_commit): valid
+commit parameters as emitted: {"stateId":"story_token","applyX":true,"applyZ":false,"seed":11}
+13 checks, 0 FAIL

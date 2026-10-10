@@ -169,22 +169,22 @@ def test_bits_call_has_no_correction_and_no_fidelity():
 
 
 # ------------------------------------------------------------------ ruling 2: the hidden story token
-TOKEN_GATES = quantum.STATES["token"][0]
+TOKEN_GATES = quantum.STATES[quantum.STORY_TOKEN_ID][0]
 
 
 def test_token_is_a_generic_bloch_point_prepared_ry_then_rz():
     assert [g[0] for g in TOKEN_GATES] == ["ry", "rz"]
     theta, phi = TOKEN_GATES[0][1], TOKEN_GATES[1][1]
     assert max(c * c for c in bloch_of(ket(theta, phi))) <= MAX_WRONG
-    assert not re.search(r"\d", quantum.STATES["token"][1])  # its label carries no number
+    assert not re.search(r"\d", quantum.STATES[quantum.STORY_TOKEN_ID][1])  # its label carries no number
 
 
 @pytest.mark.parametrize("call", [
-    lambda: cloning.run_calibration("token"),
-    lambda: teleportation.bell_measurement("token", seed=1),
-    lambda: teleportation.teleport_branch("token", 0, 0, False, False),
-    lambda: teleportation.corrections_withheld("token"),
-    lambda: teleportation.verify_deferred("token"),
+    lambda: cloning.run_calibration(quantum.STORY_TOKEN_ID),
+    lambda: teleportation.bell_measurement(quantum.STORY_TOKEN_ID, seed=1),
+    lambda: teleportation.teleport_branch(quantum.STORY_TOKEN_ID, 0, 0, False, False),
+    lambda: teleportation.corrections_withheld(quantum.STORY_TOKEN_ID),
+    lambda: teleportation.verify_deferred(quantum.STORY_TOKEN_ID),
 ])
 def test_token_is_never_a_calibration_state(call):
     with pytest.raises(ValueError, match="story token"):

@@ -208,9 +208,10 @@ def test_live_commit_is_one_seeded_sample_with_rule_corrections():
     b = teleportation.live_commit(seed=7)
     teleportation.reset_story_token()
     assert a == b
-    assert a["parameters"] == {"state": "token", "seed": 7}
     bits = a["measurementBits"]
     assert bits["m0"] in (0, 1) and bits["m1"] in (0, 1)
+    # platform's commit contract: the token's one name and the corrections the receiver applied
+    assert a["parameters"] == {"stateId": "story_token", "applyX": bits["m1"] == 1, "applyZ": bits["m0"] == 1, "seed": 7}
     rule = f"X {'ON' if bits['m1'] else 'OFF'}, Z {'ON' if bits['m0'] else 'OFF'}"
     assert f"the receiver applied {rule}." in a["facts"][0]
     # The token is generic (test_rulings.py): every wrong correction scores < 0.99, so fidelity 1

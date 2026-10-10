@@ -57,6 +57,9 @@ def run_calibration(state_name="plus"):
         parameters={"state": state_name},
         probabilities=probs,
         key_qubits=key_qubits,
+        # |<psi psi|out>|^2, computed from the joint state above: Mission 1's rules read this field
+        # (>= FIDELITY_PASS on a basis state, below it on a superposition), never the state's name.
+        fidelity=joint_fid,
         facts=facts,
         observables={
             "purityQ0": source_purity,
