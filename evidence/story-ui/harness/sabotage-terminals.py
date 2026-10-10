@@ -28,6 +28,7 @@ SABOTAGES = [
     ('S10 enabling step: stub fidelity always 1', STUB, "fidelity: r6(fidelity),", "fidelity: 1,", None),
     ('S11 acknowledgements flushed as soon as the engine answers, before the result is rendered', T, "    onOk(result);\n    render();", "    onOk(result);\n    if (id === 'relay_core') { s.paintedSend = true; s.paintedReceiver = true; flush(id); }\n    render();", None),
     ('S12 ESC no longer closes (listener removed)', T, "  window.addEventListener('keydown', onKey, true);\n", "", None),
+    ('S13 Esc listener on document in the bubble phase (where the pause menu also listens)', T, "  window.addEventListener('keydown', onKey, true);\n", "  document.addEventListener('keydown', onKey);\n", None),
 ]
 
 def run(name, path, old, new, also, port):

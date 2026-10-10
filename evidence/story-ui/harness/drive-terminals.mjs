@@ -143,8 +143,13 @@ try {
   const acks = await H(() => echoHarness.eventSeen.filter((e) => ['BASIS_DEMO_OK', 'SUPERPOSITION_DEMO_FAILED', 'EXPLANATION_READ'].includes(e.name)));
   check('booth: every booth event fired while its result panel was on screen', acks.length === 3 && acks.every((e) => e.resultOnScreen), JSON.stringify(acks));
   await press('Escape');
+  check('booth: ESC with the real pause menu mounted closes the terminal and does NOT open pause', await H(() => !echoHarness.menu.isOpen()));
   check('booth: ESC closes the terminal', await H(() => !echoHarness.terminal.isOpen()));
   check('booth: ESC emits CLOSE_TERMINAL {id}', (await events()).at(-1) === 'CLOSE_TERMINAL{"id":"copy_booth"}', (await events()).at(-1));
+
+  await press('Escape', 'Escape (no terminal open)');
+  check('menu control: ESC with no terminal open DOES open pause (so the check above can fail)', await H(() => echoHarness.menu.isOpen()));
+  await press('Escape', 'Escape (resume)');
 
   // ---------------------------------------------------------------- relay_core, mouse
   keys.push('=== relay_core (mouse) ===');
@@ -286,6 +291,11 @@ try {
   check('engine error: SCIENTIFIC MODULE ERROR + RETRY, results panel unchanged (no invented numbers)', /SCIENTIFIC MODULE ERROR/.test(await panelText()) && (await resultText()) === before && (await isDisabled(/^RETRY$/)) === false);
   await shot('30-engine-error.png');
   await click(/^RETRY$/); await idle();
+  const dupBefore = await calls('cloneTest');
+  await click(/^DUPLICATE$/);
+  await H(() => { const b = [...document.querySelectorAll('.echo-terminal button')].find((x) => x.innerText.trim() === 'DUPLICATE'); b?.click(); b?.click(); });
+  await idle();
+  check('booth: triple-activated DUPLICATE makes exactly one engine call', (await calls('cloneTest')) === dupBefore + 1, String((await calls('cloneTest')) - dupBefore));
   check('engine error: RETRY recovers', /TWO BASIS VALUES MATCHED: YES/.test(await panelText()));
   await H(() => { echoHarness.stub.control.malformedNext = 1; });
   // A fresh terminal state is not available, so the malformed result goes to |+> after a page-level

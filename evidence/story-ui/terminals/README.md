@@ -8,7 +8,7 @@ This is a **local harness** (`evidence/story-ui/harness/terminals.html`), not Qo
 
 ```bash
 python3 evidence/story-ui/harness/serve.py 8761 &          # serves echo/contracts.js from lane/platform/integration (not on this base)
-node evidence/story-ui/harness/drive-terminals.mjs 8761 evidence/story-ui/terminals   # 97 checks, exit 0
+node evidence/story-ui/harness/drive-terminals.mjs 8761 evidence/story-ui/terminals   # 100 checks, exit 0
 node evidence/story-ui/harness/copy-check.mjs                                          # 2 checks, exit 0
 python3 evidence/story-ui/harness/sabotage-terminals.py                                # the sabotage table, 03-sabotage.md
 bash evidence/story-ui/harness/record-relay.sh                                         # re-record the relay's real Qiskit output
@@ -19,9 +19,9 @@ bash evidence/story-ui/harness/record-relay.sh                                  
 | file | what |
 |---|---|
 | `00-red-on-skeleton.txt` | the drive gate, written first, red (exit 1) on a skeleton `terminal.js` |
-| `01-green.txt` | 97/97 green, real key presses and mouse clicks through CDP |
+| `01-green.txt` | 100/100 green, real key presses and mouse clicks through CDP, with the real pause menu (`ui/menu.js`) mounted and started |
 | `02-copy-check.txt` | copy gate green: no prose literal in `terminal.js`; every one of the rendered on-screen texts traces to `echo/data` or to notation |
-| `03-sabotage.md` | 12 sabotages on disposable copies: 11 red, 1 null (explained below) |
+| `03-sabotage.md` | 13 sabotages on disposable copies: all 13 red. Copy-check is exit 2 (refused, too few leaves) where the drive aborted (S12, S13) |
 | `04-teleport-keyboard-sequence.txt` | the keyboard-only key sequence for the whole teleport run, all four bit pairs × right/wrong, then the commit |
 | `drive-result.json` | every check, every key, page errors, rendered leaf texts |
 
@@ -41,10 +41,10 @@ Fidelities in this run were measured by the drive, which recomputes the closed f
 
 | m0 m1 | right correction | fidelity | wrong correction | fidelity |
 |---|---|---|---|---|
-| 0 0 | none | 1.000000 | X | 0.617128 |
-| 0 1 | X | 1.000000 | none | 0.285695 |
-| 1 0 | Z | 1.000000 | none | 0.761921 |
-| 1 1 | X + Z | 1.000000 | Z only | 0.462748 |
+| 0 0 | none | 1.000000 | X | 0.338234 |
+| 0 1 | X | 1.000000 | none | 0.180232 |
+| 1 0 | Z | 1.000000 | none | 0.461534 |
+| 1 1 | X + Z | 1.000000 | Z only | 0.177526 |
 
 Each dry run uses a fresh random generic state, so the numbers change from run to run. A correct 00 run does **not** unlock COMMIT (`FAILURES.teleportation.trivial_pass`); the 01 run does.
 
@@ -61,7 +61,10 @@ Platform's `validateExperimentResult` refuses `documented_preview` for `bell_sig
 
 ## Nulls and limits
 
-- **S1 (null):** removing the generic busy guard in `call()` leaves both gates green. `commit()` and the dry run each have their own guard, and the drive does not double-click DUPLICATE, SEND or EXECUTE. A double-click there could make two engine calls (harmless, since they are preview/local, but not tested).
+- **First-round nulls, now closed:**
+  - S1 (busy guard in `call()`) was green until the drive triple-activated DUPLICATE.
+  - S11 (ack before paint) was green until the harness recorded, at each emit, whether the result panel was on screen.
+- SEND and EXECUTE are not double-activated by the drive. They share `call()`'s guard, which S1 proves load-bearing via DUPLICATE.
 - **S6** went red through a page TypeError reported at abort. It is not caught by the direct "in flight: STATE PRESENT" assertion, because the sabotaged render crashes before reaching it.
 - The double-click probes use `element.click()` from page script, not CDP mouse events. Enter presses are real CDP key events.
 - 1280×720 only. 200% text was checked on the console only. Not checked inside the game, with the pause menu mounted, or on Qollab.

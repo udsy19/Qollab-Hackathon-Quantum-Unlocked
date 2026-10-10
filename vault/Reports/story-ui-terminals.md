@@ -10,9 +10,9 @@ owner: story-ui / terminals
 
 `echo/ui/terminal.js` and the `/* ==== terminal ==== */` section of `echo/main.css` drive the replication booth, the relay, the legacy-link junctions and the transmission console, by keyboard or mouse. Branch `lane/story-ui/terminals-c4`.
 
-- **Gate:** `node evidence/story-ui/harness/drive-terminals.mjs 8761 evidence/story-ui/terminals` → 97/97, exit 0. It was red on a skeleton first.
+- **Gate:** `node evidence/story-ui/harness/drive-terminals.mjs 8761 evidence/story-ui/terminals` → 100/100, exit 0. It was red on a skeleton first.
 - **Copy gate:** `copy-check.mjs` → exit 0.
-- **Sabotage:** 12 sabotages, 11 red, 1 explained null.
+- **Sabotage:** 13 sabotages, all red after the first round's two nulls were closed.
 - **Evidence:** `evidence/story-ui/terminals/README.md`. These are local harness results, not Qollab.
 
 Findings the next worker needs:
@@ -22,7 +22,5 @@ Findings the next worker needs:
 - **A correct 00 dry run proves nothing about the rule**, because no correction is needed. It must not unlock COMMIT. The gate's check went red under that sabotage. Copy: `FAILURES.teleportation.trivial_pass`.
 - **Acknowledgement timing needs its own measurement.** An event-order check alone missed "ack before paint" (null in the first sabotage round). The harness now records, at each emit, whether a result panel is on screen.
 - **A hang hides its cause.** A render that throws leaves `aria-busy` stuck, and the driver times out. The drive now reports page errors on the abort path too (law 7).
-- **Esc must be handled in the capture phase on `window`.** `ui/menu.js` listens on `document` and opens pause on any Esc that is not `defaultPrevented`. Not yet tested with the menu mounted.
-- **Measured nulls:**
-  - The generic busy guard in `call()` is not load-bearing for COMMIT or VERIFY, which have their own guards.
-  - A double-click on DUPLICATE, SEND or EXECUTE is untested.
+- **Esc must be handled in the capture phase on `window`.** `ui/menu.js` listens on `document` and opens pause on any Esc that is not `defaultPrevented`. Measured with the real menu mounted: a bubble-phase listener on `document` (S13) lets pause open over the terminal.
+- **Measured null:** the generic busy guard in `call()` is not load-bearing for COMMIT, which has its own guard. It IS load-bearing for DUPLICATE (S1 red).

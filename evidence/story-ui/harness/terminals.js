@@ -2,7 +2,7 @@
 // Badge: version token + SHA-256 of the exact module bytes served (match with `shasum -a 256`).
 import { mountTerminal } from '../../../echo/ui/terminal.js';
 import { mountHud } from '../../../echo/ui/hud.js';
-import { applySettings } from '../../../echo/ui/accessibility.js';
+import { mountMenu } from '../../../echo/ui/menu.js';
 import { HINTS } from '../../../echo/data/objectives.js';
 import { makeStubEngine } from './stub-engine.js';
 
@@ -20,9 +20,12 @@ async function servedHash() {
 
 const params = new URLSearchParams(location.search);
 const root = document.getElementById('ui');
-applySettings(root, { textScale: Number(params.get('scale') || 100) });
 const hud = mountHud(root);
 hud.setVisible(false);
+// The real pause menu, started, so Esc ownership between it and the terminal is tested for real.
+const menu = mountMenu(root, { settings: { textScale: Number(params.get('scale') || 100) } });
+menu.showTitle();
+document.querySelector('.echo-menu [data-action="start"]').click();
 const events = [];
 // For each event: was a result panel on screen (in the DOM, laid out, non-empty) when it fired?
 const eventSeen = [];
@@ -45,7 +48,7 @@ const terminal = mountTerminal(root, {
     return h.text;
   },
 });
-window.echoHarness = { terminal, stub, events, eventSeen, VERSION };
+window.echoHarness = { terminal, menu, stub, events, eventSeen, VERSION };
 if (params.get('open')) terminal.open(params.get('open'));
 servedHash().then((h) => {
   document.getElementById('provenance').textContent = `${VERSION} · sha256 ${h}`;

@@ -37,6 +37,8 @@
     "Tab",
     "Enter (REROUTE, DO NOT DUPLICATE)",
     "Escape",
+    "Escape (no terminal open)",
+    "Escape (resume)",
     "=== relay_core (mouse) ===",
     "(mouse) click /^PREPARE BELL PAIR$/",
     "(mouse) click /^I$/",
@@ -112,6 +114,7 @@
     "(mouse) click /^\\|0⟩$/",
     "(mouse) click /^DUPLICATE$/",
     "(mouse) click /^RETRY$/",
+    "(mouse) click /^DUPLICATE$/",
     "(mouse) click /^\\|1⟩$/",
     "(mouse) click /^DUPLICATE$/",
     "(mouse) click /^RETRY$/",
@@ -211,6 +214,11 @@
       "detail": "[{\"name\":\"BASIS_DEMO_OK\",\"resultOnScreen\":true},{\"name\":\"SUPERPOSITION_DEMO_FAILED\",\"resultOnScreen\":true},{\"name\":\"EXPLANATION_READ\",\"resultOnScreen\":true}]"
     },
     {
+      "name": "booth: ESC with the real pause menu mounted closes the terminal and does NOT open pause",
+      "ok": true,
+      "detail": ""
+    },
+    {
       "name": "booth: ESC closes the terminal",
       "ok": true,
       "detail": ""
@@ -219,6 +227,11 @@
       "name": "booth: ESC emits CLOSE_TERMINAL {id}",
       "ok": true,
       "detail": "CLOSE_TERMINAL{\"id\":\"copy_booth\"}"
+    },
+    {
+      "name": "menu control: ESC with no terminal open DOES open pause (so the check above can fail)",
+      "ok": true,
+      "detail": ""
     },
     {
       "name": "relay I: receiver-only EXACT P(0)=0.5 P(1)=0.5",
@@ -301,7 +314,7 @@
       "detail": "1"
     },
     {
-      "name": "teleport 00 wrong (X ON, Z OFF): displayed fidelity 0.617128 = closed form 0.617128",
+      "name": "teleport 00 wrong (X ON, Z OFF): displayed fidelity 0.338234 = closed form 0.338234",
       "ok": true,
       "detail": ""
     },
@@ -356,7 +369,7 @@
       "detail": "1"
     },
     {
-      "name": "teleport 01 wrong (X OFF, Z OFF): displayed fidelity 0.285695 = closed form 0.285695",
+      "name": "teleport 01 wrong (X OFF, Z OFF): displayed fidelity 0.180232 = closed form 0.180232",
       "ok": true,
       "detail": ""
     },
@@ -416,7 +429,7 @@
       "detail": "1"
     },
     {
-      "name": "teleport 10 wrong (X OFF, Z OFF): displayed fidelity 0.761921 = closed form 0.761921",
+      "name": "teleport 10 wrong (X OFF, Z OFF): displayed fidelity 0.461534 = closed form 0.461534",
       "ok": true,
       "detail": ""
     },
@@ -466,7 +479,7 @@
       "detail": "1"
     },
     {
-      "name": "teleport 11 wrong (X OFF, Z ON): displayed fidelity 0.462748 = closed form 0.462748",
+      "name": "teleport 11 wrong (X OFF, Z ON): displayed fidelity 0.177526 = closed form 0.177526",
       "ok": true,
       "detail": ""
     },
@@ -559,6 +572,11 @@
       "name": "engine error: SCIENTIFIC MODULE ERROR + RETRY, results panel unchanged (no invented numbers)",
       "ok": true,
       "detail": ""
+    },
+    {
+      "name": "booth: triple-activated DUPLICATE makes exactly one engine call",
+      "ok": true,
+      "detail": "1"
     },
     {
       "name": "engine error: RETRY recovers",
@@ -703,7 +721,7 @@
     "VERIFY DRY RUN",
     "DRY RUN FAILED",
     "Receiver test fidelity",
-    "0.617128",
+    "0.338234",
     "X was on but m1 = 0. That flip damaged a state that was already right.",
     "IF m0 = 0, m1 = 0:  X [OFF]  Z [OFF]",
     "X ON THE RECEIVER  [OFF]",
@@ -711,17 +729,17 @@
     "m0 = 0 and m1 = 0 need no correction, so this run does not test the rule. Measure a fresh state.",
     "1",
     "IF m0 = 0, m1 = 1:  X [OFF]  Z [OFF]",
-    "0.285695",
+    "0.180232",
     "m1 = 1 but X was off. The receiver state is left bit-flipped.",
     "No corrections set. Without the two bits the receiver cannot know which fix to apply.",
     "IF m0 = 0, m1 = 1:  X [ON]  Z [OFF]",
     "IF m0 = 1, m1 = 0:  X [OFF]  Z [OFF]",
-    "0.761921",
+    "0.461534",
     "m0 = 1 but Z was off. The receiver state is left phase-flipped.",
     "IF m0 = 1, m1 = 0:  X [OFF]  Z [ON]",
     "Z ON THE RECEIVER  [ON]",
     "IF m0 = 1, m1 = 1:  X [OFF]  Z [ON]",
-    "0.462748",
+    "0.177526",
     "IF m0 = 1, m1 = 1:  X [ON]  Z [ON]",
     "SCIENTIFIC MODULE ERROR. No result came back, so nothing is shown and nothing was used up.",
     "commitStoryTransfer: stub: commitStoryTransfer raised (harness-injected Python error)",
