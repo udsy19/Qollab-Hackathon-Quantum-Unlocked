@@ -88,9 +88,9 @@ CASES = [
      "!Object.hasOwn(QUEST_EVENTS, event)", "!(event in QUEST_EVENTS)", "RED"),
     ("dry-run parameters.m0/m1 may contradict measurementBits",
      "    if (k in p && p[k] !== res.measurementBits[k]) err(", "    if (false) err(", "RED"),
-    # The verdict's two guards (rule AND fidelity) are redundant by design: each null below, both RED.
-    ("verdict ignores the rule AND passes at fidelity 0.5",
-     [("expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS", "res.fidelity >= FIDELITY_PASS"),
+    # The dry-run verdict's two guards (rule AND fidelity) are redundant by design: each null below, both RED.
+    ("dry-run verdict ignores the rule AND passes at fidelity 0.5",
+     [("  const passed = followsRule && clearsPass\n", "  const passed = clearsPass\n"),
       ("export const FIDELITY_PASS = 0.999999", "export const FIDELITY_PASS = 0.5")], None, "RED"),
     # Owner-ruled values (contracts-pin-thresholds): each drift must go red on its PIN line, which
     # names the constant and the ruling. The first was a declared null in contracts-v2.
@@ -113,8 +113,8 @@ CASES = [
     ("backend job experiment id renamed", "'teleportation', 'backend_verification'])", "'teleportation', 'backend_check'])", "RED"),
     ("GENERIC_MAX_WRONG_FIDELITY 0.9 -> 0.95 (design value, pinned)",
      "export const GENERIC_MAX_WRONG_FIDELITY = 0.9", "export const GENERIC_MAX_WRONG_FIDELITY = 0.95", "RED"),
-    ("verdict literal 0.9 AND cross-check tolerance 0.2 (export untouched)",
-     [("&& res.fidelity >= FIDELITY_PASS", "&& res.fidelity >= 0.9"),
+    ("judge literal 0.9 AND cross-check tolerance 0.2 (export untouched)",
+     [("    clearsPass: fidelity >= FIDELITY_PASS - FIDELITY_EPSILON,", "    clearsPass: fidelity >= 0.9,"),
       ("export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6", "export const FIDELITY_CROSSCHECK_TOLERANCE = 0.2")], None, "RED"),
     # Cross-check tolerance and rounding epsilon (contracts-fidelity-band). The tolerance loosenings
     # must go red on the forged-fidelity probes, not only on the PIN line.
@@ -130,24 +130,51 @@ CASES = [
      "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6", "export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-9", "RED"),
     ("cross-check drops the epsilon (the reports/0006 equality defect)",
      "> FIDELITY_CROSSCHECK_TOLERANCE + FIDELITY_EPSILON) {", "> FIDELITY_CROSSCHECK_TOLERANCE) {", "RED"),
-    ("verdict drops the epsilon (F = 0.999999 - 1e-15 refused)",
-     "&& res.fidelity >= FIDELITY_PASS - FIDELITY_EPSILON\n", "&& res.fidelity >= FIDELITY_PASS\n", "RED"),
+    ("judge drops the epsilon (F = 0.999999 - 1e-15 refused)",
+     "    clearsPass: fidelity >= FIDELITY_PASS - FIDELITY_EPSILON,", "    clearsPass: fidelity >= FIDELITY_PASS,", "RED"),
     ("FIDELITY_EPSILON 1e-12 -> 1e-9", "export const FIDELITY_EPSILON = 1e-12", "export const FIDELITY_EPSILON = 1e-9", "RED"),
     ("FIDELITY_EPSILON 1e-12 -> 0", "export const FIDELITY_EPSILON = 1e-12", "export const FIDELITY_EPSILON = 0", "RED"),
-    ("verdict epsilon sign flipped (+ instead of -)",
-     "&& res.fidelity >= FIDELITY_PASS - FIDELITY_EPSILON\n", "&& res.fidelity >= FIDELITY_PASS + FIDELITY_EPSILON\n", "RED"),
-    # Known blind spots — reported as nulls, not hidden. Both are EQUIVALENT mutants: a result reaches
-    # the verdict only after the 1e-6 physics cross-check and the generic-state guard, so on every
-    # valid input a wrong choice already scores <= 0.9 and a right one >= 1 - 1e-6. The verdict's own
-    # rule term and its own threshold literal are therefore unobservable; the exported VALUES are pinned.
-    ("verdict ignores the rule (Qiskit fidelity alone gates the pass)",
-     "expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS", "res.fidelity >= FIDELITY_PASS", "NULL"),
-    ("verdict uses a literal 0.9 instead of FIDELITY_PASS (export still 0.999999)",
-     "&& res.fidelity >= FIDELITY_PASS", "&& res.fidelity >= 0.9", "NULL"),
+    ("judge epsilon sign flipped (+ instead of -)",
+     "    clearsPass: fidelity >= FIDELITY_PASS - FIDELITY_EPSILON,", "    clearsPass: fidelity >= FIDELITY_PASS + FIDELITY_EPSILON,", "RED"),
+    # Known blind spots — reported as nulls, not hidden. Both are EQUIVALENT mutants: a dry-run result
+    # reaches its verdict only after the 1e-6 physics cross-check and the generic-state guard, so on every
+    # valid input a wrong choice already scores <= 0.9 and a right one >= 1 - 1e-6. The dry-run verdict's
+    # own use of each term is therefore unobservable; the exported VALUES are pinned.
+    ("dry-run verdict ignores the rule (Qiskit fidelity alone gates the pass)",
+     "  const passed = followsRule && clearsPass\n", "  const passed = clearsPass\n", "NULL"),
+    ("dry-run verdict ignores the fidelity (the rule alone gates the pass)",
+     "  const passed = followsRule && clearsPass\n", "  const passed = followsRule\n", "NULL"),
+    # Shared judge (contracts-commit-result): the commit has NO cross-check behind it, so the judge's
+    # rule term and its threshold literal — dry-run nulls above and before — are now RED via the commit.
+    ("judge ignores the rule (was a dry-run null; the commit sees it)",
+     "    followsRule: expected.applyX === applyX && expected.applyZ === applyZ,", "    followsRule: true,", "RED"),
+    ("judge uses a literal 0.9 instead of FIDELITY_PASS (was a dry-run null; the commit sees it)",
+     "    clearsPass: fidelity >= FIDELITY_PASS - FIDELITY_EPSILON,", "    clearsPass: fidelity >= 0.9,", "RED"),
     # Equivalent: >= vs > differ only at F exactly 0.999999 - 1e-12 to the last bit, which neither
     # Qiskit (1 ± 1e-15 on a right choice) nor any probe value produces.
-    ("verdict floor >= becomes > (strict)",
-     "&& res.fidelity >= FIDELITY_PASS - FIDELITY_EPSILON\n", "&& res.fidelity > FIDELITY_PASS - FIDELITY_EPSILON\n", "NULL"),
+    ("judge floor >= becomes > (strict)",
+     "    clearsPass: fidelity >= FIDELITY_PASS - FIDELITY_EPSILON,", "    clearsPass: fidelity > FIDELITY_PASS - FIDELITY_EPSILON,", "NULL"),
+    # The one story commit (contracts-commit-result): each guard is the only one for its defect.
+    ("commit drops the correction check (swapped m0/m1 accepted)", "  if (!followsRule) {\n", "  if (false) {\n", "RED"),
+    ("commit drops the fidelity check (F = 0.9 accepted)", "  if (!clearsPass) err(`commit result fidelity", "  if (false) err(`commit result fidelity", "RED"),
+    ("commit drops the story-token marker check",
+     "  if (p.stateId !== STORY_TOKEN_ID) err(`commit result", "  if (false) err(`commit result", "RED"),
+    ("commit accepts the engine's pre-contract marker parameters.state 'token' too",
+     "  if (p.stateId !== STORY_TOKEN_ID) err(`commit result", "  if (p.stateId !== STORY_TOKEN_ID && p.state !== 'token') err(`commit result", "RED"),
+    ("STORY_TOKEN_ID renamed to 'token'", "export const STORY_TOKEN_ID = 'story_token'", "export const STORY_TOKEN_ID = 'token'", "RED"),
+    ("commit may reveal the token's angles", "  for (const k of ['theta', 'phi']) if (k in p) err(`commit result", "  for (const k of []) if (k in p) err(`commit result", "RED"),
+    ("a dry-run result may carry the story-token marker",
+     "    if (p.stateId === STORY_TOKEN_ID) err(`${phase} result parameters.stateId", "    if (false) err(`${phase} result parameters.stateId", "RED"),
+    ("commit judged without the shared checks (engine, experiment, ExperimentResult shape)",
+     "  if (!checkTeleportResult(null, res, 'commit', err)) return errors\n",
+     "  if (!isPlainObject(res) || !isPlainObject(res.measurementBits)) return ['not a commit']\n", "RED"),
+    # Equivalent: a missing/non-boolean applyX/applyZ or a missing fidelity is still refused by the rule
+    # and floor checks below them (undefined !== a boolean; undefined >= x is false). The type checks
+    # only sharpen the message.
+    ("commit drops the applyX/applyZ boolean check",
+     "  for (const k of ['applyX', 'applyZ']) if (typeof p[k] !== 'boolean') err(`commit result", "  for (const k of []) if (typeof p[k] !== 'boolean') err(`commit result", "NULL"),
+    ("commit drops the fidelity-present check",
+     "  if (!isFiniteNumber(res.fidelity)) err(`commit result must report fidelity", "  if (false) err(`commit result must report fidelity", "NULL"),
     ("ANIMATION_END moved to story-ui (an inferred source, not owner-ruled)",
      "  ANIMATION_END: SOURCE('gameplay', 'cinematic'),", "  ANIMATION_END: SOURCE('story-ui', 'cinematic'),", "NULL"),
     ("default volume 80 -> 50 (defaults are not pinned, only validated)",

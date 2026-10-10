@@ -211,6 +211,7 @@ qubit. It throws if that qubit is not in `keyQubits`.
 | cloning (§10.3) | joint output, `[1, 0]` (e.g. `{"00":0.5,"11":0.5}` for plus) | `observables: {"purityQ0", "purityQ1"}`, `parameters: {"state": "plus"}` |
 | bell_signalling (§10.4) | receiver-only marginal, `[1]` | `parameters: {"senderGate": "X"}` |
 | teleportation dry run (§10.5/§10.6) | phase 1 optional (branch table, `[1, 0]`) | two phases, see below |
+| teleportation story commit (§7.4) | optional (branch table, `[1, 0]`) | `parameters: {"stateId": "story_token", "applyX", "applyZ"}`, `measurementBits`, `fidelity`; see § The one story commit |
 | backend_verification (§10.7) | `counts` + `keyQubits`, engine `qollab_selected_backend` | `parameters: {"shots": 256, "backend": <name the backend reports>}` |
 
 Rename §10.3's `circuit` (a text drawing) to `circuitDescription`. `isIndependentCloning` and
@@ -247,7 +248,8 @@ The dry run is therefore two bridge calls. Each one is checked by its own valida
 - `validateTeleportCorrectionResult` checks a result against the bits in its **request**. Build every phase-2
   request with `makeCorrectionRequest`, which takes the bits from a validated phase-1 result. Never type the bits in
   by hand. If an engine echoes `m0`/`m1` in `parameters`, they must equal `measurementBits`.
-- The story token never enters a dry run. The single commit is a separate call (overseer ruling, gameplay consult 3 #1).
+- The story token never enters a dry run: a phase-1 or phase-2 result with `parameters.stateId === STORY_TOKEN_ID` is
+  refused. The single commit is a separate call (overseer ruling, gameplay consult 3 #1), below.
 - Python names are the quantum lane's choice. Their inputs and outputs are exactly these shapes.
 
 **Worked example: real Qiskit 2.5.2** (`python3 tools/contract-check/teleport_oracle.py`, state `TELEPORT_TEST_STATE`):
@@ -272,6 +274,28 @@ The dry run is therefore two bridge calls. Each one is checked by its own valida
 Branch probabilities are 1/4 each for any input. The bits alone carry nothing about the state.
 `teleport_oracle.py` checks all 16 (m0, m1, X, Z) combinations on the test state and on three random generic states.
 Fidelity is 1 on exactly the 4 that follow the rule, and at most 0.674 on every other combination.
+
+## The one story commit (§7.4)
+
+One atomic local exact call (owner ruling, gameplay consult 3): fresh live Bell bits on the hidden story token, the
+rule applied to THOSE bits by the engine, Qiskit's fidelity. The token is consumed once; the engine latches it only
+when the call returns, and gameplay marks it consumed only on success.
+
+| JS sends | Python returns | validator |
+|---|---|---|
+| nothing about the state (the token is hidden) | ExperimentResult: `experiment "teleportation"`, `engine "exact_qiskit_local"`, **`parameters {stateId: STORY_TOKEN_ID, applyX, applyZ}`** (the corrections the receiver applied; `seed` allowed), **`measurementBits {m0, m1}`**, **`fidelity`**; no `theta`/`phi`; no `counts` | `validateCommitResult(result)` → error list; empty = committed, fire `COMMIT_TRANSFER` |
+
+- **One marker.** `STORY_TOKEN_ID = 'story_token'`, in `parameters.stateId`. Not `parameters.state`, not `'token'`.
+  Import the constant; do not retype it.
+- **The rule is checked, not trusted.** `applyX`/`applyZ` must equal `expectedCorrections(m0, m1)` (X iff m1=1, Z iff
+  m0=1; m0 = SOURCE READOUT, m1 = LOCAL BELL-HALF READOUT). Bits 1,0 with the corrections of 0,1 are refused.
+- **The band, with no cross-check behind it.** `fidelity >= FIDELITY_PASS - FIDELITY_EPSILON` (0.999999, §7.4). With the
+  rule applied the receiver holds the token whatever it was, so a lower number is a broken engine, not a failed
+  attempt: it is refused, never shown as a success (§12.3). The dry run and the commit share one judge (rule + band).
+- **The token is never shown.** `parameters.theta`/`phi` on a commit are refused.
+- **Real engine, quantum `lane/quantum/integration` c3adf0a:** `live_commit` returns `parameters {state: 'token', seed}`
+  with no `applyX`/`applyZ`, so 0/4 branches validate. With the two fields renamed/added (and nothing else) 4/4
+  validate (`evidence/platform/contracts-commit/`).
 
 ## UI root and settings (overseer relay from story-ui, 2026-10-10)
 
@@ -315,6 +339,7 @@ What changed between contract revisions, so a lane knows what to edit in its own
 
 | revision | change | what a consumer does |
 |---|---|---|
+| story commit (consult 11, 2026-10-10) | **added** `STORY_TOKEN_ID = 'story_token'` and `validateCommitResult(result)`; a dry-run result carrying `parameters.stateId === STORY_TOKEN_ID` is now refused. Nothing renamed, removed or moved. | **quantum** (`teleportation.live_commit`): emit `parameters {stateId: "story_token", applyX: rule.applyX, applyZ: rule.applyZ}` (plus `seed` if given) instead of `{state: "token"}`. **gameplay** (`missionRules.js`): import `STORY_TOKEN_ID` and `expectedCorrections` from `contracts.js` and delete the local copies; the `TELEPORT_DRY_RUN_PASSED` rule becomes `validateCommitResult(r).length === 0 → COMMIT_TRANSFER`; read `parameters.applyX/applyZ`, not `correctionX/Z`. |
 | moments + countdown (consult 9, 2026-10-10) | **added** `MOMENT_EVENTS` (6 ids), `EVENT_SOURCES` entries for them with a new `consumer` field, `COUNTDOWN_START_SECONDS = 720` and `countdownRemaining()`. Nothing renamed, removed or moved. `EVENT_SOURCES` now has 29 keys (23 quest events plus 6 moments). | **gameplay:** emit moments with `MOMENT_EVENTS.<id>`, not string literals, and drive the HUD from `countdownRemaining`. **story-ui:** keep `MOMENTS` keys equal to `MOMENT_EVENTS`; no other change. Code that iterates `EVENT_SOURCES` as if it held only quest events filters with `!s.consumer` or uses `QUEST_EVENTS`. |
 | fidelity band (504666f) | **added** `FIDELITY_EPSILON = 1e-12`; nothing moved (see § Teleport dry run) | compare a fidelity to `FIDELITY_PASS - FIDELITY_EPSILON`, or read `dryRunVerdict().passed` |
 | v2 (7f36522, 340f45d) | **added** RESTART / CLOSE_SCIENCE edges, `EVENT_SOURCES`, `backend_verification`, the two-phase dry run, `UI_ROOT_ID` / `UI_HOOKS` / settings | adopt the two-phase dry-run calls; Mission 2 is `exact_qiskit_local` only |
