@@ -337,6 +337,52 @@ for (const r of TRUTH) {
   }
 }
 
+// ------------------------------------------------------------------ 9. the §2.4 banned sentence is never voiced
+// Not even as a quoted misconception: a "Myth:" line still puts the words on screen. Each sentence
+// §2.4 quotes is parsed from the vision and turned into one class per content word; a data sentence
+// that hits every class, is not a question and carries no negation voices it. No exemption.
+const s24 = vision.match(/## 2\.4[^\n]*\n([\s\S]*?)\n#/)
+const BANNED = s24 ? [...s24[1].matchAll(/“([^”]+)”/g)].map(m => m[1].replace(/[.!]$/, '')) : []
+if (BANNED.length === 0) refuse('could not find a quoted banned sentence in vision §2.4')
+const STOP = new Set(['the', 'a', 'an', 'quantum'])
+const WORD_CLASS = [
+  [/^entangle/i, /entangle\w*|bell pair|\bthe pair\b|blue (link|cable)/i],
+  [/^(transmit|send|deliver|carr)/i, /\b(transmit\w*|send\w*|sent|deliver\w*|carr(y|ies|ied)|mov(e|es|ed)|beam\w*)\b/i],
+  [/^(secret|message)/i, /\b(secret|message|token|state|information|data|password)\b/i],
+  [/^(instant|immediate)/i, /\b(instant\w*|immediate\w*|at once)\b/i],
+]
+const bannedClasses = BANNED.map(q => q.split(/\s+/).filter(w => !STOP.has(w.toLowerCase()))
+  .map(w => (WORD_CLASS.find(([k]) => k.test(w)) ?? [null, new RegExp(`\\b${w}\\b`, 'i')])[1]))
+for (const [path, s] of strings) {
+  if (/\.src$/.test(path)) continue
+  for (const sentence of s.split(/(?<=[.?!])\s+/)) {
+    for (const [i, classes] of bannedClasses.entries()) {
+      checks++
+      if (!/\?\s*$/.test(sentence) && !NEG_FOR(sentence) && classes.every(re => re.test(sentence))) fail(path, `voices the §2.4 banned sentence "${BANNED[i]}" (quoting it as a myth still shows it): "${sentence}"`)
+    }
+  }
+}
+
+// ------------------------------------------------------------------ 10. "fidelity" is explained in plain words, truthfully
+// Wherever the data shows the word to the player, the same block carries objectives.FIDELITY_GLOSS.
+// The gloss may claim only what holds for every value the dry run can show: a 0-to-1 scale where 1
+// means the received state IS the test state. Checked against all 16 (m0, m1) × (X, Z) rows from
+// branch_truth.py: every fidelity is in [0, 1], and it is 1 exactly when nothing is left to fix.
+const GLOSS = objectives.FIDELITY_GLOSS
+check(typeof GLOSS === 'string' && /\b0\b[^.]*\b1\b/.test(GLOSS) && /\b1 means identical\b/i.test(GLOSS) && !/\b0 means\b|percent|%/i.test(GLOSS), 'objectives.FIDELITY_GLOSS', `needs a plain 0-to-1 gloss where "1 means identical", and no claim about other values: ${JSON.stringify(GLOSS)}`)
+for (const [path, s] of strings) {
+  if (/\.src$/.test(path) || s === GLOSS || !/fidelity/i.test(s)) continue
+  // The block that shows it: the string's grandparent (a terminal, a Declassified tab).
+  const block = path.replace(/(\.[^.[]+|\[\d+\])(\.[^.[]+|\[\d+\])$/, '')
+  checks++
+  if (!strings.some(([p, t]) => t === GLOSS && p.startsWith(block))) fail(path, `shows "fidelity" with no plain gloss in ${block}: "${s}"`)
+}
+for (const r of TRUTH) {
+  const w = `branch_truth m0=${r.m0} m1=${r.m1} X=${r.x} Z=${r.z}`
+  check(r.fidelity >= 0 && r.fidelity <= 1, w, `fidelity ${r.fidelity} is outside the gloss's 0-to-1 scale`)
+  check((r.fidelity > 1 - 1e-6) === (r.residual === 'I'), w, `fidelity ${r.fidelity} but the receiver holds ${r.residual}·state: "1 means identical" would be false`)
+}
+
 // Placeholders the owner must fill are reported, not failed: they are the honest state.
 const placeholders = strings.filter(([, s]) => /TODO_OWNER/.test(s))
 
