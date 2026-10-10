@@ -72,6 +72,8 @@ export const QUEST_EVENTS = nameTable('QUEST_EVENTS',
 // fire on E (INTERACTABLE_BINDINGS); experiment_result events come from gameplay reading a validated
 // ExperimentResult, never from a button.
 const SOURCE = (lane, via) => Object.freeze({ lane, via })
+// A moment is fired by gameplay and consumed by story-ui, which plays the lines keyed by its id.
+const MOMENT = (via = 'moment') => Object.freeze({ lane: 'gameplay', via, consumer: 'story-ui' })
 export const EVENT_SOURCES = strictTable('EVENT_SOURCES', Object.entries({
   BOOT_COMPLETE: SOURCE('platform', 'boot'),
   START: SOURCE('story-ui', 'menu'),
@@ -96,7 +98,26 @@ export const EVENT_SOURCES = strictTable('EVENT_SOURCES', Object.entries({
   CLOSE_SCIENCE: SOURCE('story-ui', 'menu'),
   OPEN_CREDITS: SOURCE('story-ui', 'menu'),
   RESTART: SOURCE('story-ui', 'menu'),
+  // MOMENT_EVENTS (below): reactions, never transitions.
+  clone_increase_voltage: MOMENT(),
+  relay_bay_cable: MOMENT(),
+  teleport_commit_locked: MOMENT(),
+  teleport_dry_run_failed: MOMENT(),
+  teleport_dry_run_00: MOMENT(),
+  countdown_zero: MOMENT('countdown'),
 }))
+
+// Moments are story beats that do not change the quest state, so transition() rejects them as
+// unknown events. Gameplay fires each on the bus; story-ui keys its lines by the same id
+// (overseer relay 2026-10-10; the last two are the ids story-ui's data/story.js already uses).
+//   clone_increase_voltage   the player picks "increase voltage" after CLONE_SUPERPOSITION_FAILED (§4.2)
+//   relay_bay_cable          the amber cable in the relay bay is reconnected (§4.3)
+//   teleport_commit_locked   COMMIT pressed before a dry run unlocked it (§7.4)
+//   teleport_dry_run_failed  a dry run did not pass; the next one uses a fresh state
+//   teleport_dry_run_00      a dry run passed on bits 00, so COMMIT stays locked (dryRunVerdict.unlocksCommit)
+//   countdown_zero           countdownRemaining() first reaches 0; fired once, nothing ends
+export const MOMENT_EVENTS = nameTable('MOMENT_EVENTS', ['clone_increase_voltage', 'relay_bay_cable',
+  'teleport_commit_locked', 'teleport_dry_run_failed', 'teleport_dry_run_00', 'countdown_zero'])
 
 // A wrong NAME throws (a bug at the call site); a right name at the wrong time is refused
 // with { ok: false } and the state unchanged (gameplay, e.g. pressing E twice).
@@ -128,6 +149,21 @@ export const WORLD_CHANGES = Object.freeze(Object.fromEntries(Object.entries({
   TELEPORT_COMMITTED: ['capsule_source_indicator_off', 'vault_status_green', 'city_lighting_wave',
     'music_swell', 'ending_dialogue'],
 }).map(([s, list]) => [s, Object.freeze(list)])))
+
+// ------------------------------------------------------------------ narrative countdown
+
+// The HUD's GRID SHUTDOWN clock (§6.3). It is narrative only: at 00:00 it holds and story-ui plays
+// countdown_zero; no quest event comes from it, so it can never end the game (§1 anti-goals: no
+// game-over from a non-pausing timer). It is computed from elapsed time, never decremented, so
+// replaying an event cannot drive it below zero (§9.3 idempotence).
+export const COUNTDOWN_START_SECONDS = 720  // 12:00; §6.3 shows 08:42 by the relay, mission 2
+
+// Whole seconds left, in [0, startSeconds]; rounds up so 00:00 shows only once time is truly out.
+export function countdownRemaining(startSeconds, elapsedSeconds) {
+  if (!(isFiniteNumber(startSeconds) && startSeconds >= 0)) throw new TypeError(`countdownRemaining: startSeconds must be a finite number ≥ 0, got ${describe(startSeconds)}`)
+  if (typeof elapsedSeconds !== 'number' || Number.isNaN(elapsedSeconds)) throw new TypeError(`countdownRemaining: elapsedSeconds must be a number, got ${describe(elapsedSeconds)}`)
+  return Math.min(startSeconds, Math.max(0, Math.ceil(startSeconds - elapsedSeconds)))
+}
 
 // ------------------------------------------------------------------ interactables
 
@@ -334,7 +370,12 @@ export function marginalProbabilities(result, qubit) {
 export const TELEPORT_TEST_STATE = Object.freeze({ theta: 1.137, phi: 0.44 })  // §10.5, circuit order
 export const FIDELITY_PASS = 0.999999                 // §7.4 ideal-validation threshold
 export const GENERIC_MAX_WRONG_FIDELITY = 0.9          // every wrong choice must visibly fail
+// The cross-check accepts exactly what the §7.4 band accepts: tolerance = the band width 1 - 0.999999.
+// Every fidelity comparison adds FIDELITY_EPSILON, because in doubles 1 - 0.999999 = 1e-6 + 2.9e-17:
+// without it a correct F = 0.999999 was refused (gate-independence law 12). 1e-12 exceeds the measured
+// analytic/Qiskit disagreement (4.7e-13 over the oracle fixtures) and is 1e6 below the band.
 export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6
+export const FIDELITY_EPSILON = 1e-12
 export const BIT_LABELS = Object.freeze({ m0: 'SOURCE READOUT m0', m1: 'LOCAL BELL-HALF READOUT m1' })
 
 export function expectedCorrections(m0, m1) {
@@ -433,7 +474,7 @@ export function validateTeleportCorrectionResult(req, res) {
   for (const k of ['applyX', 'applyZ']) if (res.parameters[k] !== req[k]) err(`phase-2 result parameters.${k} ${describe(res.parameters[k])} is not the requested ${req[k]}`)
   if (!isFiniteNumber(res.fidelity)) { err('phase-2 result must report fidelity'); return errors }
   const want = expectedFidelity(req)
-  if (Math.abs(res.fidelity - want) > FIDELITY_CROSSCHECK_TOLERANCE) {
+  if (Math.abs(res.fidelity - want) > FIDELITY_CROSSCHECK_TOLERANCE + FIDELITY_EPSILON) {
     err(`phase-2 result fidelity ${res.fidelity} disagrees with the physics of this branch and choice (expected ${want.toFixed(9)})`)
   }
   return errors
@@ -445,7 +486,7 @@ export function dryRunVerdict(req, res) {
   const errors = validateTeleportCorrectionResult(req, res)
   if (errors.length) return { passed: false, unlocksCommit: false, expected: null, errors }
   const expected = expectedCorrections(req.m0, req.m1)
-  const passed = expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS
+  const passed = expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS - FIDELITY_EPSILON
   return { passed, unlocksCommit: passed && (req.m0 === 1 || req.m1 === 1), expected, errors }
 }
 
