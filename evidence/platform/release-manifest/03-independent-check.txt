@@ -1,0 +1,7 @@
+# independent: find + shasum + wc on the output tree, no node (refs: pinned-refs.txt)
+files: 30
+tests/ present: 0
+QOLLAB_SMOKE_TEST.md present: 0
+README.md present: yes
+largest file bytes:    35660 ./contracts.js
+manifest == independent listing: IDENTICAL (30 lines)

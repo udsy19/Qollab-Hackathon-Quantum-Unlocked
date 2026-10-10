@@ -1,0 +1,15 @@
+PASS  clean                   
+PASS  conflict-main-css       
+PASS  duplicate-identical     
+PASS  duplicate-drifted       
+PASS  non-owner               
+PASS  art-file-from-gameplay  
+PASS  unowned                 
+PASS  missing-ref             
+PASS  release-clean           
+PASS  release-smoke-on-quantum
+PASS  release-caps-red        
+PASS  release-unresolved-import
+PASS  release-conflict        
+GREEN  13/13 fixture(s) behaved
+exit 0

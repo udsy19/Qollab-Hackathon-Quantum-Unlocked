@@ -3,8 +3,11 @@
 //   node tools/assemble-echo/run-fixtures.mjs [--assembler <path>]   # --assembler grades a disposable (sabotaged) copy
 // Each fixture is five lane branches committed into a THROW-AWAY git repo (never the shared one).
 // Expected verdict lines and bytes are written by hand here, not read from the assembler's output.
+// Release fixtures re-derive the upload from the output tree itself (walk + sha256) and hold the
+// manifest to it; the paths that must be absent are typed here, not imported from the assembler.
 import { spawnSync, execFileSync } from 'node:child_process'
-import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, existsSync } from 'node:fs'
+import { createHash } from 'node:crypto'
+import { mkdtempSync, mkdirSync, writeFileSync, readFileSync, rmSync, existsSync, readdirSync } from 'node:fs'
 import { tmpdir } from 'node:os'
 import { dirname, join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -90,6 +93,72 @@ for (const [name, lanes, exit, mustSay, bytes] of FIXTURES) {
   rmSync(repo, { recursive: true, force: true })
 }
 
-const total = FIXTURES.length + 1
+// ------------------------------------------------------------------ release mode
+const walk = (root, d = root) => readdirSync(d, { withFileTypes: true }).flatMap((e) =>
+  e.isDirectory() ? walk(root, join(d, e.name)) : [join(d, e.name).slice(root.length + 1).split('\\').join('/')])
+const sha = (b) => createHash('sha256').update(b).digest('hex')
+const DEV = { 'echo/tests/test_x.py': 'def test_x(): pass', 'echo/QOLLAB_SMOKE_TEST.md': '# smoke' }
+const RELEASE_BASE = {
+  ...CLEAN,
+  platform: { ...CLEAN.platform, 'echo/README.md': '# ECHO' },
+  quantum: { ...CLEAN.quantum, 'echo/tests/test_x.py': DEV['echo/tests/test_x.py'] },
+}
+const relWith = (lane, files) => ({ ...RELEASE_BASE, [lane]: { ...RELEASE_BASE[lane], ...files } })
+const NEVER_UPLOADED = ['tests', 'tests/test_x.py', 'tests/test_cloning.py', 'QOLLAB_SMOKE_TEST.md']
+
+const RELEASE = [
+  // [name, lanes, exit, lines that must appear (prefix), files that must be present]
+  ['release-clean', relWith('platform', { 'echo/QOLLAB_SMOKE_TEST.md': DEV['echo/QOLLAB_SMOKE_TEST.md'] }), 0,
+    ['EXCLUDED    echo/QOLLAB_SMOKE_TEST.md', 'EXCLUDED    echo/tests/test_x.py', 'EXCLUDED    echo/tests/test_cloning.py', 'caps  GREEN'],
+    ['README.md', 'main.js', 'index.html', 'quantum/cloning.py']],
+  // the smoke doc carried by quantum: a non-owner path, but it is never uploaded, so it blocks nothing
+  ['release-smoke-on-quantum', relWith('quantum', { 'echo/QOLLAB_SMOKE_TEST.md': DEV['echo/QOLLAB_SMOKE_TEST.md'] }), 0,
+    ['EXCLUDED    echo/QOLLAB_SMOKE_TEST.md'], ['README.md']],
+  // two backend.run sites: the assembly is clean, so only caps can turn this red
+  ['release-caps-red', {
+    ...relWith('gameplay', { 'echo/game/second.js': '\nexport const go = (backend) => backend.run(1)\n' }),
+    platform: { ...RELEASE_BASE.platform, 'echo/main.js': 'export const go = (backend) => backend.run(0)\n' },
+  }, 1,
+    ['BLOCKER  gameplay   backend-run-count  echo/game/second.js:2', 'BLOCKER  platform   backend-run-count  echo/main.js:1',
+      'SITE     gameplay   backend.run  echo/game/second.js:2', 'caps  RED'], ['game/second.js']],
+  ['release-unresolved-import', relWith('gameplay', { 'echo/game/state.js': "import { x } from './missing.js'\n" }), 1,
+    ['BLOCKER  gameplay   import-unresolved  echo/game/state.js:1'], []],
+  // a drifted copy is the carrying lane's blocker, at the first line where the bytes differ
+  ['release-conflict', relWith('platform', { 'echo/main.css': 'css\nsmoke' }), 1,
+    ['CONFLICT    echo/main.css', 'BLOCKER  platform   CONFLICT  echo/main.css:2'], ['main.css']],
+]
+
+for (const [name, lanes, exit, mustSay, present] of RELEASE) {
+  const repo = makeRepo(lanes)
+  const tmp = mkdtempSync(join(tmpdir(), 'assemble-out-'))
+  const out = join(tmp, 'echo')
+  const manifest = join(tmp, 'manifest.tsv')
+  const r = spawnSync('node', [ASSEMBLER, '--repo', repo, '--out', out, '--release', '--manifest', manifest], { encoding: 'utf8' })
+  const said = r.stdout.split('\n')
+  const missing = mustSay.filter((m) => !said.some((l) => l.startsWith(m)))
+  const onDisk = existsSync(out) ? walk(out) : []
+  const leaked = NEVER_UPLOADED.filter((p) => existsSync(join(out, p)))
+  const absent = present.filter((p) => !existsSync(join(out, p)))
+  // the manifest must be exactly the tree: same paths, and each line's bytes and sha256 measured here
+  const want = onDisk.sort().map((p) => { const b = readFileSync(join(out, p)); return `${sha(b)}\t${b.length}\t${p}` })
+  const got = existsSync(manifest) ? readFileSync(manifest, 'utf8').split('\n').filter(Boolean) : null
+  const manifestBad = !got ? 'no manifest written'
+    : got.length !== want.length || got.some((l, i) => l !== want[i])
+      ? `manifest ${got.length} line(s) vs ${want.length} file(s) on disk; first mismatch: ${got.find((l, i) => l !== want[i]) ?? want[got.length]}`
+      : ''
+  const why = [
+    r.status !== exit && `exit ${r.status}, want ${exit}${r.stderr ? ` (${r.stderr.trim()})` : ''}`,
+    missing.length && `missing: ${missing.join(' | ')}`,
+    leaked.length && `LEAKED into the upload: ${leaked.join(', ')}`,
+    absent.length && `absent from the upload: ${absent.join(', ')}`,
+    onDisk.length === 0 && 'empty upload',
+    manifestBad,
+  ].filter(Boolean).join('; ')
+  verdict(name, !why, why)
+  rmSync(repo, { recursive: true, force: true })
+  rmSync(tmp, { recursive: true, force: true })
+}
+
+const total = FIXTURES.length + 1 + RELEASE.length
 console.log(`${bad ? 'RED' : 'GREEN'}  ${total - bad}/${total} fixture(s) behaved`)
 process.exit(bad ? 1 : 0)

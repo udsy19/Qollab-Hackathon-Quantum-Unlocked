@@ -1,0 +1,15 @@
+PASS  clean                   
+PASS  conflict-main-css       
+PASS  duplicate-identical     
+PASS  duplicate-drifted       
+PASS  non-owner               
+PASS  art-file-from-gameplay  
+PASS  unowned                 
+PASS  missing-ref             
+FAIL  release-clean             exit 2, want 0 (assemble-echo: REFUSED — unknown argument --release); missing: EXCLUDED    echo/QOLLAB_SMOKE_TEST.md | EXCLUDED    echo/tests/test_x.py | EXCLUDED    echo/tests/test_cloning.py | caps  GREEN; absent from the upload: README.md, main.js, index.html, quantum/cloning.py; empty upload; no manifest written
+FAIL  release-smoke-on-quantum  exit 2, want 0 (assemble-echo: REFUSED — unknown argument --release); missing: EXCLUDED    echo/QOLLAB_SMOKE_TEST.md; absent from the upload: README.md; empty upload; no manifest written
+FAIL  release-caps-red          exit 2, want 1 (assemble-echo: REFUSED — unknown argument --release); missing: BLOCKER  gameplay   backend-run-count  echo/game/second.js:2 | BLOCKER  platform   backend-run-count  echo/main.js:1 | SITE     gameplay   backend.run  echo/game/second.js:2 | caps  RED; absent from the upload: game/second.js; empty upload; no manifest written
+FAIL  release-unresolved-import  exit 2, want 1 (assemble-echo: REFUSED — unknown argument --release); missing: BLOCKER  gameplay   import-unresolved  echo/game/state.js:1; empty upload; no manifest written
+FAIL  release-conflict          exit 2, want 1 (assemble-echo: REFUSED — unknown argument --release); missing: CONFLICT    echo/main.css | BLOCKER  platform   CONFLICT  echo/main.css:2; absent from the upload: main.css; empty upload; no manifest written
+RED  8/13 fixture(s) behaved
+exit 1

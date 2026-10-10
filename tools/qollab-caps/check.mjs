@@ -277,7 +277,7 @@ for (const { file, line, spec } of importSpecs) {
 if (backendRuns.length > 1) backendRuns.forEach((r, k) => report(r.file, r.line, 'backend-run-count', `backend.run call site ${k + 1} of ${backendRuns.length} in echo/**/*.js; at most one is allowed (a second job stops the run on IonQ)`))
 for (const r of pyBackendRuns) report(r.file, r.line, 'backend-run-python', 'Python calls backend.run itself; only JS may, unless the owner rules otherwise')
 const allRuns = [...backendRuns, ...pyBackendRuns]
-infos.push(allRuns.length === 1 ? `backend.run: exactly one call site, ${allRuns[0].file}:${allRuns[0].line}` : `backend.run: ${allRuns.length} call site(s) in scanned code`)
+infos.push(`backend.run: ${allRuns.length} call site(s)${allRuns.length ? ': ' + allRuns.map((r) => `${r.file}:${r.line}`).join(', ') : ''}`)
 
 // ------------------------------------------------------------------ output
 const LIMITATIONS = [
