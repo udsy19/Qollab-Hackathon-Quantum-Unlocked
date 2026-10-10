@@ -1,0 +1,17 @@
+# backend_run_audit.py: q = lane/quantum/integration@a9edce2, p = lane/platform/g0-runner-smoke@e2f0ab6, m = p + q quantum/ + platform/integration contracts overlaid
+=== q
+scanned 12 files under /tmp/pca/q/echo
+live backend.run call sites: 1
+  SITE    /tmp/pca/q/echo/quantum/qollab_job.py:168: job = backend.run(build_bell_verification_circuit(), shots=shots)
+AUDIT_EXIT=0
+=== p
+scanned 3 files under /tmp/pca/p/echo
+live backend.run call sites: 1
+  SITE    /tmp/pca/p/echo/main.js:114: const job = await backend.run(circuit, { shots: 256 });
+AUDIT_EXIT=0
+=== m
+scanned 10 files under /tmp/pca/m/echo
+live backend.run call sites: 2
+  SITE    /tmp/pca/m/echo/main.js:114: const job = await backend.run(circuit, { shots: 256 });
+  SITE    /tmp/pca/m/echo/quantum/qollab_job.py:168: job = backend.run(build_bell_verification_circuit(), shots=shots)
+AUDIT_EXIT=1
