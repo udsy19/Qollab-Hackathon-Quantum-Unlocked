@@ -1,14 +1,6 @@
---- test_qollab_job.base.py	2026-10-10 00:36:10
-+++ test_qollab_job.py	2026-10-10 00:36:31
-@@ -5,7 +5,6 @@
-     .venv/bin/python -m pytest echo/tests/test_qollab_job.py
- """
- 
--import importlib
- import json
- import pathlib
- import re
-@@ -31,12 +30,6 @@
+--- test_qollab_job.base.py	2026-10-10 00:44:38
++++ test_qollab_job.py	2026-10-10 00:44:38
+@@ -31,12 +31,6 @@
      return ones
  
  
@@ -21,7 +13,7 @@
  # ---------------------------------------------------------------- endianness, hand-written fixtures
  # Qiskit count keys are written c1 c0: the RIGHTMOST character is classical bit 0, which the
  # circuit fills from q0. These dicts were written by hand from that rule, not produced by the module.
-@@ -135,45 +128,29 @@
+@@ -137,45 +131,29 @@
          qj.interpret_counts(raw, backend_name="hand-written fixture", shots_requested=None)
  
  

@@ -1,7 +1,8 @@
-HEAD unmodified: 595 passed in 16.70s
-(disposable copies under /tmp, commit c6558fb, .venv python 3.13 / qiskit 2.5.2)
-base echo/tests vs proposed qollab_job.py: 246 failed, 349 passed  -- the 3 once-guard tests plus every conftest-parametrized test that calls run_backend_verification_once (expected; replaced below)
-proposed test_qollab_job.py + conftest.py vs proposed qollab_job.py: 594 passed  (3 guard tests removed, 2 added)
-sabotage (proposed tree + a Python backend.run inside interpret_backend_counts): 2 failed, 592 passed
-  FAILED test_qollab_job.py::test_python_never_submits_a_job
-  FAILED test_qollab_job.py::test_counts_of_the_submitted_circuit_name_the_backend_and_follow_the_contract
+pytest on disposable copies, HEAD 2f103eb (merged lane/quantum/integration 807cc39), .venv python 3.13 / qiskit 2.5.2
+HEAD unmodified: 595 passed in 7.23s
+HEAD tests vs proposed qollab_job.py (expected red: they call the removed guard): 246 failed, 349 passed in 79.90s (0:01:19)
+proposed tests vs proposed qollab_job.py: 594 passed in 10.60s
+sabotage (Python backend.run added inside interpret_backend_counts):
+FAILED echo/tests/test_qollab_job.py::test_python_never_submits_a_job - asser...
+FAILED echo/tests/test_qollab_job.py::test_counts_of_the_submitted_circuit_name_the_backend_and_follow_the_con
+2 failed, 592 passed in 10.15s
