@@ -167,6 +167,8 @@ const UNCONDITIONAL = [
   [/\b(eye|eyes|eyeball|glance)\b[^.]{0,40}\b(qubit|particle|state|photon)|\b(look(s|ed|ing)?|peek(s|ed|ing)?|glanc\w+) at (the |a |an |it |this )?(qubit|particle|photon|quantum state)|\bwatching (the |a )?(qubit|particle)/i, 'measurement framed as a human eye looking (§2.4)'],
   [/\bX\s+(if|when|iff|on|for)\s+m0\b|\bZ\s+(if|when|iff|on|for)\s+m1\b/, 'swapped correction rule (§7.1: X iff m1=1, Z iff m0=1)'],
   [/\bm0\b[^.;]{0,20}\b(relay|bell[- ]half|local bell)|\bm1\b[^.;]{0,20}\bsource\b/i, 'swapped bit names (§7.1: m0 = source readout, m1 = local Bell half)'],
+  // §7.3: for an ideal Bell pair the receiver-only marginal is exactly 50/50, whatever the sender does.
+  [/\b(?!50%\s*\/\s*50%)\d{1,3}(\.\d+)?%\s*\/\s*\d{1,3}(\.\d+)?%/, 'receiver-only split other than 50% / 50% (§7.3)'],
 ]
 const NEGATABLE = [
   // entanglement (blue link, Bell pair) carrying the message by itself
@@ -174,6 +176,7 @@ const NEGATABLE = [
   [/\b(instant\w*|immediate\w*)\b[^.?!]{0,40}\b(send|sent|arriv\w*|transfer\w*|transmit\w*|messag\w*|deliver\w*)/i, 'instant transfer (§2.4, §7.5)'],
   // a second independent copy of an unknown / the story state
   [/\b(two|second|independent|extra|spare|backup) (copies|copy|clones?|duplicates?)\b[^.?!]{0,30}\b(unknown|token|qubit|quantum state|source state|authori[sz]ation)|\bclon(e|ed|es|ing) (the|an?|this|that) (unknown|token|qubit|quantum state|source)|\b(still|both) (have|has|hold|holds) (it|the (state|token))\b/i, 'an independent copy of an unknown state (§2.4)'],
+  [/\b(perfect|exact|identical|true|working|faithful) (copy|copies|clone|clones|duplicate)\b/i, 'a working copy of a quantum state (§2.4)'],
   // no-cloning stretched to classical information
   [/(no[- ]cloning|physics|quantum)[^.?!]{0,40}\b(prevent\w*|forbid\w*|stop\w*|block\w*|ban\w*)\b[^.?!]{0,30}\b(storage|storing|authenticat\w*|classical|files?|data|bits)\b/i, 'no-cloning stretched to storage/authentication/classical copying (§2.4)'],
 ]

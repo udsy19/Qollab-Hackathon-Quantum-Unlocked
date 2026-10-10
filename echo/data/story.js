@@ -73,23 +73,24 @@ export const STORY = Object.freeze({
   // §4.3 Mission 2: THE CONNECTION.
   RELAY_INTRO: [
     { speaker: 'VEGA', text: 'Relay maintenance core online. More room for me down here.', direction: 'power switch wakes the relay; VEGA projects at full size' },
-    { speaker: 'VEGA', text: 'This relay holds half of an entangled pair.' },
-    { speaker: 'VEGA', text: "The other half waits at the vault's receiver." },
+    { speaker: 'VEGA', text: 'This relay stores one half of many entangled pairs.' },
+    { speaker: 'VEGA', text: "Each partner half waits at the vault's receiver." },
     { speaker: 'RIN', text: 'Palisade shared those pairs years ago, before any of this. Kept cold ever since.' },
-    { speaker: 'VEGA', text: "Don't touch the vault pair yet. Use the test rig first." },
+    { speaker: 'VEGA', text: "Don't spend vault pairs on experiments. Use the test rig." },
     { speaker: 'VEGA', text: 'Same physics, with both halves in this room.' },
   ],
   RELAY_BELL_CREATED: [
     { speaker: 'VEGA', text: 'Test pair ready. Left half is yours. The right half plays the receiver.' },
     { speaker: 'VEGA', text: 'The endpoints share a prepared resource. Correlation is not a message.', src: '§4.3' },
-    { speaker: 'RIN', text: 'Mica thinks the pair is enough on its own. Let us find out.' },
+    { speaker: 'RIN', text: "If the pair can carry the token alone, we're done. Test it." },
   ],
   RELAY_SEND_FAILED: [
     { speaker: 'VEGA', text: 'Receiver-only data: 50% / 50%. No decodable message.', src: '§4.3' },
     { speaker: 'VEGA', text: 'What does the receiver actually know?', src: '§2.2' },
   ],
   RELAY_UNDERSTOOD: [
-    { speaker: 'VEGA', text: 'Put both logs side by side and a pattern appears. X flips which results match.' },
+    { speaker: 'VEGA', text: 'Put both logs side by side: after I they always match.' },
+    { speaker: 'VEGA', text: 'After X they never match. The pattern is real.' },
     { speaker: 'VEGA', text: 'But comparing logs takes an ordinary message. The receiver alone sees noise.' },
     { speaker: 'VEGA', text: 'You still need the message.', src: '§2.2' },
     { speaker: 'VEGA', text: 'Old maintenance blueprint. A classical service line runs up to the rooftop tower.' },
@@ -111,7 +112,7 @@ export const STORY = Object.freeze({
   ],
   TELEPORT_DRY_RUN: [
     { speaker: 'VEGA', text: 'Not the token yet. A fresh test state first.' },
-    { speaker: 'VEGA', text: "Three slots: test source, your Bell half, and the receiver's half at the vault." },
+    { speaker: 'VEGA', text: "Three slots: test source, your Bell half, and its partner at the vault." },
     { speaker: 'VEGA', text: 'A Bell measurement on the source and your half gives two bits: m0 and m1.' },
     { speaker: 'VEGA', text: 'The amber line carries them. Tell the receiver what to do for each result.' },
   ],

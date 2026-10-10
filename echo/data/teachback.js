@@ -24,7 +24,7 @@ export const DECLASSIFIED = Object.freeze({
         '|0>  →  |00>',
         '|1>  →  |11>',
         '|+>  →  (|00> + |11>)/√2',
-        'Purity of each output for |+>: 0.5 (a true copy of |+> would have purity 1).',
+        'Purity of each output for |+>: 0.5 (an ideal, independent |+> has purity 1).',
       ],
       misconception: {
         wrong: 'If a machine can copy 0 and 1, it can copy anything.',
@@ -63,7 +63,7 @@ export const DECLASSIFIED = Object.freeze({
       verificationNote: "The verification circuit replaces the measurement and the bits with controlled gates (CX(q1, q2), CZ(q0, q2)). That is the deferred-measurement principle, a valid check of the maths. It is not how separated stations work: in the story the corrections ride on two classical bits.",
       misconception: {
         wrong: 'Teleportation moves the capsule, or leaves Rin a spare copy.',
-        why: 'Only quantum information moved, and the original was consumed by the measurement. The physical capsule stayed on her wrist, now without the state.',
+        why: "Only quantum information moved, and the original was consumed by the measurement. The physical capsule stayed on Rin's wrist, now without the state.",
       },
     },
   ],
