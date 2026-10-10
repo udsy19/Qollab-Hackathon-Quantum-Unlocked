@@ -1,0 +1,55 @@
+
+── mode full (exit 0)
+PASS  a: title card shows the openingCard text, fully visible  — {"text":"NACRE CITY // 02:17 AM","visible":true}
+PASS  a: billboard line shows during shot A  — NOTHING EVER HAS TO END
+PASS  g: Skip control has keyboard focus on first frames  — {"isSkip":true,"outline":"solid 3px rgb(255, 225, 77)"}
+PASS  g: Skip focus ring is a visible 3px solid outline  — solid 3px rgb(255, 225, 77)
+PASS  d: HUD is visible with the FREE_ROAM_ALLEY objective during shot D  — {"visible":"true","obj":"FIND AN AUTHORIZED REPLICATION BOOTH"}
+PASS  c: onShot fired A,B,C,D once each, in order  — ABCD
+PASS  c: each shot fired within 1.2 s of its §4.1 start  — [{"name":"A","t":0.00029999999701976776,"at":14},{"name":"B","t":10.03279999999702,"at":10047},{"name":"C","t":24.00390000000596,"at":24018},{"name":"D","t":44.00370000000298,"at":44017}]
+PASS  e: full run emits FINISHED exactly once and no SKIP  — ["FINISHED"]
+PASS  e: FINISHED lands at about 65 s  — 65022
+PASS  e: overlay is gone after the run
+PASS  b: every §4.1 line was shown whole, in order
+PASS  b: no caption ever needed more than 2 lines  — 2
+PASS  d: HUD stays visible after FINISHED
+PASS  f: mashing Skip/Esc/Enter and calling skip() after the end emits nothing more  — ["FINISHED"]
+PASS  no page errors or failed requests
+full: 15/15 passed
+
+── mode skip (exit 0)
+PASS  d: Esc at ~3 s emits SKIP exactly once when mashed  — ["SKIP"]
+PASS  d: overlay is gone after skip
+PASS  d: skip lands with the HUD and objective showing  — {"v":"true","o":"FIND AN AUTHORIZED REPLICATION BOOTH"}
+PASS  d: nothing from the timeline fires after skip (no shot B, no FINISHED, caption hidden)  — {"shots":"A","ev":1,"cap":"false"}
+PASS  mount twice: one overlay, not two  — 1
+PASS  d: Enter on the focused Skip button skips; double mount still fires once  — ["SKIP"]
+PASS  d: skip() re-entered from onSkip, then called again, still emits SKIP once  — ["SKIP"]
+PASS  d: clicking Skip emits SKIP once  — ["SKIP"]
+PASS  no page errors or failed requests
+skip: 9/9 passed
+
+── mode rm (exit 0)
+PASS  h: no transition or animation longer than 0 ms on opening, captions or HUD  — 32 nodes; slow: 
+PASS  h: caption appears whole at once (no reveal)  — Rin. Backup generator is dying. Did you get it? / Rin. Backup generator is dying. Did you get it?
+PASS  captionStyle high-contrast: caption is on a solid black panel with white text  — {"bg":"rgb(0, 0, 0)","border":"rgb(255, 255, 255)","color":"rgb(255, 255, 255)"}
+PASS  no page errors or failed requests
+rm: 4/4 passed
+
+── mode s200a (exit 0)
+PASS  200% at 1280x720: nothing clips, leaves the viewport or overlaps, sampled every second
+PASS  200% at 1280x720: captions stay ≤2 lines  — 2
+PASS  200% at 1280x720: every §4.1 line still reaches the player whole
+PASS  200% at 1280x720: Skip control fully visible and unclipped  — {"w":235.015625,"h":70.71875,"fits":true}
+PASS  no page errors or failed requests
+s200a: 5/5 passed
+
+── mode s200b (exit 0)
+PASS  200% at 1024x640: nothing clips, leaves the viewport or overlaps, sampled every second
+PASS  200% at 1024x640: captions stay ≤2 lines  — 2
+PASS  200% at 1024x640: every §4.1 line still reaches the player whole
+PASS  200% at 1024x640: Skip control fully visible and unclipped  — {"w":235.015625,"h":70.71875,"fits":true}
+PASS  no page errors or failed requests
+s200b: 5/5 passed
+
+OVERALL exit 0

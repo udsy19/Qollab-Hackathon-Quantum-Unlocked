@@ -1,0 +1,445 @@
+{
+  "url": "http://127.0.0.1:8801/evidence/story-ui/harness/shell.html",
+  "provenance": {
+    "version": "shell-polish r1",
+    "hash": "bd186c0796f7"
+  },
+  "keys": [
+    "Tab",
+    "Tab",
+    "Tab",
+    "Enter",
+    "Enter (skip reveal)",
+    "Enter (next page)",
+    "Enter (skip reveal)",
+    "--- pause/settings ---",
+    "Escape",
+    "Tab",
+    "Tab",
+    "Tab",
+    "Tab",
+    "Tab",
+    "Tab",
+    "Shift+Tab",
+    "(focus reset to Resume for a known sequence)",
+    "Tab",
+    "Enter",
+    "Tab",
+    "Tab",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowRight",
+    "ArrowRight",
+    "Escape (back to pause)",
+    "Escape (resume)",
+    "--- walk every page of the long beat at 200% ---",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next)",
+    "Enter (skip reveal)",
+    "Enter (next page)",
+    "Enter (skip reveal)",
+    "--- reduced motion by keyboard ---",
+    "Escape",
+    "Tab",
+    "Enter",
+    "Tab",
+    "Space",
+    "Escape (back)",
+    "Escape (resume)"
+  ],
+  "checks": [
+    {
+      "name": "title: Start has focus on load",
+      "ok": true,
+      "detail": "{\"tag\":\"BUTTON\",\"text\":\"Start\",\"id\":\"\",\"outline\":\"solid 3px rgb(255, 225, 77)\",\"inMenu\":true}"
+    },
+    {
+      "name": "title: focus ring is a 3px solid outline",
+      "ok": true,
+      "detail": "solid 3px rgb(255, 225, 77)"
+    },
+    {
+      "name": "title: Tab wraps inside the menu (Start→Settings→Controls→Start)",
+      "ok": true,
+      "detail": "Start"
+    },
+    {
+      "name": "hud: top row reads brand/objective/countdown",
+      "ok": true,
+      "detail": "ECHO // DISTRICT 09 OBJECTIVE 02 RESTORE THE ENTANGLEMENT RELAY GRID SHUTDOWN 08:42"
+    },
+    {
+      "name": "hud: bottom row reads capsule + prompt",
+      "ok": true,
+      "detail": "◆ Q-SOURCE: PRESERVED E INTERACT"
+    },
+    {
+      "name": "hud: capsule state carries a glyph, not only colour",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hud 100%: geometry clean",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dialogue: reveal was in progress, Enter skipped to the full caption",
+      "ok": true,
+      "detail": "6 → 55"
+    },
+    {
+      "name": "dialogue 100%: page 1 is ≤2 lines",
+      "ok": true,
+      "detail": "{\"lines\":2,\"page\":\"1/3\",\"text\":\"A copied bit and a copied qubit are not the same thing.\"}"
+    },
+    {
+      "name": "dialogue 100%: long beat split into ≥2 pages",
+      "ok": true,
+      "detail": "1/3"
+    },
+    {
+      "name": "dialogue 100%: page 2 is ≤2 lines",
+      "ok": true,
+      "detail": "{\"lines\":2,\"page\":\"2/3\",\"text\":\"The duplicator matched the basis values for |0⟩ and |1⟩, but for |+⟩ it produced one correlated two-qubit state, not two independent copies.\"}"
+    },
+    {
+      "name": "pause: Esc opens pause with Resume focused",
+      "ok": true,
+      "detail": "{\"tag\":\"BUTTON\",\"text\":\"Resume\",\"id\":\"\",\"outline\":\"solid 3px rgb(255, 225, 77)\",\"inMenu\":true}"
+    },
+    {
+      "name": "pause: 6×Tab keeps focus inside the menu",
+      "ok": true,
+      "detail": "Controls"
+    },
+    {
+      "name": "pause: Shift+Tab keeps focus inside the menu",
+      "ok": true,
+      "detail": "Settings"
+    },
+    {
+      "name": "settings: opened from pause, Caption style focused",
+      "ok": true,
+      "detail": "{\"tag\":\"SELECT\",\"text\":\"StandardHigh contrast\",\"id\":\"echo-set-captionStyle\",\"outline\":\"solid 3px rgb(255, 225, 77)\",\"inMenu\":true}"
+    },
+    {
+      "name": "settings: no Subtitles/captions on-off control exists",
+      "ok": true,
+      "detail": "{\"labels\":[\"Caption style\",\"Reduced motion\",\"Text size\",\"Quality\",\"Volume\"],\"toggles\":[\"Reduced motion\"],\"options\":[\"standard\",\"high-contrast\"],\"contract\":[\"standard\",\"high-contrast\"]}"
+    },
+    {
+      "name": "settings: caption-style select offers exactly contracts.CAPTION_STYLES",
+      "ok": true,
+      "detail": "{\"labels\":[\"Caption style\",\"Reduced motion\",\"Text size\",\"Quality\",\"Volume\"],\"toggles\":[\"Reduced motion\"],\"options\":[\"standard\",\"high-contrast\"],\"contract\":[\"standard\",\"high-contrast\"]}"
+    },
+    {
+      "name": "settings: select and options use the UI font, not the system font",
+      "ok": true,
+      "detail": "{\"label\":\"Bahnschrift, \\\"DIN Alternate\\\", \\\"DIN Condensed\\\", \\\"Arial Narrow\\\", system-ui, -apple-system, \\\"Segoe UI\\\", Roboto, \\\"Helvetica Neue\\\", Arial, sans-serif\",\"select\":\"Bahnschrift, \\\"DIN Alternate\\\", \\\"DIN Condensed\\\", \\\"Arial Narrow\\\", system-ui, -apple-system, \\\"Segoe UI\\\", Roboto, \\\"Helvetica Neue\\\", Arial, sans-serif\",\"option\":\"Bahnschrift, \\\"DIN Alternate\\\", \\\"DIN Condensed\\\", \\\"Arial Narrow\\\", system-ui, -apple-system, \\\"Segoe UI\\\", Roboto, \\\"Helvetica Neue\\\", Arial, sans-serif\",\"button\":\"Bahnschrift, \\\"DIN Alternate\\\", \\\"DIN Condensed\\\", \\\"Arial Narrow\\\", system-ui, -apple-system, \\\"Segoe UI\\\", Roboto, \\\"Helvetica Neue\\\", Arial, sans-serif\"}"
+    },
+    {
+      "name": "settings: the focused first control shows a 3px focus ring",
+      "ok": true,
+      "detail": "solid 3px rgb(255, 225, 77)"
+    },
+    {
+      "name": "settings: text size range reachable by Tab",
+      "ok": true,
+      "detail": "echo-set-textScale"
+    },
+    {
+      "name": "settings: ArrowRight×4 sets text scale 200",
+      "ok": true,
+      "detail": "200"
+    },
+    {
+      "name": "settings 200%: geometry clean",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "settings: Esc returns to pause with Settings focused",
+      "ok": true,
+      "detail": "Settings"
+    },
+    {
+      "name": "pause: Esc resumes (menu closed)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dialogue 200%: every page ≤2 lines",
+      "ok": true,
+      "detail": "1/3:2 2/3:2 3/3:2"
+    },
+    {
+      "name": "dialogue 200%: pages rejoin to the exact beat text (no word lost)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dialogue 200%: a page breaks mid-sentence only when that sentence alone exceeds 2 lines",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dialogue 200%: no ASCII ket on screen; every |x> shows as |x⟩",
+      "ok": true,
+      "detail": "{\"ascii\":[],\"inSource\":3,\"onScreen\":3}"
+    },
+    {
+      "name": "script 200%: all 79 beats, every page ≤2 lines",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "script 200%: pages rejoin to the exact script (no word lost)",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "script 200%: no page breaks mid-sentence unless the sentence alone exceeds 2 lines",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "script 200%: no ASCII ket on screen",
+      "ok": true,
+      "detail": "{\"ascii\":[],\"inSource\":5,\"onScreen\":5}"
+    },
+    {
+      "name": "dialogue 200%: caption font is 2× the 100% size (18.4px → 36.8px)",
+      "ok": true,
+      "detail": "36.8px"
+    },
+    {
+      "name": "hud+dialogue 200%: nothing leaves the viewport, overflows or overlaps",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "hud 200%: countdown stays on the objective row (top row does not wrap)",
+      "ok": true,
+      "detail": "{\"objTop\":18,\"timerTop\":18,\"objRight\":864,\"timerLeft\":938,\"tooltip\":\"Q-SOURCE HOLDS |ψ⟩ · TEST STATE |+⟩\"}"
+    },
+    {
+      "name": "hud: tooltip shows kets as |x⟩, never ASCII",
+      "ok": true,
+      "detail": "Q-SOURCE HOLDS |ψ⟩ · TEST STATE |+⟩"
+    },
+    {
+      "name": "hud 200% with tooltip: nothing leaves the viewport, overflows or overlaps",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "dialogue 200%: page 2 opens on a new sentence and shows |0⟩ |1⟩ |+⟩",
+      "ok": true,
+      "detail": "{\"lines\":2,\"page\":\"2/3\",\"text\":\"The duplicator matched the basis values for |0⟩ and |1⟩, but for |+⟩ it produced one correlated two-qubit state, not two independent copies.\"}"
+    },
+    {
+      "name": "captions always on: setSettings({subtitles:false}) leaves the dialogue displayed",
+      "ok": true,
+      "detail": "{\"display\":\"grid\",\"attr\":null,\"errors\":[]}"
+    },
+    {
+      "name": "settings: menu.getSettings() passes contracts.validateSettings",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "motion off: transitions are non-zero (control)",
+      "ok": true,
+      "detail": "{\"dialogue\":\"0.2s, 0.2s, 0s\",\"prompt\":\"0.2s, 0.2s, 0s\",\"menu\":\"0.2s, 0s\",\"button\":\"0.2s, 0.2s\",\"hudTop\":\"0.2s, 0s\",\"promptKeyAnimation\":\"echo-key-pulse\"}"
+    },
+    {
+      "name": "settings: Space on Reduced motion sets data-reduced-motion=on",
+      "ok": true,
+      "detail": "on"
+    },
+    {
+      "name": "reduced motion: every UI transition computes to 0s",
+      "ok": true,
+      "detail": "{\"dialogue\":\"0s\",\"prompt\":\"0s\",\"menu\":\"0s\",\"button\":\"0s\",\"hudTop\":\"0s\",\"promptKeyAnimation\":\"none\"}"
+    },
+    {
+      "name": "reduced motion: prompt pulse animation is none",
+      "ok": true,
+      "detail": "none"
+    },
+    {
+      "name": "title 200%: nothing leaves the viewport or overflows",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "no page errors",
+      "ok": true,
+      "detail": ""
+    }
+  ],
+  "failed": 0,
+  "errors": []
+}

@@ -177,6 +177,10 @@ export const TELEPORT_FAILURE_CASES = Object.freeze({
   '11:00': ['missing_X', 'missing_Z'], '11:01': ['missing_X'], '11:10': ['missing_Z'], '11:11': [],
 })
 
+// "Fidelity" in plain words, shown wherever the player sees the word. It claims only what holds
+// for every value a dry run can show (1, 0.674, 0.177 and 0.149 on the generic test state).
+export const FIDELITY_GLOSS = 'Fidelity: how closely the received state matches the test state, on a scale from 0 to 1, where 1 means identical.'
+
 // Labels that say which column of HUD this lives in follow §6.1/§6.3.
 export const HUD = Object.freeze({
   header: { text: 'ECHO // DISTRICT 09', src: '§6.3' },
@@ -261,6 +265,7 @@ export const TERMINALS = Object.freeze({
     planRowTemplate: 'IF m0 = {m0}, m1 = {m1}:  X [{x}]  Z [{z}]',
     verify: { text: 'VERIFY DRY RUN', src: '§6.5' },
     fidelityLabel: { text: 'Receiver test fidelity', src: '§6.5' },
+    fidelityGloss: FIDELITY_GLOSS,
     commit: { text: 'COMMIT ONE-WAY TRANSFER', src: '§4.4' },
     receiverRecovered: { text: 'STATE RECOVERED', src: '§4.4' },
     vaultAccepted: 'VAULT: AUTHORIZATION ACCEPTED',

@@ -1,0 +1,79 @@
+[MIRROR 1/1 · 2 line(s)] Public safety measure active. District Nine.
+[MIRROR 1/1 · 2 line(s)] Grid isolation in eleven minutes and fifty-nine seconds.
+[MICA 1/1 · 2 line(s)] Rin. Backup generator is dying. Did you get it?
+[RIN 1/1 · 2 line(s)] I have the authorization.
+[MICA 1/1 · 2 line(s)] Then copy it. Send one to the tower. Bring the other to me.
+[RIN 1/1 · 2 line(s)] I can't copy this one.
+[MICA 1/1 · 2 line(s)] That's not funny.
+[RIN 1/1 · 2 line(s)] It wasn't supposed to be.
+[MICA 1/1 · 2 line(s)] Palisade copies everything. It says so on every billboard.
+[RIN 1/1 · 2 line(s)] Palisade copies data. This is a qubit.
+[RIN 1/1 · 2 line(s)] There's a booth on this block. I'll show you.
+[VEGA 1/1 · 2 line(s)] Maintenance override accepted. Hello, courier.
+[VEGA 1/1 · 2 line(s)] Test chamber only. Your token stays sealed in its capsule.
+[VEGA 1/1 · 2 line(s)] I prepare fresh calibration states for every test. Try your old method first.
+[VEGA 1/1 · 2 line(s)] |0⟩ in, |00⟩ out. |1⟩ in, |11⟩ out. Both basis values matched.
+[RIN 1/1 · 2 line(s)] Zero and one always copy. That was never the problem.
+[VEGA 1/1 · 2 line(s)] Then try a state that is not just 0 or 1.
+[VEGA 1/1 · 2 line(s)] Two outputs. Not two copies.
+[VEGA 1/1 · 2 line(s)] Read either output alone and it is 50/50 in every basis: pure noise.
+[VEGA 1/1 · 2 line(s)] Together they form one entangled pair. Neither is a |+⟩.
+[VEGA 1/1 · 2 line(s)] Your call, courier. More power, or a different route?
+[VEGA 1/1 · 2 line(s)] It's not defective. You're asking the machine to make two unknowns out of one.
+[RIN 1/1 · 2 line(s)] Then we stop trying to make two.
+[VEGA 1/1 · 2 line(s)] There is an old entanglement relay under the substation. Coordinates sent.
+[MIRROR 1/1 · 2 line(s)] District Nine shelter occupancy classified: evacuable.
+[MIRROR 1/1 · 2 line(s)] Load shedding proceeding on schedule.
+[MICA 1/1 · 2 line(s)] Rin?
+[RIN 1/1 · 2 line(s)] Still here. Copying is out. I'm finding another way.
+[VEGA 1/1 · 2 line(s)] Relay maintenance core online. Fully awake, at last.
+[VEGA 1/1 · 2 line(s)] This relay stores one half of many entangled pairs.
+[VEGA 1/1 · 2 line(s)] Each partner half waits at the vault's receiver.
+[RIN 1/1 · 2 line(s)] Palisade shared those pairs years ago, before any of this. Kept cold ever since.
+[VEGA 1/1 · 2 line(s)] Don't spend vault pairs on experiments. Use the test rig.
+[VEGA 1/1 · 2 line(s)] Same physics, with both halves in this room.
+[VEGA 1/1 · 2 line(s)] Test pair ready. Left half is yours. The right half plays the receiver.
+[VEGA 1/1 · 2 line(s)] The endpoints share a prepared resource. Correlation is not a message.
+[RIN 1/1 · 2 line(s)] If the pair can carry the token alone, we're done. Test it.
+[VEGA 1/1 · 2 line(s)] Receiver-only data: 50% / 50%. No decodable message.
+[VEGA 1/1 · 2 line(s)] What does the receiver actually know?
+[VEGA 1/1 · 2 line(s)] Put both logs side by side: after I they always match.
+[VEGA 1/1 · 2 line(s)] After X they never match. The pattern is real.
+[VEGA 1/1 · 2 line(s)] But comparing logs takes an ordinary message. The receiver alone sees noise.
+[VEGA 1/1 · 2 line(s)] You still need the message.
+[VEGA 1/1 · 2 line(s)] Old maintenance blueprint. A classical service line runs up to the rooftop tower.
+[MICA 1/1 · 2 line(s)] So the secret can't just travel down that blue cable?
+[RIN 1/1 · 2 line(s)] The blue link makes transfer possible.
+[RIN 1/1 · 2 line(s)] The amber one tells the other side what to do.
+[VEGA 1/1 · 2 line(s)] Rooftop access unlocked. The amber line's far end is up there.
+[MIRROR 1/1 · 2 line(s)] Grid isolation imminent. Shelter systems on reserve power.
+[MICA 1/1 · 2 line(s)] The lights on our floor just went out. Rin, hurry.
+[VEGA 1/1 · 2 line(s)] Three junctions between you and the mast. Patch the amber line through each.
+[VEGA 1/1 · 2 line(s)] Classical link online. It carries ordinary bits at ordinary speed.
+[RIN 1/1 · 2 line(s)] Blue for the pair. Amber for the bits. Now the console.
+[VEGA 1/1 · 2 line(s)] Not the token yet. A fresh test state first.
+[VEGA 1/1 · 2 line(s)] This console has a test rig. Both Bell halves stay here.
+[VEGA 1/1 · 2 line(s)] Only COMMIT spends a vault pair.
+[VEGA 1/1 · 2 line(s)] A Bell measurement on the source and your half gives two bits: m0 and m1.
+[VEGA 1/1 · 2 line(s)] The amber line carries them to the receiver. You choose its fix.
+[VEGA 1/1 · 2 line(s)] Receiver matches the test state. Those corrections were right.
+[VEGA 1/1 · 2 line(s)] The live run gives its own bits. The receiver applies the same rule.
+[VEGA 1/1 · 2 line(s)] Commit measures the token. There is no second try.
+[RIN 1/1 · 2 line(s)] One of one.
+[VEGA 1/1 · 2 line(s)] Bell measurement done. Two bits sent down the amber line.
+[VEGA 1/1 · 2 line(s)] Receiver corrected. Your source was measured.
+[VEGA 1/1 · 2 line(s)] The state now exists only at the vault.
+[MIRROR 1/1 · 2 line(s)] Emergency authorization accepted. District Nine grid isolation aborted.
+[MICA 1/1 · 2 line(s)] Rin? Did you make it?
+[RIN 1/1 · 2 line(s)] No. I sent it.
+[MICA 1/1 · 2 line(s)] But you still have it, right?
+[RIN 1/1 · 2 line(s)] Not anymore.
+[VEGA 1/1 · 2 line(s)] Voltage up forty percent. Same result.
+[VEGA 1/1 · 2 line(s)] Not a power problem. It is a rule of physics.
+[VEGA 1/1 · 2 line(s)] Amber line patched at this end. The rest of it runs up to the roof.
+[VEGA 1/1 · 2 line(s)] Not yet. The token gets one try. Prove a correction on a test state first.
+[VEGA 1/1 · 2 line(s)] That test state is spent. Here is a fresh one. Check the rule again.
+[VEGA 1/1 · 2 line(s)] Right, but 00 needs no fix. That proves nothing yet.
+[VEGA 1/1 · 2 line(s)] Fresh test state. Run until the bits call for a fix.
+[MIRROR 1/1 · 2 line(s)] Grid isolation held. Manual confirmation pending.
+[MICA 1/1 · 2 line(s)] The clock hit zero. Backup is still holding. Hurry, Rin.

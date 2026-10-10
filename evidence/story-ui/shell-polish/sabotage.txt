@@ -1,0 +1,23 @@
+control [1024x640] exit=0 :: 
+S1-no-sentence-backoff [1024x640] exit=1 :: dialogue 200%: a page breaks mid-sentence only when that sentence alone exceeds 2 li|
+S2-dialogue-no-kets [1024x640] exit=1 :: dialogue 200%: no ASCII ket on screen; every |x> shows as |x⟩  — {"ascii":["The dupl|script 200%: no ASCII ket on screen  — {"ascii":["|0> in, |00> out. |1> in, |11> out|
+S3-hud-tooltip-no-kets [1024x640] exit=1 :: hud: tooltip shows kets as |x⟩, never ASCII  — Q-SOURCE HOLDS |ψ> · TEST STATE |+>|
+S4-hud-top-wrap [1024x640] exit=1 :: settings 200%: geometry clean  — echo-hud__bottom out of viewport 26,663,998,744; ec|hud+dialogue 200%: nothing leaves the viewport, overflows or overlaps  — echo-hud__b|hud 200%: countdown stays on the objective row (top row does not wrap)  — {"objTop":|hud 200% with tooltip: nothing leaves the viewport, overflows or overlaps  — echo-hu|
+S4-hud-top-wrap [1366x768] exit=0 :: 
+S4-hud-top-wrap [1280x720] exit=0 :: 
+S5-select-system-font [1024x640] exit=1 :: settings: select and options use the UI font, not the system font  — {"label":"Bahns|
+S6-subtitles-toggle-back [1024x640] exit=1 :: settings: opened from pause, Caption style focused  — {"tag":"INPUT","text":"subtitl|settings: no Subtitles/captions on-off control exists  — {"labels":["Subtitles","Cap|settings: text size range reachable by Tab  — echo-set-reducedMotion|settings: ArrowRight×4 sets text scale 200  — 100|dialogue 200%: caption font is 2× the 100% size (18.4px → 36.8px)  — 18.4px|settings: Space on Reduced motion sets data-reduced-motion=on  — off|reduced motion: every UI transition computes to 0s  — {"dialogue":"0.2s, 0.2s, 0s","|reduced motion: prompt pulse animation is none  — echo-key-pulse|
+S7-settings-keep-stale-keys [1024x640] exit=1 :: settings: menu.getSettings() passes contracts.validateSettings  — unknown setting "s|
+S8-subtitles-off-hides [1024x640] exit=1 :: captions always on: setSettings({subtitles:false}) leaves the dialogue displayed  — |
+S9-no-short-screen-query [1024x640] exit=1 :: settings 200%: geometry clean  — echo-menu__panel out of viewport 32,19,992,731; ech|title 200%: nothing leaves the viewport or overflows  — echo-menu__panel echo-title |
+S10-dialogue-gap-uncapped [1024x640] exit=1 :: settings 200%: geometry clean  — echo-hud__bottom out of viewport 26,574,998,655; ec|hud+dialogue 200%: nothing leaves the viewport, overflows or overlaps  — echo-hud__b|hud 200% with tooltip: nothing leaves the viewport, overflows or overlaps  — echo-hu|
+S11-dialogue-footer-own-row [1024x640] exit=1 :: settings 200%: geometry clean  — echo-hud__bottom out of viewport 26,588,998,668; ec|hud+dialogue 200%: nothing leaves the viewport, overflows or overlaps  — echo-hud__b|hud 200% with tooltip: nothing leaves the viewport, overflows or overlaps  — echo-hu|
+control [data] exit=0 :: 
+D1-banned-back [data] exit=1 :: teachback.DECLASSIFIED.tabs[1].misconception.wrong: voices the §2.4 banned sentence "quantum entanglement transmits|
+D2-banned-paraphrase-in-beat [data] exit=0 :: HARNESS NO-OP (mutation did not apply; law 13). Manual rerun on a sed copy: exit=1, FAIL story.STORY.OPENING[9].text: voices the §2.4 banned sentence ... "The Bell pair delivers the token at once."
+D3-no-gloss-console [data] exit=1 :: objectives.TERMINALS.teleport_terminal.fidelityLabel.text: shows "fidelity" with no plain gloss in objectives.TERMI|
+D4-gloss-claims-zero [data] exit=1 :: objectives.FIDELITY_GLOSS: needs a plain 0-to-1 gloss where "1 means identical", and no claim about other values: "|
+D5-gloss-percent [data] exit=1 :: objectives.FIDELITY_GLOSS: needs a plain 0-to-1 gloss where "1 means identical", and no claim about other values: "|
+D6-banned-as-question [data] exit=0 :: by design: a question is not an assertion (manual rerun confirms the mutation applied: grep count 1, GREEN). NULL to note: the gate cannot tell a leading question from a neutral one.
+D7-branch-truth-wrongZ-scores-1 [data] exit=1 :: branch_truth m0=0 m1=0 X=0 Z=1: fidelity 1 but the receiver holds Z·state: "1 means identical" would be false|branch_truth m0=0 m1=1 X=1 Z=1: fidelity 1 but the receiver holds Z·state: "1 means identical" would be false|branch_truth m0=1 m1=0 X=0 Z=0: fidelity 1 but the receiver holds Z·state: "1 means identical" would be false|
+S12-gate-probe-60px (+S1) [1024x640] before guard: exit=0 NULL (both mid-sentence checks PASS vacuously); after guard: exit=1 :: dialogue 200%: a page breaks mid-sentence only when that sentence alone exceeds 2 lines  — probe 60px/36|script 200%: no page breaks mid-sentence unless the sentence alone exceeds 2 lines  — probe 60px/36.8px |
