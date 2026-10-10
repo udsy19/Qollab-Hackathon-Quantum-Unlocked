@@ -42,6 +42,13 @@ export const SPARSE = {
   clone: [{ experiment: 'cloning', engine: 'made_up_engine', circuitDescription: 'x', qubits: 2, parameters: {}, facts: ['x'] }],
   commit: exact('teleportation', tele, 3, { parameters: {}, measurementBits: { m0: 0, m1: 1 } }),
 };
+// One correct dry run per bit pair (m0, m1) = 00, 01, 10, 11, so every branch's rule line is on screen.
+export const BRANCHES = {
+  dryRuns: [[0, 0], [0, 1], [1, 0], [1, 1]].map(([m0, m1]) => ({
+    bits: exact('teleportation', tele, 3, { parameters: { theta: 1.137, phi: 0.44 }, measurementBits: { m0, m1 } }),
+    result: exact('teleportation', tele, 3, { parameters: { theta: 1.137, phi: 0.44, applyX: m1 === 1, applyZ: m0 === 1 }, measurementBits: { m0, m1 }, fidelity: 1 }),
+  })),
+};
 for (const r of [...SAMPLE.clone, ...SAMPLE.relay, ...SAMPLE.dryRuns.flatMap((d) => [d.bits, d.result]), SAMPLE.commit]) {
   const e = validateExperimentResult(r);
   if (e.length) throw new Error(`harness SAMPLE is not a valid ExperimentResult: ${e.join('; ')}`);
@@ -64,7 +71,7 @@ root.append(opener);
 const declassified = mountDeclassified(root, { menu, onEvent: (name) => log.push(['event', name]) });
 opener.addEventListener('click', () => declassified.open(SAMPLE));
 
-window.echoHarness = { menu, declassified, log, SAMPLE, SPARSE, opener };
+window.echoHarness = { menu, declassified, log, SAMPLE, SPARSE, BRANCHES, opener };
 servedHash().then((h) => {
   document.getElementById('provenance').textContent = `${VERSION} · sha256 ${h}`;
   Object.assign(window.echoHarness, { hash: h, version: VERSION, files: FILES });

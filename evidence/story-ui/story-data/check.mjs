@@ -154,6 +154,20 @@ check(Array.isArray(TB) && TB.length === 3, 'teachback.TEACHBACK', `must hold th
   check(typeof q?.question === 'string' && typeof q?.answer === 'string' && q.answer.trim() !== '', `teachback.TEACHBACK[${i}]`, 'needs question and answer')
 })
 
+// ------------------------------------------------------------------ 4b. Declassified copy (§4.5, §8.4)
+// Every engine kind the vision's §8.4 EngineKind names needs a journal label, so no number reaches
+// the screen without one; the not-recorded wording must exist, so an absent value is never blank.
+const ek = vision.match(/type EngineKind = ([^;]+);/)
+if (!ek) refuse('could not find §8.4 EngineKind in the vision doc')
+const RJ = teachback.RUN_JOURNAL
+for (const k of [...ek[1].matchAll(/'([a-z_]+)'/g)].map(m => m[1])) {
+  check(typeof RJ?.engines?.[k] === 'string' && RJ.engines[k].trim() !== '', `teachback.RUN_JOURNAL.engines.${k}`, 'needs a label (vision §8.4 EngineKind)')
+}
+check(typeof RJ?.notRecorded === 'string' && /not recorded/i.test(RJ.notRecorded), 'teachback.RUN_JOURNAL.notRecorded', 'must say "not recorded"')
+const DU = teachback.DECLASSIFIED_UI
+for (const k of ['journal', 'teachback', 'credits']) check(typeof DU?.tabs?.[k] === 'string', `teachback.DECLASSIFIED_UI.tabs.${k}`, 'missing tab label')
+check(!(teachback.CREDITS ?? []).some(c => /\S+@\S+\.\S+/.test(c.text)), 'teachback.CREDITS', 'no email addresses in credits (owner)')
+
 // ------------------------------------------------------------------ 5. forbidden claims, everywhere
 // Derived from the MEANING of §2.4 and §7.5, not its words. A sentence is the unit; claims that a
 // sentence may legitimately negate ("entanglement alone cannot send a message") are excused only by

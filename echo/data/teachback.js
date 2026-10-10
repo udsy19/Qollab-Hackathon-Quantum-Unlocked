@@ -51,7 +51,7 @@ export const DECLASSIFIED = Object.freeze({
       id: 'transfer',
       title: { text: 'THE TRANSFER', src: '§4.5' },
       whatIDid: 'Measured the source together with my Bell half, sent the two bits over the amber line, and set the receiver corrections. Then committed the real token once.',
-      whatTheQubitsDid: "The Bell measurement destroyed the source's state and produced two random bits. The receiver's half became the source state up to a known flip, which the bits undid.",
+      whatTheQubitsDid: "The Bell measurement destroyed the source's state and produced two random bits. The receiver's half became the source state up to a known correction (none, X, Z, or X and Z), and the two bits said which one to apply.",
       gates: 'H(q1) · CX(q1, q2) · CX(q0, q1) · H(q0) · measure q0 → m0, q1 → m1 · X on q2 if m1 = 1 · Z on q2 if m0 = 1',
       expected: [
         'm0 = 0, m1 = 0: no correction',

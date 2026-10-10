@@ -297,6 +297,19 @@ try {
   await page.evaluate(() => echoHarness.declassified.close());
   await settle(100);
 
+  // 8b. All four bit pairs: the journal's rule line must be §7.1's (X iff m1 = 1, Z iff m0 = 1),
+  // typed here from the vision, not from contracts.js. Order (m0, m1) = 00, 01, 10, 11.
+  await page.evaluate(() => echoHarness.declassified.open(echoHarness.BRANCHES));
+  await settle();
+  const br = await panelText();
+  const ruleLines = [...br.matchAll(/Rule for these bits[^\n]*\n\s*([^\n]+)/g)].map((x) => x[1].trim());
+  check('branches: rule lines for 00, 01, 10, 11 read no correction / X / Z / X then Z', JSON.stringify(ruleLines) === JSON.stringify([data.RUN_JOURNAL.labels.none, 'X', 'Z', 'X then Z']), JSON.stringify(ruleLines));
+  check('branches: the contract verdict on each correct choice is passed', (br.match(/\u2713 passed/g) || []).length === 4, (br.match(/\u2713 passed/g) || []).length);
+  await page.evaluate(() => { const p = document.querySelector('[role="tabpanel"]:not([hidden])'); p.querySelectorAll('section')[2].scrollIntoView(); });
+  await shot('09b-all-four-branches.png');
+  await page.evaluate(() => echoHarness.declassified.close());
+  await settle(100);
+
   // 9. Reduced motion: transitions measured with it off (control: non-zero) and on (all zero).
   await page.evaluate(() => echoHarness.declassified.open(echoHarness.SAMPLE));
   await settle();

@@ -1,7 +1,7 @@
 {
   "provenance": {
     "version": "declassified r1",
-    "hash": "eb2d7ee4d584",
+    "hash": "e6fa20da62c9",
     "files": [
       "echo/main.css",
       "echo/ui/accessibility.js",
@@ -324,6 +324,16 @@
       "name": "sparse: commit bits still shown (m0 = 0, m1 = 1)",
       "ok": true,
       "detail": "INGS\n\nnot recorded\n\nTHE TRANSFER · DRY RUNS\n\nnot recorded\n\nTHE TRANSFER · THE ONE COMMIT\n\nEXACT · local Qiskit statevector\n\nSOURCE READOUT m0\n0\nLOCAL BELL-HALF READOUT m1\n1\nYou applied\nnot recorded\nFidelity with the original state (simulation check)\nnot recorded\nBACKEND CHECK · ONE JOB\n\nnot recorded"
+    },
+    {
+      "name": "branches: rule lines for 00, 01, 10, 11 read no correction / X / Z / X then Z",
+      "ok": true,
+      "detail": "[\"no correction\",\"X\",\"Z\",\"X then Z\"]"
+    },
+    {
+      "name": "branches: the contract verdict on each correct choice is passed",
+      "ok": true,
+      "detail": "4"
     },
     {
       "name": "motion off (control): the dialog animates (some transition > 0)",
