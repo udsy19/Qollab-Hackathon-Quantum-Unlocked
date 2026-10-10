@@ -1,6 +1,6 @@
 # Declassified gate: sabotage round
 
-Run: `node evidence/story-ui/declassified/sabotage.mjs` on 2026-10-10T04:42:19.231Z. Each row is a disposable copy; the worktree was never mutated.
+Run: `node evidence/story-ui/declassified/sabotage.mjs` on 2026-10-10T04:48:23.014Z. Each row is a disposable copy; the worktree was never mutated.
 
 | mutation | expected | verdict | first failing checks |
 |---|---|---|---|
@@ -8,7 +8,7 @@ Run: `node evidence/story-ui/declassified/sabotage.mjs` on 2026-10-10T04:42:19.2
 | kets left ASCII | red | RED | FAIL  journal: no ASCII ket on screen<br>FAIL  tab THE COPY: every data line shown whole, kets as \|x⟩<br>FAIL  tab THE COPY: no ASCII ket on screen |
 | missing number defaults to 0.5 | red | RED | FAIL  sparse: no NaN / undefined / null / default 0.5 on screen |
 | engine label dropped from groups | red | RED | FAIL  journal: each group shows its engine label text |
-| correction rule swapped (X↔Z) | red | RED | FAIL  journal: dry-run rule line reads Z only for m0=1, m1=0 (both dry runs) |
+| correction rule swapped (X↔Z) | red | RED | FAIL  journal: dry-run rule line reads Z only for m0=1, m1=0 (both dry runs)<br>FAIL  branches: rule lines for 00, 01, 10, 11 read no correction / X / Z / X then Z |
 | invalid result shown anyway | red | RED | FAIL  sparse: invalid result shown as not recorded (contract check), engine not invented |
 | every choice shows the right why | red | RED | FAIL  teach-back: "Quantum states cannot be stored at all." shows its why<br>FAIL  teach-back: "The booth needed more power." shows its why<br>FAIL  teach-back: "The entangled pair was too old and had d" shows its why |
 | a score is shown | red | RED | FAIL  teach-back: no score shown |

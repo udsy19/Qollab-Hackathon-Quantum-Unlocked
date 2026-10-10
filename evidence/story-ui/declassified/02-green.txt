@@ -1,0 +1,65 @@
+provenance {"version":"declassified r1","hash":"e6fa20da62c9","files":["echo/main.css","echo/ui/accessibility.js","echo/ui/menu.js","echo/ui/declassified.js","echo/data/teachback.js"]}
+PASS  control: Esc opens pause in a started game
+PASS  open: isOpen() is true
+PASS  open: a visible modal dialog named Declassified
+PASS  open: focus moved into the dialog with a visible ring
+PASS  tabs: journal, the 3 §4.5 tabs, teach-back, credits, in that order
+PASS  journal: every value in the run record is shown
+PASS  journal: one engine-labelled group per recorded result, in record order
+PASS  journal: each group shows its engine label text
+PASS  journal: every engine kind in vision §8.4 has a label
+PASS  journal: no number outside an engine-labelled group
+PASS  journal: bits carry BIT_LABELS (SOURCE READOUT m0 / LOCAL BELL-HALF READOUT m1)
+PASS  journal: absent backend job reads "not recorded"
+PASS  journal: dry-run rule line reads Z only for m0=1, m1=0 (both dry runs)
+PASS  journal: no ASCII ket on screen
+PASS  journal: panel takes focus and End scrolls it to the bottom
+PASS  tab THE COPY: ArrowRight focuses and selects it, ring visible
+PASS  tab THE COPY: every data line shown whole, kets as |x⟩
+PASS  tab THE COPY: no ASCII ket on screen
+PASS  tab THE CONNECTION: ArrowRight focuses and selects it, ring visible
+PASS  tab THE CONNECTION: every data line shown whole, kets as |x⟩
+PASS  tab THE CONNECTION: no ASCII ket on screen
+PASS  tab THE TRANSFER: ArrowRight focuses and selects it, ring visible
+PASS  tab THE TRANSFER: every data line shown whole, kets as |x⟩
+PASS  tab THE TRANSFER: no ASCII ket on screen
+PASS  provenance note shown on a science tab
+PASS  teach-back: all 9 choices reached by Tab, each showed its why and a right/not-quite mark
+PASS  teach-back: all 3 questions answered
+PASS  teach-back: the 3 §4.5 questions shown verbatim
+PASS  teach-back: no score shown
+PASS  teach-back: no ASCII ket on screen
+PASS  credits: owner-ruled team line, verbatim
+PASS  credits: license line names udsy19 and contributors and MIT
+PASS  credits: "This effort is supported by Qollab & IonQ"
+PASS  credits: no email address anywhere in the dialog
+PASS  credits: every CREDITS row from the data is shown
+PASS  credits: opening the credits tab fired OPEN_CREDITS once
+PASS  focus: trapped and visible over 48 Tab/Shift+Tab presses
+PASS  esc: pause did not open while Declassified owned Esc
+PASS  esc: Declassified closed and focus returned to the opener
+PASS  esc: after close, Esc opens pause again (pause re-allowed)
+PASS  sparse: relay, dry runs, commit fidelity and backend each read "not recorded" (≥4)
+PASS  sparse: invalid result shown as not recorded (contract check), engine not invented
+PASS  sparse: no NaN / undefined / null / default 0.5 on screen
+PASS  sparse: commit bits still shown (m0 = 0, m1 = 1)
+PASS  branches: rule lines for 00, 01, 10, 11 read no correction / X / Z / X then Z
+PASS  branches: the contract verdict on each correct choice is passed
+PASS  motion off (control): the dialog animates (some transition > 0)
+PASS  reduced motion: every transition is 0s and no animation runs
+PASS  200% 1280×720 tab JOURNAL: no clipping (font 32px)
+PASS  200% 1280×720 tab THE COPY: no clipping (font 32px)
+PASS  200% 1280×720 tab THE CONNECTION: no clipping (font 32px)
+PASS  200% 1280×720 tab THE TRANSFER: no clipping (font 32px)
+PASS  200% 1280×720 tab TEACH-BACK: no clipping (font 32px)
+PASS  200% 1280×720 tab CREDITS: no clipping (font 32px)
+PASS  200% 1024×640 tab JOURNAL: no clipping (font 32px)
+PASS  200% 1024×640 tab THE COPY: no clipping (font 32px)
+PASS  200% 1024×640 tab THE CONNECTION: no clipping (font 32px)
+PASS  200% 1024×640 tab THE TRANSFER: no clipping (font 32px)
+PASS  200% 1024×640 tab TEACH-BACK: no clipping (font 32px)
+PASS  200% 1024×640 tab CREDITS: no clipping (font 32px)
+PASS  no page errors
+
+61 checks, 0 failed
+exit 0
