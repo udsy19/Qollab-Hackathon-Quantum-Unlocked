@@ -32,6 +32,15 @@ const wet = lighting.createWetGroundMaterial();
 let floors = 0;
 scene.traverse((o) => { if (o.isMesh && o.material?.color?.getHex() === 0x1f2a3c) { o.material = wet; floors++; } });
 const rain = createRain({ scene, camera, quality });
+// Gameplay's indoor volumes (from its relay.js / rooftop.js on gameplay-world-controller), as the
+// boxes gameplay is asked to pass to rain.addShelter. Each spans floor to roof slab, wall to wall.
+// The relay chamber is underground (vision §4.3: "a forgotten underground relay chamber"), so its box has no rain above it either.
+const SHELTERS = {
+  passage: { min: [-3.5, -1, -41.6], max: [3.5, 4.7, -26] },    // connector: roof slab y 4.4–4.7
+  relay: { min: [-10, -1, -60], max: [10, 200, -41] },          // chamber shell, walls 10 m, no roof in graybox
+  elevator: { min: [8.8, -1, -53.5], max: [17.2, 4.7, -46.5] }, // corridor: roof slab y 4.4–4.7
+};
+if (!params.has('noshelter')) Object.values(SHELTERS).forEach((b) => rain.addShelter(b));
 const skyline = createSkyline({ scene, quality, sweepView: district.finalShot });
 
 // Refs by position: the preview cannot edit gameplay's files, gameplay will pass these by name.
@@ -64,6 +73,8 @@ const VIEWS = {
   alley: { position: [1.2, 1.7, 3.5], target: [-0.6, 1.4, -14] },
   'alley-wide': { position: [-3.5, 2.6, 3.6], target: [2, 3.5, -22] },
   relay: { position: [6.5, 2.6, -43], target: [-3, 1.2, -56] },
+  passage: { position: [0, 1.7, -27.6], target: [0, 1.5, -40] },
+  elevator: { position: [16, 1.7, -50], target: [9, 1.5, -50] },
   rooftop: { position: [19, 2.4, -42], target: [36, 3, -58] },
   finalShot: district.finalShot,
 };
@@ -81,6 +92,8 @@ const systems = [lighting, rain, skyline, effects];
 function setQuality(q) { systems.forEach((s) => s.setQuality(q)); $('q').value = q; }
 setQuality(quality);
 $('rm').checked = params.has('rm');
+rain.setReducedMotion($('rm').checked);
+$('rm').onchange = (e) => rain.setReducedMotion(e.target.checked);
 
 // --- controls ---
 $('q').onchange = (e) => setQuality(e.target.value);
@@ -140,5 +153,5 @@ restoration ${skyline.progress.toFixed(2)} ${skyline.playing ? 'playing' : ''}  
 }
 requestAnimationFrame(frame);
 
-window.__art = { THREE, scene, camera, renderer, lighting, rain, skyline, effects, refs, audioLog, stats, setView, setQuality,
+window.__art = { THREE, scene, camera, renderer, lighting, rain, skyline, effects, refs, audioLog, stats, setView, setQuality, SHELTERS,
   setWalk: (w) => { walk = w; }, get elapsed() { return elapsed; } };
