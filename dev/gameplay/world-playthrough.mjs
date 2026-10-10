@@ -514,8 +514,9 @@ console.log(`${results.length - failed}/${results.length} checks passed`);
 if (flag('--publish')) {
   if (failed) console.log('not publishing: run was not green');
   else {
-    fs.rmSync(PUBLISH_DIR, { recursive: true, force: true });
+    // Replace only what this script writes (png/mp4/json); the gate logs and README beside them stay.
     fs.mkdirSync(PUBLISH_DIR, { recursive: true });
+    for (const f of fs.readdirSync(PUBLISH_DIR)) if (/\.(png|mp4|json)$/.test(f)) fs.rmSync(path.join(PUBLISH_DIR, f));
     for (const f of fs.readdirSync(OUT)) if (/\.(png|mp4|json)$/.test(f)) fs.copyFileSync(path.join(OUT, f), path.join(PUBLISH_DIR, f));
     console.log(`published → ${PUBLISH_DIR}`);
   }

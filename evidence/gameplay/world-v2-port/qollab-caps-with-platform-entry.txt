@@ -12,6 +12,6 @@ LIMITATIONS (not covered by any rule above):
   - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
   - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
   - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
-scanned 19 files (18 code files) under /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.F8pbSd3GrB/echo
+scanned 19 files (18 code files) under /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.2GElvGoZYL/echo
 RED: 6 failure(s) across 2 rule(s): import-unresolved, import-specifier
 exit 1
