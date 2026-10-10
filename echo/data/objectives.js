@@ -125,14 +125,14 @@ export const HINTS = Object.freeze({
     ladder: [
       { kind: 'inspect', text: 'Read the two bits: m0 is the source readout, m1 is your Bell half.' },
       { kind: 'resource', text: 'The amber line carries m0 and m1 to the receiver. Each bit controls one fix.' },
-      { kind: 'operation', text: 'Apply X if m1 = 1 and Z if m0 = 1. Set this for all four results.' },
+      { kind: 'operation', text: 'Apply X if m1 = 1 and Z if m0 = 1.' },
     ],
   },
   teleport_commit: {
     states: ['TELEPORT_DRY_RUN_PASSED'],
     ladder: [
       { kind: 'inspect', text: 'Check the capsule. The token is still STATE PRESENT.' },
-      { kind: 'resource', text: 'Your correction rule is proven. The token can be measured only once.' },
+      { kind: 'resource', text: 'Your corrections worked on a test state. The token can be measured only once.' },
       { kind: 'operation', text: 'Press COMMIT ONE-WAY TRANSFER.' },
     ],
   },
@@ -154,16 +154,28 @@ export const FAILURES = Object.freeze({
     wrong_junction: 'No signal reaches that junction yet. Patch the one the glow stops at.',
   },
   teleportation: {
-    missing_X: 'm1 = 1 but X was off. The receiver state is left bit-flipped.',
-    missing_Z: 'm0 = 1 but Z was off. The receiver state is left phase-flipped.',
-    extra_X: 'X was on but m1 = 0. That flip damaged a state that was already right.',
-    extra_Z: 'Z was on but m0 = 0. That phase flip damaged a state that was already right.',
-    no_corrections: 'No corrections set. Without the two bits the receiver cannot know which fix to apply.',
+    missing_X: 'm1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone.',
+    missing_Z: 'm0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone.',
+    extra_X: 'X was on but m1 = 0. That X added a bit flip the bits never called for.',
+    extra_Z: 'Z was on but m0 = 0. That Z added a phase flip the bits never called for.',
     blind_spot: 'On this test state that mistake happens to look harmless. It would fail on most others.',
-    commit_locked: 'Commit locked. Pass a dry run first: the token can be measured only once.',
+    commit_locked: 'Commit locked. First pass a dry run whose bits are not 00: the token can be measured only once.',
     trivial_pass: 'm0 = 0 and m1 = 0 need no correction, so this run does not test the rule. Measure a fresh state.',
     already_committed: 'Transfer complete. The source was measured; there is nothing left to send.',
   },
+})
+
+// Which FAILURES.teleportation lines a dry run shows, keyed 'm0m1:XZ': the two measured bits, then
+// the receiver plan's X and Z switches (1 = on). A correct plan shows none. A plan with both
+// corrections wrong shows two lines, one per wrong switch. Each line is worded to be true whatever
+// the other bit and switch are: evidence/story-ui/data-fixes/branch-truth.md checks all 16 in Qiskit.
+// `blind_spot` is not listed: the terminal adds it when a listed failure still scores high
+// fidelity on that particular test state.
+export const TELEPORT_FAILURE_CASES = Object.freeze({
+  '00:00': [], '00:01': ['extra_Z'], '00:10': ['extra_X'], '00:11': ['extra_X', 'extra_Z'],
+  '01:00': ['missing_X'], '01:01': ['missing_X', 'extra_Z'], '01:10': [], '01:11': ['extra_Z'],
+  '10:00': ['missing_Z'], '10:01': [], '10:10': ['extra_X', 'missing_Z'], '10:11': ['extra_X'],
+  '11:00': ['missing_X', 'missing_Z'], '11:01': ['missing_X'], '11:10': ['missing_Z'], '11:11': [],
 })
 
 // Labels that say which column of HUD this lives in follow §6.1/§6.3.
@@ -172,6 +184,8 @@ export const HUD = Object.freeze({
   objectivePrefix: 'OBJECTIVE',
   countdownLabel: { text: 'GRID SHUTDOWN', src: '§6.3' },
   countdownAborted: 'GRID ISOLATION ABORTED',
+  // At 00:00 the display holds and the story continues: no game-over from the timer (§1 anti-goals).
+  countdownHeld: 'ISOLATION HELD // AWAITING CONFIRMATION',
   capsuleLabel: 'Q-SOURCE',
   capsulePreserved: { text: 'PRESERVED', src: '§6.3' },
   capsuleConsumed: 'MEASURED / CONSUMED',
@@ -196,7 +210,7 @@ export const HUD = Object.freeze({
   // Field scanner (Q) readouts, keyed by interactable id.
   scans: {
     copy_booth: 'PALISADE DUPLICATION SERVICES. CLASSICAL DATA COPIER. MAINTENANCE PORT OPEN.',
-    relay_core: 'ENTANGLEMENT RELAY. BELL HALVES IN COLD STORAGE. PARTNERS: VAULT RECEIVER.',
+    relay_core: 'ENTANGLEMENT RELAY. BELL HALVES IN COLD STORAGE. PARTNERS: VAULT RECEIVER. TEST RIG ON SITE.',
     classical_socket: 'LEGACY DATA LINK. CLASSICAL. THREE JUNCTIONS DARK.',
     teleport_terminal: 'TRANSMISSION CONSOLE. NEEDS: BELL PAIR + CLASSICAL LINK.',
   },
@@ -271,7 +285,7 @@ export const TERMINALS = Object.freeze({
     classicalOnline: { text: 'CLASSICAL LINK ONLINE', src: '§4.4' },
     slotSource: 'SOURCE',
     slotLocal: 'LOCAL BELL HALF',
-    slotRemote: 'REMOTE BELL HALF',
+    slotRemote: 'RECEIVER BELL HALF',
     measure: { text: 'EXECUTE BELL MEASUREMENT ON TEST STATE', src: '§6.5' },
     testState: 'FRESH CALIBRATION STATE',
     m0Label: 'SOURCE READOUT m0',

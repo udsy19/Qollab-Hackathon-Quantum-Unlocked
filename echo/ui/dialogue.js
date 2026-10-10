@@ -34,6 +34,10 @@ export function mountDialogue(root) {
   let revealed = 0;
   let revealTimer = 0;
   let resolveDone = null;
+  // Timed mode (the opening): pages advance themselves after `auto(pageText)` ms and the keys and
+  // Continue button stand down, so a cinematic's clock, not the reader, moves the captions.
+  let auto = null;
+  let autoTimer = 0;
 
   const reducedMotion = () => root.closest('[data-reduced-motion="on"]') !== null;
 
@@ -69,6 +73,12 @@ export function mountDialogue(root) {
   function stopReveal() {
     clearTimeout(revealTimer);
     revealTimer = 0;
+    clearTimeout(autoTimer);
+    autoTimer = 0;
+  }
+
+  function scheduleAuto() {
+    if (auto) autoTimer = setTimeout(() => api.advance(), auto(pageText));
   }
 
   function renderPage() {
@@ -81,6 +91,7 @@ export function mountDialogue(root) {
     if (reducedMotion() || beat.reveal === false) {
       revealed = pageText.length;
       text.textContent = pageText;
+      scheduleAuto();
       return;
     }
     revealed = 0;
@@ -89,7 +100,10 @@ export function mountDialogue(root) {
       revealed = Math.min(pageText.length, revealed + 2);
       text.textContent = pageText.slice(0, revealed);
       if (revealed < pageText.length) revealTimer = setTimeout(step, 2000 / REVEAL_CHARS_PER_SECOND);
-      else revealTimer = 0;
+      else {
+        revealTimer = 0;
+        scheduleAuto();
+      }
     };
     step();
   }
@@ -100,6 +114,7 @@ export function mountDialogue(root) {
     pageStart = 0;
     speaker.textContent = beat.speaker;
     box.dataset.speaker = String(beat.speaker).toLowerCase();
+    box.dataset.auto = auto ? 'true' : 'false';
     box.dataset.visible = 'true';
     renderPage();
   }
@@ -120,8 +135,10 @@ export function mountDialogue(root) {
       return beat !== null;
     },
     // Plays beats [{speaker, text, reveal?}] in order; resolves after the last page is advanced.
-    play(beats) {
+    // `options.auto(pageText) -> ms` switches on timed mode (see above).
+    play(beats, options = {}) {
       if (resolveDone) resolveDone();
+      auto = typeof options.auto === 'function' ? options.auto : null;
       queue = [...beats];
       return new Promise((resolve) => {
         resolveDone = resolve;
@@ -172,7 +189,7 @@ export function mountDialogue(root) {
   // Enter/Space advance only when focus is not on another control and no one handled the key,
   // so menus and terminals keep their own Enter.
   function onKey(event) {
-    if (!beat || event.defaultPrevented) return;
+    if (!beat || auto || event.defaultPrevented) return;
     if (event.key !== 'Enter' && event.key !== ' ') return;
     const active = document.activeElement;
     const free = !active || active === document.body || active === next;

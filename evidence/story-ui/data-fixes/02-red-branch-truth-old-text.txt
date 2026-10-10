@@ -1,0 +1,26 @@
+vision: 21 §9.1 states, 15 HUD states, cast RIN/MICA/VEGA/MIRROR
+data: /Users/udsy/agent-org/lanes/story-ui/wt/data-fixes/echo/data
+counted: 74 beats in 20 groups · 14 hint ladders · 520 strings scanned · 11389 checks
+placeholder (owner to fill): teachback.CREDITS[1].text = "TODO_OWNER: team and credit names (not yet given by the owner)"
+placeholder (owner to fill): teachback.CREDITS[5].text = "TODO_OWNER: third-party assets and their licenses (art lane to list; none yet)"
+FAIL teachback.CREDITS.team: must be exactly "Team The Quantubians (NYU Tandon School of Engineering): Udaya (captain), George, Harman, Epa", is ["TODO_OWNER: team and credit names (not yet given by the owner)"]
+FAIL objectives.TERMINALS.teleport_terminal.m0Label: must be exactly "SOURCE READOUT m0", is "m0  SOURCE READOUT"
+FAIL objectives.TERMINALS.teleport_terminal.m1Label: must be exactly "LOCAL BELL-HALF READOUT m1", is "m1  LOCAL BELL-HALF READOUT"
+FAIL story.STORY.TELEPORT_DRY_RUN[1].text: dry runs never use a vault partner: "Three slots: test source, your Bell half, and its partner at the vault."
+FAIL story.STORY.TELEPORT_DRY_RUN[1].text: dry-run text puts the vault in the experiment: "Three slots: test source, your Bell half, and its partner at the vault."
+FAIL story.MOMENTS.countdown_zero: the countdown reaching 00:00 needs a beat
+FAIL story.MOMENTS.countdown_zero: the zero beat must say the isolation is held
+FAIL objectives.HUD.countdownHeld: the HUD needs a held status line for 00:00
+FAIL story.MOMENTS.teleport_dry_run_00: a correct 00 dry run must say it does not unlock COMMIT
+FAIL objectives.FAILURES.teleportation.commit_locked: must say the passing dry run needs bits other than 00
+FAIL objectives.FAILURES.teleportation.no_corrections: a failure line this gate has no claim record for cannot be judged
+FAIL objectives.TELEPORT_FAILURE_CASES['00:11']: extra_X says the rest was already right, but the receiver holds XZ·state: "X was on but m1 = 0. That flip damaged a state that was already right."
+FAIL objectives.TELEPORT_FAILURE_CASES['00:11']: extra_Z says the rest was already right, but the receiver holds XZ·state: "Z was on but m0 = 0. That phase flip damaged a state that was already right."
+FAIL objectives.TELEPORT_FAILURE_CASES['01:01']: missing_X says the receiver is left bit-flipped, but it holds XZ·state: "m1 = 1 but X was off. The receiver state is left bit-flipped."
+FAIL objectives.TELEPORT_FAILURE_CASES['01:01']: extra_Z says the rest was already right, but the receiver holds XZ·state: "Z was on but m0 = 0. That phase flip damaged a state that was already right."
+FAIL objectives.TELEPORT_FAILURE_CASES['10:10']: extra_X says the rest was already right, but the receiver holds XZ·state: "X was on but m1 = 0. That flip damaged a state that was already right."
+FAIL objectives.TELEPORT_FAILURE_CASES['10:10']: missing_Z says the receiver is left phase-flipped, but it holds XZ·state: "m0 = 1 but Z was off. The receiver state is left phase-flipped."
+FAIL objectives.TELEPORT_FAILURE_CASES['11:00']: missing_X says the receiver is left bit-flipped, but it holds XZ·state: "m1 = 1 but X was off. The receiver state is left bit-flipped."
+FAIL objectives.TELEPORT_FAILURE_CASES['11:00']: missing_Z says the receiver is left phase-flipped, but it holds XZ·state: "m0 = 1 but Z was off. The receiver state is left phase-flipped."
+RED: 19 failure(s)
+exit 1

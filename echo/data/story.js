@@ -72,7 +72,7 @@ export const STORY = Object.freeze({
 
   // §4.3 Mission 2: THE CONNECTION.
   RELAY_INTRO: [
-    { speaker: 'VEGA', text: 'Relay maintenance core online. More room for me down here.', direction: 'power switch wakes the relay; VEGA projects at full size' },
+    { speaker: 'VEGA', text: 'Relay maintenance core online. Fully awake, at last.', direction: 'power switch wakes the relay; VEGA projects at full size' },
     { speaker: 'VEGA', text: 'This relay stores one half of many entangled pairs.' },
     { speaker: 'VEGA', text: "Each partner half waits at the vault's receiver." },
     { speaker: 'RIN', text: 'Palisade shared those pairs years ago, before any of this. Kept cold ever since.' },
@@ -112,13 +112,14 @@ export const STORY = Object.freeze({
   ],
   TELEPORT_DRY_RUN: [
     { speaker: 'VEGA', text: 'Not the token yet. A fresh test state first.' },
-    { speaker: 'VEGA', text: "Three slots: test source, your Bell half, and its partner at the vault." },
+    { speaker: 'VEGA', text: 'This console has a test rig. Both Bell halves stay here.' },
+    { speaker: 'VEGA', text: 'Only COMMIT spends a vault pair.' },
     { speaker: 'VEGA', text: 'A Bell measurement on the source and your half gives two bits: m0 and m1.' },
-    { speaker: 'VEGA', text: 'The amber line carries them. Tell the receiver what to do for each result.' },
+    { speaker: 'VEGA', text: 'The amber line carries them to the receiver. You choose its fix.' },
   ],
   TELEPORT_DRY_RUN_PASSED: [
-    { speaker: 'VEGA', text: 'Receiver matches the test state. Your correction rule holds.' },
-    { speaker: 'VEGA', text: 'The live run will give its own bits. The rule carries over, not the bits.' },
+    { speaker: 'VEGA', text: 'Receiver matches the test state. Those corrections were right.' },
+    { speaker: 'VEGA', text: 'The live run gives its own bits. The receiver applies the same rule.' },
     { speaker: 'VEGA', text: 'Commit measures the token. There is no second try.' },
     { speaker: 'RIN', text: 'One of one.' },
   ],
@@ -148,10 +149,21 @@ export const MOMENTS = Object.freeze({
   ],
   // Player tries to commit before a passed dry run (§7.4 story integrity).
   teleport_commit_locked: [
-    { speaker: 'VEGA', text: 'Not yet. The token gets one try. Prove the rule on a test state first.' },
+    { speaker: 'VEGA', text: 'Not yet. The token gets one try. Prove a correction on a test state first.' },
   ],
   // A dry run fails; the next one uses a fresh calibration state (owner ruling 2026-10-10).
   teleport_dry_run_failed: [
     { speaker: 'VEGA', text: 'That test state is spent. Here is a fresh one. Check the rule again.' },
+  ],
+  // A correct dry run on bits 00: no correction was needed, so COMMIT stays locked (owner ruling
+  // 2026-10-10: COMMIT unlocks after one correct dry run with bits other than 00).
+  teleport_dry_run_00: [
+    { speaker: 'VEGA', text: 'Right, but 00 needs no fix. That proves nothing yet.' },
+    { speaker: 'VEGA', text: 'Fresh test state. Run until the bits call for a fix.' },
+  ],
+  // The narrative countdown reaches 00:00: the display holds, nothing ends (§1 anti-goals, §9.3).
+  countdown_zero: [
+    { speaker: 'MIRROR', text: 'Grid isolation held. Manual confirmation pending.' },
+    { speaker: 'MICA', text: 'The clock hit zero. Backup is still holding. Hurry, Rin.' },
   ],
 })
