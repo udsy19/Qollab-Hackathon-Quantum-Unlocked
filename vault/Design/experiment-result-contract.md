@@ -1,12 +1,17 @@
 ---
 type: design
-status: proposed
+status: outdated
 date: 2026-10-09
 updated: 2026-10-09
 owner: quantum-core (quantum lane); final schema belongs to the platform lane
 ---
 
 # ExperimentResult contract: what the quantum engine returns to JS
+
+> **Outdated (2026-10-09, contract-conformance):** superseded by the platform's `echo/contracts.js` +
+> `echo/CONTRACTS.md` (`lane/platform/integration`), which rejects `kind`, `details` and
+> `circuitText` and requires `keyQubits` with 0/1 keys. The engine now conforms; field-by-field
+> mapping and measurements in [[Reports/contract-conformance]]. The call table below is still accurate.
 
 **Status:** proposed. Implemented by `echo/quantum/formats.py` on branch `lane/quantum/quantum-core`.
 The platform lane owns the shared schema; this note proposes it, it does not decide it.
