@@ -1,6 +1,7 @@
 ---
 type: report
-status: current
+status: outdated
+outdated_reason: "quest:transition/quest:enter/BOOTED API superseded (contracts migration, then the v2 port) — see [[Reports/world-v2-port]]"
 date: 2026-10-09
 updated: 2026-10-09
 lane: gameplay

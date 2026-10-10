@@ -2,7 +2,7 @@
   "build": "v2p-0006-a",
   "port": 8647,
   "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)",
-  "readout": "build v2p-0006-a  fps 24  ms 0.52  calls 95\nstate FREE_ROAM_ALLEY\npos 0.00, 2.00  focus -",
+  "readout": "build v2p-0006-a  fps 20  ms 0.39  calls 95\nstate FREE_ROAM_ALLEY\npos 0.00, 2.00  focus -",
   "results": [
     {
       "name": "run 1: title shown at TITLE",
@@ -22,12 +22,12 @@
     {
       "name": "run 1: prompt at booth when near + facing",
       "ok": true,
-      "detail": "{\"x\":3.573172520034621,\"z\":-11.481418008103645,\"heading\":-1.5484638665439057,\"speed\":0.00421681410698575}"
+      "detail": "{\"x\":3.449817761435092,\"z\":-11.468255573171849,\"heading\":-1.4218698225439002,\"speed\":0.00045450490780859793}"
     },
     {
       "name": "no prompt behind pylon (in range, facing)",
       "ok": true,
-      "detail": "dist=2.22 heading=-2.34"
+      "detail": "dist=2.27 heading=-2.34"
     },
     {
       "name": "SABOTAGE pylon collider off → same spot now prompts (check flips)",
@@ -47,7 +47,7 @@
     {
       "name": "SABOTAGE door A collider off → player passes the door line (check flips)",
       "ok": true,
-      "detail": "z=-28.47"
+      "detail": "z=-28.62"
     },
     {
       "name": "run 1: E opens booth terminal, quest → CLONE_INTRO",
@@ -107,7 +107,7 @@
     {
       "name": "run 1: prompt at relay core",
       "ok": true,
-      "detail": "{\"x\":0.13838574292876316,\"z\":-47.39875606107765,\"heading\":-5.447318074595779,\"speed\":0.01449052115419366}"
+      "detail": "{\"x\":0.024578495582398115,\"z\":-47.49731792437377,\"heading\":-5.433008792675342,\"speed\":0.05645391151550341}"
     },
     {
       "name": "terminal \"Sender I\" → RELAY_BELL_CREATED",
@@ -162,7 +162,7 @@
     {
       "name": "run 1: prompt at teleport_terminal",
       "ok": true,
-      "detail": "{\"x\":30.012649340912283,\"z\":-44.164591236310535,\"heading\":-3.070495309054346,\"speed\":0.055897351385364655}"
+      "detail": "{\"x\":29.99189520499566,\"z\":-44.05406172070532,\"heading\":-3.1003095377044696,\"speed\":0.051805237089056884}"
     },
     {
       "name": "run 1: E at terminal → TELEPORT_DRY_RUN",
@@ -182,7 +182,7 @@
     {
       "name": "run 1: phase 1 carries bits and no fidelity, on a generic calibration state",
       "ok": true,
-      "detail": "{\"theta\":2.1591913875446145,\"phi\":3.1125558873206476}"
+      "detail": "{\"theta\":1.0026444186731156,\"phi\":1.5146892464212849}"
     },
     {
       "name": "terminal \"Apply Z\" → TELEPORT_DRY_RUN",
@@ -192,7 +192,7 @@
     {
       "name": "run 1: wrong dry run visibly fails (Qiskit fidelity ≤ 0.9) and stays in TELEPORT_DRY_RUN",
       "ok": true,
-      "detail": "F=0.691362126341 θ=2.159 φ=3.113 — dry run (Z): no progress — wrong correction for m0=1, m1=1: calibrate again on a fresh state · fidelity shown 0.691362126341"
+      "detail": "F=0.002234232729 θ=1.003 φ=1.515 — dry run (Z): no progress — wrong correction for m0=1, m1=1: calibrate again on a fresh state · fidelity shown 0.002234232729"
     },
     {
       "name": "run 1: correct dry run → TELEPORT_DRY_RUN_PASSED, every attempt on a fresh state",
@@ -237,7 +237,7 @@
     {
       "name": "run 2: prompt at booth when near + facing",
       "ok": true,
-      "detail": "{\"x\":3.6122626851203745,\"z\":-11.494756761960975,\"heading\":-1.6507127783500506,\"speed\":0.04480007908973229}"
+      "detail": "{\"x\":3.6988620861244543,\"z\":-11.493302577245103,\"heading\":-1.5667147046827605,\"speed\":0.041087949642092676}"
     },
     {
       "name": "run 2: E opens booth terminal, quest → CLONE_INTRO",
@@ -292,7 +292,7 @@
     {
       "name": "run 2: prompt at relay core",
       "ok": true,
-      "detail": "{\"x\":0.009506052641344036,\"z\":-47.46939209005386,\"heading\":-0.061935035285674005,\"speed\":0.022199465457370934}"
+      "detail": "{\"x\":0.01106857871410397,\"z\":-47.56382167969498,\"heading\":-0.05139800587458223,\"speed\":0.01692455436870061}"
     },
     {
       "name": "terminal \"Sender I\" → RELAY_BELL_CREATED",
@@ -347,7 +347,7 @@
     {
       "name": "run 2: prompt at teleport_terminal",
       "ok": true,
-      "detail": "{\"x\":29.990596336944822,\"z\":-44.14671164184735,\"heading\":-3.1807999234380806,\"speed\":0.014966395012359735}"
+      "detail": "{\"x\":30.005723467863632,\"z\":-44.126874325745554,\"heading\":-3.1853585663129484,\"speed\":0.019476646520327375}"
     },
     {
       "name": "run 2: E at terminal → TELEPORT_DRY_RUN",
@@ -362,27 +362,27 @@
     {
       "name": "run 2: bits shown before corrections, all four choices offered",
       "ok": true,
-      "detail": "m0=1 m1=1"
+      "detail": "m0=1 m1=0"
     },
     {
       "name": "run 2: phase 1 carries bits and no fidelity, on a generic calibration state",
       "ok": true,
-      "detail": "{\"theta\":2.8178367839414706,\"phi\":1.7316972892806737}"
+      "detail": "{\"theta\":2.0469806434442077,\"phi\":-2.9150797613690087}"
     },
     {
-      "name": "terminal \"Apply Z\" → TELEPORT_DRY_RUN",
+      "name": "terminal \"Apply X then Z\" → TELEPORT_DRY_RUN",
       "ok": true,
       "detail": "TELEPORT_DRY_RUN"
     },
     {
       "name": "run 2: wrong dry run visibly fails (Qiskit fidelity ≤ 0.9) and stays in TELEPORT_DRY_RUN",
       "ok": true,
-      "detail": "F=0.00259761151 θ=2.818 φ=1.732 — dry run (Z): no progress — wrong correction for m0=1, m1=1: calibrate again on a fresh state · fidelity shown 0.00259761151"
+      "detail": "F=0.750038686182 θ=2.047 φ=-2.915 — dry run (X then Z): no progress — wrong correction for m0=1, m1=0: calibrate again on a fresh state · fidelity shown 0.750038686182"
     },
     {
       "name": "run 2: correct dry run → TELEPORT_DRY_RUN_PASSED, every attempt on a fresh state",
       "ok": true,
-      "detail": "3 distinct states"
+      "detail": "2 distinct states"
     },
     {
       "name": "run 2: commit → TELEPORT_COMMITTED",
@@ -452,7 +452,7 @@
     {
       "name": "SABOTAGE reset handler removed (app.js: QUEST_STATE_CHANGED to RESET_STATE no longer resets the world) → check goes red",
       "ok": true,
-      "detail": "state=TITLE z=-0.88"
+      "detail": "state=TITLE z=-0.77"
     },
     {
       "name": "control (copy, unbroken): EVENT_SOURCES gate removed check passes",

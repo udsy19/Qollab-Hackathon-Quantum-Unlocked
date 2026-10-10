@@ -1,6 +1,7 @@
 ---
 type: report
-status: current
+status: outdated
+outdated_reason: "bus section (ui:terminal:*, quest:reset, openAt) superseded by contracts v2 port — see [[Reports/world-v2-port]]; controls/collision/camera sections still hold"
 date: 2026-10-10
 updated: 2026-10-10
 lane: gameplay
