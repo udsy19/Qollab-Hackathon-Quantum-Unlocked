@@ -2,6 +2,7 @@
 // Settings live in memory only: Qollab blocks localStorage, sessionStorage, IndexedDB and cookies.
 
 export const QUALITIES = ['low', 'med', 'high'];
+export const CAPTION_STYLES = ['standard', 'high-contrast'];
 
 export function prefersReducedMotion() {
   return typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -10,6 +11,7 @@ export function prefersReducedMotion() {
 export function defaultSettings() {
   return {
     subtitles: true,
+    captionStyle: 'standard',
     reducedMotion: prefersReducedMotion(),
     textScale: 100,
     quality: 'med',
@@ -22,6 +24,7 @@ export function normalizeSettings(input = {}) {
   const base = defaultSettings();
   const s = { ...base, ...input };
   s.subtitles = Boolean(s.subtitles);
+  s.captionStyle = CAPTION_STYLES.includes(s.captionStyle) ? s.captionStyle : base.captionStyle;
   s.reducedMotion = Boolean(s.reducedMotion);
   const scale = Number(s.textScale);
   s.textScale = Number.isFinite(scale) ? Math.min(200, Math.max(100, Math.round(scale))) : base.textScale;
@@ -36,6 +39,7 @@ export function applySettings(root, settings) {
   const s = normalizeSettings(settings);
   root.classList.add('echo-ui');
   root.dataset.subtitles = s.subtitles ? 'on' : 'off';
+  root.dataset.captionStyle = s.captionStyle;
   root.dataset.reducedMotion = s.reducedMotion ? 'on' : 'off';
   root.dataset.quality = s.quality;
   root.dataset.textScale = String(s.textScale);

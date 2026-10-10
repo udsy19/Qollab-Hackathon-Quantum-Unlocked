@@ -10,9 +10,10 @@
 // never from the data under test or from contracts.js. Every string the data modules export is
 // walked recursively, so a forbidden claim cannot hide in a field this file did not anticipate.
 
-import { readFileSync, existsSync } from 'node:fs'
+import { readFileSync, existsSync, readdirSync } from 'node:fs'
 import { resolve, dirname, join } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
+import { spawnSync } from 'node:child_process'
 
 const here = dirname(fileURLToPath(import.meta.url))
 const repo = resolve(here, '../../..')
@@ -230,15 +231,148 @@ for (const [path, o] of sourced) {
   check(typeof t === 'string' && visionNorm.includes(norm(t)), path, `claims src ${o.src} but its text is not in the vision verbatim: "${t}"`)
 }
 
-// Placeholders the owner must fill are reported, not failed: they are the honest state.
-const placeholders = strings.filter(([, s]) => /TODO_OWNER/.test(s))
+// ------------------------------------------------------------------ 7. owner and supervisor rulings
+// Exact strings come from the rulings, not from the data: lanes/story-ui/rulings.md (2026-10-10) and
+// The owner's credit-names ruling (2026-10-10), byte for byte. The separator is U+2014 between
+// single spaces and is written as an escape so no editor or homoglyph can change it unseen.
+const RULED = {
+  team: 'Team The Quantubians (NYU Tandon School of Engineering) \u2014 Udaya (captain), George, Harman, Epa',
+  assets: 'Art and sound: generated in code for this project. No third-party assets.',
+  support: 'This effort is supported by Qollab & IonQ',
+  licenseHolder: 'udsy19 and contributors',
+  m0Label: 'SOURCE READOUT m0',
+  m1Label: 'LOCAL BELL-HALF READOUT m1',
+}
+const CR = teachback.CREDITS ?? []
+const credit = role => CR.filter(c => c?.role === role).map(c => c.text)
+// Compare code points, not the eye: report the first differing one.
+const cpDiff = (a, b) => { const A = [...a], B = [...b]; const i = A.findIndex((c, k) => c !== B[k]); return i < 0 && A.length === B.length ? null : `first difference at code point ${i < 0 ? Math.min(A.length, B.length) : i}: U+${(A[i] ?? '').codePointAt(0)?.toString(16).toUpperCase() ?? 'none'} vs U+${(B[i] ?? '').codePointAt(0)?.toString(16).toUpperCase() ?? 'none'}` }
+const teamDiff = credit('team').length === 1 ? cpDiff(credit('team')[0], RULED.team) : 'not exactly one team line'
+check(teamDiff === null, 'teachback.CREDITS.team', `code points differ from the ruling: ${teamDiff}`)
+check(credit('assets').length === 1 && credit('assets')[0] === RULED.assets, 'teachback.CREDITS.assets', `must be exactly "${RULED.assets}", is ${JSON.stringify(credit('assets'))}`)
+check(credit('support').length === 1 && credit('support')[0] === RULED.support, 'teachback.CREDITS.support', `must be exactly "${RULED.support}"`)
+check(credit('license').some(t => t.includes(RULED.licenseHolder)), 'teachback.CREDITS.license', `must name "${RULED.licenseHolder}"`)
+check(!CR.some(c => /@/.test(c?.text ?? '')), 'teachback.CREDITS', 'no emails in the credits')
+const TT = objectives.TERMINALS?.teleport_terminal ?? {}
+check(TT.m0Label === RULED.m0Label, 'objectives.TERMINALS.teleport_terminal.m0Label', `must be exactly "${RULED.m0Label}", is ${JSON.stringify(TT.m0Label)}`)
+check(TT.m1Label === RULED.m1Label, 'objectives.TERMINALS.teleport_terminal.m1Label', `must be exactly "${RULED.m1Label}", is ${JSON.stringify(TT.m1Label)}`)
+
+// Dry runs use the in-room test rig on fresh calibration states; only COMMIT spends a vault pair
+// (VEGA: "Don't spend vault pairs on experiments"). In dry-run text, a sentence that names the vault
+// must be about COMMIT or be a negation.
+const DRY = /^(story\.STORY\.TELEPORT_DRY_RUN|story\.MOMENTS\.teleport_dry_run|objectives\.HINTS\.teleport_correct|objectives\.FAILURES\.teleportation)/
+for (const [path, s] of strings) {
+  checks++
+  if (/partner (half )?at the vault/i.test(s)) fail(path, `dry runs never use a vault partner: "${s}"`)
+  if (!DRY.test(path)) continue
+  for (const sentence of s.split(/(?<=[.?!])\s+/)) {
+    checks++
+    if (/vault/i.test(sentence) && !/commit/i.test(sentence) && !NEG_FOR(sentence)) fail(path, `dry-run text puts the vault in the experiment: "${sentence}"`)
+  }
+}
+
+// §1 anti-goal: "no game-over resulting from a non-pausing timer". At 00:00 the display holds, a
+// held status shows, and the story continues.
+if (!/no game-over resulting from a non-pausing timer/.test(vision)) refuse('vision no longer states the no-game-over timer anti-goal')
+const zero = story.MOMENTS?.countdown_zero
+check(Array.isArray(zero) && zero.length > 0, 'story.MOMENTS.countdown_zero', 'the countdown reaching 00:00 needs a beat')
+// The held word must be about the isolation itself, not any other thing that happens to be "holding".
+const HELD = /isolation[^.?!]*\b(hold|holds|held|holding)\b|\b(hold|holds|held|holding)\b[^.?!]*isolation/i
+check(Array.isArray(zero) && zero.some(b => HELD.test(b?.text ?? '')), 'story.MOMENTS.countdown_zero', 'the zero beat must say the grid isolation is held')
+check(typeof objectives.HUD?.countdownHeld === 'string' && /\bHELD\b/.test(objectives.HUD.countdownHeld), 'objectives.HUD.countdownHeld', 'the HUD needs a held status line for 00:00')
+for (const [path, s] of strings) { checks++; if (/game[- ]over|mission failed|too late|you failed|time'?s up/i.test(s)) fail(path, `the timer never ends the game (§1): "${s}"`) }
+
+// COMMIT unlocks after one correct dry run with bits other than 00 (owner ruling 2026-10-10): a
+// correct 00 run needs no correction, so it proves nothing and must say so.
+const d00 = story.MOMENTS?.teleport_dry_run_00
+check(Array.isArray(d00) && d00.some(b => /\b00\b/.test(b?.text ?? '')), 'story.MOMENTS.teleport_dry_run_00', 'a correct 00 dry run must say it does not unlock COMMIT')
+check(/\b00\b/.test(objectives.FAILURES?.teleportation?.commit_locked ?? ''), 'objectives.FAILURES.teleportation.commit_locked', 'must say the passing dry run needs bits other than 00')
+
+// Rin has no pronouns (owner ruling). No data string uses a gendered third-person pronoun.
+for (const [path, s] of strings) { checks++; if (!/\.src$/.test(path) && /\b(she|her|hers|herself|he|him|his|himself)\b/i.test(s)) fail(path, `gendered pronoun: "${s}"`) }
+
+// Teach-back: one right and two wrong choices per question, each with a why; no score anywhere.
+;(TB ?? []).forEach((q, i) => {
+  const c = q?.choices ?? []
+  check(c.length === 3 && c.filter(x => 'right' in x).length === 1 && c.filter(x => 'wrong' in x).length === 2, `teachback.TEACHBACK[${i}]`, 'needs exactly 1 right and 2 wrong choices')
+  c.forEach((x, j) => check(typeof x?.why === 'string' && x.why.trim() !== '', `teachback.TEACHBACK[${i}].choices[${j}]`, 'every choice needs a why'))
+})
+for (const [path, s] of strings) {
+  checks++
+  if (/^teachback\.TEACHBACK/.test(path) && /\bscores?\b|\bpoints?\b|\d+\s*(\/|of|out of)\s*3\b/i.test(s)) fail(path, `teach-back is unscored: "${s}"`)
+  checks++
+  if (/(captions?|subtitles?)\s+(off|disabled)|(disable|turn off|hide)\s+(the )?(captions?|subtitles?)/i.test(s)) fail(path, `captions are always on: "${s}"`)
+}
+
+// ------------------------------------------------------------------ 8. teleportation failure lines are true on every branch
+// Ground truth: branch_truth.py runs the real protocol in local Qiskit for every (m0, m1) × (X, Z)
+// plan on a generic state and reports what the receiver holds. It never reads echo/data.
+const PY = process.env.ECHO_PYTHON ?? '/Users/udsy/PycharmProjects/Qollab-Hackathon-Quantum-Unlocked/.venv/bin/python'
+// ECHO_BRANCH_TRUTH exists only so the sabotage round can swap in a deliberately broken protocol.
+const bt = spawnSync(PY, ['-I', resolve(process.env.ECHO_BRANCH_TRUTH ?? join(here, '../data-fixes/branch_truth.py'))], { encoding: 'utf8' })
+if (bt.status !== 0) refuse(`branch_truth.py did not run (${PY}, exit ${bt.status}): ${(bt.stderr || bt.error?.message || '').trim().slice(-300)}`)
+const TRUTH = JSON.parse(bt.stdout).rows
+if (TRUTH.length !== 16) refuse(`branch truth has ${TRUTH.length} rows, expected 16`)
+// What each failure line claims, recorded here by reading its words. `text` binds the record to the
+// line: if the words change, the record no longer matches and the line is unjudged (red).
+const LINE_CLAIMS = {
+  missing_X: { text: [/\bm1 = 1\b/, /\bX was off\b/], holds: r => r.m1 === 1 && r.x === 0 && r.bitFlipLeft, flip: 'X' },
+  extra_X: { text: [/\bm1 = 0\b/, /\bX was on\b/], holds: r => r.m1 === 0 && r.x === 1 && r.bitFlipLeft, flip: 'X' },
+  missing_Z: { text: [/\bm0 = 1\b/, /\bZ was off\b/], holds: r => r.m0 === 1 && r.z === 0 && r.phaseFlipLeft, flip: 'Z' },
+  extra_Z: { text: [/\bm0 = 0\b/, /\bZ was on\b/], holds: r => r.m0 === 0 && r.z === 1 && r.phaseFlipLeft, flip: 'Z' },
+}
+// Lines that are not chosen by (bits, plan): they are judged elsewhere or are not branch claims.
+const NOT_BRANCH = ['blind_spot', 'commit_locked', 'already_committed']
+const TF = objectives.FAILURES?.teleportation ?? {}
+for (const k of Object.keys(TF)) {
+  check(k in LINE_CLAIMS || NOT_BRANCH.includes(k), `objectives.FAILURES.teleportation.${k}`, 'a failure line this gate has no claim record for cannot be judged')
+  if (k in LINE_CLAIMS) check(LINE_CLAIMS[k].text.every(re => re.test(TF[k])), `objectives.FAILURES.teleportation.${k}`, `text no longer matches its claim record: "${TF[k]}"`)
+}
+const CASES = objectives.TELEPORT_FAILURE_CASES
+check(CASES && typeof CASES === 'object', 'objectives.TELEPORT_FAILURE_CASES', 'missing: which lines each (bits, plan) shows must be data')
+const exactState = { X: /\bleft bit-flipped\b/i, Z: /\bleft phase-flipped\b/i }
+for (const r of TRUTH) {
+  const key = `${r.m0}${r.m1}:${r.x}${r.z}`
+  const w = `objectives.TELEPORT_FAILURE_CASES['${key}']`
+  const sel = CASES?.[key]
+  check(Array.isArray(sel), w, 'every one of the 16 (bits, plan) cases needs an entry')
+  if (!Array.isArray(sel)) continue
+  if (r.residual === 'I') { check(sel.length === 0, w, `receiver holds the test state (fidelity ${r.fidelity}) but failure lines are shown`); continue }
+  check(!r.bitFlipLeft || sel.some(k => LINE_CLAIMS[k]?.flip === 'X'), w, `receiver is left with a bit flip (fidelity ${r.fidelity}) and no line names it`)
+  check(!r.phaseFlipLeft || sel.some(k => LINE_CLAIMS[k]?.flip === 'Z'), w, `receiver is left with a phase flip (fidelity ${r.fidelity}) and no line names it`)
+  for (const k of sel) {
+    const c = LINE_CLAIMS[k], t = TF[k]
+    check(c && typeof t === 'string', w, `selects ${k}, which is not a judged teleportation failure line`)
+    if (!c || typeof t !== 'string') continue
+    check(c.holds(r), w, `${k} is false here (m0=${r.m0} m1=${r.m1} X=${r.x} Z=${r.z}, receiver holds ${r.residual}·state): "${t}"`)
+    // Words that claim the REST of the receiver was right, or name one exact flip, are true only
+    // when this line's flip is the whole error.
+    const alone = /already (right|correct|fine)|otherwise (right|correct)|the only (error|mistake|flip)/i.test(t)
+    for (const [flip, re] of Object.entries(exactState)) {
+      if (re.test(t) && !(new RegExp(`left ${flip === 'X' ? 'bit' : 'phase'}- and`, 'i').test(t))) {
+        check(r.residual === flip, w, `${k} says the receiver is ${re.source.replace(/\\b/g, '')}, but it holds ${r.residual}·state: "${t}"`)
+      }
+    }
+    if (alone) check(r.residual === c.flip, w, `${k} says the rest was already right, but the receiver holds ${r.residual}·state: "${t}"`)
+  }
+}
+
+// A placeholder a judge could read is a failure. Walk every file under echo/ (bytes, not the
+// exported strings), so a placeholder in a comment-free CSS or HTML file cannot hide either.
+const echoDir = join(repo, 'echo')
+const echoFiles = readdirSync(echoDir, { recursive: true, withFileTypes: true }).filter(e => e.isFile()).map(e => join(e.parentPath ?? e.path, e.name))
+checks++; if (!echoFiles.length) fail('echo/', 'no files found to scan for placeholders')
+for (const f of echoFiles) { checks++; if (/TODO_OWNER/.test(readFileSync(f, 'utf8'))) fail(f.slice(repo.length + 1), 'TODO_OWNER placeholder shipped') }
+// The assets credit says there are none, so echo/assets/ must hold nothing. If the art lane
+// bundles a file, this fails until the credit line names it and its licence.
+const assetFiles = echoFiles.filter(f => f.startsWith(join(echoDir, 'assets') + '/'))
+check(assetFiles.length === 0, 'echo/assets', `credits say "No third-party assets" but the folder holds: ${assetFiles.map(f => f.slice(repo.length + 1)).join(', ')}`)
 
 // ------------------------------------------------------------------ verdict
 if (checks === 0) refuse('zero checks ran')
 console.log(`vision: ${STATES.length} §9.1 states, ${HUD_STATES.length} HUD states, cast ${CAST.join('/')}`)
 console.log(`data: ${dataDir}`)
 console.log(`counted: ${beatCount} beats in ${beatGroups.length} groups · ${Object.keys(HINTS ?? {}).length} hint ladders · ${strings.length} strings scanned · ${checks} checks`)
-for (const [p, s] of placeholders) console.log(`placeholder (owner to fill): ${p} = "${s}"`)
 if (failures.length) {
   for (const f of failures) console.log(`FAIL ${f}`)
   console.log(`RED: ${failures.length} failure(s)`)

@@ -104,15 +104,16 @@ export const TEACHBACK = Object.freeze([
   },
 ])
 
-// Team line: owner-answers 2026-10-10 § credit names, wording fixed by the story-ui supervisor
-// (consult 4). No emails.
+// Team line: owner-answers 2026-10-10 § credit names, byte for byte (U+2014 em dash). No emails.
+// Assets line: the build is procedural; if the art lane ever bundles a third-party file, this line
+// must be replaced with that file and its licence (the story-data gate fails on any file in echo/assets/).
 export const CREDITS = Object.freeze([
   { role: 'title', text: 'ECHO: ONE OF ONE' },
-  { role: 'team', text: 'Team The Quantubians (NYU Tandon School of Engineering): Udaya (captain), George, Harman, Epa' },
+  { role: 'team', text: 'Team The Quantubians (NYU Tandon School of Engineering) — Udaya (captain), George, Harman, Epa' },
   { role: 'support', text: 'This effort is supported by Qollab & IonQ' },
   { role: 'license', text: 'Code: MIT License, udsy19 and contributors' },
   { role: 'libraries', text: 'Built with three.js (MIT) and Qiskit (Apache-2.0), running in Pyodide (MPL-2.0) on Qollab.' },
-  { role: 'assets', text: 'TODO_OWNER: third-party assets and their licenses (art lane to list; none yet)' },
+  { role: 'assets', text: 'Art and sound: generated in code for this project. No third-party assets.' },
   { role: 'thanks', text: 'Thank you for playing.' },
 ])
 

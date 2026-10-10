@@ -1,0 +1,31 @@
+{
+  "mode": "s200b",
+  "failed": 0,
+  "checks": [
+    {
+      "name": "200% at 1024x640: nothing clips, leaves the viewport or overlaps, sampled every second",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% at 1024x640: captions stay ≤2 lines",
+      "ok": true,
+      "detail": "2"
+    },
+    {
+      "name": "200% at 1024x640: every §4.1 line still reaches the player whole",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "200% at 1024x640: Skip control fully visible and unclipped",
+      "ok": true,
+      "detail": "{\"w\":235.015625,\"h\":70.71875,\"fits\":true}"
+    },
+    {
+      "name": "no page errors or failed requests",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

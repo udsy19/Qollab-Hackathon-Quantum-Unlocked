@@ -126,7 +126,7 @@ Rendered by `evidence/story-ui/story-data/render-script.mjs` from `echo/data/{st
 
 **HUD:** OBJECTIVE 02 — RESTORE THE ENTANGLEMENT RELAY *(verbatim §6.3)*
 
-- **VEGA:** Relay maintenance core online. More room for me down here. _[power switch wakes the relay; VEGA projects at full size]_ ✎
+- **VEGA:** Relay maintenance core online. Fully awake, at last. _[power switch wakes the relay; VEGA projects at full size]_ ✎
 - **VEGA:** This relay stores one half of many entangled pairs. ✎
 - **VEGA:** Each partner half waits at the vault's receiver. ✎
 - **RIN:** Palisade shared those pairs years ago, before any of this. Kept cold ever since. ✎
@@ -231,43 +231,43 @@ Rendered by `evidence/story-ui/story-data/render-script.mjs` from `echo/data/{st
 **HUD:** OBJECTIVE 03 — SET THE RECEIVER CORRECTIONS ON A TEST STATE ✎
 
 - **VEGA:** Not the token yet. A fresh test state first. ✎
-- **VEGA:** Three slots: test source, your Bell half, and its partner at the vault. ✎
+- **VEGA:** This console has a test rig. Both Bell halves stay here. ✎
+- **VEGA:** Only COMMIT spends a vault pair. ✎
 - **VEGA:** A Bell measurement on the source and your half gives two bits: m0 and m1. ✎
-- **VEGA:** The amber line carries them. Tell the receiver what to do for each result. ✎
+- **VEGA:** The amber line carries them to the receiver. You choose its fix. ✎
 
 *Reaction `teleport_dry_run_failed`:*
 - **VEGA:** That test state is spent. Here is a fresh one. Check the rule again. ✎
 
 *Reaction `teleport_commit_locked`:*
-- **VEGA:** Not yet. The token gets one try. Prove the rule on a test state first. ✎
+- **VEGA:** Not yet. The token gets one try. Prove a correction on a test state first. ✎
 
 *Failure lines (`teleportation`, shown when the player gets it wrong):*
-- `missing_X`: m1 = 1 but X was off. The receiver state is left bit-flipped. ✎
-- `missing_Z`: m0 = 1 but Z was off. The receiver state is left phase-flipped. ✎
-- `extra_X`: X was on but m1 = 0. That flip damaged a state that was already right. ✎
-- `extra_Z`: Z was on but m0 = 0. That phase flip damaged a state that was already right. ✎
-- `no_corrections`: No corrections set. Without the two bits the receiver cannot know which fix to apply. ✎
+- `missing_X`: m1 = 1 but X was off. The bit flip that m1 = 1 flags was never undone. ✎
+- `missing_Z`: m0 = 1 but Z was off. The phase flip that m0 = 1 flags was never undone. ✎
+- `extra_X`: X was on but m1 = 0. That X added a bit flip the bits never called for. ✎
+- `extra_Z`: Z was on but m0 = 0. That Z added a phase flip the bits never called for. ✎
 - `blind_spot`: On this test state that mistake happens to look harmless. It would fail on most others. ✎
-- `commit_locked`: Commit locked. Pass a dry run first: the token can be measured only once. ✎
+- `commit_locked`: Commit locked. First pass a dry run whose bits are not 00: the token can be measured only once. ✎
 - `already_committed`: Transfer complete. The source was measured; there is nothing left to send. ✎
 
 *Hints (`teleport_correct`, on request, no penalty):*
 1. _inspect_ — Read the two bits: m0 is the source readout, m1 is your Bell half. ✎
 2. _resource_ — The amber line carries m0 and m1 to the receiver. Each bit controls one fix. ✎
-3. _operation_ — Apply X if m1 = 1 and Z if m0 = 1. Set this for all four results. ✎
+3. _operation_ — Apply X if m1 = 1 and Z if m0 = 1. ✎
 
 ## TELEPORT_DRY_RUN_PASSED
 
 **HUD:** OBJECTIVE 03 — COMMIT THE ONE-WAY TRANSFER ✎
 
-- **VEGA:** Receiver matches the test state. Your correction rule holds. ✎
-- **VEGA:** The live run will give its own bits. The rule carries over, not the bits. ✎
+- **VEGA:** Receiver matches the test state. Those corrections were right. ✎
+- **VEGA:** The live run gives its own bits. The receiver applies the same rule. ✎
 - **VEGA:** Commit measures the token. There is no second try. ✎
 - **RIN:** One of one. ✎
 
 *Hints (`teleport_commit`, on request, no penalty):*
 1. _inspect_ — Check the capsule. The token is still STATE PRESENT. ✎
-2. _resource_ — Your correction rule is proven. The token can be measured only once. ✎
+2. _resource_ — Your corrections worked on a test state. The token can be measured only once. ✎
 3. _operation_ — Press COMMIT ONE-WAY TRANSFER. ✎
 
 ## TELEPORT_COMMITTED
@@ -357,7 +357,7 @@ Rendered by `evidence/story-ui/story-data/render-script.mjs` from `echo/data/{st
 # CREDITS
 
 - ECHO: ONE OF ONE
-- TODO_OWNER: team and credit names (not yet given by the owner)
+- Team The Quantubians (NYU Tandon School of Engineering): Udaya (captain), George, Harman, Epa
 - This effort is supported by Qollab & IonQ
 - Code: MIT License, udsy19 and contributors
 - Built with three.js (MIT) and Qiskit (Apache-2.0), running in Pyodide (MPL-2.0) on Qollab.
@@ -372,6 +372,7 @@ Rendered by `evidence/story-ui/story-data/render-script.mjs` from `echo/data/{st
 - `HUD.objectivePrefix`: OBJECTIVE ✎
 - `HUD.countdownLabel`: GRID SHUTDOWN *(verbatim §6.3)*
 - `HUD.countdownAborted`: GRID ISOLATION ABORTED ✎
+- `HUD.countdownHeld`: ISOLATION HELD // AWAITING CONFIRMATION ✎
 - `HUD.capsuleLabel`: Q-SOURCE ✎
 - `HUD.capsulePreserved`: PRESERVED *(verbatim §6.3)*
 - `HUD.capsuleConsumed`: MEASURED / CONSUMED ✎
@@ -389,7 +390,7 @@ Rendered by `evidence/story-ui/story-data/render-script.mjs` from `echo/data/{st
 - `HUD.tooltips.journal`: TAB  JOURNAL ✎
 - `HUD.tooltips.pause`: ESC  PAUSE ✎
 - `HUD.scans.copy_booth`: PALISADE DUPLICATION SERVICES. CLASSICAL DATA COPIER. MAINTENANCE PORT OPEN. ✎
-- `HUD.scans.relay_core`: ENTANGLEMENT RELAY. BELL HALVES IN COLD STORAGE. PARTNERS: VAULT RECEIVER. ✎
+- `HUD.scans.relay_core`: ENTANGLEMENT RELAY. BELL HALVES IN COLD STORAGE. PARTNERS: VAULT RECEIVER. TEST RIG ON SITE. ✎
 - `HUD.scans.classical_socket`: LEGACY DATA LINK. CLASSICAL. THREE JUNCTIONS DARK. ✎
 - `HUD.scans.teleport_terminal`: TRANSMISSION CONSOLE. NEEDS: BELL PAIR + CLASSICAL LINK. ✎
 - `TERMINALS.copy_booth.title`: PALISADE / DUPLICATION UNIT / MAINTENANCE OVERRIDE *(verbatim §6.4)*
@@ -422,10 +423,10 @@ Rendered by `evidence/story-ui/story-data/render-script.mjs` from `echo/data/{st
 - `TERMINALS.teleport_terminal.classicalOnline`: CLASSICAL LINK ONLINE *(verbatim §4.4)*
 - `TERMINALS.teleport_terminal.slotSource`: SOURCE ✎
 - `TERMINALS.teleport_terminal.slotLocal`: LOCAL BELL HALF ✎
-- `TERMINALS.teleport_terminal.slotRemote`: REMOTE BELL HALF ✎
+- `TERMINALS.teleport_terminal.slotRemote`: RECEIVER BELL HALF ✎
 - `TERMINALS.teleport_terminal.measure`: EXECUTE BELL MEASUREMENT ON TEST STATE *(verbatim §6.5)*
-- `TERMINALS.teleport_terminal.m0Label`: m0  SOURCE READOUT ✎
-- `TERMINALS.teleport_terminal.m1Label`: m1  LOCAL BELL-HALF READOUT ✎
+- `TERMINALS.teleport_terminal.m0Label`: SOURCE READOUT m0 ✎
+- `TERMINALS.teleport_terminal.m1Label`: LOCAL BELL-HALF READOUT m1 ✎
 - `TERMINALS.teleport_terminal.planTitle`: RECEIVER CORRECTION PLAN *(verbatim §6.5)*
 - `TERMINALS.teleport_terminal.planRowTemplate`: IF m0 = {m0}, m1 = {m1}:  X [{x}]  Z [{z}] ✎
 - `TERMINALS.teleport_terminal.verify`: VERIFY DRY RUN *(verbatim §6.5)*
@@ -434,4 +435,4 @@ Rendered by `evidence/story-ui/story-data/render-script.mjs` from `echo/data/{st
 - `TERMINALS.teleport_terminal.receiverRecovered`: STATE RECOVERED *(verbatim §4.4)*
 - `TERMINALS.teleport_terminal.vaultAccepted`: VAULT: AUTHORIZATION ACCEPTED ✎
 
-*Spoken words across all beats: 673.*
+*Spoken words across all beats: 671.*
