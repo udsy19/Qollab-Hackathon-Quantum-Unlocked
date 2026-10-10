@@ -14,13 +14,14 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (6)
+## Notes here (7)
 
 - [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
 - [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 - [[Reports/story-data-script-gate|Story data and its gate: what the phrase-based physics check can and cannot see]]
 - [[Reports/story-ui-opening|story-ui opening: Shots A–D as timed captions, one exit event, always skippable]]
+- [[Reports/story-ui-shell-polish|story-ui shell polish: sentence pages, kets, caption style, 200% at three viewports]]
 - [[Reports/story-ui-ui-shell-harness|story-ui shell: HUD, dialogue and menus measured in a keyboard-driven harness]]
 
 ## Below this folder
