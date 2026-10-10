@@ -10,7 +10,11 @@ import { checkQuality } from './lighting.js';
 // allocated once at the high count; presets only change drawRange, so switching never rebuilds.
 export const RAIN_COUNTS = Object.freeze({ low: 1500, med: 4000, high: 8000 });
 const SPLASH_COUNT = 400;
-const BOX = new THREE.Vector3(36, 22, 36); // metres around the camera
+// Metres. Small and pushed ahead of the camera: measured on the alley shot, a 36 m box centred on the
+// camera put only ~3% of drops on screen; most were behind, beside, or below the floor.
+const BOX = new THREE.Vector3(22, 14, 22);
+const AHEAD = 7; // box centre this far in front of the camera
+const BELOW = 3; // box bottom this far below the camera
 
 export function createRain({ scene, camera, quality = DEFAULT_SETTINGS.quality, color = 0x9fb8d6, groundY = 0, seed = 1 } = {}) {
   if (!scene || !camera) throw new TypeError('createRain: scene and camera are required');
@@ -34,7 +38,7 @@ export function createRain({ scene, camera, quality = DEFAULT_SETTINGS.quality, 
     uBox: { value: BOX.clone() },
     uSpeed: { value: 17 },
     uWind: { value: new THREE.Vector2(1.6, 0.6) },
-    uLen: { value: 0.045 }, // streak length in seconds of fall
+    uLen: { value: 0.06 }, // streak length in seconds of fall
     uColor: { value: new THREE.Color(color) },
     uOpacity: { value: 0.55 },
     uGround: { value: groundY },
@@ -49,14 +53,16 @@ export function createRain({ scene, camera, quality = DEFAULT_SETTINGS.quality, 
       varying float vFade;
       #include <fog_pars_vertex>
       void main() {
-        float speed = uSpeed * (0.8 + 0.4 * aSeed.y);
+        // Speed must not correlate with the start height (aSeed.y): if it did, the heights would
+        // periodically collapse into one band (measured: a ~2 s cycle with speed = f(aSeed.y)).
+        float speed = uSpeed * (0.8 + 0.4 * fract(aSeed.x * 37.13 + aSeed.z * 91.71));
         vec3 vel = vec3(uWind.x, -speed, uWind.y);
         // World-anchored drop, wrapped into the camera's box on every axis.
         vec3 p = aSeed.xyz * uBox + vel * uTime;
-        vec3 lo = uCam - uBox * 0.5;
+        vec3 lo = vec3(uCam.x - uBox.x * 0.5, uCam.y - ${BELOW.toFixed(1)}, uCam.z - uBox.z * 0.5);
         p = lo + mod(p - lo, uBox);
         p -= vel * uLen * aSeed.w;           // the tail end of the streak
-        vFade = smoothstep(uGround - 0.2, uGround + 1.0, p.y) * (1.0 - smoothstep(0.35, 0.5, length((p.xz - uCam.xz) / uBox.xz)));
+        vFade = smoothstep(uGround - 0.2, uGround + 1.0, p.y) * (1.0 - smoothstep(0.38, 0.5, length((p.xz - uCam.xz) / uBox.xz)));
         vec4 mvPosition = viewMatrix * vec4(p, 1.0);
         gl_Position = projectionMatrix * mvPosition;
         #include <fog_vertex>
@@ -130,6 +136,7 @@ export function createRain({ scene, camera, quality = DEFAULT_SETTINGS.quality, 
   group.add(lines, splashes);
   scene.add(group);
 
+  const fwd = new THREE.Vector3();
   let intensity = 1;
   let current = null;
   function setQuality(q) {
@@ -156,7 +163,12 @@ export function createRain({ scene, camera, quality = DEFAULT_SETTINGS.quality, 
     get intensity() { return intensity; },
     update(dt, elapsed) {
       uniforms.uTime.value = elapsed;
-      uniforms.uCam.value.copy(camera.position);
+      // uCam is the rain box's centre, pushed ahead of the camera so the drops land in view.
+      camera.getWorldDirection(fwd);
+      fwd.y = 0;
+      if (fwd.lengthSq() > 1e-6) fwd.normalize();
+      uniforms.uCam.value.copy(camera.position).addScaledVector(fwd, AHEAD);
+      uniforms.uCam.value.y = camera.position.y;
     },
     setQuality,
     dispose() {
