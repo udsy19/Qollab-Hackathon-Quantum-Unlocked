@@ -1,6 +1,7 @@
 // echo/contracts.js — the platform-owned definition of how ECHO talks to itself.
-// Quest states and transitions (vision §9.1/§9.2), bus and world-change names (§8.7, §9.3),
-// interactable ids (§9.4) and the ExperimentResult shape that crosses the Python bridge (§8.4).
+// Quest states and transitions (vision §9.1/§9.2), who fires each event, bus and world-change names
+// (§8.7, §9.3), interactable ids (§9.4), the ExperimentResult shape that crosses the Python bridge
+// (§8.4), the two-phase teleport dry run (§7.4, §10.5, §10.6) and the UI root + settings shape.
 // Plain ES module, no dependencies. Changes go through the platform lane only: see CONTRACTS.md.
 
 // A frozen name table whose misspelt lookup throws instead of quietly yielding undefined,
@@ -30,9 +31,10 @@ export const QUEST_STATE_LIST = Object.freeze([
 export const QUEST_STATES = nameTable('QUEST_STATES', QUEST_STATE_LIST)
 export const INITIAL_STATE = 'BOOT'
 
-// §9.2's table plus two edges its text requires but its sample omits (CONTRACTS.md § Additions):
-// BOOT → TITLE and DECLASSIFIED → CREDITS (§3.4 flow). CREDITS is terminal; restart is
-// resetGame() (§9.5), not a transition.
+// §9.2's table plus the edges CONTRACTS.md § Additions lists: BOOT → TITLE and DECLASSIFIED → CREDITS
+// (§3.4 flow), DECLASSIFIED → ENDING and ENDING -RESTART→ TITLE (owner, 2026-10-10). CREDITS is
+// terminal. RESTART, like the pause menu's restart, runs gameplay's resetGame() (§9.5) and lands
+// on RESET_STATE.
 export const TRANSITIONS = Object.freeze(Object.fromEntries(Object.entries({
   BOOT: { BOOT_COMPLETE: 'TITLE' },
   TITLE: { START: 'OPENING' },
@@ -53,14 +55,48 @@ export const TRANSITIONS = Object.freeze(Object.fromEntries(Object.entries({
   // The story token is consumed once (§7.4): nothing leaves TELEPORT_COMMITTED by COMMIT_TRANSFER.
   TELEPORT_DRY_RUN_PASSED: { COMMIT_TRANSFER: 'TELEPORT_COMMITTED' },
   TELEPORT_COMMITTED: { ANIMATION_END: 'ENDING' },
-  ENDING: { OPEN_SCIENCE: 'DECLASSIFIED', OPEN_CREDITS: 'CREDITS' },
-  DECLASSIFIED: { OPEN_CREDITS: 'CREDITS' },
+  ENDING: { OPEN_SCIENCE: 'DECLASSIFIED', OPEN_CREDITS: 'CREDITS', RESTART: 'TITLE' },
+  DECLASSIFIED: { OPEN_CREDITS: 'CREDITS', CLOSE_SCIENCE: 'ENDING' },
   CREDITS: {},
 }).map(([s, edges]) => [s, Object.freeze(edges)])))
+
+// Where every restart lands: ENDING's RESTART edge and the pause menu's onRestart → resetGame().
+export const RESET_STATE = 'TITLE'
 
 // Every event the machine accepts, derived from the table so the two cannot drift.
 export const QUEST_EVENTS = nameTable('QUEST_EVENTS',
   [...new Set(Object.values(TRANSITIONS).flatMap(edges => Object.keys(edges)))])
+
+// Which lane fires each event, and from what (owner, 2026-10-10, 13 questions #6: movement events
+// come from gameplay world triggers, acknowledgements from story-ui terminals). Interactable actions
+// fire on E (INTERACTABLE_BINDINGS); experiment_result events come from gameplay reading a validated
+// ExperimentResult, never from a button.
+const SOURCE = (lane, via) => Object.freeze({ lane, via })
+export const EVENT_SOURCES = strictTable('EVENT_SOURCES', Object.entries({
+  BOOT_COMPLETE: SOURCE('platform', 'boot'),
+  START: SOURCE('story-ui', 'menu'),
+  FINISHED: SOURCE('story-ui', 'dialogue'),
+  SKIP: SOURCE('story-ui', 'dialogue'),
+  OPEN_CLONE_BOOTH: SOURCE('gameplay', 'interactable'),
+  BASIS_DEMO_OK: SOURCE('gameplay', 'experiment_result'),
+  SUPERPOSITION_DEMO_FAILED: SOURCE('gameplay', 'experiment_result'),
+  EXPLANATION_READ: SOURCE('story-ui', 'terminal_acknowledgement'),
+  EXIT_BOOTH: SOURCE('gameplay', 'world_trigger'),
+  REACH_RELAY: SOURCE('gameplay', 'interactable'),
+  PREPARE_BELL_PAIR: SOURCE('gameplay', 'experiment_result'),
+  ATTEMPT_NO_SIGNALLING: SOURCE('gameplay', 'experiment_result'),
+  VIEW_RECEIVER_MARGINAL: SOURCE('story-ui', 'terminal_acknowledgement'),
+  OPEN_ROOFTOP: SOURCE('gameplay', 'world_trigger'),
+  REPAIR_CLASSICAL_LINK: SOURCE('gameplay', 'interactable'),
+  RUN_DRY_TEST: SOURCE('gameplay', 'interactable'),
+  CORRECT_CALIBRATION: SOURCE('gameplay', 'experiment_result'),
+  COMMIT_TRANSFER: SOURCE('gameplay', 'experiment_result'),
+  ANIMATION_END: SOURCE('gameplay', 'cinematic'),
+  OPEN_SCIENCE: SOURCE('story-ui', 'menu'),
+  CLOSE_SCIENCE: SOURCE('story-ui', 'menu'),
+  OPEN_CREDITS: SOURCE('story-ui', 'menu'),
+  RESTART: SOURCE('story-ui', 'menu'),
+}))
 
 // A wrong NAME throws (a bug at the call site); a right name at the wrong time is refused
 // with { ok: false } and the state unchanged (gameplay, e.g. pressing E twice).
@@ -68,7 +104,7 @@ export function transition(state, event) {
   if (!Object.hasOwn(TRANSITIONS, state)) {
     throw new TypeError(`transition: unknown quest state ${JSON.stringify(state)}`)
   }
-  if (typeof event !== 'string' || !(event in QUEST_EVENTS)) {
+  if (typeof event !== 'string' || !Object.hasOwn(QUEST_EVENTS, event)) {
     throw new TypeError(`transition: unknown quest event ${JSON.stringify(event)}`)
   }
   const next = Object.hasOwn(TRANSITIONS[state], event) ? TRANSITIONS[state][event] : undefined
@@ -111,8 +147,11 @@ export const INTERACTABLE_BINDINGS = strictTable('INTERACTABLE_BINDINGS',
 // ------------------------------------------------------------------ ExperimentResult (§8.4)
 
 export const ENGINE_KINDS = nameTable('ENGINE_KINDS', ['exact_qiskit_local', 'qollab_selected_backend', 'documented_preview'])
-export const EXPERIMENTS = nameTable('EXPERIMENTS', ['cloning', 'bell_signalling', 'teleportation'])
+// backend_verification is the one selected-backend job of a run (owner, 2026-10-10, 13 questions #4).
+export const EXPERIMENTS = nameTable('EXPERIMENTS', ['cloning', 'bell_signalling', 'teleportation', 'backend_verification'])
 export const PROBABILITY_TOLERANCE = 1e-9
+export const BACKEND_SHOTS = 256          // owner, 2026-10-10, 13 questions #9
+export const BELL_RECEIVER_QUBIT = 1      // Mission 2: q0 = sender, q1 = receiver (§10.4)
 
 // §8.4's fields, plus keyQubits (which qubit each character of a probabilities/counts key is —
 // §7.1 forbids parsing bitstrings without an explicit mapping, and Qiskit keys are
@@ -143,10 +182,10 @@ export function validateExperimentResult(obj) {
 
   for (const k of Object.keys(obj)) if (!RESULT_FIELDS.has(k)) err(`unknown field "${k}"`)
 
-  if (!(typeof obj.experiment === 'string' && obj.experiment in EXPERIMENTS)) {
+  if (!(typeof obj.experiment === 'string' && Object.hasOwn(EXPERIMENTS, obj.experiment))) {
     err(`experiment must be one of ${Object.keys(EXPERIMENTS).join('|')}, got ${describe(obj.experiment)}`)
   }
-  if (!(typeof obj.engine === 'string' && obj.engine in ENGINE_KINDS)) {
+  if (!(typeof obj.engine === 'string' && Object.hasOwn(ENGINE_KINDS, obj.engine))) {
     err(`engine must be one of ${Object.keys(ENGINE_KINDS).join('|')}, got ${describe(obj.engine)}`)
   }
   if (typeof obj.circuitDescription !== 'string' || obj.circuitDescription.trim() === '') {
@@ -173,13 +212,30 @@ export function validateExperimentResult(obj) {
     })
   }
 
-  // Exact probabilities and sampled counts are different kinds of evidence (CLAUDE.md): an
-  // exact local engine never reports counts, a selected backend never reports exact probabilities.
+  // Exact probabilities and sampled counts are different kinds of evidence (CLAUDE.md). Counts come
+  // only from the one selected-backend job; a preview may not dress itself up as sampled data.
   const hasP = obj.probabilities !== undefined
   const hasC = obj.counts !== undefined
-  if (obj.engine === 'exact_qiskit_local' && hasC) err('counts are not allowed under engine exact_qiskit_local (it computes exact probabilities)')
+  if (hasC && obj.engine !== 'qollab_selected_backend') err(`counts are sampled shots and only allowed under engine qollab_selected_backend, not ${describe(obj.engine)}`)
   if (obj.engine === 'qollab_selected_backend' && hasP) err('probabilities are not allowed under engine qollab_selected_backend (it samples counts)')
   if (obj.engine === 'qollab_selected_backend' && !hasC) err('counts are required under engine qollab_selected_backend')
+
+  // Experiment ↔ engine, decided by the result's own fields, not by a flag it could carry.
+  if (obj.engine === 'qollab_selected_backend' && obj.experiment !== 'backend_verification') {
+    err(`engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not ${describe(obj.experiment)}`)
+  }
+  if (obj.experiment === 'backend_verification') {
+    if (obj.engine !== 'qollab_selected_backend') err(`experiment backend_verification requires engine qollab_selected_backend, got ${describe(obj.engine)}`)
+    if (obj.parameters?.shots !== BACKEND_SHOTS) err(`backend_verification parameters.shots must be the ${BACKEND_SHOTS} requested, got ${describe(obj.parameters?.shots)}`)
+  }
+  // Mission 2's receiver panel shows EXACT partial_trace probabilities only (owner, 2026-10-10, red-team #4).
+  if (obj.experiment === 'bell_signalling') {
+    if (obj.engine !== 'exact_qiskit_local') err(`experiment bell_signalling is shown as EXACT and requires engine exact_qiskit_local, got ${describe(obj.engine)}`)
+    if (!hasP) err('experiment bell_signalling requires exact probabilities (the receiver marginal)')
+    else if (Array.isArray(obj.keyQubits) && !obj.keyQubits.includes(BELL_RECEIVER_QUBIT)) {
+      err(`bell_signalling keyQubits must include the receiver q${BELL_RECEIVER_QUBIT} so its marginal is derivable, got ${JSON.stringify(obj.keyQubits)}`)
+    }
+  }
 
   const keyCheckers = []
   if (hasP) {
@@ -237,6 +293,9 @@ export function validateExperimentResult(obj) {
   }
 
   // m0 = source readout (q0), m1 = Alice's Bell-half readout (q1); receiver X iff m1=1, Z iff m0=1 (§7.1).
+  if (obj.measurementBits !== undefined && obj.experiment !== 'teleportation') {
+    err(`measurementBits belong to experiment teleportation only, not ${describe(obj.experiment)}`)
+  }
   if (obj.measurementBits !== undefined) {
     const mb = obj.measurementBits
     if (!isPlainObject(mb)) {
@@ -248,5 +307,186 @@ export function validateExperimentResult(obj) {
   }
 
   if (obj.createdAt !== undefined && typeof obj.createdAt !== 'string') err(`createdAt must be a string, got ${describe(obj.createdAt)}`)
+  return errors
+}
+
+// The one way to read a single qubit out of probability keys (§7.1: never parse bitstrings
+// without the explicit mapping). Mission 2's receiver panel: marginalProbabilities(r, BELL_RECEIVER_QUBIT).
+// Call it on a result validateExperimentResult accepted; throws if the qubit is not in keyQubits.
+export function marginalProbabilities(result, qubit) {
+  const pos = Array.isArray(result?.keyQubits) ? result.keyQubits.indexOf(qubit) : -1
+  if (pos < 0 || !isPlainObject(result.probabilities)) {
+    throw new TypeError(`marginalProbabilities: q${qubit} is not in keyQubits ${JSON.stringify(result?.keyQubits)}`)
+  }
+  const out = { 0: 0, 1: 0 }
+  for (const [key, p] of Object.entries(result.probabilities)) out[key[pos]] += p
+  return out
+}
+
+// ------------------------------------------------------------------ teleport dry run (two phases)
+
+// The player sees m0 and m1 BEFORE choosing corrections (owner, 2026-10-10, red-team #2):
+//   phase 1  request { theta, phi }                               → ExperimentResult with measurementBits, no fidelity
+//   phase 2  request { theta, phi, m0, m1, applyX, applyZ }       → ExperimentResult with fidelity
+// The calibration state is ry(theta) then rz(phi) on q0, fresh and generic on every dry run (owner,
+// 13 questions #7). m0 = SOURCE READOUT (q0), m1 = LOCAL BELL-HALF READOUT m1 (q1); the receiver
+// applies X iff m1 = 1 and Z iff m0 = 1 (§7.1). The story token never enters a dry run (§7.4).
+export const TELEPORT_TEST_STATE = Object.freeze({ theta: 1.137, phi: 0.44 })  // §10.5, circuit order
+export const FIDELITY_PASS = 0.999999                 // §7.4 ideal-validation threshold
+export const GENERIC_MAX_WRONG_FIDELITY = 0.9          // every wrong choice must visibly fail
+export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6
+export const BIT_LABELS = Object.freeze({ m0: 'SOURCE READOUT m0', m1: 'LOCAL BELL-HALF READOUT m1' })
+
+export function expectedCorrections(m0, m1) {
+  if ((m0 !== 0 && m0 !== 1) || (m1 !== 0 && m1 !== 1)) throw new TypeError(`expectedCorrections: bits must be 0 or 1, got ${m0}, ${m1}`)
+  return { applyX: m1 === 1, applyZ: m0 === 1 }
+}
+
+function bloch(theta, phi) {
+  return { x: Math.sin(theta) * Math.cos(phi), y: Math.sin(theta) * Math.sin(phi), z: Math.cos(theta) }
+}
+// A CROSS-CHECK of the engine's number, never a displayed value (§10.6: fidelity comes from Qiskit).
+// After the player's choice the receiver holds E|psi> with E = X^(m1 xor applyX) Z^(m0 xor applyZ),
+// up to a global phase, so the fidelity is <psi|E|psi>^2: 1, x^2, z^2 or y^2 of the Bloch vector.
+function expectedFidelity({ theta, phi, m0, m1, applyX, applyZ }) {
+  const b = bloch(theta, phi)
+  const ex = (m1 === 1) !== applyX
+  const ez = (m0 === 1) !== applyZ
+  return ex && ez ? b.y ** 2 : ex ? b.x ** 2 : ez ? b.z ** 2 : 1
+}
+
+function exactKeys(obj, keys, label, err) {
+  for (const k of Object.keys(obj)) if (!keys.includes(k)) err(`${label} has unknown field "${k}"`)
+}
+function checkState(req, label, err) {
+  for (const k of ['theta', 'phi']) if (!isFiniteNumber(req[k])) err(`${label}.${k} must be a finite number, got ${describe(req[k])}`)
+  if (!isFiniteNumber(req.theta) || !isFiniteNumber(req.phi)) return
+  const b = bloch(req.theta, req.phi)
+  const worst = Math.max(b.x ** 2, b.y ** 2, b.z ** 2)
+  if (worst > GENERIC_MAX_WRONG_FIDELITY) {
+    err(`${label} state ry(${req.theta}) rz(${req.phi}) is not generic: a wrong correction would still score fidelity ${worst.toFixed(6)} (> ${GENERIC_MAX_WRONG_FIDELITY})`)
+  }
+}
+const sameNumber = (a, b) => isFiniteNumber(a) && isFiniteNumber(b) && Math.abs(a - b) <= 1e-12
+
+export function validateTeleportBitsRequest(req) {
+  if (!isPlainObject(req)) return [`phase-1 request must be a plain object { theta, phi }, got ${describe(req)}`]
+  const errors = []
+  const err = m => errors.push(m)
+  exactKeys(req, ['theta', 'phi'], 'phase-1 request', err)
+  checkState(req, 'phase-1 request', err)
+  return errors
+}
+
+function checkDryRunResult(req, res, phase, err) {
+  for (const e of validateExperimentResult(res)) err(`${phase} result: ${e}`)
+  if (!isPlainObject(res)) return false
+  if (res.experiment !== 'teleportation') err(`${phase} result experiment must be teleportation, got ${describe(res.experiment)}`)
+  if (res.engine !== 'exact_qiskit_local') err(`${phase} result engine must be exact_qiskit_local (puzzle feedback is local Qiskit), got ${describe(res.engine)}`)
+  const p = isPlainObject(res.parameters) ? res.parameters : {}
+  for (const k of ['theta', 'phi']) if (!sameNumber(p[k], req[k])) err(`${phase} result parameters.${k} ${describe(p[k])} is not the requested ${req[k]}`)
+  if (!isPlainObject(res.measurementBits)) { err(`${phase} result must carry measurementBits { m0, m1 }`); return false }
+  // An engine may echo the bits in parameters; if it does, they must be the same bits.
+  for (const k of ['m0', 'm1']) {
+    if (k in p && p[k] !== res.measurementBits[k]) err(`${phase} result parameters.${k} ${describe(p[k])} contradicts measurementBits.${k} ${describe(res.measurementBits[k])}`)
+  }
+  return true
+}
+
+export function validateTeleportBitsResult(req, res) {
+  const errors = validateTeleportBitsRequest(req).map(e => `request: ${e}`)
+  const err = m => errors.push(m)
+  checkDryRunResult(req ?? {}, res, 'phase-1', err)
+  if (isPlainObject(res)) {
+    if (res.fidelity !== undefined) err('phase-1 result must not report fidelity: the player has not chosen corrections yet')
+    for (const k of ['applyX', 'applyZ']) if (isPlainObject(res.parameters) && k in res.parameters) err(`phase-1 result parameters.${k} must be absent: corrections come after the bits`)
+  }
+  return errors
+}
+
+// The only way to build phase 2: from a valid phase-1 result and the player's choice.
+export function makeCorrectionRequest(bitsRequest, bitsResult, { applyX, applyZ } = {}) {
+  const errors = validateTeleportBitsResult(bitsRequest, bitsResult)
+  if (typeof applyX !== 'boolean' || typeof applyZ !== 'boolean') errors.push(`choice must be { applyX: boolean, applyZ: boolean }, got ${describe(applyX)}, ${describe(applyZ)}`)
+  if (errors.length) throw new TypeError(`makeCorrectionRequest: ${errors.join('; ')}`)
+  const { m0, m1 } = bitsResult.measurementBits
+  return { theta: bitsRequest.theta, phi: bitsRequest.phi, m0, m1, applyX, applyZ }
+}
+
+export function validateTeleportCorrectionRequest(req) {
+  if (!isPlainObject(req)) return [`phase-2 request must be a plain object { theta, phi, m0, m1, applyX, applyZ }, got ${describe(req)}`]
+  const errors = []
+  const err = m => errors.push(m)
+  exactKeys(req, ['theta', 'phi', 'm0', 'm1', 'applyX', 'applyZ'], 'phase-2 request', err)
+  checkState(req, 'phase-2 request', err)
+  for (const k of ['m0', 'm1']) if (req[k] !== 0 && req[k] !== 1) err(`phase-2 request.${k} must be the number 0 or 1, got ${describe(req[k])}`)
+  for (const k of ['applyX', 'applyZ']) if (typeof req[k] !== 'boolean') err(`phase-2 request.${k} must be a boolean, got ${describe(req[k])}`)
+  return errors
+}
+
+export function validateTeleportCorrectionResult(req, res) {
+  const errors = validateTeleportCorrectionRequest(req).map(e => `request: ${e}`)
+  const err = m => errors.push(m)
+  if (!checkDryRunResult(req ?? {}, res, 'phase-2', err) || errors.length) return errors
+  const mb = res.measurementBits
+  if (mb.m0 !== req.m0 || mb.m1 !== req.m1) err(`phase-2 result measurementBits ${JSON.stringify(mb)} are not the requested m0=${req.m0}, m1=${req.m1}`)
+  for (const k of ['applyX', 'applyZ']) if (res.parameters[k] !== req[k]) err(`phase-2 result parameters.${k} ${describe(res.parameters[k])} is not the requested ${req[k]}`)
+  if (!isFiniteNumber(res.fidelity)) { err('phase-2 result must report fidelity'); return errors }
+  const want = expectedFidelity(req)
+  if (Math.abs(res.fidelity - want) > FIDELITY_CROSSCHECK_TOLERANCE) {
+    err(`phase-2 result fidelity ${res.fidelity} disagrees with the physics of this branch and choice (expected ${want.toFixed(9)})`)
+  }
+  return errors
+}
+
+// passed: the choice follows the rule AND Qiskit's fidelity clears §7.4. unlocksCommit: a pass on
+// bits other than 00, so the player really applied X and/or Z (overseer ruling, gameplay consult 3 #2).
+export function dryRunVerdict(req, res) {
+  const errors = validateTeleportCorrectionResult(req, res)
+  if (errors.length) return { passed: false, unlocksCommit: false, expected: null, errors }
+  const expected = expectedCorrections(req.m0, req.m1)
+  const passed = expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS
+  return { passed, unlocksCommit: passed && (req.m0 === 1 || req.m1 === 1), expected, errors }
+}
+
+// A fresh calibration state, uniform on the Bloch sphere, redrawn until generic. `random` is
+// injectable for tests; the game passes nothing (Math.random). This is a choice of TEST state,
+// not a quantum random number.
+export function randomGenericState(random = Math.random) {
+  for (let i = 0; i < 1000; i++) {
+    const req = { theta: Math.acos(1 - 2 * random()), phi: 2 * Math.PI * random() - Math.PI }
+    if (validateTeleportBitsRequest(req).length === 0) return req
+  }
+  throw new Error('randomGenericState: no generic state in 1000 draws (is `random` constant?)')
+}
+
+// ------------------------------------------------------------------ UI root and settings
+
+// story-ui mounts every module into one <div id="echo-ui"> over the canvas (overseer relay, 2026-10-10).
+export const UI_ROOT_ID = 'echo-ui'
+// The menu's hooks other lanes call or supply: a terminal that owns Esc calls setPauseAllowed(false);
+// onRestart → gameplay resetGame() (§9.5) → RESET_STATE; onChange(settings, key) → platform routes
+// quality to the renderer and volume to audio; gameplay releases pointer lock while isOpen().
+export const UI_HOOKS = nameTable('UI_HOOKS', ['setPauseAllowed', 'onRestart', 'onChange', 'isOpen'])
+
+export const CAPTION_STYLES = Object.freeze(['standard', 'high-contrast'])
+export const QUALITY_LEVELS = Object.freeze(['low', 'med', 'high'])
+// Captions are always on (owner, 2026-10-10): there is a caption STYLE, never a captions on/off field.
+// story-ui may start reducedMotion from prefers-reduced-motion.
+export const DEFAULT_SETTINGS = Object.freeze({ captionStyle: 'standard', reducedMotion: false, textScale: 100, quality: 'med', volume: 80 })
+const SETTING_KEYS = Object.keys(DEFAULT_SETTINGS)
+
+export function validateSettings(s) {
+  if (!isPlainObject(s)) return [`settings must be a plain object, got ${describe(s)}`]
+  const errors = []
+  const err = m => errors.push(m)
+  for (const k of Object.keys(s)) {
+    if (!SETTING_KEYS.includes(k)) err(`unknown setting "${k}"${/subtitle|caption/i.test(k) ? ' (captions are always on; use captionStyle)' : ''}`)
+  }
+  if (!CAPTION_STYLES.includes(s.captionStyle)) err(`captionStyle must be one of ${CAPTION_STYLES.join('|')}, got ${describe(s.captionStyle)}`)
+  if (typeof s.reducedMotion !== 'boolean') err(`reducedMotion must be a boolean, got ${describe(s.reducedMotion)}`)
+  if (!(Number.isInteger(s.textScale) && s.textScale >= 100 && s.textScale <= 200)) err(`textScale must be an integer percent in [100, 200], got ${describe(s.textScale)}`)
+  if (!QUALITY_LEVELS.includes(s.quality)) err(`quality must be one of ${QUALITY_LEVELS.join('|')}, got ${describe(s.quality)}`)
+  if (!(Number.isInteger(s.volume) && s.volume >= 0 && s.volume <= 100)) err(`volume must be an integer in [0, 100], got ${describe(s.volume)}`)
   return errors
 }
