@@ -1,0 +1,61 @@
+=== teleport_terminal (keyboard only) ===
+(mouse) click /^COMMIT ONE-WAY TRANSFER$/
+Tab
+Tab
+Tab
+Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)
+Space (toggle X ON)
+Tab
+Tab
+Enter (VERIFY DRY RUN)
+Enter (double)
+Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)
+Tab
+Tab
+Enter (VERIFY DRY RUN)
+Enter (double)
+Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)
+Tab
+Tab
+Enter (VERIFY DRY RUN)
+Enter (double)
+Escape (mid-flow)
+Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)
+Space (toggle X ON)
+Tab
+Tab
+Enter (VERIFY DRY RUN)
+Enter (double)
+Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)
+Tab
+Tab
+Enter (VERIFY DRY RUN)
+Enter (double)
+Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)
+Tab
+Space (toggle Z ON)
+Tab
+Enter (VERIFY DRY RUN)
+Enter (double)
+Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)
+Tab
+Space (toggle Z ON)
+Tab
+Enter (VERIFY DRY RUN)
+Enter (double)
+Enter (EXECUTE BELL MEASUREMENT ON TEST STATE)
+Space (toggle X ON)
+Tab
+Space (toggle Z ON)
+Tab
+Enter (VERIFY DRY RUN)
+Enter (double)
+Tab
+Tab
+Tab
+Tab
+Enter (COMMIT ONE-WAY TRANSFER)
+Enter (commit retry)
+Enter (double)
+Escape
+Escape

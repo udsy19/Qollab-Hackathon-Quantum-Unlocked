@@ -514,7 +514,8 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
     const want = s.focusKey || focusKey;
     s.focusKey = null;
     const target = want ? panel.querySelector(`[data-key="${want}"]`) : null;
-    (target || focusableIn(body)[0] || close).focus();
+    // If the focused control just disappeared (RETRY while pending), go to the main action, not the top.
+    (target || panel.querySelector('.echo-terminal__primary') || focusableIn(body)[0] || close).focus();
     // The newest outcome is what the player just asked for: keep it in view inside the panel.
     const newest = right.lastElementChild;
     if (newest) newest.scrollIntoView({ block: 'nearest' });

@@ -24,6 +24,8 @@ applySettings(root, { textScale: Number(params.get('scale') || 100) });
 const hud = mountHud(root);
 hud.setVisible(false);
 const events = [];
+// For each event: was a result panel on screen (in the DOM, laid out, non-empty) when it fired?
+const eventSeen = [];
 const relayFixtures = await fetch('./relay-fixtures.json', { cache: 'no-store' }).then((r) => r.json());
 const stub = makeStubEngine({ relayFixtures });
 const HINT_FOR = { copy_booth: 'clone_superposition', relay_core: 'relay_send', teleport_terminal: 'teleport_correct', classical_socket: 'link_repair' };
@@ -32,6 +34,8 @@ const terminal = mountTerminal(root, {
   engine: stub,
   onEvent: (name, payload) => {
     events.push(payload === undefined ? name : `${name}${JSON.stringify(payload)}`);
+    const r = document.querySelector('.echo-terminal [data-role="result"]');
+    eventSeen.push({ name, resultOnScreen: !!r && r.getBoundingClientRect().height > 0 && r.innerText.trim().length > 0 });
     document.getElementById('eventlog').textContent = `events: ${events.join(' · ')}`;
   },
   getHint: (id) => {
@@ -41,9 +45,23 @@ const terminal = mountTerminal(root, {
     return h.text;
   },
 });
-window.echoHarness = { terminal, stub, events, VERSION };
+window.echoHarness = { terminal, stub, events, eventSeen, VERSION };
 if (params.get('open')) terminal.open(params.get('open'));
 servedHash().then((h) => {
   document.getElementById('provenance').textContent = `${VERSION} · sha256 ${h}`;
   window.echoHarness.hash = h;
 });
+
+// ?auto=1 drives the open terminal to its result screen (for audit tools that cannot click).
+if (params.get('auto')) {
+  const clickText = async (t) => {
+    [...document.querySelectorAll('.echo-terminal button')].find((b) => b.innerText.trim() === t)?.click();
+    await new Promise((r) => setTimeout(r, 400));
+  };
+  const steps = {
+    copy_booth: ['|+⟩', 'DUPLICATE', 'WHY DID THAT FAIL?', 'INCREASE VOLTAGE'],
+    relay_core: ['PREPARE BELL PAIR', 'X', 'SEND'],
+    teleport_terminal: ['EXECUTE BELL MEASUREMENT ON TEST STATE', 'VERIFY DRY RUN'],
+  }[params.get('open')] || [];
+  (async () => { for (const t of steps) await clickText(t); document.body.dataset.autoDone = 'true'; })();
+}

@@ -140,6 +140,8 @@ try {
   check('booth: learning text shown', /CNOT copies a known computational-basis bit, but not an arbitrary unknown qubit\./.test(await panelText()));
   const evBooth = (await events()).filter((e) => !e.startsWith('CLOSE_TERMINAL'));
   check('booth: events in §9.2 order', JSON.stringify(evBooth) === JSON.stringify(['BASIS_DEMO_OK', 'SUPERPOSITION_DEMO_FAILED', 'EXPLANATION_READ']), evBooth.join(','));
+  const acks = await H(() => echoHarness.eventSeen.filter((e) => ['BASIS_DEMO_OK', 'SUPERPOSITION_DEMO_FAILED', 'EXPLANATION_READ'].includes(e.name)));
+  check('booth: every booth event fired while its result panel was on screen', acks.length === 3 && acks.every((e) => e.resultOnScreen), JSON.stringify(acks));
   await press('Escape');
   check('booth: ESC closes the terminal', await H(() => !echoHarness.terminal.isOpen()));
   check('booth: ESC emits CLOSE_TERMINAL {id}', (await events()).at(-1) === 'CLOSE_TERMINAL{"id":"copy_booth"}', (await events()).at(-1));
@@ -165,6 +167,8 @@ try {
   check('relay: paired view shows Z/X agreement for the last gate (Z: Z agree 1, X agree 0)', /Z-BASIS RESULTS AGREE[\s\S]*1(\.0+)?\b[\s\S]*X-BASIS RESULTS AGREE[\s\S]*\b0(\.0+)?\b/.test(paired));
   await shot('12-relay-paired.png');
   const evRelay = (await events()).filter((e) => !e.startsWith('CLOSE_TERMINAL'));
+  const racks = await H(() => echoHarness.eventSeen.filter((e) => ['ATTEMPT_NO_SIGNALLING', 'VIEW_RECEIVER_MARGINAL'].includes(e.name)));
+  check('relay: ATTEMPT_NO_SIGNALLING and VIEW_RECEIVER_MARGINAL fired with the receiver result on screen', racks.length === 2 && racks.every((e) => e.resultOnScreen), JSON.stringify(racks));
   check('relay: events in §9.2 order, each once', JSON.stringify(evRelay) === JSON.stringify(['PREPARE_BELL_PAIR', 'ATTEMPT_NO_SIGNALLING', 'VIEW_RECEIVER_MARGINAL']), evRelay.join(','));
   await press('Escape');
 
@@ -203,8 +207,13 @@ try {
       if (wrong) { if (m0 === 0 && m1 === 0) x = true; else if (m1 === 1) x = false; else z = !z; }
       await setToggle('X', x);
       await setToggle('Z', z);
-      await tabTo(/^VERIFY DRY RUN$/);
+      const dryBefore = await calls('teleportDryRun');
+      await tabTo(/^VERIFY DRY RUN$/, { activate: false });
+      await press('Enter', 'Enter (VERIFY DRY RUN)');
+      await press('Enter', 'Enter (double)');
+      await H(() => { const b = [...document.querySelectorAll('.echo-terminal button')].find((x) => /^VERIFY DRY RUN$/.test(x.innerText.trim())); b?.click(); });
       await idle();
+      check(`teleport ${m0}${m1} ${wrong ? 'wrong' : 'right'}: double Enter + click on VERIFY makes exactly one engine call`, (await calls('teleportDryRun')) === dryBefore + 1, String((await calls('teleportDryRun')) - dryBefore));
       const stateId = await H(() => echoHarness.stub.results.at(-1).out.parameters.state);
       const expected = await fidOf(stateId, x, z, m0, m1);
       const shown = Number(await role('fidelity'));
@@ -246,6 +255,8 @@ try {
   await press('Enter', 'Enter (commit retry)');
   await press('Enter', 'Enter (double)');
   await H(() => { const b = [...document.querySelectorAll('.echo-terminal button')].find((x) => /COMMIT|RETRY/.test(x.innerText)); b?.click(); b?.click(); });
+  const flight = await H(() => ({ busy: document.querySelector('.echo-terminal').getAttribute('aria-busy'), source: document.querySelector('.echo-terminal [data-role="source"]')?.innerText }));
+  check('commit in flight: source still reads STATE PRESENT (consumed only on success)', flight.busy === 'true' && flight.source === 'STATE PRESENT', JSON.stringify(flight));
   await shot('25-commit-in-progress.png');
   await idle();
   await H(() => { echoHarness.stub.control.delayMs = 120; });
@@ -337,6 +348,8 @@ try {
   check('no page errors', errors.length === 0, errors.join(' | '));
 } catch (e) {
   check(`driver reached the end (${e.message})`, false);
+  // A hang is no verdict (law 7); say what the page itself reported before the driver gave up.
+  check('no page errors (at abort)', errors.length === 0, errors.join(' | '));
 } finally {
   fs.writeFileSync(path.join(out, 'drive-result.json'), JSON.stringify({ url, keys, checks, failed, errors, leaves: [...new Set(leaves)] }, null, 2));
   await browser.close();
