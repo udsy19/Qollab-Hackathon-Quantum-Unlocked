@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **43 notes** over 10 folders.
+Measured 2026-10-10: **44 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -78,6 +78,7 @@ Folder README: [[Reports/README]]
 
 - [[Reports/README|Reports/]]
 - [[Reports/contracts-fidelity-band|Fidelity cross-check: tolerance = band, plus a rounding epsilon]]
+- [[Reports/contracts-moments-and-land|Contracts: MOMENT events, a countdown that holds at 00:00, and a contracts-only landing branch]]
 - [[Reports/contracts-pin-thresholds|Contract gate pins the owner-ruled constants]]
 - [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
 - [[Reports/g0-runner-smoke|G0 platform smoke and local Qollab-like runner (measured, local runner only)]]
