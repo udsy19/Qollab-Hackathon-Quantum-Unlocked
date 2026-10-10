@@ -1,0 +1,19 @@
+CASE control-builtin backend=builtin exit=0 -> AS EXPECTED
+CASE control-ionq-mock backend=ionq-mock exit=0 -> AS EXPECTED
+CASE no-guard-ionq-mock backend=ionq-mock exit=1 -> CAUGHT
+    FAIL  second press: page shows a visible refusal  — Backend job failed: Error: The code has already filed one circuit execution job; only one job is allowed per code run
+    FAIL  second press: runner saw no second backend.run  — {"jobs":2,"refused":1}
+CASE no-guard-builtin backend=builtin exit=1 -> CAUGHT
+    FAIL  second press: page shows a visible refusal  — Done: 1 job, 256 shots on basic_simulator. A second press will be refused.
+    FAIL  second press: runner saw no second backend.run  — {"jobs":2,"refused":0}
+CASE wrong-bridge backend=builtin exit=1 -> CAUGHT
+    FAIL  bridge: exact P(00)=P(11)=0.5, nothing else  — {"11":1}
+    FAIL  bridge: reduced purity of one half = 0.5  — 1
+    FAIL  first press: both 00 and 11 present, each 88..168 of 256  — {"11":256}
+CASE wrong-backend-circuit backend=builtin exit=1 -> CAUGHT
+    FAIL  first press: ideal Bell counts only 00/11  — ["10","01"]
+    FAIL  first press: both 00 and 11 present, each 88..168 of 256  — {"10":135,"01":121}
+CASE no-render backend=builtin exit=1 -> CAUGHT
+    FAIL  Three.js canvas shows the cyan cube (pixels)  — {"w":960,"h":660,"cyan":0,"cyanShare":0}
+CASE wrong-build backend=builtin exit=2 -> CAUGHT
+    ABORT: served build g0-smoke-2026-10-10b is not the expected not-the-served-build

@@ -1,0 +1,20 @@
+<!-- Body fragment only: Qollab drops html/head/body tags and never runs <script>. All code lives in main.js. -->
+<main id="echo-smoke" aria-labelledby="smoke-title">
+  <div id="scene-wrap">
+    <canvas id="scene" role="img" aria-label="Three.js test scene: a glowing cyan cube turning above a dark floor"></canvas>
+  </div>
+  <section id="panel" aria-labelledby="smoke-title">
+    <h1 id="smoke-title">ECHO · G0 platform smoke</h1>
+    <p class="meta">Build <code id="build-token">…</code> · backend <code id="backend-name">…</code></p>
+
+    <h2>1 · Local Qiskit through the Python bridge</h2>
+    <p class="hint">quantum/smoke.py → <code>bell_probabilities.callPromising()</code> → <code>.toJs()</code></p>
+    <pre id="bridge-out" aria-live="polite">Waiting for Python…</pre>
+
+    <h2>2 · One job on the selected backend</h2>
+    <p class="hint">Sends exactly one measured Bell circuit with <code>backend.run</code>. IonQ backends allow one job per run.</p>
+    <button id="verify-btn" type="button" disabled>Verify on selected backend</button>
+    <p id="verify-status" role="status" aria-live="polite"></p>
+    <pre id="backend-out" aria-live="polite"></pre>
+  </section>
+</main>

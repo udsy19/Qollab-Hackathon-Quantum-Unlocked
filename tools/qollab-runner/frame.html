@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="utf-8">
+<!-- Same import map as Qollab's project frame (https://qollab.xyz/jsworker.html, read 2026-10-09). -->
+<script type="importmap">
+{
+	"imports": {
+		"three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js",
+		"three/addons/": "https://cdn.jsdelivr.net/npm/three@0.186.1/examples/jsm/",
+		"postprocessing": "https://cdn.jsdelivr.net/npm/postprocessing@6.39.5/+esm"
+	}
+}
+</script>
+<!-- Qollab compiles project JS with Babel in its parent page; the runner does it here. -->
+<script src="https://cdn.jsdelivr.net/npm/@babel/standalone@7/babel.min.js"></script>
+<style>
+html, body { height: 100%; margin: 0; }
+@keyframes running-indicator { 0%, 100% { opacity: 100%; } 50% { opacity: 20%; } }
+</style>
+</head>
+<body>
+<div class="qollab-loading-overlay" title="Loading..." style="cursor:default;position:fixed;z-index:10000;top:0;right:0;bottom:0;left:0;background:white;font-size:30px;text-align:center;line-height:100vh;animation-name:running-indicator;animation-duration:5s;animation-iteration-count:infinite">🚀</div>
+<script type="module" src="/frame.js"></script>
+</body>
+</html>
