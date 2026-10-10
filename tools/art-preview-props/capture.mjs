@@ -32,7 +32,7 @@ if (want('shots')) {
     ['lineup-after-high', 'view=lineup&q=high&state=after'],
     ['booth-10m', 'view=booth&dist=10'], ['booth-10m-after', 'view=booth&dist=10&state=after'], ['booth-3m-initials', 'view=booth&dist=3&az=1.25'],
     ['relay-10m', 'view=relay&dist=10'], ['relay-10m-after', 'view=relay&dist=10&state=after'],
-    ['mast-14m', 'view=mast&dist=14&az=-0.3'], ['mast-14m-after', 'view=mast&dist=14&az=-0.3&state=after'],
+    ['mast-14m', 'view=mast&dist=14&az=0.75'], ['mast-14m-after', 'view=mast&dist=14&az=0.75&state=after'],
     ['quantum-console-3m', 'view=quantum&dist=3'], ['quantum-console-3m-after', 'view=quantum&dist=3&state=after'],
     ['classical-console-3m', 'view=classical&dist=3'], ['kiosk-4m', 'view=kiosk&dist=4&az=0.2'], ['kiosk-10m', 'view=kiosk&dist=10'],
     ['billboard-slogan-12m', 'view=slogan&dist=12&az=0'], ['billboard-shelter-before-10m', 'view=shelter&dist=10&az=0'],
@@ -84,8 +84,26 @@ if (want('wav')) {
   await page.close();
 }
 
+// The autoplay contract (§11.1), asserted — not just printed. Each line names what would be wrong.
+const fail = [];
+if (report.before) {
+  const b = report.before, a = report.after;
+  if (b.contextsBeforeUnlock !== 0) fail.push(`an AudioContext existed before any user input (${b.contextsBeforeUnlock})`);
+  if (b.oscillatorsBeforeUnlock !== 0) fail.push(`oscillators were created before unlock (${b.oscillatorsBeforeUnlock})`);
+  if (b.callErrors.length || b.pageErrors.length) fail.push(`calls before unlock threw: ${[...b.callErrors, ...b.pageErrors].join('; ')}`);
+  for (const k of ['unknownCue', 'unknownZone', 'volume101', 'volumeFraction']) if (!b[k]?.startsWith('RangeError')) fail.push(`${k} did not throw a RangeError (${b[k]})`);
+  if (a.contextsAfterUnlock !== 1 || !a.unlocked) fail.push(`a real click did not unlock exactly one running context (${a.contextsAfterUnlock}, ${a.unlocked})`);
+  if (!(a.successAdded > 0 && a.swellAdded > 0)) fail.push(`cues after unlock created no voices (${a.successAdded}, ${a.swellAdded})`);
+  if (a.swellRepeatAdded !== 0) fail.push(`music_swell played twice without reset (${a.swellRepeatAdded} voices)`);
+  if (!(a.swellAfterResetAdded > 0)) fail.push('reset() did not unlatch music_swell');
+}
+if (report.wav) for (const [id, w] of Object.entries(report.wav)) {
+  if (w.peakDbfs > -1) fail.push(`${id} clips (peak ${w.peakDbfs} dBFS)`);
+  if (w.rmsDbfs < -70) fail.push(`${id} is silent (rms ${w.rmsDbfs} dBFS)`);
+}
+report.fail = fail;
 report.errors = errors;
 await browser.close();
 writeFileSync(`${out}/capture-report.json`, JSON.stringify(report, null, 2));
 console.log(JSON.stringify(report, null, 2));
-process.exit(errors.length ? 1 : 0);
+process.exit(errors.length || fail.length ? 1 : 0);

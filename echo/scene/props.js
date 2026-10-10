@@ -581,7 +581,7 @@ export function createMast({ height = 22 } = {}) {
 
   // Amber classical riser up the outside of one leg; a stripe travels up it when the link is live.
   const riserMat = s.own(basic(COLOR.dim, { map: ownStripe(s, 'v', 1, 7) }));
-  s.bake(parts().strut(V(0.6, 1.0, 0.6), V(0.22, height - 2, 0.22), 0.05), riserMat);
+  s.bake(parts().strut(V(0.6, 1.0, 0.6), V(0.22, height - 2, 0.22), 0.07), riserMat);
 
   // Cyan quantum crown at the top.
   const crownMat = s.own(basic(COLOR.cyan));
