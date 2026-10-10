@@ -1,0 +1,62 @@
+PASS GAME-STATES            [V§9.1]
+PASS GAME-EDGES             [V§9.2 + R13.1/R13.12]
+PASS GAME-EXTRA             [V§9.2 transition(): anything else refused]
+PASS CONTRACT-STATES        [V§9.1]
+PASS CONTRACT-EDGES         [V§9.2 + R13.1/R13.12]
+PASS CONTRACT-EXTRA         [V§9.2 transition(): anything else refused]
+PASS PARITY                 [owner relay "gameplay imports its quest table from echo/contracts.js"]
+PASS GAME-NOSKIP            [V§9.2 chain; CLAUDE.md "Playable"]
+PASS GAME-ENDING-ENTRY      [V§9.2 + R13.1]
+PASS GAME-COMMIT-ONCE       [V§7.4, V§9.3 idempotence]
+PASS CONTRACT-NOSKIP        [V§9.2 chain; CLAUDE.md "Playable"]
+PASS CONTRACT-ENDING-ENTRY  [V§9.2 + R13.1]
+PASS CONTRACT-COMMIT-ONCE   [V§7.4, V§9.3 idempotence]
+PASS ENGINE-ORACLE          [independence: every fed fidelity re-derived by oracle.mjs (cross-checked vs Qiskit in crosscheck.py)]
+PASS TOKEN-ELSEWHERE        [V§7.4: the token is measured only at the final commit]
+PASS TOKEN-LATCH            [V§7.4 "do not let the player re-run teleportation of the already-measured token"; RG3.1 "latched once recorded"]
+FAIL TOKEN-RUN-GUARD        [V§7.4 + P-ONCE: the token is measured exactly once per session, only via the commit]
+       - experiment() in TELEPORT_DRY_RUN_PASSED ran a story-token request outside commitTransfer, then the commit measured again: 2 token measurements in one session
+       - after the commit (latch committed), experiment() in TELEPORT_COMMITTED still ran a story-token request
+FAIL ERR-COMMIT             [RG3.1: an errored commit records nothing; retry allowed]
+       - after errored result null, a good commit is refused (latch measured_refused): no retry
+       - after errored result undefined, a good commit is refused (latch measured_refused): no retry
+       - after errored result {}, a good commit is refused (latch measured_refused): no retry
+       - after errored result {"experiment":"teleportation"}, a good commit is refused (latch measured_refused): no retry
+       - after errored result {"experiment":"teleportation","parameters":{"stateId":"story_token"}}, a good commit is refused (latch measured_refused): no retry
+PASS DRY-RULE               [V§7.4 + oracle physics; CLAUDE.md "all four conditional correction choices"]
+PASS DRY-00                 [RG3.2: COMMIT unlocks only after a correct dry run whose bits are NOT 00]
+FAIL DRY-UNEARNED           [RG3.2 + V§9.2: an outcome-named mission event needs the result that shows it]
+       - CLONE_INTRO: send('BASIS_DEMO_OK') with no experiment result advanced to CLONE_BASIS_PASSED
+       - CLONE_BASIS_PASSED: send('SUPERPOSITION_DEMO_FAILED') with no experiment result advanced to CLONE_SUPERPOSITION_FAILED
+       - TELEPORT_DRY_RUN: send('CORRECT_CALIBRATION') with no experiment result advanced to TELEPORT_DRY_RUN_PASSED
+FAIL FRESH                  [R13.11: a wrong dry run retries on a FRESH calibration state]
+       - after a wrong dry run on bloch_a, a retry on the SAME prepared state yields CORRECT_CALIBRATION
+FAIL BITS-FIRST             [owner § red-team physics (2): corrections are chosen after m0, m1 are shown]
+       - TELEPORT_DRY_RUN: a single corrections-included result, with no bits-first result before it, yields CORRECT_CALIBRATION
+PASS CONTRACT-BITS          [owner § red-team physics (2): the contract defines a bits-first dry run]
+PASS ACK                    [R13.13: acknowledgements advance only after the result panel was shown]
+PASS ACK-STALE-PANEL        [R13.13: the panel must be shown IN the acknowledging state]
+PASS STALE-TICKET           [V§9.5 resetGame: a result asked in an old session must not move the new one]
+PASS TICKET-REPLAY          [V§9.5 + ABA: a ticket from an earlier session or an earlier visit is not current]
+PASS COMMIT-TWICE           [V§7.4: one commit, one token measurement]
+PASS COMMIT-STALE           [V§9.5: a commit in flight across resetGame() moves nothing, and the new session can commit]
+PASS COMMIT-AFTER-RESTART   [R13.12 + V§9.5: after RESTART the old token is gone; nothing commits outside the armed state]
+FAIL RESTART-SESSION        [R13.12 + V§9.5: every RESTART the ENDING screen offers starts a full new session]
+       - RESTART via edge: second session cannot commit (latch committed); the game is soft-locked before the ending
+PASS PLAYTHROUGH            [V§9.2 legal path on real engine results (names-only seam alias); CLAUDE.md "Playable"]
+FAIL PLAYTHROUGH-RAW        [V§9.2 + CLAUDE.md "Playable": the engine's results as emitted, no alias]
+       - CLONE_INTRO: rule refused cloning {"state":"zero"} (need a basis-state copy that succeeded)
+       - CLONE_INTRO: rule refused cloning {"state":"plus"} (need a basis-state copy that succeeded)
+       - CLONE_INTRO refused EXPLANATION_READ
+       - CLONE_INTRO refused EXIT_BOOTH
+       - CLONE_INTRO refused REACH_RELAY
+       - CLONE_INTRO: rule refused bell_signalling {"senderGate":"I"} (need a basis-state copy that succeeded)
+       - CLONE_INTRO: rule refused bell_signalling {"senderGate":"X"} (need a basis-state copy that succeeded)
+       - CLONE_INTRO refused VIEW_RECEIVER_MARGINAL
+       - CLONE_INTRO refused OPEN_ROOFTOP
+       - CLONE_INTRO refused REPAIR_CLASSICAL_LINK
+       - CLONE_INTRO refused RUN_DRY_TEST
+       - CLONE_INTRO: rule refused teleportation {"state":"bloch_b","m0":1,"m1":1,"applyX":true,"applyZ":true} (need a basis-state copy that succeeded)
+       ... 2 more
+
+34 checks: 27 green, 7 red

@@ -1,0 +1,91 @@
+PASS GAME-STATES            [V§9.1]
+FAIL GAME-EDGES             [V§9.2 + R13.1/R13.12]
+       - BOOT --BOOT_COMPLETE--> REFUSED, want TITLE (R13.1)
+       - DECLASSIFIED has no edge to ENDING (R13.1 (event name unspecified))
+FAIL GAME-EXTRA             [V§9.2 transition(): anything else refused]
+       - gameplay state.js: undocumented edge BOOT --BOOTED--> TITLE
+       - gameplay state.js: undocumented edge DECLASSIFIED --RESTART--> TITLE
+       - gameplay state.js: undocumented edge CREDITS --OPEN_SCIENCE--> DECLASSIFIED
+       - gameplay state.js: undocumented edge CREDITS --RESTART--> TITLE
+PASS CONTRACT-STATES        [V§9.1]
+FAIL CONTRACT-EDGES         [V§9.2 + R13.1/R13.12]
+       - DECLASSIFIED has no edge to ENDING (R13.1 (event name unspecified))
+       - ENDING --RESTART--> refused and no reset() on this module (R13.12 + V§9.5 (target unspecified))
+PASS CONTRACT-EXTRA         [V§9.2 transition(): anything else refused]
+FAIL PARITY                 [owner relay "gameplay imports its quest table from echo/contracts.js"]
+       - BOOT --BOOT_COMPLETE--> gameplay REFUSED vs contracts TITLE
+       - BOOT --BOOTED--> gameplay TITLE vs contracts REFUSED
+       - DECLASSIFIED --RESTART--> gameplay TITLE vs contracts REFUSED
+       - CREDITS --OPEN_SCIENCE--> gameplay DECLASSIFIED vs contracts REFUSED
+       - CREDITS --RESTART--> gameplay TITLE vs contracts REFUSED
+PASS GAME-NOSKIP            [V§9.2 chain; CLAUDE.md "Playable"]
+PASS GAME-ENDING-ENTRY      [V§9.2 + R13.1]
+PASS GAME-COMMIT-ONCE       [V§7.4, V§9.3 idempotence]
+PASS CONTRACT-NOSKIP        [V§9.2 chain; CLAUDE.md "Playable"]
+PASS CONTRACT-ENDING-ENTRY  [V§9.2 + R13.1]
+PASS CONTRACT-COMMIT-ONCE   [V§7.4, V§9.3 idempotence]
+PASS ENGINE-ORACLE          [independence: every fed fidelity re-derived by oracle.mjs (cross-checked vs Qiskit in crosscheck.py)]
+PASS TOKEN-ELSEWHERE        [V§7.4: the token is measured only at the final commit]
+FAIL TOKEN-LATCH            [V§7.4 "do not let the player re-run teleportation of the already-measured token"; RG3.1 "latched once recorded"]
+       - after a recorded refused commit (F=0.498), a SECOND story-token commit advanced to TELEPORT_COMMITTED
+       - after a recorded refused commit, a second story-token request left the machine (2 token measurements)
+FAIL TOKEN-RUN-GUARD        [V§7.4 + P-ONCE: the token is measured exactly once per session, only via the commit]
+       - after the commit (latch n/a), experiment() in TELEPORT_COMMITTED still ran a story-token request
+PASS ERR-COMMIT             [RG3.1: an errored commit records nothing; retry allowed]
+PASS DRY-RULE               [V§7.4 + oracle physics; CLAUDE.md "all four conditional correction choices"]
+FAIL DRY-00                 [RG3.2: COMMIT unlocks only after a correct dry run whose bits are NOT 00]
+       - bloch_a bits m0=0 m1=0 (X=false,Z=false, F=1.000000) yields CORRECT_CALIBRATION -> COMMIT unlocked without the player applying X or Z
+       - bloch_b bits m0=0 m1=0 (X=false,Z=false, F=1.000000) yields CORRECT_CALIBRATION -> COMMIT unlocked without the player applying X or Z
+FAIL DRY-UNEARNED           [RG3.2 + V§9.2: an outcome-named mission event needs the result that shows it]
+       - CLONE_INTRO: send('BASIS_DEMO_OK') with no experiment result advanced to CLONE_BASIS_PASSED
+       - CLONE_BASIS_PASSED: send('SUPERPOSITION_DEMO_FAILED') with no experiment result advanced to CLONE_SUPERPOSITION_FAILED
+       - TELEPORT_DRY_RUN: send('CORRECT_CALIBRATION') with no experiment result advanced to TELEPORT_DRY_RUN_PASSED
+       - TELEPORT_DRY_RUN_PASSED: send('COMMIT_TRANSFER') with no experiment result advanced to TELEPORT_COMMITTED
+FAIL FRESH                  [R13.11: a wrong dry run retries on a FRESH calibration state]
+       - after a wrong dry run on bloch_a, a retry on the SAME prepared state yields CORRECT_CALIBRATION
+FAIL BITS-FIRST             [owner § red-team physics (2): corrections are chosen after m0, m1 are shown]
+       - TELEPORT_DRY_RUN: a single corrections-included result, with no bits-first result before it, yields CORRECT_CALIBRATION
+FAIL CONTRACT-BITS          [owner § red-team physics (2): the contract defines a bits-first dry run]
+       - no two-phase dry-run contract (makeCorrectionRequest / validateTeleportBitsResult)
+FAIL ACK                    [R13.13: acknowledgements advance only after the result panel was shown]
+       - EXPLANATION_READ accepted in CLONE_SUPERPOSITION_FAILED with no result-panel signal of any kind (0 ms after entry)
+       - VIEW_RECEIVER_MARGINAL accepted in RELAY_SEND_FAILED with no result-panel signal of any kind (0 ms after entry)
+FAIL ACK-STALE-PANEL        [R13.13: the panel must be shown IN the acknowledging state]
+       - EXPLANATION_READ in CLONE_SUPERPOSITION_FAILED accepted on a panel shown in CLONE_BASIS_PASSED
+       - VIEW_RECEIVER_MARGINAL in RELAY_SEND_FAILED accepted on a panel shown in RELAY_BELL_CREATED
+FAIL STALE-TICKET           [V§9.5 resetGame: a result asked in an old session must not move the new one]
+       - a result asked before resetGame() moved the new session to CLONE_BASIS_PASSED
+FAIL TICKET-REPLAY          [V§9.5 + ABA: a ticket from an earlier session or an earlier visit is not current]
+       - no ticket API: an async result cannot be bound to the session it was asked in
+FAIL COMMIT-TWICE           [V§7.4: one commit, one token measurement]
+       - second commit request left the machine (2 token measurements)
+       - two concurrent commits: 2 token measurements
+FAIL COMMIT-STALE           [V§9.5: a commit in flight across resetGame() moves nothing, and the new session can commit]
+       - no commit call: a commit cannot be in flight (no session binding)
+PASS COMMIT-AFTER-RESTART   [R13.12 + V§9.5: after RESTART the old token is gone; nothing commits outside the armed state]
+PASS RESTART-SESSION        [R13.12 + V§9.5: every RESTART the ENDING screen offers starts a full new session]
+FAIL PLAYTHROUGH            [V§9.2 legal path on real engine results (names-only seam alias); CLAUDE.md "Playable"]
+       - RELAY_BELL_CREATED: rule refused bell_signalling {"senderGate":"X"} (receiver marginal missing)
+       - RELAY_BELL_CREATED refused VIEW_RECEIVER_MARGINAL
+       - RELAY_BELL_CREATED refused OPEN_ROOFTOP
+       - RELAY_BELL_CREATED refused REPAIR_CLASSICAL_LINK
+       - RELAY_BELL_CREATED refused RUN_DRY_TEST
+       - RELAY_BELL_CREATED: rule refused teleportation {"state":"bloch_b","m0":1,"m1":1,"applyX":true,"applyZ":true} (need a Bell-pair result)
+       - RELAY_BELL_CREATED refused ANIMATION_END
+       - playthrough ended in RELAY_BELL_CREATED
+FAIL PLAYTHROUGH-RAW        [V§9.2 + CLAUDE.md "Playable": the engine's results as emitted, no alias]
+       - CLONE_INTRO: rule refused cloning {"state":"zero"} (need a basis-state copy that succeeded)
+       - CLONE_INTRO: rule refused cloning {"state":"plus"} (need a basis-state copy that succeeded)
+       - CLONE_INTRO refused EXPLANATION_READ
+       - CLONE_INTRO refused EXIT_BOOTH
+       - CLONE_INTRO refused REACH_RELAY
+       - CLONE_INTRO: rule refused bell_signalling {"senderGate":"I"} (need a basis-state copy that succeeded)
+       - CLONE_INTRO: rule refused bell_signalling {"senderGate":"X"} (need a basis-state copy that succeeded)
+       - CLONE_INTRO refused VIEW_RECEIVER_MARGINAL
+       - CLONE_INTRO refused OPEN_ROOFTOP
+       - CLONE_INTRO refused REPAIR_CLASSICAL_LINK
+       - CLONE_INTRO refused RUN_DRY_TEST
+       - CLONE_INTRO: rule refused teleportation {"state":"bloch_b","m0":1,"m1":1,"applyX":true,"applyZ":true} (need a basis-state copy that succeeded)
+       ... 2 more
+
+34 checks: 15 green, 19 red

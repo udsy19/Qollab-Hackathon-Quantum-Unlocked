@@ -1,0 +1,862 @@
+{
+  "baselineRed": [
+    "TOKEN-RUN-GUARD",
+    "ERR-COMMIT",
+    "DRY-UNEARNED",
+    "FRESH",
+    "BITS-FIRST",
+    "RESTART-SESSION",
+    "PLAYTHROUGH-RAW"
+  ],
+  "checks": [
+    "GAME-STATES",
+    "GAME-EDGES",
+    "GAME-EXTRA",
+    "CONTRACT-STATES",
+    "CONTRACT-EDGES",
+    "CONTRACT-EXTRA",
+    "PARITY",
+    "GAME-NOSKIP",
+    "GAME-ENDING-ENTRY",
+    "GAME-COMMIT-ONCE",
+    "CONTRACT-NOSKIP",
+    "CONTRACT-ENDING-ENTRY",
+    "CONTRACT-COMMIT-ONCE",
+    "ENGINE-ORACLE",
+    "TOKEN-ELSEWHERE",
+    "TOKEN-LATCH",
+    "TOKEN-RUN-GUARD",
+    "ERR-COMMIT",
+    "DRY-RULE",
+    "DRY-00",
+    "DRY-UNEARNED",
+    "FRESH",
+    "BITS-FIRST",
+    "CONTRACT-BITS",
+    "ACK",
+    "ACK-STALE-PANEL",
+    "STALE-TICKET",
+    "TICKET-REPLAY",
+    "COMMIT-TWICE",
+    "COMMIT-STALE",
+    "COMMIT-AFTER-RESTART",
+    "RESTART-SESSION",
+    "PLAYTHROUGH",
+    "PLAYTHROUGH-RAW"
+  ],
+  "coverage": {
+    "GAME-STATES": [
+      "B-RULE-SWAP",
+      "B-CREDITS",
+      "B-REARM-b"
+    ],
+    "GAME-EDGES": [
+      "B-RULE-SWAP",
+      "B-PARITY",
+      "B-CREDITS",
+      "B-REARM-b"
+    ],
+    "GAME-EXTRA": [
+      "B-CREDITS",
+      "B-CHEAT"
+    ],
+    "CONTRACT-STATES": [
+      "B-CREDITS"
+    ],
+    "CONTRACT-EDGES": [
+      "B-CREDITS"
+    ],
+    "CONTRACT-EXTRA": [
+      "B-CREDITS",
+      "B-CHEAT",
+      "B-REARM-b"
+    ],
+    "PARITY": [
+      "B-RULE-SWAP",
+      "B-PARITY",
+      "B-REARM-b"
+    ],
+    "GAME-NOSKIP": [
+      "B-RULE-SWAP",
+      "B-CHEAT",
+      "B-REARM-b"
+    ],
+    "GAME-ENDING-ENTRY": [
+      "B-CHEAT"
+    ],
+    "GAME-COMMIT-ONCE": [
+      "B-RULE-SWAP",
+      "B-REARM-b"
+    ],
+    "CONTRACT-NOSKIP": [
+      "B-CHEAT"
+    ],
+    "CONTRACT-ENDING-ENTRY": [
+      "B-CHEAT"
+    ],
+    "CONTRACT-COMMIT-ONCE": [
+      "B-REARM-b"
+    ],
+    "ENGINE-ORACLE": [
+      "B-ORACLE"
+    ],
+    "TOKEN-ELSEWHERE": [
+      "B-TOKEN-DRY"
+    ],
+    "TOKEN-LATCH": [
+      "B-LATCH"
+    ],
+    "TOKEN-RUN-GUARD": [
+      "L-RUNGUARD"
+    ],
+    "ERR-COMMIT": [
+      "L-ERRSHAPE"
+    ],
+    "DRY-RULE": [
+      "B-RULE-SWAP"
+    ],
+    "DRY-00": [
+      "B-00"
+    ],
+    "DRY-UNEARNED": [
+      "L-EARNED"
+    ],
+    "FRESH": [
+      "L-FRESH"
+    ],
+    "BITS-FIRST": [
+      "L-BITS"
+    ],
+    "CONTRACT-BITS": [
+      "B-CONTRACT-BITS"
+    ],
+    "ACK": [
+      "B-ACK",
+      "B-ACK-SEQ"
+    ],
+    "ACK-STALE-PANEL": [
+      "B-ACK",
+      "B-ACK-SEQ"
+    ],
+    "STALE-TICKET": [
+      "B-EPOCH-SEQ"
+    ],
+    "TICKET-REPLAY": [
+      "B-EPOCH-SEQ",
+      "B-RULE-SWAP",
+      "B-REARM-b"
+    ],
+    "COMMIT-TWICE": [
+      "B-LATCH",
+      "B-RULE-SWAP",
+      "B-REARM-b"
+    ],
+    "COMMIT-STALE": [
+      "B-EPOCH",
+      "B-EPOCH-SEQ",
+      "B-RULE-SWAP",
+      "B-REARM-b"
+    ],
+    "COMMIT-AFTER-RESTART": [
+      "B-ARMED",
+      "B-RULE-SWAP",
+      "B-REARM-b"
+    ],
+    "RESTART-SESSION": [
+      "L-RESTART"
+    ],
+    "PLAYTHROUGH": [
+      "B-RULE-SWAP",
+      "B-FID",
+      "B-PARITY",
+      "B-REARM-b"
+    ],
+    "PLAYTHROUGH-RAW": [
+      "L-RAW"
+    ]
+  },
+  "rows": [
+    {
+      "kind": "break",
+      "id": "B-LATCH",
+      "want": [
+        "TOKEN-LATCH",
+        "COMMIT-TWICE"
+      ],
+      "why": "commit latch removed (commitTransfer no longer checks commit !== IDLE)",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "TOKEN-LATCH",
+        "TOKEN-RUN-GUARD",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "COMMIT-TWICE",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "TOKEN-LATCH",
+        "COMMIT-TWICE"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-ACK",
+      "want": [
+        "ACK",
+        "ACK-STALE-PANEL"
+      ],
+      "why": "acknowledgement gate removed from gate()",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "ACK",
+        "ACK-STALE-PANEL",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "ACK",
+        "ACK-STALE-PANEL"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-EPOCH",
+      "want": [
+        "COMMIT-STALE"
+      ],
+      "why": "epoch compare dropped from isCurrent() and from commitTransfer()",
+      "patches": 2,
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "COMMIT-STALE",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "COMMIT-STALE"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-00",
+      "want": [
+        "DRY-00"
+      ],
+      "why": "bits-00 refusal removed: a 00 dry run unlocks COMMIT",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-00",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "DRY-00"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "N-EPOCH-TICKET",
+      "want": [],
+      "why": "NULL PROBE: only isCurrent() epoch compare dropped; seq is monotonic across sessions, so tickets stay stale",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "N-FID-TELE",
+      "want": [],
+      "why": "NULL PROBE: teleport fidelity gate removed; the rule also matches corrections to bits",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-EPOCH-SEQ",
+      "want": [
+        "STALE-TICKET",
+        "TICKET-REPLAY",
+        "COMMIT-STALE"
+      ],
+      "why": "epoch AND seq compare dropped (isCurrent only checks the queue)",
+      "patches": 2,
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "STALE-TICKET",
+        "TICKET-REPLAY",
+        "COMMIT-STALE",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "STALE-TICKET",
+        "TICKET-REPLAY",
+        "COMMIT-STALE"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-ACK-SEQ",
+      "want": [
+        "ACK-STALE-PANEL"
+      ],
+      "why": "ack gate no longer bound to the current state (any panel ever shown counts)",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "ACK",
+        "ACK-STALE-PANEL",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "ACK",
+        "ACK-STALE-PANEL"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-ARMED",
+      "want": [
+        "COMMIT-AFTER-RESTART"
+      ],
+      "why": "commitTransfer() no longer checks the armed state",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "COMMIT-AFTER-RESTART",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "COMMIT-AFTER-RESTART"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-TOKEN-DRY",
+      "want": [
+        "TOKEN-ELSEWHERE"
+      ],
+      "why": "dry run no longer refuses the story token",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "TOKEN-ELSEWHERE",
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "TOKEN-ELSEWHERE"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-RULE-SWAP",
+      "want": [
+        "DRY-RULE",
+        "PLAYTHROUGH"
+      ],
+      "why": "X/Z rule swapped (X iff m0, Z iff m1)",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "GAME-STATES",
+        "GAME-EDGES",
+        "PARITY",
+        "GAME-NOSKIP",
+        "GAME-COMMIT-ONCE",
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-RULE",
+        "DRY-UNEARNED",
+        "TICKET-REPLAY",
+        "COMMIT-TWICE",
+        "COMMIT-STALE",
+        "COMMIT-AFTER-RESTART",
+        "RESTART-SESSION",
+        "PLAYTHROUGH",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "GAME-STATES",
+        "GAME-EDGES",
+        "PARITY",
+        "GAME-NOSKIP",
+        "GAME-COMMIT-ONCE",
+        "DRY-RULE",
+        "TICKET-REPLAY",
+        "COMMIT-TWICE",
+        "COMMIT-STALE",
+        "COMMIT-AFTER-RESTART",
+        "PLAYTHROUGH"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-FID",
+      "want": [
+        "PLAYTHROUGH"
+      ],
+      "why": "FIDELITY_OK 0.999999 -> 0.4: the |+> copy (F=0.5) no longer fails",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "RESTART-SESSION",
+        "PLAYTHROUGH",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "PLAYTHROUGH"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-PARITY",
+      "want": [
+        "PARITY",
+        "GAME-EDGES"
+      ],
+      "why": "gameplay gate() refuses SKIP that the contract allows",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "GAME-EDGES",
+        "PARITY",
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "RESTART-SESSION",
+        "PLAYTHROUGH",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "GAME-EDGES",
+        "PARITY",
+        "PLAYTHROUGH"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-CREDITS",
+      "want": [
+        "GAME-STATES",
+        "CONTRACT-STATES",
+        "GAME-EDGES",
+        "CONTRACT-EDGES"
+      ],
+      "why": "contract: CREDITS unreachable",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "GAME-STATES",
+        "GAME-EDGES",
+        "GAME-EXTRA",
+        "CONTRACT-STATES",
+        "CONTRACT-EDGES",
+        "CONTRACT-EXTRA",
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "GAME-STATES",
+        "GAME-EDGES",
+        "GAME-EXTRA",
+        "CONTRACT-STATES",
+        "CONTRACT-EDGES",
+        "CONTRACT-EXTRA"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-CHEAT",
+      "want": [
+        "GAME-EXTRA",
+        "CONTRACT-EXTRA",
+        "GAME-NOSKIP",
+        "CONTRACT-NOSKIP",
+        "GAME-ENDING-ENTRY",
+        "CONTRACT-ENDING-ENTRY"
+      ],
+      "why": "contract: TITLE --CHEAT--> ENDING",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "GAME-EXTRA",
+        "CONTRACT-EXTRA",
+        "GAME-NOSKIP",
+        "GAME-ENDING-ENTRY",
+        "CONTRACT-NOSKIP",
+        "CONTRACT-ENDING-ENTRY",
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "GAME-EXTRA",
+        "CONTRACT-EXTRA",
+        "GAME-NOSKIP",
+        "GAME-ENDING-ENTRY",
+        "CONTRACT-NOSKIP",
+        "CONTRACT-ENDING-ENTRY"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-REARM-a",
+      "want": [
+        "REFUSED"
+      ],
+      "why": "contract: TELEPORT_COMMITTED --ABORT--> TELEPORT_DRY_RUN_PASSED (state.js load guard must refuse to load)",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "REFUSED"
+      ],
+      "newRed": [
+        "REFUSED"
+      ],
+      "note": "REFUSED: cannot import audited modules: contracts TRANSITIONS violate the one-shot commit: TELEPORT_DRY_RUN_PASSED is reachable again from TELEPORT_COMMITTED without passing TITLE",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-REARM-b",
+      "want": [
+        "GAME-COMMIT-ONCE",
+        "CONTRACT-COMMIT-ONCE"
+      ],
+      "why": "same re-arm edge AND the load guard disabled (enabling step)",
+      "patches": 2,
+      "results": false,
+      "observed": [
+        "GAME-STATES",
+        "GAME-EDGES",
+        "CONTRACT-EXTRA",
+        "PARITY",
+        "GAME-NOSKIP",
+        "GAME-COMMIT-ONCE",
+        "CONTRACT-COMMIT-ONCE",
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "TICKET-REPLAY",
+        "COMMIT-TWICE",
+        "COMMIT-STALE",
+        "COMMIT-AFTER-RESTART",
+        "RESTART-SESSION",
+        "PLAYTHROUGH",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "GAME-STATES",
+        "GAME-EDGES",
+        "CONTRACT-EXTRA",
+        "PARITY",
+        "GAME-NOSKIP",
+        "GAME-COMMIT-ONCE",
+        "CONTRACT-COMMIT-ONCE",
+        "TICKET-REPLAY",
+        "COMMIT-TWICE",
+        "COMMIT-STALE",
+        "COMMIT-AFTER-RESTART",
+        "PLAYTHROUGH"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-CONTRACT-BITS",
+      "want": [
+        "CONTRACT-BITS"
+      ],
+      "why": "contract: makeCorrectionRequest no longer refuses a choice without a valid phase-1 result",
+      "patches": 1,
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "CONTRACT-BITS",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "CONTRACT-BITS"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "break",
+      "id": "B-ORACLE",
+      "want": [
+        "ENGINE-ORACLE"
+      ],
+      "why": "one real engine fidelity nudged by 1e-8 in the fed results (bloch_b 11, no corrections)",
+      "patches": 0,
+      "results": true,
+      "observed": [
+        "ENGINE-ORACLE",
+        "TOKEN-RUN-GUARD",
+        "ERR-COMMIT",
+        "DRY-UNEARNED",
+        "FRESH",
+        "BITS-FIRST",
+        "RESTART-SESSION",
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "ENGINE-ORACLE"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "fix",
+      "id": "F-ALL",
+      "want": [],
+      "why": "all minimal fixes applied: expect 0 red",
+      "patches": 16,
+      "results": false,
+      "observed": [],
+      "newRed": [],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "l1o",
+      "id": "L-RUNGUARD",
+      "why": "all fixes except RUNGUARD",
+      "patches": 14,
+      "want": [
+        "TOKEN-RUN-GUARD"
+      ],
+      "results": false,
+      "observed": [
+        "TOKEN-RUN-GUARD"
+      ],
+      "newRed": [
+        "TOKEN-RUN-GUARD"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "l1o",
+      "id": "L-ERRSHAPE",
+      "why": "all fixes except ERRSHAPE",
+      "patches": 14,
+      "want": [
+        "ERR-COMMIT"
+      ],
+      "results": false,
+      "observed": [
+        "ERR-COMMIT"
+      ],
+      "newRed": [
+        "ERR-COMMIT"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "l1o",
+      "id": "L-EARNED",
+      "why": "all fixes except EARNED",
+      "patches": 14,
+      "want": [
+        "DRY-UNEARNED"
+      ],
+      "results": false,
+      "observed": [
+        "DRY-UNEARNED"
+      ],
+      "newRed": [
+        "DRY-UNEARNED"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "l1o",
+      "id": "L-FRESH",
+      "why": "all fixes except FRESH",
+      "patches": 14,
+      "want": [
+        "FRESH"
+      ],
+      "results": false,
+      "observed": [
+        "FRESH"
+      ],
+      "newRed": [
+        "FRESH"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "l1o",
+      "id": "L-BITS",
+      "why": "all fixes except BITS",
+      "patches": 14,
+      "want": [
+        "BITS-FIRST"
+      ],
+      "results": false,
+      "observed": [
+        "BITS-FIRST"
+      ],
+      "newRed": [
+        "BITS-FIRST"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "l1o",
+      "id": "L-RESTART",
+      "why": "all fixes except RESTART",
+      "patches": 15,
+      "want": [
+        "RESTART-SESSION"
+      ],
+      "results": false,
+      "observed": [
+        "RESTART-SESSION"
+      ],
+      "newRed": [
+        "RESTART-SESSION"
+      ],
+      "note": "",
+      "ok": true
+    },
+    {
+      "kind": "l1o",
+      "id": "L-RAW",
+      "why": "all fixes except RAW",
+      "patches": 11,
+      "want": [
+        "PLAYTHROUGH-RAW"
+      ],
+      "results": false,
+      "observed": [
+        "PLAYTHROUGH-RAW"
+      ],
+      "newRed": [
+        "PLAYTHROUGH-RAW"
+      ],
+      "note": "",
+      "ok": true
+    }
+  ]
+}

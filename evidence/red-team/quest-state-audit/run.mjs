@@ -36,7 +36,7 @@ try {
   contractsMod = await imp(CONTRACTS, 'echo/contracts.js');
 } catch (e) { console.error(`REFUSED: cannot import audited modules: ${e.message}`); process.exit(2); }
 try { REAL = JSON.parse(readFileSync(RESULTS, 'utf8')); } catch (e) { console.error(`REFUSED: cannot read real results: ${e.message}`); process.exit(2); }
-for (const k of ['happy', 'branches', 'clones', 'bell', 'commits']) if (!REAL[k]) { console.error(`REFUSED: real results lack "${k}"`); process.exit(2); }
+for (const k of ['happy', 'branches', 'clones', 'bell', 'commits', 'bits']) if (!REAL[k]) { console.error(`REFUSED: real results lack "${k}"`); process.exit(2); }
 
 // ---------------------------------------------------------------- deterministic randomness
 let seed = 20261011;
@@ -60,6 +60,11 @@ function liveCommit(m0, m1) {
   if (!r) throw new Error(`no real commit with bits ${m0}${m1}`);
   return structuredClone(r);
 }
+function bits(state, m0, m1) {
+  const r = REAL.bits.find((b) => b.parameters.state === state && b.measurementBits.m0 === m0 && b.measurementBits.m1 === m1);
+  if (!r) throw new Error(`no real phase-1 bits ${state} ${m0}${m1}`);
+  return structuredClone(r);
+}
 // Names-only alias onto the field names missionRules.js documents. live_commit applies the rule
 // inside the call (its docstring), so the corrections it applied are named from the bits by the
 // oracle's rule. A clone's |<psi psi|out>|^2 is the engine's observables.jointFidelityWithTwoCopies.
@@ -67,7 +72,7 @@ function seam(r, stateId) {
   const p = { ...r.parameters };
   if (r.experiment === 'teleportation') {
     p.stateId = stateId;
-    if ('applyX' in p) { p.correctionX = p.applyX; p.correctionZ = p.applyZ; } else if (r.measurementBits) {
+    if ('applyX' in p) { p.correctionX = p.applyX; p.correctionZ = p.applyZ; } else if (stateId === TOKEN && r.fidelity !== undefined) {
       const rule = physicsRule(r.measurementBits.m0, r.measurementBits.m1); p.correctionX = rule.applyX; p.correctionZ = rule.applyZ;
     }
   }
@@ -81,13 +86,18 @@ const tokenCommit = (m0 = 0, m1 = 1) => seam(liveCommit(m0, m1), TOKEN);
 // on the token state with the corrections withheld (F < 1). Used where a refused commit is needed.
 const refusedCommit = () => seam(branch('bloch_b', 1, 1, false, false), TOKEN);
 const correctCal = (state = 'bloch_a') => { const [m0, m1] = [1, 0]; const r = physicsRule(m0, m1); return cal(state, m0, m1, r.applyX, r.applyZ); };
+// A dry run the way the owner ruled it (bits first, corrections second): phase-1 bits, then the choice.
+const bitsThenCorrect = (state = 'bloch_a') => [seam(bits(state, 1, 0), `calibration_${state}`), correctCal(state)];
 const verdict = (state, r) => rulesMod.eventForResult(state, r).event;
+// A dry-run trial as the owner ruled it: the phase-1 bits are judged first, then the choice.
+const dryVerdict = (st, m0, m1, x, z) => { verdict('TELEPORT_DRY_RUN', seam(bits(st, m0, m1), `calibration_${st}`)); return verdict('TELEPORT_DRY_RUN', cal(st, m0, m1, x, z)); };
 
 // ---------------------------------------------------------------- machine adapters
 // Results a terminal would hand over for each outcome-named mission event (V§9.2), used only when
 // a machine refuses that event from send(): the BFS then walks it the way the product must.
-const RESULT_FOR = { BASIS_DEMO_OK: () => seam(clone('zero')), SUPERPOSITION_DEMO_FAILED: () => seam(clone('plus')),
-  PREPARE_BELL_PAIR: () => bell('I'), ATTEMPT_NO_SIGNALLING: () => bell('X'), CORRECT_CALIBRATION: () => correctCal() };
+// Each returns the results, in order, that a terminal hands over.
+const RESULT_FOR = { BASIS_DEMO_OK: () => [seam(clone('zero'))], SUPERPOSITION_DEMO_FAILED: () => [seam(clone('plus'))],
+  PREPARE_BELL_PAIR: () => [bell('I')], ATTEMPT_NO_SIGNALLING: () => [bell('X')], CORRECT_CALIBRATION: () => bitsThenCorrect() };
 function gameplayMachine() {
   const bus = busMod.createEventBus({ onError: () => {} });
   const m = stateMod.createQuestMachine(bus);
@@ -105,6 +115,7 @@ function gameplayMachine() {
       if (m.experiment) return (await m.experiment(x.run(r))).event ?? null;
       await x.run(r)(); const ev = verdict(m.state, r); return ev && raw(ev) ? ev : null;
     },
+    async results(list, showPanel = true) { let ev = null; for (const r of list) { ev = await x.result(r); if (showPanel) x.panel(); } return ev; },
     async commit(r) {
       if (migrated) { const o = await m.commitTransfer(x.run(r)); return o.ok === true; }
       return (await x.result(r)) === 'COMMIT_TRANSFER';
@@ -114,7 +125,7 @@ function gameplayMachine() {
       panel();
       if (ev === 'COMMIT_TRANSFER' && migrated) return x.commit(tokenCommit());
       if (raw(ev)) return true;
-      if (Object.hasOwn(RESULT_FOR, ev) && m.experiment) return (await x.result(RESULT_FOR[ev]())) === ev;
+      if (Object.hasOwn(RESULT_FOR, ev) && m.experiment) return (await x.results(RESULT_FOR[ev](), false)) === ev;
       return false;
     },
     sendRaw: async (ev) => raw(ev),
@@ -133,8 +144,10 @@ function contractsMachine() {
 const EXPECTED_EVENTS = [...new Set(EXPECTED.map((r) => r[1]).filter((e) => e !== '*'))];
 const PROBES = ['RESTART', 'BACK', 'CLOSE', 'CLOSE_SCIENCE', 'BOOTED', 'BOOT_COMPLETE', 'OPEN_ENDING', 'RETRY', 'FAIL',
   'WRONG_CALIBRATION', 'DRY_RUN_FAILED', 'ANIMATION_END', 'toString', '__proto__', 'constructor', 'hasOwnProperty', ''];
+// Every event any table names: the module's own (if it exports one) AND the contract's, so a
+// gameplay module that imports its table is still probed with every event that table carries.
 function universe(table) {
-  const fromTable = table ? Object.values(table).flatMap((r) => Object.keys(r)) : [];
+  const fromTable = [table, contractsMod.TRANSITIONS].filter(Boolean).flatMap((t) => Object.values(t).flatMap((r) => Object.keys(r)));
   return [...new Set([...EXPECTED_EVENTS, ...fromTable, ...PROBES])];
 }
 
@@ -349,14 +362,15 @@ check('ERR-COMMIT', 'RG3.1: an errored commit records nothing; retry allowed', a
   return f;
 });
 
-check('DRY-RULE', 'V§7.4 + oracle physics; CLAUDE.md "all four conditional correction choices"', () => {
+check('DRY-RULE', 'V§7.4 + oracle physics; CLAUDE.md "all four conditional correction choices"', async () => {
   const f = [];
   for (const st of GENERIC) for (const [m0, m1] of [[0, 1], [1, 0], [1, 1]]) {
     const want = physicsRule(m0, m1);
     for (const x of [false, true]) for (const z of [false, true]) {
+      await freshRules(); // each trial is its own first attempt on this state
       const r = cal(st, m0, m1, x, z);
       const right = x === want.applyX && z === want.applyZ;
-      const ev = verdict('TELEPORT_DRY_RUN', r);
+      const ev = dryVerdict(st, m0, m1, x, z);
       if (right && ev !== 'CORRECT_CALIBRATION') f.push(`${st} m0=${m0} m1=${m1} correct (X=${x},Z=${z}) F=${r.fidelity.toFixed(6)} refused`);
       if (!right && ev) f.push(`${st} m0=${m0} m1=${m1} WRONG (X=${x},Z=${z}) F=${r.fidelity.toFixed(6)} accepted as ${ev}`);
     }
@@ -364,10 +378,11 @@ check('DRY-RULE', 'V§7.4 + oracle physics; CLAUDE.md "all four conditional corr
   return f;
 });
 
-check('DRY-00', 'RG3.2: COMMIT unlocks only after a correct dry run whose bits are NOT 00', () => {
+check('DRY-00', 'RG3.2: COMMIT unlocks only after a correct dry run whose bits are NOT 00', async () => {
   const f = [];
   for (const st of GENERIC) for (const x of [false, true]) for (const z of [false, true]) {
-    const r = cal(st, 0, 0, x, z); const ev = verdict('TELEPORT_DRY_RUN', r);
+    await freshRules();
+    const r = cal(st, 0, 0, x, z); const ev = dryVerdict(st, 0, 0, x, z);
     if (ev) f.push(`${st} bits m0=0 m1=0 (X=${x},Z=${z}, F=${r.fidelity.toFixed(6)}) yields ${ev} -> COMMIT unlocked without the player applying X or Z`);
   }
   return f;
@@ -383,9 +398,8 @@ check('DRY-UNEARNED', 'RG3.2 + V§9.2: an outcome-named mission event needs the 
 });
 
 check('FRESH', 'R13.11: a wrong dry run retries on a FRESH calibration state', () => {
-  const wrong = cal('bloch_a', 1, 0, false, false);
-  if (verdict('TELEPORT_DRY_RUN', wrong)) return ['setup: wrong calibration accepted'];
-  const ev = verdict('TELEPORT_DRY_RUN', cal('bloch_a', 1, 0, false, true));
+  if (dryVerdict('bloch_a', 1, 0, false, false)) return ['setup: wrong calibration accepted'];
+  const ev = dryVerdict('bloch_a', 1, 0, false, true);
   return ev ? [`after a wrong dry run on bloch_a, a retry on the SAME prepared state yields ${ev}`] : [];
 });
 
@@ -401,9 +415,15 @@ check('CONTRACT-BITS', 'owner § red-team physics (2): the contract defines a bi
   const k = contractsMod;
   if (typeof k.makeCorrectionRequest !== 'function' || typeof k.validateTeleportBitsResult !== 'function') return ['no two-phase dry-run contract (makeCorrectionRequest / validateTeleportBitsResult)'];
   const f = [];
-  const req = { theta: 1.137, phi: 0.44 };
-  try { k.makeCorrectionRequest(req, {}, { applyX: false, applyZ: true }); f.push('makeCorrectionRequest built a correction with no phase-1 result'); } catch { /* refused: good */ }
-  if (k.validateTeleportBitsResult(req, branch('bloch_a', 1, 0, false, true)).length === 0) f.push('validateTeleportBitsResult accepts a result that already reports fidelity/corrections');
+  // The contract keys a dry run on { theta, phi }; the engine emits the state NAME. Name-only alias:
+  // the engine's own preparation angles for bloch_a (quantum/__init__.py STATES), no number invented.
+  const [theta, phi] = BLOCH.bloch_a; const req = { theta, phi };
+  const withAngles = (r) => ({ ...r, parameters: { ...r.parameters, theta, phi } });
+  const phase1 = withAngles(bits('bloch_a', 1, 0)); const phase2 = withAngles(branch('bloch_a', 1, 0, false, true));
+  const builds = (res) => { try { k.makeCorrectionRequest(req, res, { applyX: false, applyZ: true }); return true; } catch { return false; } };
+  if (!builds(phase1)) f.push(`positive control: a real phase-1 result is refused (${k.validateTeleportBitsResult(req, phase1).join('; ')})`);
+  if (builds(phase2)) f.push('makeCorrectionRequest built a correction from a result that already carries corrections and fidelity');
+  if (builds({})) f.push('makeCorrectionRequest built a correction with no phase-1 result');
   return f;
 });
 
@@ -422,7 +442,7 @@ check('ACK-STALE-PANEL', 'R13.13: the panel must be shown IN the acknowledging s
   for (const [prev, s, ev] of [['CLONE_BASIS_PASSED', 'CLONE_SUPERPOSITION_FAILED', 'EXPLANATION_READ'], ['RELAY_BELL_CREATED', 'RELAY_SEND_FAILED', 'VIEW_RECEIVER_MARGINAL']]) {
     const m = await at(prev); m.panel(); // a panel from the PREVIOUS state
     const step = G.paths[s].at(-1);
-    if (!(await m.sendRaw(step)) && !(await m.result(RESULT_FOR[step]()))) { f.push(`setup: cannot reach ${s}`); continue; }
+    if (!(await m.sendRaw(step)) && (await m.results(RESULT_FOR[step](), false)) !== step) { f.push(`setup: cannot reach ${s}`); continue; }
     if (await m.sendRaw(ev)) f.push(`${ev} in ${s} accepted on a panel shown in ${prev}`);
   }
   return f;
@@ -526,8 +546,9 @@ async function playthrough(asTerminal) {
   for (const e of ['START', 'SKIP', 'OPEN_CLONE_BOOTH']) await step(e);
   await res(clone('zero')); await res(clone('plus')); await step('EXPLANATION_READ'); await step('EXIT_BOOTH'); await step('REACH_RELAY');
   await res(bell('I')); await res(bell('X')); await step('VIEW_RECEIVER_MARGINAL'); await step('OPEN_ROOFTOP'); await step('REPAIR_CLASSICAL_LINK'); await step('RUN_DRY_TEST');
-  await res(branch('bloch_a', 1, 0, false, false), false); // wrong: Z missing
-  await res(branch('bloch_b', 1, 1, true, true)); // fresh state, correct
+  // bits first, corrections second (owner § red-team physics (2)); a wrong try, then a fresh state
+  await res(bits('bloch_a', 1, 0), false); await res(branch('bloch_a', 1, 0, false, false), false); // wrong: Z missing
+  await res(bits('bloch_b', 1, 1), false); await res(branch('bloch_b', 1, 1, true, true));
   if (m.state === 'TELEPORT_DRY_RUN_PASSED' && !(await m.commit(asTerminal(liveCommit(0, 1), true)))) f.push(`TELEPORT_DRY_RUN_PASSED: the real live commit was refused (latch ${m.m.commit ?? 'n/a'})`);
   await step('ANIMATION_END');
   if (m.state !== 'ENDING') f.push(`playthrough ended in ${m.state}`);
