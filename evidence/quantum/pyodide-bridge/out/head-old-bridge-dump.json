@@ -1,17 +1,18 @@
 {
   "assembly": {
-    "token": "pb-head-old-bridge-20261010T002017-30591",
+    "token": "pb-head-old-bridge-20261010T002653-5345",
     "sabotage": "none",
-    "runnerRef": "lane/platform/integration@b385c06",
-    "contractsRef": "lane/platform/integration@b385c06",
-    "harnessCommit": "de3a66c-dirty",
-    "pythonRef": "HEAD@de3a66c",
+    "fault": false,
+    "runnerRef": "lane/platform/integration@f08dd0b",
+    "contractsRef": "lane/platform/integration@f08dd0b",
+    "harnessCommit": "cba4fd6-dirty",
+    "pythonRef": "HEAD@cba4fd6",
     "sha256": {
       "contracts.js": "ecc0ed1d2c9ad162",
       "index.html": "6112169d8d1887b8",
       "main.css": "d93eb501784b286e",
-      "main.js": "6f8c59ec8ae6b6eb",
-      "pb_spy.py": "9a2d82af661c05be",
+      "main.js": "fcddc243a13ea736",
+      "pb_spy.py": "64f237ced68a9dbb",
       "quantum/__init__.py": "4770b5d0e03c289a",
       "quantum/bridge.js": "6f60ff6ee94e29ac",
       "quantum/cloning.py": "9e50d3aba0104f49",
@@ -28,7 +29,7 @@
   "runnerLogTail": [
     {
       "kind": "runner",
-      "msg": "runner: 12 files in /private/tmp/pb-run-3pxftP/echo; backend = ionq-mock"
+      "msg": "runner: 12 files in /private/tmp/pb-run-xUkcYR/echo; backend = ionq-mock"
     },
     {
       "kind": "system",
@@ -87,25 +88,25 @@
       "listIsArray": true,
       "json": "{\"outer\":{\"inner\":1},\"list\":[1,2],\"n\":1}"
     },
-    "build": "pb-head-old-bridge-20261010T002017-30591",
+    "build": "pb-head-old-bridge-20261010T002653-5345",
     "backendName": "basic_simulator",
     "platform": {
       "sysPlatform": "emscripten",
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.007
+      "coldImportSeconds": 0.006
     },
     "timing": {
-      "msFrameStartToMainBody": 17606.7,
-      "verifyMs": 0.3,
-      "wallSecondsPageToDone": 17.9
+      "msFrameStartToMainBody": 5759,
+      "verifyMs": 0.1,
+      "wallSecondsPageToDone": 6.5
     },
     "calls": [
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 77.4,
+        "ms": 5.4,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -150,7 +151,7 @@
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 22,
+        "ms": 3,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -195,7 +196,7 @@
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 3.3,
+        "ms": 1.3,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -240,7 +241,7 @@
       {
         "label": "cloning(zero)",
         "hook": false,
-        "ms": 2.4,
+        "ms": 0.9,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -284,7 +285,7 @@
       {
         "label": "cloning(one)",
         "hook": false,
-        "ms": 1.8,
+        "ms": 1,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -328,7 +329,7 @@
       {
         "label": "cloning(bloch_a)",
         "hook": false,
-        "ms": 3,
+        "ms": 1.4,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -373,7 +374,7 @@
       {
         "label": "relay(I)",
         "hook": false,
-        "ms": 2.6,
+        "ms": 2,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -416,7 +417,7 @@
       {
         "label": "relay(X)",
         "hook": false,
-        "ms": 2.4,
+        "ms": 0.7,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -459,7 +460,7 @@
       {
         "label": "relay(Z)",
         "hook": false,
-        "ms": 1.9,
+        "ms": 0.6,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -502,7 +503,7 @@
       {
         "label": "calibration#1",
         "hook": false,
-        "ms": 5.2,
+        "ms": 2.1,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -516,7 +517,7 @@
       {
         "label": "calibration#2",
         "hook": false,
-        "ms": 0.9,
+        "ms": 0.4,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -530,7 +531,7 @@
       {
         "label": "dryRun(calibration#2, X=false, Z=false)",
         "hook": false,
-        "ms": 0,
+        "ms": 0.1,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -572,7 +573,7 @@
       {
         "label": "dryRun(calibration#2, X=true, Z=true)",
         "hook": false,
-        "ms": 0.1,
+        "ms": 0,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -586,7 +587,7 @@
       {
         "label": "commit#1",
         "hook": false,
-        "ms": 2.6,
+        "ms": 2.8,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -603,9 +604,9 @@
             "state": "token"
           },
           "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
             "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
             "The token has been consumed: this commit cannot be repeated in this run.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -624,8 +625,8 @@
             "branchProbability": 0.25
           },
           "measurementBits": {
-            "m0": 0,
-            "m1": 0
+            "m0": 1,
+            "m1": 1
           }
         },
         "nodeVerdict": []
@@ -650,9 +651,9 @@
             "state": "token"
           },
           "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
             "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
             "The token has been consumed: this commit cannot be repeated in this run.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -671,8 +672,8 @@
             "branchProbability": 0.25
           },
           "measurementBits": {
-            "m0": 0,
-            "m1": 0
+            "m0": 1,
+            "m1": 1
           }
         },
         "nodeVerdict": []
@@ -697,9 +698,9 @@
             "state": "token"
           },
           "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
             "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
             "The token has been consumed: this commit cannot be repeated in this run.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -718,8 +719,8 @@
             "branchProbability": 0.25
           },
           "measurementBits": {
-            "m0": 0,
-            "m1": 0
+            "m0": 1,
+            "m1": 1
           }
         },
         "nodeVerdict": []
@@ -756,9 +757,9 @@
             "state": "token"
           },
           "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
             "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
             "The token has been consumed: this commit cannot be repeated in this run.",
             "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
           ],
@@ -777,8 +778,8 @@
             "branchProbability": 0.25
           },
           "measurementBits": {
-            "m0": 0,
-            "m1": 0
+            "m0": 1,
+            "m1": 1
           }
         },
         "nodeVerdict": []
@@ -795,7 +796,7 @@
       "sameRecordedObject": true,
       "pythonSecondCommit": {
         "refused": true,
-        "error": "TokenAlreadyConsumed"
+        "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
       },
       "afterRestartIsNewObject": false
     },
@@ -851,12 +852,12 @@
     {
       "name": "main.js (harness) ran to the end without error",
       "ok": true,
-      "detail": "page load → done in 17.9s"
+      "detail": "page load → done in 6.5s"
     },
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "pb-head-old-bridge-20261010T002017-30591"
+      "detail": "pb-head-old-bridge-20261010T002653-5345"
     },
     {
       "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -866,7 +867,7 @@
         "python": "3.14.2",
         "qiskit": "2.5.2",
         "pyodide": "314.0.7",
-        "coldImportSeconds": 0.007
+        "coldImportSeconds": 0.006
       }
     },
     {
@@ -992,6 +993,11 @@
       }
     },
     {
+      "name": "spy fault mode is false (the scenario being graded)",
+      "ok": true,
+      "detail": false
+    },
+    {
       "name": "dry run: four X/Z choices were tried on one calibration",
       "ok": true,
       "detail": [
@@ -1040,47 +1046,47 @@
     {
       "name": "cloning(plus): adapter returned a result",
       "ok": true,
-      "detail": "77.4 ms"
+      "detail": "5.4 ms"
     },
     {
       "name": "cloning(plus): adapter returned a result",
-      "ok": true,
-      "detail": "22 ms"
-    },
-    {
-      "name": "cloning(plus): adapter returned a result",
-      "ok": true,
-      "detail": "3.3 ms"
-    },
-    {
-      "name": "cloning(zero): adapter returned a result",
-      "ok": true,
-      "detail": "2.4 ms"
-    },
-    {
-      "name": "cloning(one): adapter returned a result",
-      "ok": true,
-      "detail": "1.8 ms"
-    },
-    {
-      "name": "cloning(bloch_a): adapter returned a result",
       "ok": true,
       "detail": "3 ms"
     },
     {
+      "name": "cloning(plus): adapter returned a result",
+      "ok": true,
+      "detail": "1.3 ms"
+    },
+    {
+      "name": "cloning(zero): adapter returned a result",
+      "ok": true,
+      "detail": "0.9 ms"
+    },
+    {
+      "name": "cloning(one): adapter returned a result",
+      "ok": true,
+      "detail": "1 ms"
+    },
+    {
+      "name": "cloning(bloch_a): adapter returned a result",
+      "ok": true,
+      "detail": "1.4 ms"
+    },
+    {
       "name": "relay(I): adapter returned a result",
       "ok": true,
-      "detail": "2.6 ms"
+      "detail": "2 ms"
     },
     {
       "name": "relay(X): adapter returned a result",
       "ok": true,
-      "detail": "2.4 ms"
+      "detail": "0.7 ms"
     },
     {
       "name": "relay(Z): adapter returned a result",
       "ok": true,
-      "detail": "1.9 ms"
+      "detail": "0.6 ms"
     },
     {
       "name": "calibration#1: adapter returned a result",
@@ -1151,7 +1157,7 @@
     {
       "name": "commit#1: adapter returned a result",
       "ok": true,
-      "detail": "2.6 ms"
+      "detail": "2.8 ms"
     },
     {
       "name": "commit#2: adapter returned a result",
@@ -1327,8 +1333,8 @@
       "detail": {
         "fidelity": 1,
         "bits": {
-          "m0": 0,
-          "m1": 0
+          "m0": 1,
+          "m1": 1
         },
         "parameters": {
           "state": "token"
@@ -1342,7 +1348,7 @@
         "sameRecordedObject": true,
         "pythonSecondCommit": {
           "refused": true,
-          "error": "TokenAlreadyConsumed"
+          "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
         },
         "afterRestartIsNewObject": false
       }
@@ -1352,7 +1358,7 @@
       "ok": true,
       "detail": {
         "refused": true,
-        "error": "TokenAlreadyConsumed"
+        "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
       }
     },
     {

@@ -1,12 +1,540 @@
 [
   {
     "name": "main.js (harness) ran to the end without error",
-    "ok": false,
-    "detail": "Traceback (most recent call last):\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 619, in eval_code_async\n    await CodeRunner(\n    ...<10 lines>...\n    .run_async(globals, locals)\n  File \"/lib/python314.zip/_pyodide/_base.py\", line 420, in run_async\n    coroutine = eval(self.code, globals, locals)\n  File \"<exec>\", line 1, in <module>\n  File \"/home/pyodide/project/pb_spy.py\", line 42, in <module>\n    _original_verify = qollab_job.run_backend_verification_once\n                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nAttributeError: module 'quantum.qollab_job' has no attribute 'run_backend_verification_once'. Did you mean: 'run_bell_verification_once'?\n"
+    "ok": true,
+    "detail": "page load → done in 5.5s"
   },
   {
-    "name": "served build token rendered",
+    "name": "served build token matches the one just written",
+    "ok": true,
+    "detail": "pb-head-old-python-20261010T002702-31335"
+  },
+  {
+    "name": "Python ran in Pyodide (sys.platform emscripten)",
+    "ok": true,
+    "detail": {
+      "sysPlatform": "emscripten",
+      "python": "3.14.2",
+      "qiskit": "2.5.2",
+      "pyodide": "314.0.7",
+      "coldImportSeconds": 0.005
+    }
+  },
+  {
+    "name": "Qiskit 2.x loaded",
+    "ok": true,
+    "detail": "2.5.2"
+  },
+  {
+    "name": "cloning(plus): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "cloning(plus): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "cloning(plus): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "cloning(zero): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "cloning(one): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "cloning(bloch_a): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "relay(I): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "relay(X): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "relay(Z): delivered value re-validates in Node",
+    "ok": true,
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "spy fault mode is false (the scenario being graded)",
+    "ok": true,
+    "detail": false
+  },
+  {
+    "name": "dry run: four X/Z choices were tried on one calibration",
+    "ok": true,
+    "detail": [
+      "dryRun(calibration#2, X=false, Z=false)",
+      "dryRun(calibration#2, X=true, Z=false)",
+      "dryRun(calibration#2, X=false, Z=true)",
+      "dryRun(calibration#2, X=true, Z=true)"
+    ]
+  },
+  {
+    "name": "spy: exactly 1 backend.run attempted, and it completed (stack entered via callPromising)",
     "ok": false,
-    "detail": "none rendered (…); run error above"
+    "detail": {
+      "backendRunAttempts": 0,
+      "backendRunCompleted": 0,
+      "verificationCalls": 0,
+      "commitCalls": 3,
+      "commitsCompleted": 0,
+      "resetCalls": 0,
+      "branchCalls": 0
+    }
+  },
+  {
+    "name": "spy: exactly 1 entry into qollab_job.run_backend_verification_once",
+    "ok": false,
+    "detail": {
+      "backendRunAttempts": 0,
+      "backendRunCompleted": 0,
+      "verificationCalls": 0,
+      "commitCalls": 3,
+      "commitsCompleted": 0,
+      "resetCalls": 0,
+      "branchCalls": 0
+    }
+  },
+  {
+    "name": "verify ×2: the second call returns the SAME promise",
+    "ok": true,
+    "detail": true
+  },
+  {
+    "name": "verify after RESTART: still the same promise (one job per run, not per story)",
+    "ok": true,
+    "detail": true
+  },
+  {
+    "name": "cloning(plus): adapter returned a result",
+    "ok": true,
+    "detail": "5.6 ms"
+  },
+  {
+    "name": "cloning(plus): adapter returned a result",
+    "ok": true,
+    "detail": "3.6 ms"
+  },
+  {
+    "name": "cloning(plus): adapter returned a result",
+    "ok": true,
+    "detail": "1.4 ms"
+  },
+  {
+    "name": "cloning(zero): adapter returned a result",
+    "ok": true,
+    "detail": "0.9 ms"
+  },
+  {
+    "name": "cloning(one): adapter returned a result",
+    "ok": true,
+    "detail": "0.9 ms"
+  },
+  {
+    "name": "cloning(bloch_a): adapter returned a result",
+    "ok": true,
+    "detail": "1.2 ms"
+  },
+  {
+    "name": "relay(I): adapter returned a result",
+    "ok": true,
+    "detail": "2.4 ms"
+  },
+  {
+    "name": "relay(X): adapter returned a result",
+    "ok": true,
+    "detail": "1.1 ms"
+  },
+  {
+    "name": "relay(Z): adapter returned a result",
+    "ok": true,
+    "detail": "0.7 ms"
+  },
+  {
+    "name": "calibration#1: adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "calibration measurement: ValueError: unknown prepared state 'calibration'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']",
+      "errors": [
+        "ValueError: unknown prepared state 'calibration'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']"
+      ]
+    }
+  },
+  {
+    "name": "calibration#2: adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "calibration measurement: ValueError: unknown prepared state 'calibration'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']",
+      "errors": [
+        "ValueError: unknown prepared state 'calibration'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']"
+      ]
+    }
+  },
+  {
+    "name": "dryRun(calibration#2, X=false, Z=false): adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
+      "errors": [
+        "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
+      ]
+    }
+  },
+  {
+    "name": "dryRun(calibration#2, X=true, Z=false): adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
+      "errors": [
+        "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
+      ]
+    }
+  },
+  {
+    "name": "dryRun(calibration#2, X=false, Z=true): adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
+      "errors": [
+        "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
+      ]
+    }
+  },
+  {
+    "name": "dryRun(calibration#2, X=true, Z=true): adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "teleport dry run: makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing",
+      "errors": [
+        "makeCorrectionRequest: request: phase-1 request.theta must be a finite number, got nothing; request: phase-1 request.phi must be a finite number, got nothing; phase-1 result: result must be a plain object, got nothing"
+      ]
+    }
+  },
+  {
+    "name": "commit#1: adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "live commit: TypeError: live_commit() missing 1 required positional argument: 'state_name'",
+      "errors": [
+        "TypeError: live_commit() missing 1 required positional argument: 'state_name'"
+      ]
+    }
+  },
+  {
+    "name": "commit#2: adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "live commit: TypeError: live_commit() missing 1 required positional argument: 'state_name'",
+      "errors": [
+        "TypeError: live_commit() missing 1 required positional argument: 'state_name'"
+      ]
+    }
+  },
+  {
+    "name": "commit#3 after settle: adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "live commit: TypeError: live_commit() missing 1 required positional argument: 'state_name'",
+      "errors": [
+        "TypeError: live_commit() missing 1 required positional argument: 'state_name'"
+      ]
+    }
+  },
+  {
+    "name": "RESTART: resetStoryToken(): adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "restart: Cannot read properties of undefined (reading 'callPromising')",
+      "errors": [
+        "Cannot read properties of undefined (reading 'callPromising')"
+      ]
+    }
+  },
+  {
+    "name": "commit#4 after RESTART: adapter returned a result",
+    "ok": false,
+    "detail": {
+      "name": "ScientificModuleError",
+      "message": "live commit: TypeError: live_commit() missing 1 required positional argument: 'state_name'",
+      "errors": [
+        "TypeError: live_commit() missing 1 required positional argument: 'state_name'"
+      ]
+    }
+  },
+  {
+    "name": "cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]",
+    "ok": true,
+    "detail": {
+      "10": 0,
+      "11": 0.5,
+      "00": 0.5,
+      "01": 0
+    }
+  },
+  {
+    "name": "cloning(plus): each output purity 0.5 (entangled, not two copies)",
+    "ok": true,
+    "detail": {
+      "purityQ0": 0.5,
+      "purityQ1": 0.5,
+      "fidelityQ0WithInput": 0.5,
+      "fidelityQ1WithInput": 0.5,
+      "jointFidelityWithTwoCopies": 0.5
+    }
+  },
+  {
+    "name": "cloning(zero): basis state copies (purities 1)",
+    "ok": true,
+    "detail": {
+      "purityQ0": 1,
+      "purityQ1": 1,
+      "fidelityQ0WithInput": 1,
+      "fidelityQ1WithInput": 1,
+      "jointFidelityWithTwoCopies": 1
+    }
+  },
+  {
+    "name": "relay(I): receiver marginal exactly 0.5/0.5, keyQubits [1]",
+    "ok": true,
+    "detail": {
+      "0": 0.5,
+      "1": 0.5
+    }
+  },
+  {
+    "name": "relay(X): receiver marginal exactly 0.5/0.5, keyQubits [1]",
+    "ok": true,
+    "detail": {
+      "0": 0.5,
+      "1": 0.5
+    }
+  },
+  {
+    "name": "relay(Z): receiver marginal exactly 0.5/0.5, keyQubits [1]",
+    "ok": true,
+    "detail": {
+      "0": 0.5,
+      "1": 0.5
+    }
+  },
+  {
+    "name": "calibration: every draw carries finite theta/phi, bits only (no fidelity, no applyX/Z)",
+    "ok": false,
+    "detail": []
+  },
+  {
+    "name": "calibration: every draw is generic (max Bloch component² ≤ 0.9, re-derived here)",
+    "ok": false,
+    "detail": []
+  },
+  {
+    "name": "calibration: the draws differ (a fresh random state each time, not a named one)",
+    "ok": false,
+    "detail": []
+  },
+  {
+    "name": "calibration: the graded draw is on a non-00 branch",
+    "ok": false,
+    "detail": {
+      "draw": "calibration#2",
+      "bits": {}
+    }
+  },
+  {
+    "name": "dryRun(calibration#2, X=false, Z=false): theta/phi round-trip exactly from the measurement into the branch",
+    "ok": true,
+    "detail": {
+      "want": {}
+    }
+  },
+  {
+    "name": "dryRun(calibration#2, X=false, Z=false): fidelity = NaN (closed form on the measured state)",
+    "ok": false
+  },
+  {
+    "name": "dryRun(calibration#2, X=false, Z=false): the rule's choice scores F ≥ 0.999999",
+    "ok": false
+  },
+  {
+    "name": "dryRun(calibration#2, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch",
+    "ok": true,
+    "detail": {
+      "want": {}
+    }
+  },
+  {
+    "name": "dryRun(calibration#2, X=true, Z=false): fidelity = NaN (closed form on the measured state)",
+    "ok": false
+  },
+  {
+    "name": "dryRun(calibration#2, X=true, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
+    "ok": false
+  },
+  {
+    "name": "dryRun(calibration#2, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+    "ok": true,
+    "detail": {
+      "want": {}
+    }
+  },
+  {
+    "name": "dryRun(calibration#2, X=false, Z=true): fidelity = NaN (closed form on the measured state)",
+    "ok": false
+  },
+  {
+    "name": "dryRun(calibration#2, X=false, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
+    "ok": false
+  },
+  {
+    "name": "dryRun(calibration#2, X=true, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+    "ok": true,
+    "detail": {
+      "want": {}
+    }
+  },
+  {
+    "name": "dryRun(calibration#2, X=true, Z=true): fidelity = NaN (closed form on the measured state)",
+    "ok": false
+  },
+  {
+    "name": "dryRun(calibration#2, X=true, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
+    "ok": false
+  },
+  {
+    "name": "spy: Python teleport_branch received the measured theta/phi on every dry run",
+    "ok": false,
+    "detail": []
+  },
+  {
+    "name": "commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)",
+    "ok": false,
+    "detail": {
+      "bits": {}
+    }
+  },
+  {
+    "name": "commit: the second and a later call get the SAME recorded result (no second teleport)",
+    "ok": false,
+    "detail": {
+      "sameRecordedObject": false,
+      "pythonSecondCommit": {
+        "refused": false,
+        "error": "TypeError: live_commit() missing 1 required positional argument: 'state_name'"
+      },
+      "afterRestartIsNewObject": false
+    }
+  },
+  {
+    "name": "commit: Python itself refuses a second live_commit (TokenAlreadyConsumed)",
+    "ok": false,
+    "detail": {
+      "refused": false,
+      "error": "TypeError: live_commit() missing 1 required positional argument: 'state_name'"
+    }
+  },
+  {
+    "name": "RESTART: a commit after resetStoryToken succeeds, as a NEW result (fidelity 1)",
+    "ok": false,
+    "detail": {
+      "err": {
+        "name": "ScientificModuleError",
+        "message": "live commit: TypeError: live_commit() missing 1 required positional argument: 'state_name'",
+        "errors": [
+          "TypeError: live_commit() missing 1 required positional argument: 'state_name'"
+        ]
+      }
+    }
+  },
+  {
+    "name": "spy: Python saw exactly 2 live_commit calls (one per story) and 1 reset",
+    "ok": false,
+    "detail": {
+      "backendRunAttempts": 0,
+      "backendRunCompleted": 0,
+      "verificationCalls": 0,
+      "commitCalls": 3,
+      "commitsCompleted": 0,
+      "resetCalls": 0,
+      "branchCalls": 0
+    }
+  },
+  {
+    "name": "verify: RESOLVES (not rejected)",
+    "ok": false,
+    "detail": {
+      "status": "rejected",
+      "name": "ScientificModuleError",
+      "message": "Quantum backend verification unavailable; educational circuit validated locally: Cannot read properties of undefined (reading 'callPromising')",
+      "errors": [
+        "Cannot read properties of undefined (reading 'callPromising')"
+      ]
+    }
+  },
+  {
+    "name": "verify ×2: both callers get the same value",
+    "ok": true,
+    "detail": true
   }
 ]

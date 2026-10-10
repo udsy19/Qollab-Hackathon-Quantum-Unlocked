@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 17.9s"
+    "detail": "page load → done in 6.5s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-head-old-bridge-20261010T002017-30591"
+    "detail": "pb-head-old-bridge-20261010T002653-5345"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -17,7 +17,7 @@
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.007
+      "coldImportSeconds": 0.006
     }
   },
   {
@@ -143,6 +143,11 @@
     }
   },
   {
+    "name": "spy fault mode is false (the scenario being graded)",
+    "ok": true,
+    "detail": false
+  },
+  {
     "name": "dry run: four X/Z choices were tried on one calibration",
     "ok": true,
     "detail": [
@@ -191,47 +196,47 @@
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "77.4 ms"
+    "detail": "5.4 ms"
   },
   {
     "name": "cloning(plus): adapter returned a result",
-    "ok": true,
-    "detail": "22 ms"
-  },
-  {
-    "name": "cloning(plus): adapter returned a result",
-    "ok": true,
-    "detail": "3.3 ms"
-  },
-  {
-    "name": "cloning(zero): adapter returned a result",
-    "ok": true,
-    "detail": "2.4 ms"
-  },
-  {
-    "name": "cloning(one): adapter returned a result",
-    "ok": true,
-    "detail": "1.8 ms"
-  },
-  {
-    "name": "cloning(bloch_a): adapter returned a result",
     "ok": true,
     "detail": "3 ms"
   },
   {
+    "name": "cloning(plus): adapter returned a result",
+    "ok": true,
+    "detail": "1.3 ms"
+  },
+  {
+    "name": "cloning(zero): adapter returned a result",
+    "ok": true,
+    "detail": "0.9 ms"
+  },
+  {
+    "name": "cloning(one): adapter returned a result",
+    "ok": true,
+    "detail": "1 ms"
+  },
+  {
+    "name": "cloning(bloch_a): adapter returned a result",
+    "ok": true,
+    "detail": "1.4 ms"
+  },
+  {
     "name": "relay(I): adapter returned a result",
     "ok": true,
-    "detail": "2.6 ms"
+    "detail": "2 ms"
   },
   {
     "name": "relay(X): adapter returned a result",
     "ok": true,
-    "detail": "2.4 ms"
+    "detail": "0.7 ms"
   },
   {
     "name": "relay(Z): adapter returned a result",
     "ok": true,
-    "detail": "1.9 ms"
+    "detail": "0.6 ms"
   },
   {
     "name": "calibration#1: adapter returned a result",
@@ -302,7 +307,7 @@
   {
     "name": "commit#1: adapter returned a result",
     "ok": true,
-    "detail": "2.6 ms"
+    "detail": "2.8 ms"
   },
   {
     "name": "commit#2: adapter returned a result",
@@ -478,8 +483,8 @@
     "detail": {
       "fidelity": 1,
       "bits": {
-        "m0": 0,
-        "m1": 0
+        "m0": 1,
+        "m1": 1
       },
       "parameters": {
         "state": "token"
@@ -493,7 +498,7 @@
       "sameRecordedObject": true,
       "pythonSecondCommit": {
         "refused": true,
-        "error": "TokenAlreadyConsumed"
+        "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
       },
       "afterRestartIsNewObject": false
     }
@@ -503,7 +508,7 @@
     "ok": true,
     "detail": {
       "refused": true,
-      "error": "TokenAlreadyConsumed"
+      "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
     }
   },
   {

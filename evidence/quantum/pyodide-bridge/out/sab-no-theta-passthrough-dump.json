@@ -1,17 +1,18 @@
 {
   "assembly": {
-    "token": "pb-sab-no-theta-passthrough-20261010T002338-20501",
+    "token": "pb-sab-no-theta-passthrough-20261010T002754-4780",
     "sabotage": "no-theta-passthrough",
-    "runnerRef": "lane/platform/integration@e22cc7e",
-    "contractsRef": "lane/platform/integration@e22cc7e",
-    "harnessCommit": "de3a66c-dirty",
-    "pythonRef": "HEAD@de3a66c",
+    "fault": false,
+    "runnerRef": "lane/platform/integration@f08dd0b",
+    "contractsRef": "lane/platform/integration@f08dd0b",
+    "harnessCommit": "cba4fd6-dirty",
+    "pythonRef": "HEAD@cba4fd6",
     "sha256": {
       "contracts.js": "ecc0ed1d2c9ad162",
       "index.html": "6112169d8d1887b8",
       "main.css": "d93eb501784b286e",
-      "main.js": "ef69189b9848e3d6",
-      "pb_spy.py": "9a2d82af661c05be",
+      "main.js": "f6ef376bdc7af2db",
+      "pb_spy.py": "64f237ced68a9dbb",
       "quantum/__init__.py": "4770b5d0e03c289a",
       "quantum/bridge.js": "e1584a723b7bfcc9",
       "quantum/cloning.py": "9e50d3aba0104f49",
@@ -28,7 +29,7 @@
   "runnerLogTail": [
     {
       "kind": "runner",
-      "msg": "runner: 12 files in /private/tmp/pb-run-4XMbzX/echo; backend = ionq-mock"
+      "msg": "runner: 12 files in /private/tmp/pb-run-d1odzM/echo; backend = ionq-mock"
     },
     {
       "kind": "system",
@@ -76,7 +77,7 @@
     },
     {
       "kind": "system",
-      "msg": "Probabilities panel: {\"0x0\":0.44921875,\"0x3\":0.55078125}"
+      "msg": "Probabilities panel: {\"0x3\":0.484375,\"0x0\":0.515625}"
     },
     {
       "kind": "system",
@@ -91,21 +92,66 @@
       "listIsArray": true,
       "json": "{\"outer\":{\"inner\":1},\"list\":[1,2],\"n\":1}"
     },
-    "build": "pb-sab-no-theta-passthrough-20261010T002338-20501",
+    "build": "pb-sab-no-theta-passthrough-20261010T002754-4780",
     "backendName": "basic_simulator",
     "platform": {
       "sysPlatform": "emscripten",
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.008
+      "coldImportSeconds": 0.014
     },
     "timing": {
-      "msFrameStartToMainBody": 17041.2,
-      "verifyMs": 31.2,
-      "wallSecondsPageToDone": 18.7
+      "msFrameStartToMainBody": 11439.9,
+      "verifyMs": 11.1,
+      "wallSecondsPageToDone": 12.2
     },
     "calls": [
+      {
+        "label": "cloning(plus)",
+        "hook": false,
+        "ms": 11.7,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "cloning",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
+          "qubits": 2,
+          "parameters": {
+            "state": "plus"
+          },
+          "facts": [
+            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
+            "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+            "The two outputs are entangled with each other, not copies of the input.",
+            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+          ],
+          "probabilities": {
+            "10": 0,
+            "11": 0.5,
+            "00": 0.5,
+            "01": 0
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "observables": {
+            "purityQ0": 0.5,
+            "purityQ1": 0.5,
+            "fidelityQ0WithInput": 0.5,
+            "fidelityQ1WithInput": 0.5,
+            "jointFidelityWithTwoCopies": 0.5
+          }
+        },
+        "nodeVerdict": []
+      },
       {
         "label": "cloning(plus)",
         "hook": false,
@@ -154,52 +200,7 @@
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 4.8,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
-        },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "cloning",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
-          "qubits": 2,
-          "parameters": {
-            "state": "plus"
-          },
-          "facts": [
-            "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
-            "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
-            "The two outputs are entangled with each other, not copies of the input.",
-            "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
-          ],
-          "probabilities": {
-            "10": 0,
-            "11": 0.5,
-            "00": 0.5,
-            "01": 0
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "observables": {
-            "purityQ0": 0.5,
-            "purityQ1": 0.5,
-            "fidelityQ0WithInput": 0.5,
-            "fidelityQ1WithInput": 0.5,
-            "jointFidelityWithTwoCopies": 0.5
-          }
-        },
-        "nodeVerdict": []
-      },
-      {
-        "label": "cloning(plus)",
-        "hook": false,
-        "ms": 1.7,
+        "ms": 4.1,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -244,7 +245,7 @@
       {
         "label": "cloning(zero)",
         "hook": false,
-        "ms": 2,
+        "ms": 2.8,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -288,7 +289,7 @@
       {
         "label": "cloning(one)",
         "hook": false,
-        "ms": 1.5,
+        "ms": 2.4,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -332,7 +333,7 @@
       {
         "label": "cloning(bloch_a)",
         "hook": false,
-        "ms": 1.6,
+        "ms": 2.9,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -377,7 +378,7 @@
       {
         "label": "relay(I)",
         "hook": false,
-        "ms": 2.3,
+        "ms": 4.4,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -420,7 +421,7 @@
       {
         "label": "relay(X)",
         "hook": false,
-        "ms": 0.9,
+        "ms": 1.7,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -463,7 +464,7 @@
       {
         "label": "relay(Z)",
         "hook": false,
-        "ms": 4.7,
+        "ms": 1.5,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -506,7 +507,7 @@
       {
         "label": "calibration#1",
         "hook": false,
-        "ms": 13.5,
+        "ms": 3.6,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -517,12 +518,60 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(2.260841) then RZ(-2.509444) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+          "circuitDescription": "prepare RY(0.826217) then RZ(2.992178) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 2.2608408094,
-            "phi": -2.509443991
+            "theta": 0.8262165732,
+            "phi": 2.9921780827
+          },
+          "facts": [
+            "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0. Choose the receiver's X and Z for these two bits.",
+            "The calibration state lies away from every axis of the Bloch sphere, so any wrong X/Z choice visibly lowers the receiver's fidelity.",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "observables": {
+            "inputBlochX": -0.7271795191,
+            "inputBlochY": 0.1094670376,
+            "inputBlochZ": 0.6776628325
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 0
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "calibration#2",
+        "hook": false,
+        "ms": 2.5,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare RY(1.664278) then RZ(-0.980655) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+          "qubits": 3,
+          "parameters": {
+            "state": "calibration",
+            "theta": 1.66427849,
+            "phi": -0.9806554131
           },
           "facts": [
             "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0. Choose the receiver's X and Z for these two bits.",
@@ -540,9 +589,9 @@
             0
           ],
           "observables": {
-            "inputBlochX": -0.6221874144,
-            "inputBlochY": -0.4556967865,
-            "inputBlochZ": -0.6365714886
+            "inputBlochX": 0.5540483711,
+            "inputBlochY": -0.8272344977,
+            "inputBlochZ": -0.0933460672
           },
           "measurementBits": {
             "m0": 0,
@@ -552,9 +601,9 @@
         "nodeVerdict": []
       },
       {
-        "label": "calibration#2",
+        "label": "calibration#3",
         "hook": false,
-        "ms": 11.4,
+        "ms": 2.3,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -565,12 +614,12 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.320666) then RZ(-1.023773) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+          "circuitDescription": "prepare RY(2.142907) then RZ(1.507433) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 1.3206664063,
-            "phi": -1.0237729483
+            "theta": 2.1429067262,
+            "phi": 1.5074331892
           },
           "facts": [
             "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1. Choose the receiver's X and Z for these two bits.",
@@ -588,9 +637,9 @@
             0
           ],
           "observables": {
-            "inputBlochX": 0.5039604319,
-            "inputBlochY": -0.8274979529,
-            "inputBlochZ": 0.2475298387
+            "inputBlochX": 0.0532375677,
+            "inputBlochY": 0.8390730478,
+            "inputBlochZ": -0.541407593
           },
           "measurementBits": {
             "m0": 1,
@@ -600,9 +649,9 @@
         "nodeVerdict": []
       },
       {
-        "label": "dryRun(calibration#2, X=false, Z=false)",
+        "label": "dryRun(calibration#1, X=false, Z=false)",
         "hook": false,
-        "ms": 11.1,
+        "ms": 4.4,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -614,9 +663,9 @@
         "nodeVerdict": null
       },
       {
-        "label": "dryRun(calibration#2, X=true, Z=false)",
+        "label": "dryRun(calibration#1, X=true, Z=false)",
         "hook": false,
-        "ms": 2.3,
+        "ms": 1.3,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -628,9 +677,9 @@
         "nodeVerdict": null
       },
       {
-        "label": "dryRun(calibration#2, X=false, Z=true)",
+        "label": "dryRun(calibration#1, X=false, Z=true)",
         "hook": false,
-        "ms": 3.7,
+        "ms": 0.7,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -642,9 +691,9 @@
         "nodeVerdict": null
       },
       {
-        "label": "dryRun(calibration#2, X=true, Z=true)",
+        "label": "dryRun(calibration#1, X=true, Z=true)",
         "hook": false,
-        "ms": 2,
+        "ms": 0.8,
         "ok": false,
         "error": {
           "name": "ScientificModuleError",
@@ -658,7 +707,7 @@
       {
         "label": "commit#1",
         "hook": false,
-        "ms": 20,
+        "ms": 9.5,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -823,7 +872,7 @@
       {
         "label": "commit#4 after RESTART",
         "hook": false,
-        "ms": 6.2,
+        "ms": 5.4,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -869,17 +918,18 @@
       }
     ],
     "dryRun": {
-      "calibration": "calibration#2",
+      "calibration": "calibration#1",
       "draws": [
         "calibration#1",
-        "calibration#2"
+        "calibration#2",
+        "calibration#3"
       ]
     },
     "commit": {
       "sameRecordedObject": true,
       "pythonSecondCommit": {
         "refused": true,
-        "error": "TokenAlreadyConsumed"
+        "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
       },
       "afterRestartIsNewObject": true
     },
@@ -906,8 +956,8 @@
             "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
           ],
           "counts": {
-            "11": 141,
-            "00": 115
+            "11": 124,
+            "00": 132
           },
           "keyQubits": [
             1,
@@ -936,8 +986,8 @@
             "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
           ],
           "counts": {
-            "11": 141,
-            "00": 115
+            "11": 124,
+            "00": 132
           },
           "keyQubits": [
             1,
@@ -969,8 +1019,8 @@
             "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
           ],
           "counts": {
-            "11": 141,
-            "00": 115
+            "11": 124,
+            "00": 132
           },
           "keyQubits": [
             1,
@@ -1003,28 +1053,28 @@
         {
           "state": "calibration",
           "m0": 1,
-          "m1": 1,
+          "m1": 0,
           "applyX": false,
           "applyZ": false
         },
         {
           "state": "calibration",
           "m0": 1,
-          "m1": 1,
+          "m1": 0,
           "applyX": true,
           "applyZ": false
         },
         {
           "state": "calibration",
           "m0": 1,
-          "m1": 1,
+          "m1": 0,
           "applyX": false,
           "applyZ": true
         },
         {
           "state": "calibration",
           "m0": 1,
-          "m1": 1,
+          "m1": 0,
           "applyX": true,
           "applyZ": true
         }
@@ -1035,12 +1085,12 @@
     {
       "name": "main.js (harness) ran to the end without error",
       "ok": true,
-      "detail": "page load → done in 18.7s"
+      "detail": "page load → done in 12.2s"
     },
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "pb-sab-no-theta-passthrough-20261010T002338-20501"
+      "detail": "pb-sab-no-theta-passthrough-20261010T002754-4780"
     },
     {
       "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -1050,7 +1100,7 @@
         "python": "3.14.2",
         "qiskit": "2.5.2",
         "pyodide": "314.0.7",
-        "coldImportSeconds": 0.008
+        "coldImportSeconds": 0.014
       }
     },
     {
@@ -1158,6 +1208,15 @@
       }
     },
     {
+      "name": "calibration#3: delivered value re-validates in Node",
+      "ok": true,
+      "detail": {
+        "isMap": false,
+        "factsIsArray": true,
+        "proxyFields": []
+      }
+    },
+    {
       "name": "commit#1: delivered value re-validates in Node",
       "ok": true,
       "detail": {
@@ -1194,13 +1253,18 @@
       }
     },
     {
+      "name": "spy fault mode is false (the scenario being graded)",
+      "ok": true,
+      "detail": false
+    },
+    {
       "name": "dry run: four X/Z choices were tried on one calibration",
       "ok": true,
       "detail": [
-        "dryRun(calibration#2, X=false, Z=false)",
-        "dryRun(calibration#2, X=true, Z=false)",
-        "dryRun(calibration#2, X=false, Z=true)",
-        "dryRun(calibration#2, X=true, Z=true)"
+        "dryRun(calibration#1, X=false, Z=false)",
+        "dryRun(calibration#1, X=true, Z=false)",
+        "dryRun(calibration#1, X=false, Z=true)",
+        "dryRun(calibration#1, X=true, Z=true)"
       ]
     },
     {
@@ -1242,60 +1306,65 @@
     {
       "name": "cloning(plus): adapter returned a result",
       "ok": true,
+      "detail": "11.7 ms"
+    },
+    {
+      "name": "cloning(plus): adapter returned a result",
+      "ok": true,
       "detail": "6.8 ms"
     },
     {
       "name": "cloning(plus): adapter returned a result",
       "ok": true,
-      "detail": "4.8 ms"
-    },
-    {
-      "name": "cloning(plus): adapter returned a result",
-      "ok": true,
-      "detail": "1.7 ms"
+      "detail": "4.1 ms"
     },
     {
       "name": "cloning(zero): adapter returned a result",
       "ok": true,
-      "detail": "2 ms"
+      "detail": "2.8 ms"
     },
     {
       "name": "cloning(one): adapter returned a result",
       "ok": true,
-      "detail": "1.5 ms"
+      "detail": "2.4 ms"
     },
     {
       "name": "cloning(bloch_a): adapter returned a result",
       "ok": true,
-      "detail": "1.6 ms"
+      "detail": "2.9 ms"
     },
     {
       "name": "relay(I): adapter returned a result",
       "ok": true,
-      "detail": "2.3 ms"
+      "detail": "4.4 ms"
     },
     {
       "name": "relay(X): adapter returned a result",
       "ok": true,
-      "detail": "0.9 ms"
+      "detail": "1.7 ms"
     },
     {
       "name": "relay(Z): adapter returned a result",
       "ok": true,
-      "detail": "4.7 ms"
+      "detail": "1.5 ms"
     },
     {
       "name": "calibration#1: adapter returned a result",
       "ok": true,
-      "detail": "13.5 ms"
+      "detail": "3.6 ms"
     },
     {
       "name": "calibration#2: adapter returned a result",
       "ok": true,
-      "detail": "11.4 ms"
+      "detail": "2.5 ms"
     },
     {
-      "name": "dryRun(calibration#2, X=false, Z=false): adapter returned a result",
+      "name": "calibration#3: adapter returned a result",
+      "ok": true,
+      "detail": "2.3 ms"
+    },
+    {
+      "name": "dryRun(calibration#1, X=false, Z=false): adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
@@ -1306,7 +1375,7 @@
       }
     },
     {
-      "name": "dryRun(calibration#2, X=true, Z=false): adapter returned a result",
+      "name": "dryRun(calibration#1, X=true, Z=false): adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
@@ -1317,7 +1386,7 @@
       }
     },
     {
-      "name": "dryRun(calibration#2, X=false, Z=true): adapter returned a result",
+      "name": "dryRun(calibration#1, X=false, Z=true): adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
@@ -1328,7 +1397,7 @@
       }
     },
     {
-      "name": "dryRun(calibration#2, X=true, Z=true): adapter returned a result",
+      "name": "dryRun(calibration#1, X=true, Z=true): adapter returned a result",
       "ok": false,
       "detail": {
         "name": "ScientificModuleError",
@@ -1341,7 +1410,7 @@
     {
       "name": "commit#1: adapter returned a result",
       "ok": true,
-      "detail": "20 ms"
+      "detail": "9.5 ms"
     },
     {
       "name": "commit#2: adapter returned a result",
@@ -1361,7 +1430,7 @@
     {
       "name": "commit#4 after RESTART: adapter returned a result",
       "ok": true,
-      "detail": "6.2 ms"
+      "detail": "5.4 ms"
     },
     {
       "name": "cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]",
@@ -1424,12 +1493,16 @@
       "ok": true,
       "detail": [
         [
-          2.2608408094,
-          -2.509443991
+          0.8262165732,
+          2.9921780827
         ],
         [
-          1.3206664063,
-          -1.0237729483
+          1.66427849,
+          -0.9806554131
+        ],
+        [
+          2.1429067262,
+          1.5074331892
         ]
       ]
     },
@@ -1437,8 +1510,9 @@
       "name": "calibration: every draw is generic (max Bloch component² ≤ 0.9, re-derived here)",
       "ok": true,
       "detail": [
-        0.4052,
-        0.6848
+        0.5288,
+        0.6843,
+        0.704
       ]
     },
     {
@@ -1446,12 +1520,16 @@
       "ok": true,
       "detail": [
         [
-          2.2608408094,
-          -2.509443991
+          0.8262165732,
+          2.9921780827
         ],
         [
-          1.3206664063,
-          -1.0237729483
+          1.66427849,
+          -0.9806554131
+        ],
+        [
+          2.1429067262,
+          1.5074331892
         ]
       ]
     },
@@ -1459,91 +1537,91 @@
       "name": "calibration: the graded draw is on a non-00 branch",
       "ok": true,
       "detail": {
-        "draw": "calibration#2",
+        "draw": "calibration#1",
         "bits": {
           "m0": 1,
-          "m1": 1
+          "m1": 0
         }
       }
     },
     {
-      "name": "dryRun(calibration#2, X=false, Z=false): theta/phi round-trip exactly from the measurement into the branch",
+      "name": "dryRun(calibration#1, X=false, Z=false): theta/phi round-trip exactly from the measurement into the branch",
       "ok": false,
       "detail": {
         "want": {
-          "theta": 1.3206664063,
-          "phi": -1.0237729483,
+          "theta": 0.8262165732,
+          "phi": 2.9921780827,
           "m0": 1,
-          "m1": 1
+          "m1": 0
         }
       }
     },
     {
-      "name": "dryRun(calibration#2, X=false, Z=false): fidelity = 0.684753 (closed form on the measured state)",
+      "name": "dryRun(calibration#1, X=false, Z=false): fidelity = 0.459227 (closed form on the measured state)",
       "ok": false
     },
     {
-      "name": "dryRun(calibration#2, X=false, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
+      "name": "dryRun(calibration#1, X=false, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
       "ok": false
     },
     {
-      "name": "dryRun(calibration#2, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch",
+      "name": "dryRun(calibration#1, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch",
       "ok": false,
       "detail": {
         "want": {
-          "theta": 1.3206664063,
-          "phi": -1.0237729483,
+          "theta": 0.8262165732,
+          "phi": 2.9921780827,
           "m0": 1,
-          "m1": 1
+          "m1": 0
         }
       }
     },
     {
-      "name": "dryRun(calibration#2, X=true, Z=false): fidelity = 0.061271 (closed form on the measured state)",
+      "name": "dryRun(calibration#1, X=true, Z=false): fidelity = 0.011983 (closed form on the measured state)",
       "ok": false
     },
     {
-      "name": "dryRun(calibration#2, X=true, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
+      "name": "dryRun(calibration#1, X=true, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
       "ok": false
     },
     {
-      "name": "dryRun(calibration#2, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+      "name": "dryRun(calibration#1, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch",
       "ok": false,
       "detail": {
         "want": {
-          "theta": 1.3206664063,
-          "phi": -1.0237729483,
+          "theta": 0.8262165732,
+          "phi": 2.9921780827,
           "m0": 1,
-          "m1": 1
+          "m1": 0
         }
       }
     },
     {
-      "name": "dryRun(calibration#2, X=false, Z=true): fidelity = 0.253976 (closed form on the measured state)",
+      "name": "dryRun(calibration#1, X=false, Z=true): fidelity = 1.000000 (closed form on the measured state)",
       "ok": false
     },
     {
-      "name": "dryRun(calibration#2, X=false, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
+      "name": "dryRun(calibration#1, X=false, Z=true): the rule's choice scores F ≥ 0.999999",
       "ok": false
     },
     {
-      "name": "dryRun(calibration#2, X=true, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+      "name": "dryRun(calibration#1, X=true, Z=true): theta/phi round-trip exactly from the measurement into the branch",
       "ok": false,
       "detail": {
         "want": {
-          "theta": 1.3206664063,
-          "phi": -1.0237729483,
+          "theta": 0.8262165732,
+          "phi": 2.9921780827,
           "m0": 1,
-          "m1": 1
+          "m1": 0
         }
       }
     },
     {
-      "name": "dryRun(calibration#2, X=true, Z=true): fidelity = 1.000000 (closed form on the measured state)",
+      "name": "dryRun(calibration#1, X=true, Z=true): fidelity = 0.528790 (closed form on the measured state)",
       "ok": false
     },
     {
-      "name": "dryRun(calibration#2, X=true, Z=true): the rule's choice scores F ≥ 0.999999",
+      "name": "dryRun(calibration#1, X=true, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
       "ok": false
     },
     {
@@ -1553,28 +1631,28 @@
         {
           "state": "calibration",
           "m0": 1,
-          "m1": 1,
+          "m1": 0,
           "applyX": false,
           "applyZ": false
         },
         {
           "state": "calibration",
           "m0": 1,
-          "m1": 1,
+          "m1": 0,
           "applyX": true,
           "applyZ": false
         },
         {
           "state": "calibration",
           "m0": 1,
-          "m1": 1,
+          "m1": 0,
           "applyX": false,
           "applyZ": true
         },
         {
           "state": "calibration",
           "m0": 1,
-          "m1": 1,
+          "m1": 0,
           "applyX": true,
           "applyZ": true
         }
@@ -1601,7 +1679,7 @@
         "sameRecordedObject": true,
         "pythonSecondCommit": {
           "refused": true,
-          "error": "TokenAlreadyConsumed"
+          "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
         },
         "afterRestartIsNewObject": true
       }
@@ -1611,7 +1689,7 @@
       "ok": true,
       "detail": {
         "refused": true,
-        "error": "TokenAlreadyConsumed"
+        "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
       }
     },
     {
@@ -1658,8 +1736,8 @@
             "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
           ],
           "counts": {
-            "11": 141,
-            "00": 115
+            "11": 124,
+            "00": 132
           },
           "keyQubits": [
             1,
@@ -1686,8 +1764,8 @@
       "name": "verify: 256 shots, ideal Bell keys only",
       "ok": true,
       "detail": {
-        "11": 141,
-        "00": 115
+        "11": 124,
+        "00": 132
       }
     }
   ]

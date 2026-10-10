@@ -1,7 +1,7 @@
-assembled /private/tmp/pb-run-ppAFTu (python HEAD, sabotage none, token pb-final-3-20261010T001943-24382)
-PASS  main.js (harness) ran to the end without error  — page load → done in 9.9s
-PASS  served build token matches the one just written  — pb-final-3-20261010T001943-24382
-PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.007}
+assembled /private/tmp/pb-run-yLTq5R (python HEAD, sabotage none, token pb-final-3-20261010T002635-19518)
+PASS  main.js (harness) ran to the end without error  — page load → done in 6.1s
+PASS  served build token matches the one just written  — pb-final-3-20261010T002635-19518
+PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.006}
 PASS  Qiskit 2.x loaded  — 2.5.2
 PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  cloning(plus): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
@@ -14,70 +14,71 @@ PASS  relay(X): delivered value re-validates in Node  — {"isMap":false,"factsI
 PASS  relay(Z): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  calibration#1: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  calibration#2: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
-PASS  dryRun(calibration#1, X=false, Z=false): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
-PASS  dryRun(calibration#1, X=true, Z=false): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
-PASS  dryRun(calibration#1, X=false, Z=true): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
-PASS  dryRun(calibration#1, X=true, Z=true): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  dryRun(calibration#2, X=false, Z=false): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  dryRun(calibration#2, X=true, Z=false): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  dryRun(calibration#2, X=false, Z=true): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
+PASS  dryRun(calibration#2, X=true, Z=true): delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  commit#1: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  commit#2: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  commit#3 after settle: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
 PASS  commit#4 after RESTART: delivered value re-validates in Node  — {"isMap":false,"factsIsArray":true,"proxyFields":[]}
-PASS  dry run: four X/Z choices were tried on one calibration  — ["dryRun(calibration#1, X=false, Z=false)","dryRun(calibration#1, X=true, Z=false)","dryRun(calibration#1, X=false, Z=true)","dryRun(calibration#1, X=true, Z=true)"]
+PASS  spy fault mode is false (the scenario being graded)  — false
+PASS  dry run: four X/Z choices were tried on one calibration  — ["dryRun(calibration#2, X=false, Z=false)","dryRun(calibration#2, X=true, Z=false)","dryRun(calibration#2, X=false, Z=true)","dryRun(calibration#2, X=true, Z=true)"]
 PASS  spy: exactly 1 backend.run attempted, and it completed (stack entered via callPromising)  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1,"commitCalls":2,"commitsCompleted":2,"resetCalls":1,"branchCalls":4}
 PASS  spy: exactly 1 entry into qollab_job.run_backend_verification_once  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1,"commitCalls":2,"commitsCompleted":2,"resetCalls":1,"branchCalls":4}
 PASS  verify ×2: the second call returns the SAME promise  — true
 PASS  verify after RESTART: still the same promise (one job per run, not per story)  — true
-PASS  cloning(plus): adapter returned a result  — 5.9 ms
-PASS  cloning(plus): adapter returned a result  — 3.7 ms
+PASS  cloning(plus): adapter returned a result  — 5.6 ms
+PASS  cloning(plus): adapter returned a result  — 3.3 ms
 PASS  cloning(plus): adapter returned a result  — 1.4 ms
-PASS  cloning(zero): adapter returned a result  — 1.1 ms
-PASS  cloning(one): adapter returned a result  — 1.6 ms
+PASS  cloning(zero): adapter returned a result  — 1 ms
+PASS  cloning(one): adapter returned a result  — 1.1 ms
 PASS  cloning(bloch_a): adapter returned a result  — 1.4 ms
-PASS  relay(I): adapter returned a result  — 2.4 ms
-PASS  relay(X): adapter returned a result  — 1 ms
-PASS  relay(Z): adapter returned a result  — 0.8 ms
-PASS  calibration#1: adapter returned a result  — 2.4 ms
+PASS  relay(I): adapter returned a result  — 2.2 ms
+PASS  relay(X): adapter returned a result  — 1.1 ms
+PASS  relay(Z): adapter returned a result  — 1 ms
+PASS  calibration#1: adapter returned a result  — 2.7 ms
 PASS  calibration#2: adapter returned a result  — 1.5 ms
-PASS  dryRun(calibration#1, X=false, Z=false): adapter returned a result  — 2.7 ms
-PASS  dryRun(calibration#1, X=true, Z=false): adapter returned a result  — 2.9 ms
-PASS  dryRun(calibration#1, X=false, Z=true): adapter returned a result  — 2.8 ms
-PASS  dryRun(calibration#1, X=true, Z=true): adapter returned a result  — 7.2 ms
-PASS  commit#1: adapter returned a result  — 13.5 ms
-PASS  commit#2: adapter returned a result  — 0.1 ms
-PASS  commit#3 after settle: adapter returned a result  — 0.1 ms
-PASS  RESTART: resetStoryToken(): adapter returned a result  — 0.4 ms
-PASS  commit#4 after RESTART: adapter returned a result  — 20.1 ms
+PASS  dryRun(calibration#2, X=false, Z=false): adapter returned a result  — 3.7 ms
+PASS  dryRun(calibration#2, X=true, Z=false): adapter returned a result  — 3.2 ms
+PASS  dryRun(calibration#2, X=false, Z=true): adapter returned a result  — 2.3 ms
+PASS  dryRun(calibration#2, X=true, Z=true): adapter returned a result  — 2.1 ms
+PASS  commit#1: adapter returned a result  — 1.7 ms
+PASS  commit#2: adapter returned a result  — 0 ms
+PASS  commit#3 after settle: adapter returned a result  — 0 ms
+PASS  RESTART: resetStoryToken(): adapter returned a result  — 0 ms
+PASS  commit#4 after RESTART: adapter returned a result  — 2.1 ms
 PASS  cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]  — {"10":0,"11":0.5,"00":0.5,"01":0}
 PASS  cloning(plus): each output purity 0.5 (entangled, not two copies)  — {"purityQ0":0.5,"purityQ1":0.5,"fidelityQ0WithInput":0.5,"fidelityQ1WithInput":0.5,"jointFidelityWithTwoCopies":0.5}
 PASS  cloning(zero): basis state copies (purities 1)  — {"purityQ0":1,"purityQ1":1,"fidelityQ0WithInput":1,"fidelityQ1WithInput":1,"jointFidelityWithTwoCopies":1}
 PASS  relay(I): receiver marginal exactly 0.5/0.5, keyQubits [1]  — {"0":0.5,"1":0.5}
 PASS  relay(X): receiver marginal exactly 0.5/0.5, keyQubits [1]  — {"0":0.5,"1":0.5}
 PASS  relay(Z): receiver marginal exactly 0.5/0.5, keyQubits [1]  — {"0":0.5,"1":0.5}
-PASS  calibration: every draw carries finite theta/phi, bits only (no fidelity, no applyX/Z)  — [[1.2044723533,-2.6697311007],[1.5234498547,0.5923226769]]
-PASS  calibration: every draw is generic (max Bloch component² ≤ 0.9, re-derived here)  — [0.6916,0.6868]
-PASS  calibration: the draws differ (a fresh random state each time, not a named one)  — [[1.2044723533,-2.6697311007],[1.5234498547,0.5923226769]]
-PASS  calibration: the graded draw is on a non-00 branch  — {"draw":"calibration#1","bits":{"m0":0,"m1":1}}
-PASS  dryRun(calibration#1, X=false, Z=false): theta/phi round-trip exactly from the measurement into the branch  — {"got":{"state":"calibration","theta":1.2044723533,"phi":-2.6697311007,"m0":0,"m1":1,"applyX":false,"applyZ":false},"want":{"theta":1.2044723533,"phi":-2.6697311007,"m0":0,"m1":1}}
-PASS  dryRun(calibration#1, X=false, Z=false): fidelity = 0.691599 (closed form on the measured state)  — 0.6915992579
-PASS  dryRun(calibration#1, X=false, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999  — 0.6915992579
-PASS  dryRun(calibration#1, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch  — {"got":{"state":"calibration","theta":1.2044723533,"phi":-2.6697311007,"m0":0,"m1":1,"applyX":true,"applyZ":false},"want":{"theta":1.2044723533,"phi":-2.6697311007,"m0":0,"m1":1}}
-PASS  dryRun(calibration#1, X=true, Z=false): fidelity = 1.000000 (closed form on the measured state)  — 1
-PASS  dryRun(calibration#1, X=true, Z=false): the rule's choice scores F ≥ 0.999999  — 1
-PASS  dryRun(calibration#1, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch  — {"got":{"state":"calibration","theta":1.2044723533,"phi":-2.6697311007,"m0":0,"m1":1,"applyX":false,"applyZ":true},"want":{"theta":1.2044723533,"phi":-2.6697311007,"m0":0,"m1":1}}
-PASS  dryRun(calibration#1, X=false, Z=true): fidelity = 0.180104 (closed form on the measured state)  — 0.1801037204
-PASS  dryRun(calibration#1, X=false, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999  — 0.1801037204
-PASS  dryRun(calibration#1, X=true, Z=true): theta/phi round-trip exactly from the measurement into the branch  — {"got":{"state":"calibration","theta":1.2044723533,"phi":-2.6697311007,"m0":0,"m1":1,"applyX":true,"applyZ":true},"want":{"theta":1.2044723533,"phi":-2.6697311007,"m0":0,"m1":1}}
-PASS  dryRun(calibration#1, X=true, Z=true): fidelity = 0.128297 (closed form on the measured state)  — 0.1282970217
-PASS  dryRun(calibration#1, X=true, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999  — 0.1282970217
-PASS  spy: Python teleport_branch received the measured theta/phi on every dry run  — [{"state":"calibration","m0":0,"m1":1,"applyX":false,"applyZ":false,"theta":1.2044723533,"phi":-2.6697311007},{"state":"calibration","m0":0,"m1":1,"applyX":true,"applyZ":false,"theta":1.2044723533,"phi":-2.6697311007},{"state":"calibration","m0":0,"m1":1,"applyX":false,"applyZ":true,"theta":1.2044723533,"phi":-2.6697311007},{"state":"calibration","m0":0,"m1":1,"applyX":true,"applyZ":true,"theta":1.2044723533,"phi":-2.6697311007}]
-PASS  commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)  — {"fidelity":1,"bits":{"m0":1,"m1":1},"parameters":{"state":"token"}}
-PASS  commit: the second and a later call get the SAME recorded result (no second teleport)  — {"sameRecordedObject":true,"pythonSecondCommit":{"refused":true,"error":"TokenAlreadyConsumed"},"afterRestartIsNewObject":true}
-PASS  commit: Python itself refuses a second live_commit (TokenAlreadyConsumed)  — {"refused":true,"error":"TokenAlreadyConsumed"}
+PASS  calibration: every draw carries finite theta/phi, bits only (no fidelity, no applyX/Z)  — [[1.7456394136,1.1384399263],[2.5402614299,-0.4289720248]]
+PASS  calibration: every draw is generic (max Bloch component² ≤ 0.9, re-derived here)  — [0.7995,0.6799]
+PASS  calibration: the draws differ (a fresh random state each time, not a named one)  — [[1.7456394136,1.1384399263],[2.5402614299,-0.4289720248]]
+PASS  calibration: the graded draw is on a non-00 branch  — {"draw":"calibration#2","bits":{"m0":1,"m1":1}}
+PASS  dryRun(calibration#2, X=false, Z=false): theta/phi round-trip exactly from the measurement into the branch  — {"got":{"state":"calibration","theta":2.5402614299,"phi":-0.4289720248,"m0":1,"m1":1,"applyX":false,"applyZ":false},"want":{"theta":2.5402614299,"phi":-0.4289720248,"m0":1,"m1":1}}
+PASS  dryRun(calibration#2, X=false, Z=false): fidelity = 0.055372 (closed form on the measured state)  — 0.0553717475
+PASS  dryRun(calibration#2, X=false, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999  — 0.0553717475
+PASS  dryRun(calibration#2, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch  — {"got":{"state":"calibration","theta":2.5402614299,"phi":-0.4289720248,"m0":1,"m1":1,"applyX":true,"applyZ":false},"want":{"theta":2.5402614299,"phi":-0.4289720248,"m0":1,"m1":1}}
+PASS  dryRun(calibration#2, X=true, Z=false): fidelity = 0.679937 (closed form on the measured state)  — 0.679937484
+PASS  dryRun(calibration#2, X=true, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999  — 0.679937484
+PASS  dryRun(calibration#2, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch  — {"got":{"state":"calibration","theta":2.5402614299,"phi":-0.4289720248,"m0":1,"m1":1,"applyX":false,"applyZ":true},"want":{"theta":2.5402614299,"phi":-0.4289720248,"m0":1,"m1":1}}
+PASS  dryRun(calibration#2, X=false, Z=true): fidelity = 0.264691 (closed form on the measured state)  — 0.2646907685
+PASS  dryRun(calibration#2, X=false, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999  — 0.2646907685
+PASS  dryRun(calibration#2, X=true, Z=true): theta/phi round-trip exactly from the measurement into the branch  — {"got":{"state":"calibration","theta":2.5402614299,"phi":-0.4289720248,"m0":1,"m1":1,"applyX":true,"applyZ":true},"want":{"theta":2.5402614299,"phi":-0.4289720248,"m0":1,"m1":1}}
+PASS  dryRun(calibration#2, X=true, Z=true): fidelity = 1.000000 (closed form on the measured state)  — 1
+PASS  dryRun(calibration#2, X=true, Z=true): the rule's choice scores F ≥ 0.999999  — 1
+PASS  spy: Python teleport_branch received the measured theta/phi on every dry run  — [{"state":"calibration","m0":1,"m1":1,"applyX":false,"applyZ":false,"theta":2.5402614299,"phi":-0.4289720248},{"state":"calibration","m0":1,"m1":1,"applyX":true,"applyZ":false,"theta":2.5402614299,"phi":-0.4289720248},{"state":"calibration","m0":1,"m1":1,"applyX":false,"applyZ":true,"theta":2.5402614299,"phi":-0.4289720248},{"state":"calibration","m0":1,"m1":1,"applyX":true,"applyZ":true,"theta":2.5402614299,"phi":-0.4289720248}]
+PASS  commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)  — {"fidelity":1,"bits":{"m0":0,"m1":1},"parameters":{"state":"token"}}
+PASS  commit: the second and a later call get the SAME recorded result (no second teleport)  — {"sameRecordedObject":true,"pythonSecondCommit":{"refused":true,"error":"TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."},"afterRestartIsNewObject":true}
+PASS  commit: Python itself refuses a second live_commit (TokenAlreadyConsumed)  — {"refused":true,"error":"TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."}
 PASS  RESTART: a commit after resetStoryToken succeeds, as a NEW result (fidelity 1)  — {"fidelity":1}
 PASS  spy: Python saw exactly 2 live_commit calls (one per story) and 1 reset  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1,"commitCalls":2,"commitsCompleted":2,"resetCalls":1,"branchCalls":4}
-PASS  verify: RESOLVES (not rejected)  — {"status":"verified","result":{"experiment":"backend_verification","engine":"qollab_selected_backend","circuitDescription":"Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1","qubits":2,"parameters":{"shots":256,"backend":"basic_simulator"},"facts":["Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.","Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.","256 of 256 shots (100.0%) had both qubits agree (00 or 11).","Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).","This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.","The agreement carries no message: on its own, each qubit reads 0 or 1 at random.","If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."],"counts":{"11":124,"00":132},"keyQubits":[1,0]}}
+PASS  verify: RESOLVES (not rejected)  — {"status":"verified","result":{"experiment":"backend_verification","engine":"qollab_selected_backend","circuitDescription":"Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1","qubits":2,"parameters":{"shots":256,"backend":"basic_simulator"},"facts":["Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.","Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.","256 of 256 shots (100.0%) had both qubits agree (00 or 11).","Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).","This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.","The agreement carries no message: on its own, each qubit reads 0 or 1 at random.","If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."],"counts":{"11":121,"00":135},"keyQubits":[1,0]}}
 PASS  verify ×2: both callers get the same value  — true
 PASS  verify: experiment "backend_verification", engine qollab_selected_backend, re-validates in Node  — {"experiment":"backend_verification","engine":"qollab_selected_backend","errors":[]}
-PASS  verify: 256 shots, ideal Bell keys only  — {"11":124,"00":132}
-final-3: 80/80 checks passed · runner's own JS-side backend.run counter: 0
+PASS  verify: 256 shots, ideal Bell keys only  — {"11":121,"00":135}
+final-3: 81/81 checks passed · runner's own JS-side backend.run counter: 0
 run.sh final-3 → exit 0

@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 8.8s"
+    "detail": "page load → done in 10s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-sab-swallow-validator-20261010T002447-12030"
+    "detail": "pb-sab-swallow-validator-20261010T002844-6747"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -17,7 +17,7 @@
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.008
+      "coldImportSeconds": 0.013
     }
   },
   {
@@ -197,6 +197,11 @@
     }
   },
   {
+    "name": "spy fault mode is true (the scenario being graded)",
+    "ok": true,
+    "detail": true
+  },
+  {
     "name": "dry run: four X/Z choices were tried on one calibration",
     "ok": true,
     "detail": [
@@ -245,20 +250,20 @@
   {
     "name": "dryRun(calibration#1, X=false, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
     "ok": false,
-    "detail": "delivered F=0.6006193906"
+    "detail": "delivered F=1"
   },
   {
-    "name": "dryRun(calibration#1, X=false, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
+    "name": "dryRun(calibration#1, X=true, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
     "ok": false,
-    "detail": "delivered F=0.3799484491"
+    "detail": "delivered F=1"
   },
   {
     "name": "dryRun(calibration#1, X=true, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
     "ok": false,
-    "detail": "delivered F=0.0194321602"
+    "detail": "delivered F=1"
   },
   {
-    "name": "dryRun(calibration#1, X=true, Z=false): the truthful branch is still delivered",
+    "name": "dryRun(calibration#1, X=false, Z=true): the truthful branch is still delivered",
     "ok": true,
     "detail": 1
   },
@@ -268,7 +273,7 @@
     "detail": {
       "status": "verified",
       "result": {
-        "experiment": "backend_verification",
+        "experiment": "bell_verification",
         "engine": "qollab_selected_backend",
         "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
         "qubits": 2,
@@ -286,8 +291,8 @@
           "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
         ],
         "counts": {
-          "11": 129,
-          "00": 127
+          "11": 121,
+          "00": 135
         },
         "keyQubits": [
           1,

@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 30.8s"
+    "detail": "page load → done in 8.8s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-sab-no-toJs-20261010T002149-28384"
+    "detail": "pb-sab-no-toJs-20261010T002720-30684"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -17,13 +17,18 @@
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.103
+      "coldImportSeconds": 0.013
     }
   },
   {
     "name": "Qiskit 2.x loaded",
     "ok": true,
     "detail": "2.5.2"
+  },
+  {
+    "name": "spy fault mode is false (the scenario being graded)",
+    "ok": true,
+    "detail": false
   },
   {
     "name": "dry run: four X/Z choices were tried on one calibration",
@@ -272,7 +277,7 @@
   {
     "name": "RESTART: resetStoryToken(): adapter returned a result",
     "ok": true,
-    "detail": "0.5 ms"
+    "detail": "3 ms"
   },
   {
     "name": "commit#4 after RESTART: adapter returned a result",
@@ -411,7 +416,7 @@
       "sameRecordedObject": false,
       "pythonSecondCommit": {
         "refused": true,
-        "error": "TokenAlreadyConsumed"
+        "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
       },
       "afterRestartIsNewObject": false
     }
@@ -421,7 +426,7 @@
     "ok": true,
     "detail": {
       "refused": true,
-      "error": "TokenAlreadyConsumed"
+      "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
     }
   },
   {

@@ -1,9 +1,10 @@
-sabotage no-toJs applied to /private/tmp/pb-run-MPaovo/echo/quantum/bridge.js
-assembled /private/tmp/pb-run-MPaovo (python HEAD, sabotage no-toJs, token pb-sab-no-toJs-20261010T002149-28384)
-PASS  main.js (harness) ran to the end without error  — page load → done in 30.8s
-PASS  served build token matches the one just written  — pb-sab-no-toJs-20261010T002149-28384
-PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.103}
+sabotage no-toJs applied to /private/tmp/pb-run-VtWZ1M/echo/quantum/bridge.js
+assembled /private/tmp/pb-run-VtWZ1M (python HEAD, sabotage no-toJs, token pb-sab-no-toJs-20261010T002720-30684)
+PASS  main.js (harness) ran to the end without error  — page load → done in 8.8s
+PASS  served build token matches the one just written  — pb-sab-no-toJs-20261010T002720-30684
+PASS  Python ran in Pyodide (sys.platform emscripten)  — {"sysPlatform":"emscripten","python":"3.14.2","qiskit":"2.5.2","pyodide":"314.0.7","coldImportSeconds":0.013}
 PASS  Qiskit 2.x loaded  — 2.5.2
+PASS  spy fault mode is false (the scenario being graded)  — false
 PASS  dry run: four X/Z choices were tried on one calibration  — ["dryRun(calibration#2, X=false, Z=false)","dryRun(calibration#2, X=true, Z=false)","dryRun(calibration#2, X=false, Z=true)","dryRun(calibration#2, X=true, Z=true)"]
 PASS  spy: exactly 1 backend.run attempted, and it completed (stack entered via callPromising)  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1,"commitCalls":3,"commitsCompleted":2,"resetCalls":1,"branchCalls":0}
 PASS  spy: exactly 1 entry into qollab_job.run_backend_verification_once  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1,"commitCalls":3,"commitsCompleted":2,"resetCalls":1,"branchCalls":0}
@@ -27,7 +28,7 @@ FAIL  dryRun(calibration#2, X=true, Z=true): adapter returned a result  — {"na
 FAIL  commit#1: adapter returned a result  — {"name":"ScientificModuleError","message":"live commit: result must be a plain object, got a PyProxy object","errors":["result must be a plain object, got a PyProxy object"]}
 FAIL  commit#2: adapter returned a result  — {"name":"ScientificModuleError","message":"live commit: result must be a plain object, got a PyProxy object","errors":["result must be a plain object, got a PyProxy object"]}
 FAIL  commit#3 after settle: adapter returned a result  — {"name":"ScientificModuleError","message":"live commit: quantum.teleportation.TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again.","errors":["quantum.teleportation.TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."]}
-PASS  RESTART: resetStoryToken(): adapter returned a result  — 0.5 ms
+PASS  RESTART: resetStoryToken(): adapter returned a result  — 3 ms
 FAIL  commit#4 after RESTART: adapter returned a result  — {"name":"ScientificModuleError","message":"live commit: result must be a plain object, got a PyProxy object","errors":["result must be a plain object, got a PyProxy object"]}
 FAIL  cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]
 FAIL  cloning(plus): each output purity 0.5 (entangled, not two copies)
@@ -53,11 +54,11 @@ FAIL  dryRun(calibration#2, X=true, Z=true): fidelity = NaN (closed form on the 
 FAIL  dryRun(calibration#2, X=true, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999
 FAIL  spy: Python teleport_branch received the measured theta/phi on every dry run  — []
 FAIL  commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)  — {"bits":{}}
-FAIL  commit: the second and a later call get the SAME recorded result (no second teleport)  — {"sameRecordedObject":false,"pythonSecondCommit":{"refused":true,"error":"TokenAlreadyConsumed"},"afterRestartIsNewObject":false}
-PASS  commit: Python itself refuses a second live_commit (TokenAlreadyConsumed)  — {"refused":true,"error":"TokenAlreadyConsumed"}
+FAIL  commit: the second and a later call get the SAME recorded result (no second teleport)  — {"sameRecordedObject":false,"pythonSecondCommit":{"refused":true,"error":"TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."},"afterRestartIsNewObject":false}
+PASS  commit: Python itself refuses a second live_commit (TokenAlreadyConsumed)  — {"refused":true,"error":"TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."}
 FAIL  RESTART: a commit after resetStoryToken succeeds, as a NEW result (fidelity 1)  — {"err":{"name":"ScientificModuleError","message":"live commit: result must be a plain object, got a PyProxy object","errors":["result must be a plain object, got a PyProxy object"]}}
 FAIL  spy: Python saw exactly 2 live_commit calls (one per story) and 1 reset  — {"backendRunAttempts":1,"backendRunCompleted":1,"verificationCalls":1,"commitCalls":3,"commitsCompleted":2,"resetCalls":1,"branchCalls":0}
 FAIL  verify: RESOLVES (not rejected)  — {"status":"rejected","name":"ScientificModuleError","message":"Quantum backend verification unavailable; educational circuit validated locally: result must be a plain object, got a PyProxy object","errors":["result must be a plain object, got a PyProxy object"]}
 PASS  verify ×2: both callers get the same value  — true
-sab-no-toJs: 16/59 checks passed · runner's own JS-side backend.run counter: 0
+sab-no-toJs: 17/60 checks passed · runner's own JS-side backend.run counter: 0
 run.sh sab-no-toJs → exit 1

@@ -1,17 +1,18 @@
 {
   "assembly": {
-    "token": "pb-fault-20261010T001956-22443",
+    "token": "pb-fault-20261010T002644-20908",
     "sabotage": "none",
-    "runnerRef": "lane/platform/integration@b385c06",
-    "contractsRef": "lane/platform/integration@b385c06",
-    "harnessCommit": "de3a66c-dirty",
-    "pythonRef": "HEAD@de3a66c",
+    "fault": true,
+    "runnerRef": "lane/platform/integration@f08dd0b",
+    "contractsRef": "lane/platform/integration@f08dd0b",
+    "harnessCommit": "cba4fd6-dirty",
+    "pythonRef": "HEAD@cba4fd6",
     "sha256": {
       "contracts.js": "ecc0ed1d2c9ad162",
       "index.html": "6112169d8d1887b8",
       "main.css": "d93eb501784b286e",
-      "main.js": "40f09639f46ac8bb",
-      "pb_spy.py": "9a2d82af661c05be",
+      "main.js": "b5a1c4356b25ce82",
+      "pb_spy.py": "f1264fae02e21a9a",
       "quantum/__init__.py": "4770b5d0e03c289a",
       "quantum/bridge.js": "3fc88082eed66aa9",
       "quantum/cloning.py": "9e50d3aba0104f49",
@@ -28,7 +29,7 @@
   "runnerLogTail": [
     {
       "kind": "runner",
-      "msg": "runner: 12 files in /private/tmp/pb-run-HV3plX/echo; backend = ionq-mock"
+      "msg": "runner: 12 files in /private/tmp/pb-run-Rb1aPZ/echo; backend = ionq-mock"
     },
     {
       "kind": "system",
@@ -71,12 +72,28 @@
       "msg": "Running..."
     },
     {
+      "kind": "err",
+      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.544273299)"
+    },
+    {
+      "kind": "err",
+      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.053460080)"
+    },
+    {
+      "kind": "err",
+      "msg": "quantum bridge: teleport dry run returned a result the contract rejects: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.402266622)"
+    },
+    {
       "kind": "system",
       "msg": "Circuit panel: 2 qubits"
     },
     {
       "kind": "system",
-      "msg": "Probabilities panel: {\"0x3\":0.5390625,\"0x0\":0.4609375}"
+      "msg": "Probabilities panel: {\"0x3\":0.46875,\"0x0\":0.53125}"
+    },
+    {
+      "kind": "err",
+      "msg": "quantum bridge: Quantum backend verification unavailable; educational circuit validated locally returned a result the contract rejects: experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"; engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\""
     },
     {
       "kind": "system",
@@ -91,7 +108,7 @@
       "listIsArray": true,
       "json": "{\"outer\":{\"inner\":1},\"list\":[1,2],\"n\":1}"
     },
-    "build": "pb-fault-20261010T001956-22443",
+    "build": "pb-fault-20261010T002644-20908",
     "backendName": "basic_simulator",
     "platform": {
       "sysPlatform": "emscripten",
@@ -101,15 +118,15 @@
       "coldImportSeconds": 0.008
     },
     "timing": {
-      "msFrameStartToMainBody": 16671.8,
-      "verifyMs": 5.7,
-      "wallSecondsPageToDone": 17
+      "msFrameStartToMainBody": 6681.1,
+      "verifyMs": 6.3,
+      "wallSecondsPageToDone": 6.9
     },
     "calls": [
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 13.2,
+        "ms": 6.4,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -154,7 +171,7 @@
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 14.1,
+        "ms": 4,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -199,7 +216,7 @@
       {
         "label": "cloning(plus)",
         "hook": false,
-        "ms": 8.4,
+        "ms": 1.7,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -244,7 +261,7 @@
       {
         "label": "cloning(zero)",
         "hook": false,
-        "ms": 9.1,
+        "ms": 1.2,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -288,7 +305,7 @@
       {
         "label": "cloning(one)",
         "hook": false,
-        "ms": 8.6,
+        "ms": 1.2,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -332,7 +349,7 @@
       {
         "label": "cloning(bloch_a)",
         "hook": false,
-        "ms": 9.6,
+        "ms": 1.9,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -377,7 +394,7 @@
       {
         "label": "relay(I)",
         "hook": false,
-        "ms": 30,
+        "ms": 2.7,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -420,7 +437,7 @@
       {
         "label": "relay(X)",
         "hook": false,
-        "ms": 5.2,
+        "ms": 1.1,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -463,7 +480,7 @@
       {
         "label": "relay(Z)",
         "hook": false,
-        "ms": 1.3,
+        "ms": 0.9,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -506,7 +523,7 @@
       {
         "label": "calibration#1",
         "hook": false,
-        "ms": 2.6,
+        "ms": 2.3,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -517,12 +534,12 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.260935) then RZ(2.556261) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+          "circuitDescription": "prepare RY(0.883765) then RZ(2.837883) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 1.2609353749,
-            "phi": 2.5562606438
+            "theta": 0.883764846,
+            "phi": 2.837883274
           },
           "facts": [
             "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1. Choose the receiver's X and Z for these two bits.",
@@ -540,9 +557,9 @@
             0
           ],
           "observables": {
-            "inputBlochX": -0.7938327154,
-            "inputBlochY": 0.5261650163,
-            "inputBlochZ": 0.3049262133
+            "inputBlochX": -0.7377488048,
+            "inputBlochY": 0.2312143584,
+            "inputBlochZ": 0.6342449224
           },
           "measurementBits": {
             "m0": 0,
@@ -554,7 +571,7 @@
       {
         "label": "calibration#2",
         "hook": false,
-        "ms": 1.6,
+        "ms": 1.2,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -565,12 +582,12 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.030783) then RZ(-1.134815) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+          "circuitDescription": "prepare RY(2.165303) then RZ(-0.364173) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 1.0307825562,
-            "phi": -1.1348152457
+            "theta": 2.1653029269,
+            "phi": -0.36417282
           },
           "facts": [
             "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0. Choose the receiver's X and Z for these two bits.",
@@ -588,9 +605,9 @@
             0
           ],
           "observables": {
-            "inputBlochX": 0.3622073103,
-            "inputBlochY": -0.777468907,
-            "inputBlochZ": 0.5141478028
+            "inputBlochX": 0.77409577,
+            "inputBlochY": -0.295065487,
+            "inputBlochZ": -0.5601000779
           },
           "measurementBits": {
             "m0": 0,
@@ -602,7 +619,7 @@
       {
         "label": "calibration#3",
         "hook": false,
-        "ms": 4.4,
+        "ms": 1.2,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -613,12 +630,12 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(0.538220) then RZ(-1.276369) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
+          "circuitDescription": "prepare RY(0.849466) then RZ(-1.271503) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> SOURCE READOUT m0, q1 -> LOCAL BELL-HALF READOUT m1",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 0.5382198263,
-            "phi": -1.2763692769
+            "theta": 0.8494659242,
+            "phi": -1.271503272
           },
           "facts": [
             "SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0. Choose the receiver's X and Z for these two bits.",
@@ -636,9 +653,9 @@
             0
           ],
           "observables": {
-            "inputBlochX": 0.1487546262,
-            "inputBlochY": -0.4905500362,
-            "inputBlochZ": 0.8586225732
+            "inputBlochX": 0.2214071337,
+            "inputBlochY": -0.7175454463,
+            "inputBlochZ": 0.6603842924
           },
           "measurementBits": {
             "m0": 1,
@@ -650,65 +667,21 @@
       {
         "label": "dryRun(calibration#1, X=false, Z=false)",
         "hook": false,
-        "ms": 7,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
+        "ms": 3.2,
+        "ok": false,
+        "error": {
+          "name": "ScientificModuleError",
+          "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.544273299)",
+          "errors": [
+            "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.544273299)"
+          ]
         },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "teleportation",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.260935) then RZ(2.556261) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1; Bob applies no correction",
-          "qubits": 3,
-          "parameters": {
-            "state": "calibration",
-            "theta": 1.2609353749,
-            "phi": 2.5562606438,
-            "m0": 0,
-            "m1": 1,
-            "applyX": false,
-            "applyZ": false
-          },
-          "facts": [
-            "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z OFF.",
-            "Receiver fidelity with the test state: 0.630170, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
-          ],
-          "probabilities": {
-            "10": 0.25,
-            "11": 0.25,
-            "00": 0.25,
-            "01": 0.25
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "fidelity": 0.6301703801,
-          "observables": {
-            "branchProbability": 0.25,
-            "sourceFidelityAfterMeasurement": 0.6524631067,
-            "receiverBlochX": -0.7938327154,
-            "receiverBlochY": -0.5261650163,
-            "receiverBlochZ": -0.3049262133,
-            "inputBlochX": -0.7938327154,
-            "inputBlochY": 0.5261650163,
-            "inputBlochZ": 0.3049262133
-          },
-          "measurementBits": {
-            "m0": 0,
-            "m1": 1
-          }
-        },
-        "nodeVerdict": []
+        "nodeVerdict": null
       },
       {
         "label": "dryRun(calibration#1, X=true, Z=false)",
         "hook": false,
-        "ms": 6.6,
+        "ms": 3.2,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -719,12 +692,12 @@
         "result": {
           "experiment": "teleportation",
           "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.260935) then RZ(2.556261) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1; Bob applies X",
+          "circuitDescription": "prepare RY(0.883765) then RZ(2.837883) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1; Bob applies X",
           "qubits": 3,
           "parameters": {
             "state": "calibration",
-            "theta": 1.2609353749,
-            "phi": 2.5562606438,
+            "theta": 0.883764846,
+            "phi": 2.837883274,
             "m0": 0,
             "m1": 1,
             "applyX": true,
@@ -748,13 +721,13 @@
           "fidelity": 1,
           "observables": {
             "branchProbability": 0.25,
-            "sourceFidelityAfterMeasurement": 0.6524631067,
-            "receiverBlochX": -0.7938327154,
-            "receiverBlochY": 0.5261650163,
-            "receiverBlochZ": 0.3049262133,
-            "inputBlochX": -0.7938327154,
-            "inputBlochY": 0.5261650163,
-            "inputBlochZ": 0.3049262133
+            "sourceFidelityAfterMeasurement": 0.8171224612,
+            "receiverBlochX": -0.7377488048,
+            "receiverBlochY": 0.2312143584,
+            "receiverBlochZ": 0.6342449224,
+            "inputBlochX": -0.7377488048,
+            "inputBlochY": 0.2312143584,
+            "inputBlochZ": 0.6342449224
           },
           "measurementBits": {
             "m0": 0,
@@ -766,288 +739,35 @@
       {
         "label": "dryRun(calibration#1, X=false, Z=true)",
         "hook": false,
-        "ms": 5.7,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
+        "ms": 2.5,
+        "ok": false,
+        "error": {
+          "name": "ScientificModuleError",
+          "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.053460080)",
+          "errors": [
+            "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.053460080)"
+          ]
         },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "teleportation",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.260935) then RZ(2.556261) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1; Bob applies Z",
-          "qubits": 3,
-          "parameters": {
-            "state": "calibration",
-            "theta": 1.2609353749,
-            "phi": 2.5562606438,
-            "m0": 0,
-            "m1": 1,
-            "applyX": false,
-            "applyZ": true
-          },
-          "facts": [
-            "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z OFF.",
-            "Receiver fidelity with the test state: 0.276850, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
-          ],
-          "probabilities": {
-            "10": 0.25,
-            "11": 0.25,
-            "00": 0.25,
-            "01": 0.25
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "fidelity": 0.2768496244,
-          "observables": {
-            "branchProbability": 0.25,
-            "sourceFidelityAfterMeasurement": 0.6524631067,
-            "receiverBlochX": 0.7938327154,
-            "receiverBlochY": 0.5261650163,
-            "receiverBlochZ": -0.3049262133,
-            "inputBlochX": -0.7938327154,
-            "inputBlochY": 0.5261650163,
-            "inputBlochZ": 0.3049262133
-          },
-          "measurementBits": {
-            "m0": 0,
-            "m1": 1
-          }
-        },
-        "nodeVerdict": []
+        "nodeVerdict": null
       },
       {
         "label": "dryRun(calibration#1, X=true, Z=true)",
         "hook": false,
-        "ms": 5.2,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
+        "ms": 2.4,
+        "ok": false,
+        "error": {
+          "name": "ScientificModuleError",
+          "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.402266622)",
+          "errors": [
+            "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.402266622)"
+          ]
         },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "teleportation",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare RY(1.260935) then RZ(2.556261) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1; Bob applies X then Z",
-          "qubits": 3,
-          "parameters": {
-            "state": "calibration",
-            "theta": 1.2609353749,
-            "phi": 2.5562606438,
-            "m0": 0,
-            "m1": 1,
-            "applyX": true,
-            "applyZ": true
-          },
-          "facts": [
-            "SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z OFF.",
-            "Receiver fidelity with the test state: 0.092980, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."
-          ],
-          "probabilities": {
-            "10": 0.25,
-            "11": 0.25,
-            "00": 0.25,
-            "01": 0.25
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "fidelity": 0.0929799956,
-          "observables": {
-            "branchProbability": 0.25,
-            "sourceFidelityAfterMeasurement": 0.6524631067,
-            "receiverBlochX": 0.7938327154,
-            "receiverBlochY": -0.5261650163,
-            "receiverBlochZ": 0.3049262133,
-            "inputBlochX": -0.7938327154,
-            "inputBlochY": 0.5261650163,
-            "inputBlochZ": 0.3049262133
-          },
-          "measurementBits": {
-            "m0": 0,
-            "m1": 1
-          }
-        },
-        "nodeVerdict": []
+        "nodeVerdict": null
       },
       {
         "label": "commit#1",
         "hook": false,
-        "ms": 3,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
-        },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "teleportation",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
-          "qubits": 3,
-          "parameters": {
-            "state": "token"
-          },
-          "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
-            "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
-            "The token has been consumed: this commit cannot be repeated in this run.",
-            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
-          ],
-          "probabilities": {
-            "10": 0.25,
-            "11": 0.25,
-            "00": 0.25,
-            "01": 0.25
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "fidelity": 1,
-          "observables": {
-            "branchProbability": 0.25
-          },
-          "measurementBits": {
-            "m0": 0,
-            "m1": 0
-          }
-        },
-        "nodeVerdict": []
-      },
-      {
-        "label": "commit#2",
-        "hook": false,
-        "ms": 0,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
-        },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "teleportation",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
-          "qubits": 3,
-          "parameters": {
-            "state": "token"
-          },
-          "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
-            "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
-            "The token has been consumed: this commit cannot be repeated in this run.",
-            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
-          ],
-          "probabilities": {
-            "10": 0.25,
-            "11": 0.25,
-            "00": 0.25,
-            "01": 0.25
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "fidelity": 1,
-          "observables": {
-            "branchProbability": 0.25
-          },
-          "measurementBits": {
-            "m0": 0,
-            "m1": 0
-          }
-        },
-        "nodeVerdict": []
-      },
-      {
-        "label": "commit#3 after settle",
-        "hook": false,
-        "ms": 0,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": true,
-          "proxyFields": []
-        },
-        "pageVerdict": [],
-        "result": {
-          "experiment": "teleportation",
-          "engine": "exact_qiskit_local",
-          "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
-          "qubits": 3,
-          "parameters": {
-            "state": "token"
-          },
-          "facts": [
-            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
-            "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
-            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
-            "The token has been consumed: this commit cannot be repeated in this run.",
-            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
-          ],
-          "probabilities": {
-            "10": 0.25,
-            "11": 0.25,
-            "00": 0.25,
-            "01": 0.25
-          },
-          "keyQubits": [
-            1,
-            0
-          ],
-          "fidelity": 1,
-          "observables": {
-            "branchProbability": 0.25
-          },
-          "measurementBits": {
-            "m0": 0,
-            "m1": 0
-          }
-        },
-        "nodeVerdict": []
-      },
-      {
-        "label": "RESTART: resetStoryToken()",
-        "hook": true,
-        "ms": 0.1,
-        "ok": true,
-        "shape": {
-          "isMap": false,
-          "factsIsArray": false,
-          "proxyFields": []
-        },
-        "pageVerdict": [],
-        "result": {
-          "restarted": true
-        },
-        "nodeVerdict": [
-          "unknown field \"restarted\"",
-          "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got nothing",
-          "engine must be one of exact_qiskit_local|qollab_selected_backend|documented_preview, got nothing",
-          "circuitDescription must be a non-empty string, got nothing",
-          "qubits must be an integer ≥ 1, got nothing",
-          "parameters must be a plain object, got nothing",
-          "facts must be a non-empty array of strings, got nothing"
-        ]
-      },
-      {
-        "label": "commit#4 after RESTART",
-        "hook": false,
-        "ms": 2.6,
+        "ms": 1.8,
         "ok": true,
         "shape": {
           "isMap": false,
@@ -1090,6 +810,171 @@
           }
         },
         "nodeVerdict": []
+      },
+      {
+        "label": "commit#2",
+        "hook": false,
+        "ms": 0,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
+          "qubits": 3,
+          "parameters": {
+            "state": "token"
+          },
+          "facts": [
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z ON.",
+            "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The token has been consumed: this commit cannot be repeated in this run.",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 1,
+          "observables": {
+            "branchProbability": 0.25
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 0
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "commit#3 after settle",
+        "hook": false,
+        "ms": 0,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
+          "qubits": 3,
+          "parameters": {
+            "state": "token"
+          },
+          "facts": [
+            "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z ON.",
+            "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+            "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The token has been consumed: this commit cannot be repeated in this run.",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 1,
+          "observables": {
+            "branchProbability": 0.25
+          },
+          "measurementBits": {
+            "m0": 1,
+            "m1": 0
+          }
+        },
+        "nodeVerdict": []
+      },
+      {
+        "label": "RESTART: resetStoryToken()",
+        "hook": true,
+        "ms": 0.1,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": false,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "restarted": true
+        },
+        "nodeVerdict": [
+          "unknown field \"restarted\"",
+          "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got nothing",
+          "engine must be one of exact_qiskit_local|qollab_selected_backend|documented_preview, got nothing",
+          "circuitDescription must be a non-empty string, got nothing",
+          "qubits must be an integer ≥ 1, got nothing",
+          "parameters must be a plain object, got nothing",
+          "facts must be a non-empty array of strings, got nothing"
+        ]
+      },
+      {
+        "label": "commit#4 after RESTART",
+        "hook": false,
+        "ms": 2.3,
+        "ok": true,
+        "shape": {
+          "isMap": false,
+          "factsIsArray": true,
+          "proxyFields": []
+        },
+        "pageVerdict": [],
+        "result": {
+          "experiment": "teleportation",
+          "engine": "exact_qiskit_local",
+          "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
+          "qubits": 3,
+          "parameters": {
+            "state": "token"
+          },
+          "facts": [
+            "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+            "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+            "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+            "The token has been consumed: this commit cannot be repeated in this run.",
+            "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+          ],
+          "probabilities": {
+            "10": 0.25,
+            "11": 0.25,
+            "00": 0.25,
+            "01": 0.25
+          },
+          "keyQubits": [
+            1,
+            0
+          ],
+          "fidelity": 1,
+          "observables": {
+            "branchProbability": 0.25
+          },
+          "measurementBits": {
+            "m0": 0,
+            "m1": 0
+          }
+        },
+        "nodeVerdict": []
       }
     ],
     "dryRun": {
@@ -1104,104 +989,41 @@
       "sameRecordedObject": true,
       "pythonSecondCommit": {
         "refused": true,
-        "error": "TokenAlreadyConsumed"
+        "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
       },
       "afterRestartIsNewObject": true
     },
     "verification": {
       "samePromise": true,
       "first": {
-        "status": "verified",
-        "result": {
-          "experiment": "backend_verification",
-          "engine": "qollab_selected_backend",
-          "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
-          "qubits": 2,
-          "parameters": {
-            "shots": 256,
-            "backend": "basic_simulator"
-          },
-          "facts": [
-            "Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.",
-            "Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.",
-            "256 of 256 shots (100.0%) had both qubits agree (00 or 11).",
-            "Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).",
-            "This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.",
-            "The agreement carries no message: on its own, each qubit reads 0 or 1 at random.",
-            "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
-          ],
-          "counts": {
-            "11": 138,
-            "00": 118
-          },
-          "keyQubits": [
-            1,
-            0
-          ]
-        }
+        "status": "rejected",
+        "name": "ScientificModuleError",
+        "message": "Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"; engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\"",
+        "errors": [
+          "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"",
+          "engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\""
+        ]
       },
       "second": {
-        "status": "verified",
-        "result": {
-          "experiment": "backend_verification",
-          "engine": "qollab_selected_backend",
-          "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
-          "qubits": 2,
-          "parameters": {
-            "shots": 256,
-            "backend": "basic_simulator"
-          },
-          "facts": [
-            "Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.",
-            "Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.",
-            "256 of 256 shots (100.0%) had both qubits agree (00 or 11).",
-            "Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).",
-            "This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.",
-            "The agreement carries no message: on its own, each qubit reads 0 or 1 at random.",
-            "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
-          ],
-          "counts": {
-            "11": 138,
-            "00": 118
-          },
-          "keyQubits": [
-            1,
-            0
-          ]
-        }
+        "status": "rejected",
+        "name": "ScientificModuleError",
+        "message": "Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"; engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\"",
+        "errors": [
+          "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"",
+          "engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\""
+        ]
       },
       "sameValue": true,
-      "pageVerdictOfFirst": [],
+      "pageVerdictOfFirst": null,
       "afterRestartSamePromise": true,
       "afterRestart": {
-        "status": "verified",
-        "result": {
-          "experiment": "backend_verification",
-          "engine": "qollab_selected_backend",
-          "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
-          "qubits": 2,
-          "parameters": {
-            "shots": 256,
-            "backend": "basic_simulator"
-          },
-          "facts": [
-            "Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.",
-            "Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.",
-            "256 of 256 shots (100.0%) had both qubits agree (00 or 11).",
-            "Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).",
-            "This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.",
-            "The agreement carries no message: on its own, each qubit reads 0 or 1 at random.",
-            "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
-          ],
-          "counts": {
-            "11": 138,
-            "00": 118
-          },
-          "keyQubits": [
-            1,
-            0
-          ]
-        }
+        "status": "rejected",
+        "name": "ScientificModuleError",
+        "message": "Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"; engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\"",
+        "errors": [
+          "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"",
+          "engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\""
+        ]
       }
     },
     "spy": {
@@ -1223,7 +1045,7 @@
         "live_commit call #2"
       ],
       "networkMock": true,
-      "fault": false,
+      "fault": true,
       "branchArgs": [
         {
           "state": "calibration",
@@ -1231,8 +1053,8 @@
           "m1": 1,
           "applyX": false,
           "applyZ": false,
-          "theta": 1.2609353749,
-          "phi": 2.5562606438
+          "theta": 0.883764846,
+          "phi": 2.837883274
         },
         {
           "state": "calibration",
@@ -1240,8 +1062,8 @@
           "m1": 1,
           "applyX": true,
           "applyZ": false,
-          "theta": 1.2609353749,
-          "phi": 2.5562606438
+          "theta": 0.883764846,
+          "phi": 2.837883274
         },
         {
           "state": "calibration",
@@ -1249,8 +1071,8 @@
           "m1": 1,
           "applyX": false,
           "applyZ": true,
-          "theta": 1.2609353749,
-          "phi": 2.5562606438
+          "theta": 0.883764846,
+          "phi": 2.837883274
         },
         {
           "state": "calibration",
@@ -1258,8 +1080,8 @@
           "m1": 1,
           "applyX": true,
           "applyZ": true,
-          "theta": 1.2609353749,
-          "phi": 2.5562606438
+          "theta": 0.883764846,
+          "phi": 2.837883274
         }
       ]
     }
@@ -1268,12 +1090,12 @@
     {
       "name": "main.js (harness) ran to the end without error",
       "ok": true,
-      "detail": "page load → done in 17s"
+      "detail": "page load → done in 6.9s"
     },
     {
       "name": "served build token matches the one just written",
       "ok": true,
-      "detail": "pb-fault-20261010T001956-22443"
+      "detail": "pb-fault-20261010T002644-20908"
     },
     {
       "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -1400,34 +1222,7 @@
       }
     },
     {
-      "name": "dryRun(calibration#1, X=false, Z=false): delivered value re-validates in Node",
-      "ok": true,
-      "detail": {
-        "isMap": false,
-        "factsIsArray": true,
-        "proxyFields": []
-      }
-    },
-    {
       "name": "dryRun(calibration#1, X=true, Z=false): delivered value re-validates in Node",
-      "ok": true,
-      "detail": {
-        "isMap": false,
-        "factsIsArray": true,
-        "proxyFields": []
-      }
-    },
-    {
-      "name": "dryRun(calibration#1, X=false, Z=true): delivered value re-validates in Node",
-      "ok": true,
-      "detail": {
-        "isMap": false,
-        "factsIsArray": true,
-        "proxyFields": []
-      }
-    },
-    {
-      "name": "dryRun(calibration#1, X=true, Z=true): delivered value re-validates in Node",
       "ok": true,
       "detail": {
         "isMap": false,
@@ -1470,6 +1265,11 @@
         "factsIsArray": true,
         "proxyFields": []
       }
+    },
+    {
+      "name": "spy fault mode is true (the scenario being graded)",
+      "ok": true,
+      "detail": true
     },
     {
       "name": "dry run: four X/Z choices were tried on one calibration",
@@ -1519,18 +1319,36 @@
     },
     {
       "name": "dryRun(calibration#1, X=false, Z=false): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
-      "ok": false,
-      "detail": "delivered F=0.6301703801"
+      "ok": true,
+      "detail": {
+        "name": "ScientificModuleError",
+        "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.544273299)",
+        "errors": [
+          "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.544273299)"
+        ]
+      }
     },
     {
       "name": "dryRun(calibration#1, X=false, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
-      "ok": false,
-      "detail": "delivered F=0.2768496244"
+      "ok": true,
+      "detail": {
+        "name": "ScientificModuleError",
+        "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.053460080)",
+        "errors": [
+          "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.053460080)"
+        ]
+      }
     },
     {
       "name": "dryRun(calibration#1, X=true, Z=true): engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics",
-      "ok": false,
-      "detail": "delivered F=0.0929799956"
+      "ok": true,
+      "detail": {
+        "name": "ScientificModuleError",
+        "message": "teleport dry run: phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.402266622)",
+        "errors": [
+          "phase-2 result fidelity 1 disagrees with the physics of this branch and choice (expected 0.402266622)"
+        ]
+      }
     },
     {
       "name": "dryRun(calibration#1, X=true, Z=false): the truthful branch is still delivered",
@@ -1539,36 +1357,15 @@
     },
     {
       "name": "verify: old name \"bell_verification\" → LOUD §8.6 ScientificModuleError, nothing passed on",
-      "ok": false,
+      "ok": true,
       "detail": {
-        "status": "verified",
-        "result": {
-          "experiment": "backend_verification",
-          "engine": "qollab_selected_backend",
-          "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
-          "qubits": 2,
-          "parameters": {
-            "shots": 256,
-            "backend": "basic_simulator"
-          },
-          "facts": [
-            "Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.",
-            "Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.",
-            "256 of 256 shots (100.0%) had both qubits agree (00 or 11).",
-            "Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).",
-            "This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.",
-            "The agreement carries no message: on its own, each qubit reads 0 or 1 at random.",
-            "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
-          ],
-          "counts": {
-            "11": 138,
-            "00": 118
-          },
-          "keyQubits": [
-            1,
-            0
-          ]
-        }
+        "status": "rejected",
+        "name": "ScientificModuleError",
+        "message": "Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"; engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\"",
+        "errors": [
+          "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"",
+          "engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\""
+        ]
       }
     }
   ]
