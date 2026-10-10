@@ -26,10 +26,37 @@ const RED = {
   'network-api': { exit: 1, expect: ['main.js:1 network-api', 'main.js:2 network-api', 'main.js:3 network-api', 'main.js:4 network-api', 'main.js:5 network-api'] },
   'import-specifier': { exit: 1, expect: ['main.js:1 import-specifier', 'main.js:2 import-specifier', 'main.js:3 import-specifier', 'main.js:4 import-specifier', 'main.js:5 import-specifier'] },
   'import-unresolved': { exit: 1, expect: ['main.js:1 import-unresolved', 'main.js:2 import-unresolved'] },
-  'backend-run-count': { exit: 1, expect: ['game/second.js:1 backend-run-count', 'main.js:1 backend-run-count', 'main.js:2 backend-run-count', 'main.js:3 backend-run-count'] },
-  'backend-run-python': { exit: 1, expect: ['q/mod.py:2 backend-run-python'] },
+  'backend-run-count': { exit: 1, expect: ['game/second.js:1 backend-run-count', 'main.js:1 backend-run-count', 'main.js:2 backend-run-count', 'main.js:3 backend-run-count',
+    'game/second.js:1 backend-run-site', 'main.js:1 backend-run-site', 'main.js:2 backend-run-site', 'main.js:3 backend-run-site'] },
+  'backend-run-python': { exit: 1, expect: ['q/mod.py:2 backend-run-site'] },
   'hardcoded-backend': { exit: 1, expect: ['main.js:1 import-specifier', 'main.js:1 hardcoded-backend', 'main.js:2 hardcoded-backend', 'main.js:3 hardcoded-backend'] },
   'hardcoded-secret': { exit: 1, expect: ['main.js:1 hardcoded-secret', 'main.js:2 hardcoded-secret', 'main.js:3 hardcoded-secret'] },
+}
+
+// fixtures/forms: every way to reach backend.run, each next to the one ruled site (quantum/bridge.js:4), so a
+// form that escapes shows as a MISSING pair. Red-team named js-destructure, js-alias, js-bracket, py-getattr;
+// the rest were written from the language, not from their list (gate-independence law 4a).
+const B = ['quantum/bridge.js:4 backend-run-count']
+const two = (at) => [...B, `${at} backend-run-count`, `${at} backend-run-site`]
+const FORMS = {
+  'js-destructure': two('main.js:4'), 'js-alias': two('main.js:4'), 'js-bracket': two('main.js:3'), 'py-getattr': two('q/mod.py:2'),
+  'js-reflect-get': two('main.js:3'), 'js-run-call': two('main.js:3'), 'js-spread': two('main.js:4'), 'js-param-flow': two('main.js:4'),
+  'js-cross-file-param': two('game/net.js:2'), 'js-destructure-rename': two('main.js:4'), 'js-optional-chain': two('main.js:3'),
+  'js-computed': two('main.js:4'), 'js-bind': two('main.js:3'), 'js-alias-chain': two('main.js:6'), 'js-object-prop': two('main.js:4'),
+  'js-alias-called-twice': [...two('main.js:4'), 'main.js:5 backend-run-count', 'main.js:5 backend-run-site'],
+  'py-alias': two('q/mod.py:3'), 'py-param-flow': two('q/mod.py:2'), 'py-getattr-computed': two('q/mod.py:2'), 'py-attrgetter': two('q/mod.py:4'),
+  'site-outside-bridge': ['main.js:1 backend-run-site'],
+  // flows the analysis cannot follow are red (an unfollowed flow could reach run): a library no file defines, a return value
+  'escape-unresolved': ['main.js:4 backend-run-escape', 'main.js:6 backend-run-escape'],
+  'site-in-bridge-wrong-fn': ['quantum/bridge.js:7 backend-run-site'],
+  'ok-ruled-site': [],
+  // false positives: a forbidden word only inside a string, in a file main.js never loads or in a docstring
+  'fp-test-asserts-absence': [], 'fp-docstring': [],
+  // ...and the controls the narrowing must not reach: code, a reachable test file, a parenthesised value, a computed import
+  'fp-control-test-code': ['tests/test_leak.py:1 hardcoded-secret'],
+  'fp-control-reachable-test': ['tests/helper.py:1 hardcoded-secret'],
+  'fp-control-paren-string': ['q/engine.py:2 hardcoded-backend'],
+  'fp-control-dynamic-import': ['tests/test_job.py:10 hardcoded-backend', 'tests/test_job.py:10 hardcoded-secret', 'tests/test_job.py:16 network-api', 'tests/test_job.py:16 storage'],
 }
 
 let bad = 0
@@ -53,8 +80,9 @@ function grade(name, root, spec) {
 }
 
 grade('clean', join(FX, 'clean'), { exit: 0, expect: [] })
-grade('limitations', join(FX, 'limitations'), { exit: 0, expect: [], info: ['main.js:1 dynamic import()', 'main.js:2 backend.run used without', 'main.js:3 fetch method is not'] })
+grade('limitations', join(FX, 'limitations'), { exit: 0, expect: [], info: ['main.js:1 dynamic import()', 'main.js:3 fetch method is not'] })
 for (const [name, spec] of Object.entries(RED)) grade(name, join(FX, name), spec)
+for (const [name, expect] of Object.entries(FORMS)) grade(`forms/${name}`, join(FX, 'forms', name), { exit: expect.length ? 1 : 0, expect })
 
 // generated fixtures: too big or too many to commit
 const tmp = mkdtempSync(join(tmpdir(), 'qollab-caps-'))

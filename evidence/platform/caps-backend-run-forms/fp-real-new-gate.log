@@ -1,0 +1,28 @@
+caps-fp.uc8L/main.js:199 backend-run-count backend.run site 1 of 2 (member .run called); at most one is allowed (a second job stops the run on IonQ)
+caps-fp.uc8L/main.js:199 backend-run-site backend.run reached outside quantum/bridge.js (member .run called); the owner's one ruled site is quantum/bridge.js verifySelectedBackendOnce
+caps-fp.uc8L/quantum/bridge.js:52 backend-run-escape backend is passed to fn(), which no Python file in the upload defines; the gate cannot follow it to a run, so it cannot certify one site
+caps-fp.uc8L/quantum/qollab_job.py:169 backend-run-count backend.run site 2 of 2 (member .run called); at most one is allowed (a second job stops the run on IonQ)
+caps-fp.uc8L/quantum/qollab_job.py:169 backend-run-site Python reaches backend.run here (member .run called); the owner's one ruled site is quantum/bridge.js verifySelectedBackendOnce
+caps-fp.uc8L/tests/test_qollab_job.py:91 hardcoded-backend ionq_job: backend names must come from the injected backend, never from code
+  info: caps-fp.uc8L/data/teachback.js:112 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/quantum/qollab_job.py:1 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/quantum/qollab_job.py:157 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/tests/test_formats.py:112 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/tests/test_qollab_job.py:89 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/tests/test_qollab_job.py:94 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/tests/test_qollab_job.py:166 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/tests/test_qollab_job.py:206 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/ui/menu.js:58 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: caps-fp.uc8L/tests/test_qollab_job.py:207 hardcoded-secret not graded: inside a string literal in a file main.js never loads (api_key: a key must never be in published code)
+  info: caps-fp.uc8L/tests/test_qollab_job.py:207 hardcoded-backend not graded: inside a string literal in a file main.js never loads ("ionq_simulator" looks like a backend id)
+  info: backend.run: 2 site(s) reached from backend in scanned code
+LIMITATIONS (not covered by any rule above):
+  - backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+  - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
+scanned 41 files (35 code files) under /tmp/caps-fp.uc8L
+RED: 6 failure(s) across 4 rule(s): backend-run-count, backend-run-site, backend-run-escape, hardcoded-backend

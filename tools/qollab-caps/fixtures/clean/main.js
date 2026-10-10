@@ -12,6 +12,7 @@ const label = 'Selected backend: IonQ simulator (provenance shown to the player)
 const tpl = `x ${half + 1} ${`nested ${half}`} y`
 const arr = Array.from('abc')
 const r = await fetch('./data.json', { method: 'GET' })
-export const job = (circuit) => backend.run(circuit)
+export const job = (circuit) => verifySelectedBackendOnce(backend, circuit)
 export { THREE, OrbitControls, engine, helper, re, label, tpl, arr, r }
 const x = { engine: 'ionq_magic' } // an invalid value in a test is not a backend id
+import { verifySelectedBackendOnce } from './quantum/bridge.js'

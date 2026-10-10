@@ -1,3 +1,3 @@
 const m = await import(name)
-const r = backend.run
+export const n = 1
 await fetch(url, { method: verb })
