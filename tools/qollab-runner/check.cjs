@@ -1,11 +1,16 @@
 #!/usr/bin/env node
 // Drives the local runner the way the owner will drive Qollab: Run, read the
-// panel, press "Verify on selected backend" twice. It grades only what it reads
-// from the rendered page and from the runner's own job counter, never from the
-// project's console messages.
+// panel, click and type inside the frame, then one of three job paths. It grades
+// only what it reads from the rendered page and from the runner's own job
+// counter, never from the project's console messages.
+//   --scenario auto    let the countdown send the one job, then press Verify: refused
+//   --scenario cancel  press Cancel during the countdown: no job is ever sent
+//   --scenario button  press Verify during the countdown: exactly one job
+// Input goes through Chrome's input pipeline (CDP mouse and key events at
+// screen coordinates), never dispatchEvent, so it is the path a person's click takes.
 //
 //   node tools/qollab-runner/check.cjs --port 4871 --backend ionq-mock --out evidence/platform/g0 \
-//        [--expect-build <token>] [--tag name]
+//        [--scenario auto|cancel|button] [--expect-build <token>] [--tag name]
 //
 // Exit codes: 0 green · 1 red · 2 could not grade (no verdict).
 // Needs puppeteer-core and a local Chrome. Set PUPPETEER_CORE to its path if it
@@ -22,10 +27,12 @@ function arg(k, d) {
 const port = Number(arg('--port'));
 const backend = arg('--backend', 'builtin');
 const out = path.resolve(arg('--out', 'evidence/platform/g0'));
-const tag = arg('--tag', backend);
+const scenario = arg('--scenario', 'auto');
+const tag = arg('--tag', `${backend}-${scenario}`);
+const AUTO_SEND_MS = 5000; // the page's countdown; checks wait past it by a margin
 const expectBuild = arg('--expect-build');
 const chrome = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-if (!port) {
+if (!port || !['auto', 'cancel', 'button'].includes(scenario)) {
   console.error('usage: check.cjs --port <n> [--backend builtin|ionq-mock] [--out dir] [--expect-build token] [--tag name]');
   process.exit(2);
 }
@@ -71,13 +78,50 @@ async function waitFor(fn, ms, what) {
     const t0 = Date.now();
     await page.goto(`http://127.0.0.1:${port}/?autorun=1&backend=${backend}`, { waitUntil: 'load' });
     const frameOf = () => page.frames().find((f) => f.url().includes('/frame.html'));
-    await waitFor(async () => ['done', 'error'].includes(await page.evaluate(() => window.__runner.status)), 300000, 'run to finish');
+    // main.js now stays alive until its one job settles, so "ready" is the
+    // bridge JSON on the page, not the run's done event.
+    const text = (id) => frameOf().$eval(`#${id}`, (e) => e.textContent).catch(() => null);
+    const bridgeRaw = await waitFor(async () => {
+      if (await page.evaluate(() => window.__runner.status === 'error')) throw new Error('stop');
+      const t = frameOf() && (await text('bridge-out'));
+      return t && t.trim().startsWith('{') ? t : null;
+    }, 300000, 'bridge JSON').catch(async () => {
+      throw new Error(`no bridge JSON; runner error: ${await page.evaluate(() => window.__runner.error)}`);
+    });
+    const bridgeSeenAt = Date.now();
     const loadSeconds = ((Date.now() - t0) / 1000).toFixed(1);
+    console.log(`bridge result on the page ${loadSeconds}s after load`);
     const frame = frameOf();
-    if (!frame) throw new Error('project frame not found');
-    const runError = await page.evaluate(() => window.__runner.error);
-    check('main.js ran to the end without error', !runError, runError || `ready in ${loadSeconds}s`);
-    const text = (id) => frame.$eval(`#${id}`, (e) => e.textContent).catch(() => null);
+    const diag = () => frame.$$eval('#input-diag td[data-diag]', (tds) => Object.fromEntries(tds.map((td) => [td.dataset.diag, td.textContent])));
+    const runnerState = () => page.evaluate(() => ({ status: window.__runner.status, jobs: window.__runner.jobs, refused: window.__runner.refusedByRunner, error: window.__runner.error }));
+
+    // (a) Counters at 0 on load, read from the rendered panel before any input.
+    const d0 = await diag();
+    check('(a) diag panel rendered with the three counters at 0', d0.pointerdown === '0' && d0.click === '0' && d0.keydown === '0', d0);
+    const r0 = await runnerState();
+    check('(a) main.js still running after the bridge result (not Done.)', r0.status === 'running', r0);
+    check('(a) auto-send countdown visible', /^Auto-sending the one job in \d s/.test((await text('autosend-status')) || ''), await text('autosend-status'));
+    await page.screenshot({ path: path.join(out, `${tag}-a-counters-zero.png`) });
+
+    // Scenario action inside the countdown window.
+    if (scenario === 'cancel') await (await frame.$('#autosend-cancel')).click();
+    if (scenario === 'button') await (await frame.$('#verify-btn')).click();
+    const afterAction = await diag();
+
+    // (b) A real click on the scene canvas and a real keypress.
+    const sceneBox = await (await frame.$('#scene')).boundingBox();
+    await page.mouse.click(sceneBox.x + sceneBox.width * 0.6, sceneBox.y + sceneBox.height * 0.6);
+    await page.keyboard.press('KeyK');
+    await sleep(300);
+    const d1 = await diag();
+    const extra = scenario === 'auto' ? 0 : 1; // the scenario's own button click
+    check('(b) one canvas click counted: pointerdown and click +1', +d1.pointerdown === 1 + extra && +d1.click === 1 + extra, { before: afterAction, after: d1 });
+    check('(b) one keypress counted, last key k', d1.keydown === '1' && d1['last key'] === 'k', d1);
+    check('(b) last pointer target is the canvas', d1['last pointer target'] === 'canvas#scene', d1['last pointer target']);
+    check('(b) document.hasFocus() true after the click', d1['document.hasFocus()'] === 'true', d1['document.hasFocus()']);
+    check('(b) verdict reads INPUT REACHES PAGE', /^INPUT REACHES PAGE/.test(d1.verdict), d1.verdict);
+    check('(b) frame origin is opaque ("null"), as on Qollab', d1.origin === 'null', d1.origin);
+    await page.screenshot({ path: path.join(out, `${tag}-b-counters-after-input.png`) });
 
     // Provenance (law 16): the token is read out of the served, rendered page.
     const build = await text('build-token');
@@ -129,10 +173,6 @@ async function waitFor(fn, ms, what) {
     check('Three.js canvas shows the cyan cube (pixels)', sceneStats.cyan > 2000 && canvasBox.width > 200, sceneStats);
 
     // Bridge: parse the rendered JSON and compare to the exact Bell values.
-    const bridgeRaw = await waitFor(async () => {
-      const t = await text('bridge-out');
-      return t && t.trim().startsWith('{') ? t : null;
-    }, 30000, 'bridge JSON');
     const bridge = JSON.parse(bridgeRaw);
     const p = bridge.probabilities || {};
     check('bridge: exact P(00)=P(11)=0.5, nothing else', Math.abs(p['00'] - 0.5) < 1e-9 && Math.abs(p['11'] - 0.5) < 1e-9 && Object.keys(p).length === 2, p);
@@ -140,31 +180,58 @@ async function waitFor(fn, ms, what) {
     check('bridge: ran in Pyodide (sys.platform emscripten)', bridge.platform === 'emscripten', bridge.platform);
     check('bridge: Qiskit 2.x', /^2\./.test(bridge.qiskit_version), bridge.qiskit_version);
 
-    // One job.
-    const btn = await frame.$('#verify-btn');
-    await btn.click();
-    const countsRaw = await waitFor(async () => {
-      const t = await text('backend-out');
-      return t && t.trim().startsWith('{') ? t : null;
-    }, 60000, 'backend counts');
-    const counts = JSON.parse(countsRaw).counts;
-    const total = Object.values(counts).reduce((a, b) => a + b, 0);
-    check('first press: counts from one job, 256 shots', total === 256, counts);
-    check('first press: ideal Bell counts only 00/11', Object.keys(counts).every((k) => k === '00' || k === '11'), Object.keys(counts));
-    // Binomial(256, 0.5): sd = 8, so 88..168 is +-5 sd. Catches a circuit that is
-    // not a Bell pair (all '11', all '00') which the two checks above let through.
-    check('first press: both 00 and 11 present, each 88..168 of 256', counts['00'] >= 88 && counts['00'] <= 168 && counts['11'] >= 88 && counts['11'] <= 168, counts);
-    check('runner counted exactly 1 backend.run after first press', (await page.evaluate(() => window.__runner.jobs)) === 1, await page.evaluate(() => window.__runner.jobs));
-    await page.screenshot({ path: path.join(out, `${tag}-2-one-job-counts.png`) });
+    const gradeCounts = async (via) => {
+      const countsRaw = await waitFor(async () => {
+        const t = await text('backend-out');
+        return t && t.trim().startsWith('{') ? t : null;
+      }, 60000, 'backend counts');
+      const counts = JSON.parse(countsRaw).counts;
+      const total = Object.values(counts).reduce((a, b) => a + b, 0);
+      check(`${via}: counts from one job, 256 shots`, total === 256, counts);
+      check(`${via}: ideal Bell counts only 00/11`, Object.keys(counts).every((k) => k === '00' || k === '11'), Object.keys(counts));
+      // Binomial(256, 0.5): sd = 8, so 88..168 is +-5 sd. Catches a circuit that is
+      // not a Bell pair (all '11', all '00') which the two checks above let through.
+      check(`${via}: both 00 and 11 present, each 88..168 of 256`, counts['00'] >= 88 && counts['00'] <= 168 && counts['11'] >= 88 && counts['11'] <= 168, counts);
+    };
+    // Wait past the countdown, so a send that should not happen has had its chance.
+    const pastCountdown = async () => {
+      await sleep(Math.max(0, AUTO_SEND_MS + 3000 - (Date.now() - bridgeSeenAt)));
+    };
 
-    // Second press must be refused by the PAGE, and the runner must see no second job.
-    await btn.click();
-    await sleep(2500);
-    const status = await text('verify-status');
-    const runner = await page.evaluate(() => ({ jobs: window.__runner.jobs, refused: window.__runner.refusedByRunner }));
-    check('second press: page shows a visible refusal', /^Refused/.test(status || ''), status);
-    check('second press: runner saw no second backend.run', runner.jobs === 1 && runner.refused === 0, runner);
-    await page.screenshot({ path: path.join(out, `${tag}-3-second-press-refused.png`) });
+    if (scenario === 'auto') {
+      // (c) The countdown sends the one job with no input at all.
+      await gradeCounts('(c) auto-send');
+      check('(c) status says the job came from the countdown', /^Done: 1 job \(auto\), 256 shots/.test((await text('verify-status')) || '') && /fired/.test((await text('autosend-status')) || ''), [await text('autosend-status'), await text('verify-status')]);
+      check('(c) runner counted exactly 1 backend.run', (await runnerState()).jobs === 1, await runnerState());
+      await waitFor(async () => (await runnerState()).status === 'done', 10000, 'main.js to return after the job');
+      check('(c) main.js returned after the job settled (Done.)', (await runnerState()).status === 'done', await runnerState());
+      await page.screenshot({ path: path.join(out, `${tag}-c-auto-send-one-job.png`) });
+      // Then a press must be refused by the PAGE, and the runner must see no second job.
+      await (await frame.$('#verify-btn')).click();
+      await sleep(2500);
+      const status = await text('verify-status');
+      const r = await runnerState();
+      check('(c) press after auto-send: page shows a visible refusal', /^Refused/.test(status || ''), status);
+      check('(c) press after auto-send: runner saw no second backend.run', r.jobs === 1 && r.refused === 0, r);
+      await page.screenshot({ path: path.join(out, `${tag}-c2-press-refused.png`) });
+    } else if (scenario === 'cancel') {
+      // (d) Cancel pressed: nothing is ever sent, and the run is still alive.
+      await pastCountdown();
+      const r = await runnerState();
+      check('(d) cancel: runner saw 0 backend.run calls', r.jobs === 0, r);
+      check('(d) cancel: no counts on the page', ((await text('backend-out')) || '').trim() === '', await text('backend-out'));
+      check('(d) cancel: page says the auto-send was cancelled', /cancelled/.test((await text('autosend-status')) || ''), await text('autosend-status'));
+      check('(d) cancel: main.js still running, so Verify can still send the one job', r.status === 'running', r);
+      await page.screenshot({ path: path.join(out, `${tag}-d-cancel-no-job.png`) });
+    } else {
+      // (e) Button pressed during the countdown: exactly one job, and the countdown never fires.
+      await gradeCounts('(e) button');
+      await pastCountdown();
+      const r = await runnerState();
+      check('(e) button: runner counted exactly 1 backend.run past the countdown', r.jobs === 1 && r.refused === 0, r);
+      check('(e) button: the job came from the button, the countdown was stopped', /^Done: 1 job \(button\), 256 shots/.test((await text('verify-status')) || '') && /button was pressed/.test((await text('autosend-status')) || ''), [await text('autosend-status'), await text('verify-status')]);
+      await page.screenshot({ path: path.join(out, `${tag}-e-button-one-job.png`) });
+    }
   } catch (e) {
     console.error(`NO VERDICT: ${e.message}`);
     if (browser) await browser.close();

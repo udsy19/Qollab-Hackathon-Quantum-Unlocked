@@ -10,9 +10,10 @@
 //   the run with an XHR ConnectionError on IonQ backends.
 import * as THREE from 'three';
 import * as smoke from 'quantum.smoke';
+import * as diag from './diag.js';
 
 // Visible provenance token: change it, reload, and read it back from the page.
-const BUILD = 'g0-smoke-2026-10-10b';
+const BUILD = 'g0-smoke-2026-10-10c';
 
 const $ = (id) => document.getElementById(id);
 $('build-token').textContent = BUILD;
@@ -93,10 +94,14 @@ async function showBridgeResult() {
 // ---- 3. Exactly one job on the selected backend -----------------------------
 // IonQ backends reject a second backend.run in the same run, and a rejected job
 // stops the run. The guard is claimed BEFORE the first await, so a double click
-// cannot slip a second job past it.
+// cannot slip a second job past it. The button and the auto-send countdown both
+// go through verifyOnBackend, so there is one call site and one guard.
 let backendJobUsed = false;
+let jobSettled;
+const oneJobDone = new Promise((resolve) => (jobSettled = resolve));
 
-async function verifyOnBackend() {
+async function verifyOnBackend(trigger) {
+  stopAutoSend(trigger === 'auto' ? null : 'Auto-send stopped: the button was pressed.');
   const status = $('verify-status');
   if (backendJobUsed) {
     status.className = 'refused';
@@ -108,7 +113,7 @@ async function verifyOnBackend() {
   }
   backendJobUsed = true;
   status.className = '';
-  status.textContent = `Sending 1 job to ${backend.name}…`;
+  status.textContent = `Sending 1 job to ${backend.name} (${trigger})…`;
   try {
     const circuit = await smoke.bell_measure_circuit.callPromising();
     const job = await backend.run(circuit, { shots: 256 });
@@ -120,17 +125,55 @@ async function verifyOnBackend() {
       2,
     );
     status.className = 'ok';
-    status.textContent = `Done: 1 job, ${shots} shots on ${backend.name}. A second press will be refused.`;
+    status.textContent = `Done: 1 job (${trigger}), ${shots} shots on ${backend.name}. A second press will be refused.`;
     $('verify-btn').textContent = 'Verified (1 of 1 job used)';
     console.log(`backend counts: ${JSON.stringify(counts)}`);
   } catch (err) {
     status.className = 'error';
     status.textContent = `Backend job failed: ${err}`;
     console.error(`backend job failed: ${err}`);
+  } finally {
+    jobSettled();
   }
 }
 
+// ---- 4. Auto-send diagnostic -------------------------------------------------
+// Proves step 6 on Qollab even when the tester's input cannot reach this frame:
+// a visible countdown presses Verify for them, once, through the same guard.
+const AUTO_SEND_SECONDS = 5;
+let autoTimer = 0;
+
+function stopAutoSend(message) {
+  if (!autoTimer) return;
+  clearInterval(autoTimer);
+  autoTimer = 0;
+  $('autosend-cancel').hidden = true;
+  if (message) $('autosend-status').textContent = message;
+}
+
+function startAutoSend() {
+  let left = AUTO_SEND_SECONDS;
+  const show = () => ($('autosend-status').textContent = `Auto-sending the one job in ${left} s…`);
+  show();
+  $('autosend-cancel').hidden = false;
+  autoTimer = setInterval(() => {
+    left -= 1;
+    if (left > 0) return show();
+    stopAutoSend('Auto-send fired.');
+    verifyOnBackend('auto');
+  }, 1000);
+}
+
+diag.mount(document.body);
 startScene($('scene'));
-$('verify-btn').addEventListener('click', verifyOnBackend);
+$('verify-btn').addEventListener('click', () => verifyOnBackend('button'));
+$('autosend-cancel').addEventListener('click', () => stopAutoSend('Auto-send cancelled. Press Verify to send the one job.'));
 $('verify-btn').disabled = false;
 await showBridgeResult();
+diag.markBridgeResult();
+startAutoSend();
+// Keep main.js running until the one job settles. When main.js returns, Qollab
+// prints Done. and its parent page stops listening to this frame (console,
+// Probabilities panel, credit consent), and the frame turns off the request
+// rewrite that IonQ jobs go through (jsworker-C6a5_czr.js `self.fetch`, W=false).
+await oneJobDone;

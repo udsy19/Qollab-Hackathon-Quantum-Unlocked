@@ -14,6 +14,8 @@
     <h2>2 · One job on the selected backend</h2>
     <p class="hint">Sends exactly one measured Bell circuit with <code>backend.run</code>. IonQ backends allow one job per run.</p>
     <button id="verify-btn" type="button" disabled>Verify on selected backend</button>
+    <p id="autosend-status" role="status" aria-live="polite" style="color:#ffd166;margin:8px 0 4px">Auto-send starts after the bridge result.</p>
+    <button id="autosend-cancel" type="button" hidden style="padding:7px 12px;border:1px solid #ffd166;border-radius:6px;background:#2a2410;color:#ffe9b0;font:inherit;cursor:pointer">Cancel auto-send</button>
     <p id="verify-status" role="status" aria-live="polite"></p>
     <pre id="backend-out" aria-live="polite"></pre>
   </section>

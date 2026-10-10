@@ -45,17 +45,27 @@ async function run() {
   for (const p of project.problems) log('err', `runner: ${p}`);
   log('runner', `runner: ${project.files.length} files in ${project.root}; backend = ${$('backend').value}`);
   frame = document.createElement('iframe');
-  // No allow-same-origin: the frame's origin is "null", as Qollab's sandboxed
-  // project frame is (runtime-environment § Network access), so localStorage,
-  // sessionStorage, IndexedDB and cookies throw there just as they do on Qollab.
+  // Exactly Qollab's preview iframe: /_nuxt/BWPMdZ7B.js (sha256 522afd37…, read
+  // 2026-10-10), class Ol constructor: `e.sandbox=\`allow-scripts\``, no `allow`
+  // attribute, never focused. So the origin is opaque ("null"), storage throws,
+  // pointer lock / modals / forms are refused, and keys arrive only after a click.
   frame.setAttribute('sandbox', 'allow-scripts');
   frame.title = 'Project page';
   frame.src = `/frame.html?backend=${encodeURIComponent($('backend').value)}`;
   $('frame-wrap').appendChild(frame);
   const thisFrame = frame;
+  let finished = false;
   window.onmessage = (ev) => {
     if (ev.source !== thisFrame.contentWindow) return;
     const m = ev.data || {};
+    // Qollab's parent aborts its listeners on `done` (BWPMdZ7B.js, `Te` calls
+    // `De()` → `v.abort()` for out/err/system/debug/probabilities/cost-consent…),
+    // so anything the frame says after main.js returns never reaches its console.
+    // The runner shows it greyed, and keeps counting jobs (its own instrument).
+    if (finished && m.event !== 'job') {
+      if (m.msg) log('dropped', `[dropped by Qollab after Done] ${m.msg}`);
+      return;
+    }
     switch (m.event) {
       case 'ready':
         thisFrame.contentWindow.postMessage({ event: 'start', project }, '*');
@@ -73,6 +83,7 @@ async function run() {
         setJobs();
         break;
       case 'done':
+        finished = true;
         state.status = m.error ? 'error' : 'done';
         state.error = m.error || null;
         if (m.error) log('err', `Run stopped: ${m.error}`);
