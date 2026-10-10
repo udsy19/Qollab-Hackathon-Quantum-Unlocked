@@ -72,6 +72,8 @@ export const QUEST_EVENTS = nameTable('QUEST_EVENTS',
 // fire on E (INTERACTABLE_BINDINGS); experiment_result events come from gameplay reading a validated
 // ExperimentResult, never from a button.
 const SOURCE = (lane, via) => Object.freeze({ lane, via })
+// A moment is fired by gameplay and consumed by story-ui, which plays the lines keyed by its id.
+const MOMENT = (via = 'moment') => Object.freeze({ lane: 'gameplay', via, consumer: 'story-ui' })
 export const EVENT_SOURCES = strictTable('EVENT_SOURCES', Object.entries({
   BOOT_COMPLETE: SOURCE('platform', 'boot'),
   START: SOURCE('story-ui', 'menu'),
@@ -96,7 +98,26 @@ export const EVENT_SOURCES = strictTable('EVENT_SOURCES', Object.entries({
   CLOSE_SCIENCE: SOURCE('story-ui', 'menu'),
   OPEN_CREDITS: SOURCE('story-ui', 'menu'),
   RESTART: SOURCE('story-ui', 'menu'),
+  // MOMENT_EVENTS (below): reactions, never transitions.
+  clone_increase_voltage: MOMENT(),
+  relay_bay_cable: MOMENT(),
+  teleport_commit_locked: MOMENT(),
+  teleport_dry_run_failed: MOMENT(),
+  teleport_dry_run_00: MOMENT(),
+  countdown_zero: MOMENT('countdown'),
 }))
+
+// Moments are story beats that do not change the quest state, so transition() rejects them as
+// unknown events. Gameplay fires each on the bus; story-ui keys its lines by the same id
+// (overseer relay 2026-10-10; the last two are the ids story-ui's data/story.js already uses).
+//   clone_increase_voltage   the player picks "increase voltage" after CLONE_SUPERPOSITION_FAILED (§4.2)
+//   relay_bay_cable          the amber cable in the relay bay is reconnected (§4.3)
+//   teleport_commit_locked   COMMIT pressed before a dry run unlocked it (§7.4)
+//   teleport_dry_run_failed  a dry run did not pass; the next one uses a fresh state
+//   teleport_dry_run_00      a dry run passed on bits 00, so COMMIT stays locked (dryRunVerdict.unlocksCommit)
+//   countdown_zero           countdownRemaining() first reaches 0; fired once, nothing ends
+export const MOMENT_EVENTS = nameTable('MOMENT_EVENTS', ['clone_increase_voltage', 'relay_bay_cable',
+  'teleport_commit_locked', 'teleport_dry_run_failed', 'teleport_dry_run_00', 'countdown_zero'])
 
 // A wrong NAME throws (a bug at the call site); a right name at the wrong time is refused
 // with { ok: false } and the state unchanged (gameplay, e.g. pressing E twice).
@@ -128,6 +149,21 @@ export const WORLD_CHANGES = Object.freeze(Object.fromEntries(Object.entries({
   TELEPORT_COMMITTED: ['capsule_source_indicator_off', 'vault_status_green', 'city_lighting_wave',
     'music_swell', 'ending_dialogue'],
 }).map(([s, list]) => [s, Object.freeze(list)])))
+
+// ------------------------------------------------------------------ narrative countdown
+
+// The HUD's GRID SHUTDOWN clock (§6.3). It is narrative only: at 00:00 it holds and story-ui plays
+// countdown_zero; no quest event comes from it, so it can never end the game (§1 anti-goals: no
+// game-over from a non-pausing timer). It is computed from elapsed time, never decremented, so
+// replaying an event cannot drive it below zero (§9.3 idempotence).
+export const COUNTDOWN_START_SECONDS = 720  // 12:00; §6.3 shows 08:42 by the relay, mission 2
+
+// Whole seconds left, in [0, startSeconds]; rounds up so 00:00 shows only once time is truly out.
+export function countdownRemaining(startSeconds, elapsedSeconds) {
+  if (!(isFiniteNumber(startSeconds) && startSeconds >= 0)) throw new TypeError(`countdownRemaining: startSeconds must be a finite number ≥ 0, got ${describe(startSeconds)}`)
+  if (typeof elapsedSeconds !== 'number' || Number.isNaN(elapsedSeconds)) throw new TypeError(`countdownRemaining: elapsedSeconds must be a number, got ${describe(elapsedSeconds)}`)
+  return Math.min(startSeconds, Math.max(0, Math.ceil(startSeconds - elapsedSeconds)))
+}
 
 // ------------------------------------------------------------------ interactables
 
