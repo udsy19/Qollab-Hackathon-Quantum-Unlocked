@@ -1,0 +1,715 @@
+ECHO quantum engine transcript — python 3.13.0, qiskit 2.5.2
+Every value below was computed by local Qiskit (Statevector / partial_trace / state_fidelity).
+
+=== MISSION 1 booth: cloning.run_calibration('zero') ===
+{
+  "experiment": "cloning",
+  "engine": "exact_qiskit_local",
+  "kind": "naive_cnot_clone",
+  "circuitDescription": "prepare |0> on q0 (source); CX(q0 -> q1 blank copy)",
+  "qubits": 2,
+  "parameters": {
+    "state": "zero"
+  },
+  "facts": [
+    "Two matching basis values: this input was already a Z-basis state, so the circuit only copied a known classical value.",
+    "This does not work for an unknown state; try a superposition.",
+    "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+  ],
+  "probabilities": {
+    "source=0,copy=0": 1.0,
+    "source=1,copy=0": 0.0,
+    "source=0,copy=1": 0.0,
+    "source=1,copy=1": 0.0
+  },
+  "circuitText": "          \nq_0: ──■──\n     ┌─┴─┐\nq_1: ┤ X ├\n     └───┘",
+  "details": {
+    "sourcePurity": 1.0,
+    "copyPurity": 1.0,
+    "sourceFidelity": 1.0,
+    "copyFidelity": 1.0,
+    "jointFidelityWithTwoCopies": 1.0,
+    "isTwoIndependentCopies": true,
+    "isEntangled": false,
+    "amplitudes": {
+      "source=0,copy=0": [
+        1.0,
+        0.0
+      ],
+      "source=1,copy=0": [
+        0.0,
+        0.0
+      ],
+      "source=0,copy=1": [
+        0.0,
+        0.0
+      ],
+      "source=1,copy=1": [
+        0.0,
+        0.0
+      ]
+    }
+  }
+}
+
+=== MISSION 1 booth: cloning.run_calibration('plus') ===
+{
+  "experiment": "cloning",
+  "engine": "exact_qiskit_local",
+  "kind": "naive_cnot_clone",
+  "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
+  "qubits": 2,
+  "parameters": {
+    "state": "plus"
+  },
+  "facts": [
+    "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.500000.",
+    "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+    "The two outputs are entangled with each other, not copies of the input.",
+    "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+  ],
+  "probabilities": {
+    "source=0,copy=0": 0.5,
+    "source=1,copy=0": 0.0,
+    "source=0,copy=1": 0.0,
+    "source=1,copy=1": 0.5
+  },
+  "circuitText": "     ┌───┐     \nq_0: ┤ H ├──■──\n     └───┘┌─┴─┐\nq_1: ─────┤ X ├\n          └───┘",
+  "details": {
+    "sourcePurity": 0.5,
+    "copyPurity": 0.5,
+    "sourceFidelity": 0.5,
+    "copyFidelity": 0.5,
+    "jointFidelityWithTwoCopies": 0.5,
+    "isTwoIndependentCopies": false,
+    "isEntangled": true,
+    "amplitudes": {
+      "source=0,copy=0": [
+        0.7071067812,
+        0.0
+      ],
+      "source=1,copy=0": [
+        0.0,
+        0.0
+      ],
+      "source=0,copy=1": [
+        0.0,
+        0.0
+      ],
+      "source=1,copy=1": [
+        0.7071067812,
+        0.0
+      ]
+    }
+  }
+}
+
+=== MISSION 1 booth: cloning.run_calibration('phase') ===
+{
+  "experiment": "cloning",
+  "engine": "exact_qiskit_local",
+  "kind": "naive_cnot_clone",
+  "circuitDescription": "prepare (|0>+i|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
+  "qubits": 2,
+  "parameters": {
+    "state": "phase"
+  },
+  "facts": [
+    "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.250000.",
+    "Each output alone has purity 0.500000; an independent copy of a pure state would have purity 1.",
+    "The two outputs are entangled with each other, not copies of the input.",
+    "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+  ],
+  "probabilities": {
+    "source=0,copy=0": 0.5,
+    "source=1,copy=0": 0.0,
+    "source=0,copy=1": 0.0,
+    "source=1,copy=1": 0.5
+  },
+  "circuitText": "     ┌───┐┌───┐     \nq_0: ┤ H ├┤ S ├──■──\n     └───┘└───┘┌─┴─┐\nq_1: ──────────┤ X ├\n               └───┘",
+  "details": {
+    "sourcePurity": 0.5,
+    "copyPurity": 0.5,
+    "sourceFidelity": 0.5,
+    "copyFidelity": 0.5,
+    "jointFidelityWithTwoCopies": 0.25,
+    "isTwoIndependentCopies": false,
+    "isEntangled": true,
+    "amplitudes": {
+      "source=0,copy=0": [
+        0.7071067812,
+        0.0
+      ],
+      "source=1,copy=0": [
+        0.0,
+        0.0
+      ],
+      "source=0,copy=1": [
+        0.0,
+        0.0
+      ],
+      "source=1,copy=1": [
+        0.0,
+        0.7071067812
+      ]
+    }
+  }
+}
+
+=== MISSION 1 booth: cloning.run_calibration('bloch_a') ===
+{
+  "experiment": "cloning",
+  "engine": "exact_qiskit_local",
+  "kind": "naive_cnot_clone",
+  "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0 (source); CX(q0 -> q1 blank copy)",
+  "qubits": 2,
+  "parameters": {
+    "state": "bloch_a"
+  },
+  "facts": [
+    "Not two independent copies: the result overlaps |psi>⊗|psi> with fidelity 0.551480.",
+    "Each output alone has purity 0.588334; an independent copy of a pure state would have purity 1.",
+    "The two outputs are entangled with each other, not copies of the input.",
+    "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
+  ],
+  "probabilities": {
+    "source=0,copy=0": 0.7101592606,
+    "source=1,copy=0": 0.0,
+    "source=0,copy=1": 0.0,
+    "source=1,copy=1": 0.2898407394
+  },
+  "circuitText": "     ┌───────────┐┌──────────┐     \nq_0: ┤ Ry(1.137) ├┤ Rz(0.44) ├──■──\n     └───────────┘└──────────┘┌─┴─┐\nq_1: ─────────────────────────┤ X ├\n                              └───┘",
+  "details": {
+    "sourcePurity": 0.5883338296,
+    "copyPurity": 0.5883338296,
+    "sourceFidelity": 0.5883338296,
+    "copyFidelity": 0.5883338296,
+    "jointFidelityWithTwoCopies": 0.5514795209,
+    "isTwoIndependentCopies": false,
+    "isEntangled": true,
+    "amplitudes": {
+      "source=0,copy=0": [
+        0.822398028,
+        -0.1839041713
+      ],
+      "source=1,copy=0": [
+        0.0,
+        0.0
+      ],
+      "source=0,copy=1": [
+        0.0,
+        0.0
+      ],
+      "source=1,copy=1": [
+        0.5253925344,
+        0.1174879746
+      ]
+    }
+  }
+}
+
+=== MISSION 2 relay: entanglement.bell_signalling('I') ===
+{
+  "experiment": "bell_signalling",
+  "engine": "exact_qiskit_local",
+  "kind": "receiver_marginal",
+  "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies I on q0 (sender), q1 = receiver",
+  "qubits": 2,
+  "parameters": {
+    "senderGate": "I"
+  },
+  "facts": [
+    "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+    "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+    "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 1.000000.",
+    "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+  ],
+  "probabilities": {
+    "sender=0,receiver=0": 0.5,
+    "sender=1,receiver=0": 0.0,
+    "sender=0,receiver=1": 0.0,
+    "sender=1,receiver=1": 0.5
+  },
+  "circuitText": "     ┌───┐     \nq_0: ┤ H ├──■──\n     └───┘┌─┴─┐\nq_1: ─────┤ X ├\n          └───┘",
+  "details": {
+    "receiverMarginal": {
+      "0": 0.5,
+      "1": 0.5
+    },
+    "receiverPurity": 0.5,
+    "receiverBlochVector": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "zBasisAgreement": 1.0,
+    "xBasisAgreement": 1.0
+  }
+}
+
+=== MISSION 2 relay: entanglement.bell_signalling('X') ===
+{
+  "experiment": "bell_signalling",
+  "engine": "exact_qiskit_local",
+  "kind": "receiver_marginal",
+  "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies X on q0 (sender), q1 = receiver",
+  "qubits": 2,
+  "parameters": {
+    "senderGate": "X"
+  },
+  "facts": [
+    "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+    "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+    "Comparing both logs afterwards: Z-basis bits agree with probability 0.000000, X-basis bits with probability 1.000000.",
+    "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+  ],
+  "probabilities": {
+    "sender=0,receiver=0": 0.0,
+    "sender=1,receiver=0": 0.5,
+    "sender=0,receiver=1": 0.5,
+    "sender=1,receiver=1": 0.0
+  },
+  "circuitText": "     ┌───┐     ┌───┐\nq_0: ┤ H ├──■──┤ X ├\n     └───┘┌─┴─┐└───┘\nq_1: ─────┤ X ├─────\n          └───┘     ",
+  "details": {
+    "receiverMarginal": {
+      "0": 0.5,
+      "1": 0.5
+    },
+    "receiverPurity": 0.5,
+    "receiverBlochVector": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "zBasisAgreement": 0.0,
+    "xBasisAgreement": 1.0
+  }
+}
+
+=== MISSION 2 relay: entanglement.bell_signalling('Z') ===
+{
+  "experiment": "bell_signalling",
+  "engine": "exact_qiskit_local",
+  "kind": "receiver_marginal",
+  "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies Z on q0 (sender), q1 = receiver",
+  "qubits": 2,
+  "parameters": {
+    "senderGate": "Z"
+  },
+  "facts": [
+    "Receiver alone: P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.",
+    "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.",
+    "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 0.000000.",
+    "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
+  ],
+  "probabilities": {
+    "sender=0,receiver=0": 0.5,
+    "sender=1,receiver=0": 0.0,
+    "sender=0,receiver=1": 0.0,
+    "sender=1,receiver=1": 0.5
+  },
+  "circuitText": "     ┌───┐     ┌───┐\nq_0: ┤ H ├──■──┤ Z ├\n     └───┘┌─┴─┐└───┘\nq_1: ─────┤ X ├─────\n          └───┘     ",
+  "details": {
+    "receiverMarginal": {
+      "0": 0.5,
+      "1": 0.5
+    },
+    "receiverPurity": 0.5,
+    "receiverBlochVector": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "zBasisAgreement": 1.0,
+    "xBasisAgreement": 0.0
+  }
+}
+
+=== MISSION 3 dry run step 1: teleportation.bell_measurement('bloch_a', seed=11) ===
+{
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "kind": "bell_measurement_sample",
+  "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1",
+  "qubits": 3,
+  "parameters": {
+    "state": "bloch_a"
+  },
+  "facts": [
+    "m0 = 0 (source readout), m1 = 1 (local Bell-half readout).",
+    "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+  ],
+  "probabilities": {
+    "m0=0,m1=0": 0.25,
+    "m0=0,m1=1": 0.25,
+    "m0=1,m1=0": 0.25,
+    "m0=1,m1=1": 0.25
+  },
+  "measurementBits": {
+    "m0": 0,
+    "m1": 1
+  },
+  "details": {
+    "shots": 1,
+    "seed": 11
+  }
+}
+
+=== MISSION 3 dry run step 2: teleportation.teleport_branch('bloch_a', m0=1, m1=0, apply_x=False, apply_z=False) ===
+{
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "kind": "branch_model",
+  "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies no correction",
+  "qubits": 3,
+  "parameters": {
+    "state": "bloch_a",
+    "m0": 1,
+    "m1": 0,
+    "applyX": false,
+    "applyZ": false
+  },
+  "facts": [
+    "m0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON.",
+    "Receiver test fidelity: 0.176668.",
+    "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+  ],
+  "probabilities": {
+    "m0=0,m1=0": 0.25,
+    "m0=0,m1=1": 0.25,
+    "m0=1,m1=0": 0.25,
+    "m0=1,m1=1": 0.25
+  },
+  "fidelity": 0.1766676593,
+  "measurementBits": {
+    "m0": 1,
+    "m1": 0
+  },
+  "details": {
+    "branchProbability": 0.25,
+    "expectedCorrections": {
+      "applyX": false,
+      "applyZ": true
+    },
+    "choiceFollowsRule": false,
+    "receiverBlochVector": [
+      -0.8209505112,
+      -0.3864875145,
+      0.4203185212
+    ],
+    "sourceFidelityAfterMeasurement": 0.2898407394
+  }
+}
+
+=== MISSION 3 dry run step 2: teleportation.teleport_branch('bloch_a', m0=1, m1=0, apply_x=True, apply_z=False) ===
+{
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "kind": "branch_model",
+  "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies X",
+  "qubits": 3,
+  "parameters": {
+    "state": "bloch_a",
+    "m0": 1,
+    "m1": 0,
+    "applyX": true,
+    "applyZ": false
+  },
+  "facts": [
+    "m0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON.",
+    "Receiver test fidelity: 0.149373.",
+    "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+  ],
+  "probabilities": {
+    "m0=0,m1=0": 0.25,
+    "m0=0,m1=1": 0.25,
+    "m0=1,m1=0": 0.25,
+    "m0=1,m1=1": 0.25
+  },
+  "fidelity": 0.1493725989,
+  "measurementBits": {
+    "m0": 1,
+    "m1": 0
+  },
+  "details": {
+    "branchProbability": 0.25,
+    "expectedCorrections": {
+      "applyX": false,
+      "applyZ": true
+    },
+    "choiceFollowsRule": false,
+    "receiverBlochVector": [
+      -0.8209505112,
+      0.3864875145,
+      -0.4203185212
+    ],
+    "sourceFidelityAfterMeasurement": 0.2898407394
+  }
+}
+
+=== MISSION 3 dry run step 2: teleportation.teleport_branch('bloch_a', m0=1, m1=0, apply_x=False, apply_z=True) ===
+{
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "kind": "branch_model",
+  "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies Z",
+  "qubits": 3,
+  "parameters": {
+    "state": "bloch_a",
+    "m0": 1,
+    "m1": 0,
+    "applyX": false,
+    "applyZ": true
+  },
+  "facts": [
+    "m0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON.",
+    "Receiver test fidelity: 1.000000.",
+    "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+  ],
+  "probabilities": {
+    "m0=0,m1=0": 0.25,
+    "m0=0,m1=1": 0.25,
+    "m0=1,m1=0": 0.25,
+    "m0=1,m1=1": 0.25
+  },
+  "fidelity": 1.0,
+  "measurementBits": {
+    "m0": 1,
+    "m1": 0
+  },
+  "details": {
+    "branchProbability": 0.25,
+    "expectedCorrections": {
+      "applyX": false,
+      "applyZ": true
+    },
+    "choiceFollowsRule": true,
+    "receiverBlochVector": [
+      0.8209505112,
+      0.3864875145,
+      0.4203185212
+    ],
+    "sourceFidelityAfterMeasurement": 0.2898407394
+  }
+}
+
+=== MISSION 3 dry run step 2: teleportation.teleport_branch('bloch_a', m0=1, m1=0, apply_x=True, apply_z=True) ===
+{
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "kind": "branch_model",
+  "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies X then Z",
+  "qubits": 3,
+  "parameters": {
+    "state": "bloch_a",
+    "m0": 1,
+    "m1": 0,
+    "applyX": true,
+    "applyZ": true
+  },
+  "facts": [
+    "m0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON.",
+    "Receiver test fidelity: 0.673960.",
+    "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
+  ],
+  "probabilities": {
+    "m0=0,m1=0": 0.25,
+    "m0=0,m1=1": 0.25,
+    "m0=1,m1=0": 0.25,
+    "m0=1,m1=1": 0.25
+  },
+  "fidelity": 0.6739597419,
+  "measurementBits": {
+    "m0": 1,
+    "m1": 0
+  },
+  "details": {
+    "branchProbability": 0.25,
+    "expectedCorrections": {
+      "applyX": false,
+      "applyZ": true
+    },
+    "choiceFollowsRule": false,
+    "receiverBlochVector": [
+      0.8209505112,
+      -0.3864875145,
+      -0.4203185212
+    ],
+    "sourceFidelityAfterMeasurement": 0.2898407394
+  }
+}
+
+=== MISSION 3 Declassified: teleportation.corrections_withheld('bloch_a') ===
+{
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "kind": "corrections_withheld",
+  "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); bits withheld from Bob",
+  "qubits": 3,
+  "parameters": {
+    "state": "bloch_a"
+  },
+  "facts": [
+    "Without the two classical bits, Bob's qubit is an even mix (I/2) whatever the source was.",
+    "Its overlap with the source state is 0.500000, the same as a blind guess.",
+    "The quantum half of the link carries no message on its own."
+  ],
+  "fidelity": 0.5,
+  "details": {
+    "receiverAverageState": {
+      "re": [
+        [
+          0.5,
+          0.0
+        ],
+        [
+          0.0,
+          0.5
+        ]
+      ],
+      "im": [
+        [
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0
+        ]
+      ]
+    },
+    "receiverBlochVector": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "receiverPurity": 0.5
+  }
+}
+
+=== MISSION 3 Declassified: teleportation.verify_deferred('bloch_a') ===
+{
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "kind": "deferred_measurement_verification",
+  "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); CX(q1,q2); CZ(q0,q2)",
+  "qubits": 3,
+  "parameters": {
+    "state": "bloch_a",
+    "controlledX": true,
+    "controlledZ": true
+  },
+  "facts": [
+    "Mathematical verification by the deferred-measurement principle: the measurements and classical corrections are replaced by equivalent controlled gates.",
+    "This is not a physical teleportation link; in the story the corrections travel as two classical bits.",
+    "Bob's reduced state matches the source with fidelity 1.000000."
+  ],
+  "fidelity": 1.0,
+  "circuitText": "     ┌───────────┐┌──────────┐     ┌───┐   \nq_0: ┤ Ry(1.137) ├┤ Rz(0.44) ├──■──┤ H ├─■─\n     └───┬───┬───┘└──────────┘┌─┴─┐└───┘ │ \nq_1: ────┤ H ├─────────■──────┤ X ├──■───┼─\n         └───┘       ┌─┴─┐    └───┘┌─┴─┐ │ \nq_2: ────────────────┤ X ├─────────┤ X ├─■─\n                     └───┘         └───┘   ",
+  "details": {
+    "receiverBlochVector": [
+      0.8209505112,
+      0.3864875145,
+      0.4203185212
+    ]
+  }
+}
+
+=== MISSION 3 Declassified: teleportation.verify_deferred('bloch_a', controlled_z=False) ===
+{
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "kind": "deferred_measurement_verification",
+  "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); CX(q1,q2)",
+  "qubits": 3,
+  "parameters": {
+    "state": "bloch_a",
+    "controlledX": true,
+    "controlledZ": false
+  },
+  "facts": [
+    "Mathematical verification by the deferred-measurement principle: the measurements and classical corrections are replaced by equivalent controlled gates.",
+    "This is not a physical teleportation link; in the story the corrections travel as two classical bits.",
+    "Bob's reduced state matches the source with fidelity 0.588334."
+  ],
+  "fidelity": 0.5883338296,
+  "circuitText": "     ┌───────────┐┌──────────┐     ┌───┐\nq_0: ┤ Ry(1.137) ├┤ Rz(0.44) ├──■──┤ H ├\n     └───┬───┬───┘└──────────┘┌─┴─┐└───┘\nq_1: ────┤ H ├─────────■──────┤ X ├──■──\n         └───┘       ┌─┴─┐    └───┘┌─┴─┐\nq_2: ────────────────┤ X ├─────────┤ X ├\n                     └───┘         └───┘",
+  "details": {
+    "receiverBlochVector": [
+      0.0,
+      0.0,
+      0.4203185212
+    ]
+  }
+}
+
+=== MISSION 3 commit: teleportation.live_commit('bloch_b', seed=2026) ===
+{
+  "experiment": "teleportation",
+  "engine": "exact_qiskit_local",
+  "kind": "live_commit",
+  "circuitDescription": "prepare token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure m0, m1; Bob applies X iff m1=1, Z iff m0=1",
+  "qubits": 3,
+  "parameters": {
+    "state": "bloch_b"
+  },
+  "facts": [
+    "Live bits m0 = 0, m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+    "Receiver fidelity with the token: 1.000000.",
+    "The source qubit was measured and left in |0>: it no longer holds the state, so there is one copy, at the receiver.",
+    "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+  ],
+  "probabilities": {
+    "m0=0,m1=0": 0.25,
+    "m0=0,m1=1": 0.25,
+    "m0=1,m1=0": 0.25,
+    "m0=1,m1=1": 0.25
+  },
+  "fidelity": 1.0,
+  "measurementBits": {
+    "m0": 0,
+    "m1": 0
+  },
+  "details": {
+    "shots": 1,
+    "seed": 2026,
+    "appliedCorrections": {
+      "applyX": false,
+      "applyZ": false
+    },
+    "branchProbability": 0.25,
+    "sourceFidelityAfterMeasurement": 0.1668619894
+  }
+}
+
+=== Teleportation branch model: fidelity for every state x branch (m0,m1) x choice (X,Z) ===
+rule: X iff m1=1, Z iff m0=1; '*' marks the rule's choice
+state     m0m1 | -- | X- | -Z | XZ
+zero      0 0  | 1.000000* | 0.000000  | 1.000000  | 0.000000 
+zero      0 1  | 0.000000  | 1.000000* | 0.000000  | 1.000000 
+zero      1 0  | 1.000000  | 0.000000  | 1.000000* | 0.000000 
+zero      1 1  | 0.000000  | 1.000000  | 0.000000  | 1.000000*
+one       0 0  | 1.000000* | 0.000000  | 1.000000  | 0.000000 
+one       0 1  | 0.000000  | 1.000000* | 0.000000  | 1.000000 
+one       1 0  | 1.000000  | 0.000000  | 1.000000* | 0.000000 
+one       1 1  | 0.000000  | 1.000000  | 0.000000  | 1.000000*
+plus      0 0  | 1.000000* | 1.000000  | 0.000000  | 0.000000 
+plus      0 1  | 1.000000  | 1.000000* | 0.000000  | 0.000000 
+plus      1 0  | 0.000000  | 0.000000  | 1.000000* | 1.000000 
+plus      1 1  | 0.000000  | 0.000000  | 1.000000  | 1.000000*
+minus     0 0  | 1.000000* | 1.000000  | 0.000000  | 0.000000 
+minus     0 1  | 1.000000  | 1.000000* | 0.000000  | 0.000000 
+minus     1 0  | 0.000000  | 0.000000  | 1.000000* | 1.000000 
+minus     1 1  | 0.000000  | 0.000000  | 1.000000  | 1.000000*
+phase     0 0  | 1.000000* | 0.000000  | 0.000000  | 1.000000 
+phase     0 1  | 0.000000  | 1.000000* | 1.000000  | 0.000000 
+phase     1 0  | 0.000000  | 1.000000  | 1.000000* | 0.000000 
+phase     1 1  | 1.000000  | 0.000000  | 0.000000  | 1.000000*
+bloch_a   0 0  | 1.000000* | 0.673960  | 0.176668  | 0.149373 
+bloch_a   0 1  | 0.673960  | 1.000000* | 0.149373  | 0.176668 
+bloch_a   1 0  | 0.176668  | 0.149373  | 1.000000* | 0.673960 
+bloch_a   1 1  | 0.149373  | 0.176668  | 0.673960  | 1.000000*
+bloch_b   0 0  | 1.000000* | 0.058119  | 0.443924  | 0.497957 
+bloch_b   0 1  | 0.058119  | 1.000000* | 0.497957  | 0.443924 
+bloch_b   1 0  | 0.443924  | 0.497957  | 1.000000* | 0.058119 
+bloch_b   1 1  | 0.497957  | 0.443924  | 0.058119  | 1.000000*
