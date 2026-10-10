@@ -1,0 +1,80 @@
+✔ on/emit is synchronous and delivers the payload in subscription order (0.6735ms)
+✔ off function unsubscribes only that listener and is safe to call twice (0.073791ms)
+✔ a throwing listener does not stop the others, and the error is reported (0.4125ms)
+✔ unsubscribing during emit does not skip the next listener (0.112792ms)
+✔ emit with no listeners is a no-op (0.109084ms)
+✔ a listener subscribed during emit is not called until the next emit (0.072084ms)
+✔ every result is a schema-valid ExperimentResult labelled documented_preview (8.028375ms)
+✔ §7.2 cloning: basis states copy, |+> and phase states do not (6.620375ms)
+✔ §7.3 no-signalling: receiver marginal is 0.5/0.5 for I, X and Z; joint Z-basis correlations differ I vs X (3.760875ms)
+✔ §7.4 teleportation: for six+ states and all four branches, fidelity 1 iff X==m1 and Z==m0 (generic states) (109.346833ms)
+✔ teleport without bits given samples them uniformly-ish and reports them (5.030541ms)
+✔ injectable failure rejects the next call only, then the adapter recovers (1.865959ms)
+✔ async delay is real: a call does not resolve synchronously (31.237292ms)
+✔ verifySelectedBackendOnce: no fabricated counts, and a second call is refused (one job per run) (1.409583ms)
+✔ unknown inputs are refused, not defaulted (3.628333ms)
+file:///Users/udsy/agent-org/lanes/gameplay/wt/gameplay-contracts-migration/dev/gameplay/tests/missionRules.test.mjs:5
+import { eventForResult, expectedCorrections, hasExperiment } from '../../../echo/game/missionRules.js';
+                                              ^^^^^^^^^^^^^
+SyntaxError: The requested module '../../../echo/game/missionRules.js' does not provide an export named 'hasExperiment'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:463:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:561:5)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.7.0
+✖ dev/gameplay/tests/missionRules.test.mjs (33.041542ms)
+✔ every §9.1 state has exactly one objective id (states from the doc, not the map) (1.416ms)
+✔ the mission states point the player at the right place (0.078792ms)
+✖ the real §9.2 parses to 18 rows / 19 edges, every row accounted for (1.598458ms)
+✔ a row at any indentation is read, not dropped (0.567708ms)
+✔ a row the parser cannot read throws with its line, instead of passing with an edge missing (0.2475ms)
+✔ an unclosed or missing transitions object throws (0.131458ms)
+file:///Users/udsy/agent-org/lanes/gameplay/wt/gameplay-contracts-migration/dev/gameplay/tests/state.test.mjs:8
+import { createQuestMachine, commitIsOneShot, COMMIT_STATUS, worldChangesFor } from '../../../echo/game/state.js';
+                                              ^^^^^^^^^^^^^
+SyntaxError: The requested module '../../../echo/game/state.js' does not provide an export named 'COMMIT_STATUS'
+    at #asyncInstantiate (node:internal/modules/esm/module_job:463:21)
+    at async ModuleJob.run (node:internal/modules/esm/module_job:561:5)
+    at async node:internal/modules/esm/loader:650:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5)
+
+Node.js v26.7.0
+✖ dev/gameplay/tests/state.test.mjs (31.737ms)
+ℹ tests 23
+ℹ suites 0
+ℹ pass 20
+ℹ fail 3
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 213.553
+
+✖ failing tests:
+
+test at dev/gameplay/tests/missionRules.test.mjs:1:1
+✖ dev/gameplay/tests/missionRules.test.mjs (33.041542ms)
+  'test failed'
+
+test at dev/gameplay/tests/spec.test.mjs:8:1
+✖ the real §9.2 parses to 18 rows / 19 edges, every row accounted for (1.598458ms)
+  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:
+  
+  20 !== 19
+  
+      at TestContext.<anonymous> (file:///Users/udsy/agent-org/lanes/gameplay/wt/gameplay-contracts-migration/dev/gameplay/tests/spec.test.mjs:10:10)
+      at Test.runInAsyncScope (node:async_hooks:226:14)
+      at Test.run (node:internal/test_runner/test:1397:25)
+      at Test.start (node:internal/test_runner/test:1257:17)
+      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {
+    generatedMessage: true,
+    code: 'ERR_ASSERTION',
+    actual: 20,
+    expected: 19,
+    operator: 'strictEqual',
+    diff: 'simple'
+  }
+
+test at dev/gameplay/tests/state.test.mjs:1:1
+✖ dev/gameplay/tests/state.test.mjs (31.737ms)
+  'test failed'
