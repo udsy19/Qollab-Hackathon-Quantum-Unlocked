@@ -122,6 +122,15 @@ async function waitFor(fn, ms, what) {
     check('(b) verdict reads INPUT REACHES PAGE', /^INPUT REACHES PAGE/.test(d1.verdict), d1.verdict);
     check('(b) frame origin is opaque ("null"), as on Qollab', d1.origin === 'null', d1.origin);
     await page.screenshot({ path: path.join(out, `${tag}-b-counters-after-input.png`) });
+    // Qollab's iframe has no allow-pointer-lock, so a request from inside must be
+    // refused. (Control: the same panel in a frame WITH allow-pointer-lock reads
+    // GRANTED — evidence/platform/g0-input-diagnostic/pointer-lock-control/.)
+    await page.keyboard.press('KeyL');
+    const lock = await waitFor(async () => {
+      const v = (await diag())['pointer lock'];
+      return /^(REFUSED|GRANTED)/.test(v) ? v : null;
+    }, 5000, 'pointer lock answer').catch(() => 'no answer');
+    check('(b) pointer lock REFUSED, as in Qollab\'s allow-scripts-only frame', /^REFUSED/.test(lock), lock);
 
     // Provenance (law 16): the token is read out of the served, rendered page.
     const build = await text('build-token');
@@ -184,7 +193,10 @@ async function waitFor(fn, ms, what) {
       const countsRaw = await waitFor(async () => {
         const t = await text('backend-out');
         return t && t.trim().startsWith('{') ? t : null;
-      }, 60000, 'backend counts');
+      }, 60000, 'backend counts').catch(() => null);
+      // The page owes the counts; their absence is a red, not a missing verdict.
+      check(`${via}: counts shown on the page`, !!countsRaw, countsRaw ? 'shown' : 'nothing within 60 s');
+      if (!countsRaw) return;
       const counts = JSON.parse(countsRaw).counts;
       const total = Object.values(counts).reduce((a, b) => a + b, 0);
       check(`${via}: counts from one job, 256 shots`, total === 256, counts);
@@ -203,7 +215,7 @@ async function waitFor(fn, ms, what) {
       await gradeCounts('(c) auto-send');
       check('(c) status says the job came from the countdown', /^Done: 1 job \(auto\), 256 shots/.test((await text('verify-status')) || '') && /fired/.test((await text('autosend-status')) || ''), [await text('autosend-status'), await text('verify-status')]);
       check('(c) runner counted exactly 1 backend.run', (await runnerState()).jobs === 1, await runnerState());
-      await waitFor(async () => (await runnerState()).status === 'done', 10000, 'main.js to return after the job');
+      await waitFor(async () => (await runnerState()).status === 'done', 10000, 'main.js to return after the job').catch(() => null);
       check('(c) main.js returned after the job settled (Done.)', (await runnerState()).status === 'done', await runnerState());
       await page.screenshot({ path: path.join(out, `${tag}-c-auto-send-one-job.png`) });
       // Then a press must be refused by the PAGE, and the runner must see no second job.

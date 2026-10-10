@@ -1,0 +1,29 @@
+bridge result on the page 5.3s after load
+PASS  (a) diag panel rendered with the three counters at 0  — {"verdict":"NO INPUT YET — click inside this page, then press a key","pointerdown":"0","click":"0","keydown":"0","last key":"—","last pointer target":"—","document.hasFocus()":"false","active element":"body","origin":"null","pointer lock API":"present","pointer lock":"not tried (press L)","since bridge result":"0.0 s"}
+PASS  (a) main.js still running after the bridge result (not Done.)  — {"status":"running","jobs":0,"refused":0,"error":null}
+PASS  (a) auto-send countdown visible  — Auto-sending the one job in 5 s…
+PASS  (b) one canvas click counted: pointerdown and click +1  — {"before":{"verdict":"NO INPUT YET — click inside this page, then press a key","pointerdown":"0","click":"0","keydown":"0","last key":"—","last pointer target":"—","document.hasFocus()":"false","active element":"body","origin":"null","pointer lock API":"present","pointer lock":"not tried (press L)","since bridge result":"0.0 s"},"after":{"verdict":"INPUT REACHES PAGE (pointer + keys)","pointerdown":"1","click":"1","keydown":"1","last key":"k","last pointer target":"canvas#scene","document.hasFocus()":"true","active element":"body","origin":"null","pointer lock API":"present","pointer lock":"not tried (press L)","since bridge result":"0.5 s"}}
+PASS  (b) one keypress counted, last key k  — {"verdict":"INPUT REACHES PAGE (pointer + keys)","pointerdown":"1","click":"1","keydown":"1","last key":"k","last pointer target":"canvas#scene","document.hasFocus()":"true","active element":"body","origin":"null","pointer lock API":"present","pointer lock":"not tried (press L)","since bridge result":"0.5 s"}
+PASS  (b) last pointer target is the canvas  — canvas#scene
+PASS  (b) document.hasFocus() true after the click  — true
+PASS  (b) verdict reads INPUT REACHES PAGE  — INPUT REACHES PAGE (pointer + keys)
+PASS  (b) frame origin is opaque ("null"), as on Qollab  — null
+PASS  (b) pointer lock REFUSED, as in Qollab's allow-scripts-only frame  — REFUSED (SecurityError)
+PASS  build token visible  — g0-smoke-2026-10-10c
+PASS  backend name rendered from injected backend  — basic_simulator
+PASS  runner sandbox: localStorage and POST blocked, no WebSocket/Worker  — {"storage":"blocked","post":"blocked","websocket":"undefined","worker":"undefined"}
+PASS  Three.js canvas shows the cyan cube (pixels)  — {"w":960,"h":731,"cyan":45898,"cyanShare":0.0654}
+PASS  bridge: exact P(00)=P(11)=0.5, nothing else  — {"11":0.5,"00":0.5}
+PASS  bridge: reduced purity of one half = 0.5  — 0.5
+PASS  bridge: ran in Pyodide (sys.platform emscripten)  — emscripten
+PASS  bridge: Qiskit 2.x  — 2.5.2
+PASS  (c) auto-send: counts shown on the page  — shown
+PASS  (c) auto-send: counts from one job, 256 shots  — {"11":141,"00":115}
+PASS  (c) auto-send: ideal Bell counts only 00/11  — ["11","00"]
+PASS  (c) auto-send: both 00 and 11 present, each 88..168 of 256  — {"11":141,"00":115}
+PASS  (c) status says the job came from the countdown  — ["Auto-send fired.","Done: 1 job (auto), 256 shots on basic_simulator. A second press will be refused."]
+PASS  (c) runner counted exactly 1 backend.run  — {"status":"done","jobs":1,"refused":0,"error":null}
+PASS  (c) main.js returned after the job settled (Done.)  — {"status":"done","jobs":1,"refused":0,"error":null}
+PASS  (c) press after auto-send: page shows a visible refusal  — Refused: this run has already used its one selected-backend job. Press Stop, then Run, to send another.
+PASS  (c) press after auto-send: runner saw no second backend.run  — {"status":"done","jobs":1,"refused":0,"error":null}
+27/27 checks passed

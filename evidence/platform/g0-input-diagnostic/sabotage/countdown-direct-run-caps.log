@@ -1,0 +1,12 @@
+echo/main.js:119 backend-run-count backend.run call site 1 of 2 in echo/**/*.js; at most one is allowed (a second job stops the run on IonQ)
+echo/main.js:163 backend-run-count backend.run call site 2 of 2 in echo/**/*.js; at most one is allowed (a second job stops the run on IonQ)
+  info: echo/quantum/smoke.py:49 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: backend.run: 2 call site(s) in scanned code
+LIMITATIONS (not covered by any rule above):
+  - backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+  - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
+scanned 9 files (5 code files) under /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.ZLQjOUDv5V/echo
+RED: 2 failure(s) across 1 rule(s): backend-run-count

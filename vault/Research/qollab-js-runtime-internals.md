@@ -2,8 +2,8 @@
 type: research
 status: current
 date: 2026-10-09
-updated: 2026-10-09
-owner: platform (g0-runner-smoke)
+updated: 2026-10-10
+owner: platform (g0-runner-smoke, g0-input-diagnostic)
 tags:
   - qollab
   - runtime
@@ -43,6 +43,23 @@ This is shipped code, not documentation, so it can change with any deploy. The h
 | `.toJs()` uses Pyodide's default, so a Python `dict` becomes a JS **`Map`**. The docs' `JSON.stringify(counts)` example would then print `{}`. **Inferred, not seen on Qollab.** Safe form: `.toJs({ dict_converter: Object.fromEntries })`. | [rt] `loadPyodide()` with no options; Pyodide default |
 | A cold start in the local runner is about 5–7 s on this Mac with a warm HTTP cache. The time on Qollab is **not measured**. | runner check logs |
 
+## The preview iframe and the end of a run (re-read 2026-10-10, g0-input-diagnostic)
+
+Read 2026-10-10 ~00:15 ET, GET only, signed out: the SPA entry `/_nuxt/C30t4T_n.js` and the 351 chunks it references, plus their CSS. Same file names as on 2026-10-09. sha256: `BWPMdZ7B.js` 522afd376b52…, `jsworker-C6a5_czr.js` 9c0cf2815c9f…, `entry.Boyg86oZ.css` c87eba9ac6d1…, `_project_.DmQDnk_I.css` 58db928b665a….
+
+| fact | source |
+|---|---|
+| The preview iframe is created by class `Ol`: `document.createElement("iframe")`, `e.sandbox="allow-scripts"`, `className="js-runtime"`, `src="/jsworker.html?1#<runtime url>"`, appended to `document.body`. **No `allow` attribute, no other sandbox token.** | `BWPMdZ7B.js`, `Ol` constructor |
+| So the frame's origin is **opaque** (`window.origin === "null"`): it is cross-origin to qollab.xyz even though its URL is `https://qollab.xyz/jsworker.html` (that URL is what puppeteer reported). This settles the 2026-10-09 open question. | sandbox semantics; measured in the runner with the same attribute |
+| **No `allow-pointer-lock`**: `requestPointerLock()` inside the frame is refused. Also no `allow-modals`, `allow-forms`, `allow-popups`, and no `allow="fullscreen"`, so the Fullscreen API is refused too. (Qollab has its own fullscreen toggle, which restyles the iframe from outside.) | `Ol`; runner control: the same page reads REFUSED under `allow-scripts` and GRANTED under `allow-scripts allow-pointer-lock` (`evidence/platform/g0-input-diagnostic/pointer-lock-control/`) |
+| **Nothing focuses the frame.** No `.focus()` on the iframe or its window in either file; the QPU dialog focuses its own `[data-qpu]` buttons. So keys go to Qollab's page until the player clicks inside the frame. | `BWPMdZ7B.js`, `jsworker-C6a5_czr.js` (grep `focus(`) |
+| The runtime inside the frame adds **no** input listeners (its only `addEventListener` is `message`) and removes its loading overlay before `main.js` runs. | `jsworker-C6a5_czr.js` |
+| Placement: the iframe is `position:absolute`, no `z-index`, sized and placed with CSS anchor positioning over `.pp-preview-anchor` (`anchor-name:--code-iframe-wrapper`). Whether any Qollab element sits transparently above it is **not** settled by reading; the in-page diagnostic settles it per run. | `entry.Boyg86oZ.css` `iframe.js-runtime`; `_project_.DmQDnk_I.css` `.pp-preview-anchor`; `attachIframe` |
+| **When `main.js` returns**, the frame posts `Done.` and `done`. The parent's `done` handler `Te` calls `De()`, which aborts the `AbortController` that registered its `out`, `err`, `system`, `debug`, `running`, `file`, `job-posting`, `cost`, `cost-consent`, `cost-rejected`, `circuit` and `probabilities` listeners. **After `Done.`, Qollab's console, Probabilities panel, Circuit panel and credits prompt ignore the frame.** The frame stays visible and its DOM handlers keep working. | `BWPMdZ7B.js` `Ee`, `De`, `Te` |
+| Also when `main.js` returns, the frame clears its run flag `W`. While `W` is set, `self.fetch` sends IonQ requests through `rewriteIonqRequest` (Qollab's proxy, the one-job rule, credits) and refuses non-GET requests; when `W` is clear it calls the native fetch. `reportCounts`/`reportNumQubits`/`sendFile` also do nothing when `W` is clear. So **an IonQ `backend.run` after `Done.` bypasses Qollab's proxy**; that it then fails is inferred, not observed. | `jsworker-C6a5_czr.js` `self.fetch`, `Te(self,U,()=>W)`, `finally{W=!1}` |
+
+**Consequences.** (1) `main.js` must not return while the game is running: it should `await` the ending (G0 smoke 10c awaits its one job). (2) Mouse-look cannot use pointer lock on Qollab; use drag-to-look. (3) The game needs a "click to start" moment so keys reach the frame. (4) The 2026-10-10 G0 symptom (Verify press did nothing, not even DOM text) is not explained by the after-`Done.` behaviour, which leaves DOM handlers alive; the 10c diagnostic tells input-blocked from handlers-dead on the next run.
+
 ## What this means for us
 
 - A local runner can be **faithful in the part that matters**: the same Pyodide, the same Qiskit bytes, the same compile and the same call shape. "Works in the runner" therefore covers Pyodide and Qiskit compatibility, which a CPython bridge could not. The runner is `tools/qollab-runner/`. Its fidelity table and its gaps are in its README.
@@ -51,7 +68,8 @@ This is shipped code, not documentation, so it can change with any deploy. The h
 
 ## Open
 
-- Is the frame sandboxed without `allow-same-origin`? The docs say origin `null`, but puppeteer reported the frame URL as `https://qollab.xyz/jsworker.html`. The runner follows the docs.
+- ~~Is the frame sandboxed without `allow-same-origin`?~~ Settled 2026-10-10: `sandbox="allow-scripts"` only (section above).
+- Does a real or automated click on Qollab's page reach the frame? Answered per run by the 10c input diagnostic (`echo/diag.js`).
 - What do IonQ remote simulators show in Select QPU when signed in? (Owner question, carried from [[qollab-platform-and-submission]].)
 
 ## Related

@@ -4,8 +4,8 @@ Runs `echo/` in Chrome the way Qollab runs a JS / Qiskit project, so "works here
 
 ```bash
 node tools/qollab-runner/server.mjs --port <your own port>      # then open http://127.0.0.1:<port>/
-node tools/qollab-runner/check.cjs  --port <port> --backend builtin|ionq-mock --out <dir> [--expect-build <token>]
-bash tools/qollab-runner/sabotage.sh <base-port> <out-dir>      # falsification round on disposable copies
+node tools/qollab-runner/check.cjs  --port <port> --backend builtin|ionq-mock --scenario auto|cancel|button --out <dir> [--expect-build <token>]
+bash tools/qollab-runner/sabotage.sh <port> <out-dir>           # falsification round on disposable copies (one port, reused)
 ```
 
 `--project <dir>` serves another project folder (the default is `echo/`). On first start the server makes one GET to fetch Qollab's Qiskit wheel (6.1 MB) into `.cache/` (gitignored). After that the page needs only jsdelivr and PyPI. Use Chrome or another JSPI browser, as on Qollab.
@@ -14,7 +14,7 @@ In the page: choose a backend, press **Run** (each Run makes a fresh frame, as Q
 
 ## What it mimics, and the source for each behaviour
 
-Sources: **[doc]** pages under https://qollab.xyz/learn/docs/ (read 2026-10-09). **[rt]** Qollab's shipped runtime `/_nuxt/jsworker-C6a5_czr.js` and compiler chunk `/_nuxt/BWPMdZ7B.js`, both read with GET only on 2026-10-09. **[net]** the network log of a signed-out Built-in simulator run of `qollab/qcflows-multifile` on 2026-10-09. Details are in `vault/Research/qollab-js-runtime-internals.md`.
+Sources: **[doc]** pages under https://qollab.xyz/learn/docs/ (read 2026-10-09). **[rt]** Qollab's shipped runtime `/_nuxt/jsworker-C6a5_czr.js` and compiler chunk `/_nuxt/BWPMdZ7B.js`, both read with GET only on 2026-10-09. **[net]** the network log of a signed-out Built-in simulator run of `qollab/qcflows-multifile` on 2026-10-09. **[rt2]** the same files re-read on 2026-10-10 (sha256 of `BWPMdZ7B.js` 522afd37…, of `jsworker-C6a5_czr.js` 9c0cf281…). Details are in `vault/Research/qollab-js-runtime-internals.md`.
 
 | behaviour | source |
 |---|---|
@@ -30,6 +30,9 @@ Sources: **[doc]** pages under https://qollab.xyz/learn/docs/ (read 2026-10-09).
 | **IonQ one-job mock**: the second `backend.run` throws `The code has already filed one circuit execution job; only one job is allowed per code run`. | [rt] `rewriteIonqRequest`, [doc] runtime-environment § One job per run |
 | `index.html` loses its html/head/body tags and is appended with `innerHTML`, so `<script>` never runs. `main.css` becomes one `<style>`. | [doc], [rt] |
 | The injected `setTimeout` is async (pass a number to get a promise to await). `parent` is `null`. `console.*` sends each argument as a separate text line. | [rt] `V`, run loop, [doc] |
+| The project frame carries `sandbox="allow-scripts"` and nothing else: no `allow` attribute, never focused by the host. So its origin is opaque (cross-origin to the host), pointer lock, modals and forms are refused, and keys reach it only after a click inside it. | [rt2] `BWPMdZ7B.js` class `Ol` constructor: `e.sandbox=\`allow-scripts\`` |
+| When `main.js` returns, the host stops listening to the frame: console lines, probabilities, files and the credits prompt sent after `Done.` are dropped. The runner shows them greyed as `[dropped by Qollab after Done]`. | [rt2] `BWPMdZ7B.js` `Te` → `De()` → `AbortController.abort()` on the listeners `Ee` added |
+| The IonQ mock refuses a `backend.run` sent after `main.js` returned. On Qollab, IonQ requests are proxied only while the run flag is set; that the unproxied request then fails is **inferred**, not observed. | [rt2] `jsworker-C6a5_czr.js` `self.fetch` (`if(W){…jt(…)}`; `W=!1` in `finally`) |
 | Sandboxed frame with origin `null`: localStorage, sessionStorage, IndexedDB and cookies throw. Every method except GET/HEAD/OPTIONS is refused. `XMLHttpRequest` throws "XHR is not supported, please use fetch() API". `WebSocket`/`Worker` are undefined. | [doc] § Network access, § Saving data; [rt] `ye()` |
 | The project root is the cwd and `sys.path[0]`. Data files load only when their path appears as a quoted literal in Python. | [doc] § Importing, § Data files |
 | Caps check: more than 100 files, a file over 2 MB, or a missing root `index.html`/`main.js` shows a red banner. | [doc] § Limits, upload-your-files |

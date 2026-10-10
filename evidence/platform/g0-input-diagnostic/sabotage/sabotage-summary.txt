@@ -1,0 +1,54 @@
+CASE control-builtin-auto backend=builtin scenario=auto check-exit=0 caps-exit=0 -> AS EXPECTED
+CASE control-builtin-cancel backend=builtin scenario=cancel check-exit=0 caps-exit=0 -> AS EXPECTED
+CASE control-builtin-button backend=builtin scenario=button check-exit=0 caps-exit=0 -> AS EXPECTED
+CASE control-ionq-mock-auto backend=ionq-mock scenario=auto check-exit=0 caps-exit=0 -> AS EXPECTED
+CASE control-ionq-mock-cancel backend=ionq-mock scenario=cancel check-exit=0 caps-exit=0 -> AS EXPECTED
+CASE control-ionq-mock-button backend=ionq-mock scenario=button check-exit=0 caps-exit=0 -> AS EXPECTED
+CASE no-guard-ionq-mock backend=ionq-mock scenario=auto check-exit=1 caps-exit=0 -> CAUGHT
+    FAIL  (c) press after auto-send: page shows a visible refusal  — Backend job failed: Error: IonQ job sent after main.js returned (Qollab proxy rewrite off)
+    FAIL  (c) press after auto-send: runner saw no second backend.run  — {"status":"done","jobs":2,"refused":1,"error":null}
+CASE no-guard-builtin backend=builtin scenario=auto check-exit=1 caps-exit=0 -> CAUGHT
+    FAIL  (c) press after auto-send: page shows a visible refusal  — Done: 1 job (button), 256 shots on basic_simulator. A second press will be refused.
+    FAIL  (c) press after auto-send: runner saw no second backend.run  — {"status":"done","jobs":2,"refused":0,"error":null}
+CASE no-guard-no-stop-button backend=builtin scenario=button check-exit=1 caps-exit=0 -> CAUGHT
+    FAIL  (e) button: runner counted exactly 1 backend.run past the countdown  — {"status":"done","jobs":2,"refused":0,"error":null}
+    FAIL  (e) button: the job came from the button, the countdown was stopped  — ["Auto-send fired.","Done: 1 job (auto), 256 shots on basic_simulator. A second press will be refused."]
+CASE countdown-direct-run backend=builtin scenario=auto check-exit=1 caps-exit=1 -> CAUGHT
+    FAIL  (c) auto-send: counts shown on the page  — nothing within 60 s
+    FAIL  (c) status says the job came from the countdown  — ["Auto-send fired.",""]
+    FAIL  (c) main.js returned after the job settled (Done.)  — {"status":"running","jobs":1,"refused":0,"error":null}
+    FAIL  (c) press after auto-send: page shows a visible refusal  — Done: 1 job (button), 256 shots on basic_simulator. A second press will be refused.
+    FAIL  (c) press after auto-send: runner saw no second backend.run  — {"status":"done","jobs":2,"refused":0,"error":null}
+    caps: echo/main.js:119 backend-run-count backend.run call site 1 of 2 in echo/**/*.js; at most one is allowed (a second job stops the run on IonQ)
+    caps: echo/main.js:163 backend-run-count backend.run call site 2 of 2 in echo/**/*.js; at most one is allowed (a second job stops the run on IonQ)
+    caps: RED: 2 failure(s) across 1 rule(s): backend-run-count
+CASE bubble-stoppropagation backend=builtin scenario=auto check-exit=1 caps-exit=0 -> CAUGHT
+    FAIL  (b) one canvas click counted: pointerdown and click +1  — {"before":{"verdict":"NO INPUT YET — click inside this page, then press a key","pointerdown":"0","click":"0","keydown":"0","last key":"—","last pointer target":"—","document.hasFocus()":"false","active element":"body","origin":"null","pointer lock API":"present","pointer lock":"not tried (press L)","since bridge result":"0.5 s"},"after":{"verdict":"KEYS REACH PAGE · NO POINTER counted","pointerdown":"0","click":"0","keydown":"1","last key":"k","last pointer target":"—","document.hasFocus()":"true","active element":"body","origin":"null","pointer lock API":"present","pointer lock":"not tried (press L)","since bridge result":"0.6 s"}}
+    FAIL  (b) last pointer target is the canvas  — —
+    FAIL  (b) verdict reads INPUT REACHES PAGE  — KEYS REACH PAGE · NO POINTER counted
+CASE bubble-only backend=builtin scenario=auto check-exit=0 caps-exit=0 -> AS EXPECTED
+CASE no-keepalive-ionq-mock backend=ionq-mock scenario=auto check-exit=1 caps-exit=0 -> CAUGHT
+    FAIL  (a) main.js still running after the bridge result (not Done.)  — {"status":"done","jobs":0,"refused":0,"error":null}
+    FAIL  (c) auto-send: counts shown on the page  — nothing within 60 s
+    FAIL  (c) status says the job came from the countdown  — ["Auto-send fired.","Backend job failed: Error: IonQ job sent after main.js returned (Qollab proxy rewrite off)"]
+    FAIL  (c) press after auto-send: runner saw no second backend.run  — {"status":"done","jobs":1,"refused":1,"error":null}
+CASE wrong-bridge backend=builtin scenario=auto check-exit=1 caps-exit=0 -> CAUGHT
+    FAIL  bridge: exact P(00)=P(11)=0.5, nothing else  — {"11":1}
+    FAIL  bridge: reduced purity of one half = 0.5  — 1
+    FAIL  (c) auto-send: both 00 and 11 present, each 88..168 of 256  — {"11":256}
+CASE wrong-backend-circuit backend=builtin scenario=auto check-exit=1 caps-exit=0 -> CAUGHT
+    FAIL  (c) auto-send: ideal Bell counts only 00/11  — ["10","01"]
+    FAIL  (c) auto-send: both 00 and 11 present, each 88..168 of 256  — {"10":124,"01":132}
+CASE no-render backend=builtin scenario=auto check-exit=1 caps-exit=0 -> CAUGHT
+    FAIL  Three.js canvas shows the cyan cube (pixels)  — {"w":960,"h":731,"cyan":52,"cyanShare":0.0001}
+CASE no-diag backend=builtin scenario=auto check-exit=1 caps-exit=0 -> CAUGHT
+    FAIL  (a) diag panel rendered with the three counters at 0  — {}
+    FAIL  (b) one canvas click counted: pointerdown and click +1  — {"before":{},"after":{}}
+    FAIL  (b) one keypress counted, last key k  — {}
+    FAIL  (b) last pointer target is the canvas
+    FAIL  (b) document.hasFocus() true after the click
+    FAIL  (b) verdict reads INPUT REACHES PAGE
+    FAIL  (b) frame origin is opaque ("null"), as on Qollab
+    FAIL  (b) pointer lock REFUSED, as in Qollab's allow-scripts-only frame  — no answer
+CASE wrong-build backend=builtin scenario=auto check-exit=2 caps-exit=0 -> CAUGHT
+    ABORT: served build g0-smoke-2026-10-10c is not the expected not-the-served-build

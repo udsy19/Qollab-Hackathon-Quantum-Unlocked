@@ -1,0 +1,10 @@
+  info: echo/quantum/smoke.py:49 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: backend.run: exactly one call site, echo/main.js:119
+LIMITATIONS (not covered by any rule above):
+  - backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+  - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
+scanned 9 files (5 code files) under /var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.oFa9pPoNDl/echo
+GREEN: no static Qollab rule broken (see LIMITATIONS for what this cannot prove)

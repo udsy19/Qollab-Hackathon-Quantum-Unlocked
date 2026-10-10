@@ -70,10 +70,12 @@ function tryPointerLock() {
 }
 
 function verdict() {
-  const any = counts.pointerdown + counts.keydown + counts.click;
-  if (!any) return 'NO INPUT YET — click inside this page, then press a key';
-  if (!counts.keydown) return 'POINTER REACHES PAGE · no key yet (click first, then type)';
-  return 'INPUT REACHES PAGE (pointer + keys)';
+  const pointer = counts.pointerdown + counts.click > 0;
+  const keys = counts.keydown > 0;
+  if (pointer && keys) return 'INPUT REACHES PAGE (pointer + keys)';
+  if (pointer) return 'POINTER REACHES PAGE · no key yet (click first, then type)';
+  if (keys) return 'KEYS REACH PAGE · NO POINTER counted';
+  return 'NO INPUT YET — click inside this page, then press a key';
 }
 
 function render() {

@@ -1,0 +1,26 @@
+bridge result on the page 9.3s after load
+PASS  (a) diag panel rendered with the three counters at 0  — {"verdict":"NO INPUT YET — click inside this page, then press a key","pointerdown":"0","click":"0","keydown":"0","last key":"—","last pointer target":"—","document.hasFocus()":"false","active element":"body","origin":"null","pointer lock API":"present","pointer lock":"not tried (press L)","since bridge result":"0.0 s"}
+PASS  (a) main.js still running after the bridge result (not Done.)  — {"status":"running","jobs":0,"refused":0,"error":null}
+PASS  (a) auto-send countdown visible  — Auto-sending the one job in 5 s…
+PASS  (b) one canvas click counted: pointerdown and click +1  — {"before":{"verdict":"POINTER REACHES PAGE · no key yet (click first, then type)","pointerdown":"1","click":"1","keydown":"0","last key":"—","last pointer target":"button#autosend-cancel","document.hasFocus()":"true","active element":"button#autosend-cancel","origin":"null","pointer lock API":"present","pointer lock":"not tried (press L)","since bridge result":"0.8 s"},"after":{"verdict":"INPUT REACHES PAGE (pointer + keys)","pointerdown":"2","click":"2","keydown":"1","last key":"k","last pointer target":"canvas#scene","document.hasFocus()":"true","active element":"body","origin":"null","pointer lock API":"present","pointer lock":"not tried (press L)","since bridge result":"0.9 s"}}
+PASS  (b) one keypress counted, last key k  — {"verdict":"INPUT REACHES PAGE (pointer + keys)","pointerdown":"2","click":"2","keydown":"1","last key":"k","last pointer target":"canvas#scene","document.hasFocus()":"true","active element":"body","origin":"null","pointer lock API":"present","pointer lock":"not tried (press L)","since bridge result":"0.9 s"}
+PASS  (b) last pointer target is the canvas  — canvas#scene
+PASS  (b) document.hasFocus() true after the click  — true
+PASS  (b) verdict reads INPUT REACHES PAGE  — INPUT REACHES PAGE (pointer + keys)
+PASS  (b) frame origin is opaque ("null"), as on Qollab  — null
+PASS  (b) pointer lock REFUSED, as in Qollab's allow-scripts-only frame  — REFUSED (SecurityError)
+PASS  build token visible  — g0-smoke-2026-10-10c
+PASS  served build matches --expect-build  — g0-smoke-2026-10-10c
+PASS  backend name rendered from injected backend  — basic_simulator
+PASS  runner sandbox: localStorage and POST blocked, no WebSocket/Worker  — {"storage":"blocked","post":"blocked","websocket":"undefined","worker":"undefined"}
+PASS  Three.js canvas shows the cyan cube (pixels)  — {"w":960,"h":689,"cyan":34977,"cyanShare":0.0529}
+PASS  bridge: exact P(00)=P(11)=0.5, nothing else  — {"11":0.5,"00":0.5}
+PASS  bridge: reduced purity of one half = 0.5  — 0.5
+PASS  bridge: ran in Pyodide (sys.platform emscripten)  — emscripten
+PASS  bridge: Qiskit 2.x  — 2.5.2
+PASS  (d) cancel: runner saw 0 backend.run calls  — {"status":"running","jobs":0,"refused":0,"error":null}
+PASS  (d) cancel: no counts on the page  — 
+PASS  (d) cancel: page says the auto-send was cancelled  — Auto-send cancelled. Press Verify to send the one job.
+PASS  (d) cancel: main.js still running, so Verify can still send the one job  — {"status":"running","jobs":0,"refused":0,"error":null}
+23/23 checks passed
+exit=0
