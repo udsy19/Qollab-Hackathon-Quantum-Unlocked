@@ -1,0 +1,7 @@
+valid   seed=0 bits={"m0":1,"m1":1} F=1 parameters={"stateId":"story_token","applyX":true,"applyZ":true,"seed":0}
+valid   seed=1 bits={"m0":0,"m1":0} F=1 parameters={"stateId":"story_token","applyX":false,"applyZ":false,"seed":1}
+valid   seed=5 bits={"m0":1,"m1":0} F=1 parameters={"stateId":"story_token","applyX":false,"applyZ":true,"seed":5}
+valid   seed=7 bits={"m0":0,"m1":1} F=1 parameters={"stateId":"story_token","applyX":true,"applyZ":false,"seed":7}
+second live_commit without reset: TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again.
+engine commits: 4/4 valid
+exit 0

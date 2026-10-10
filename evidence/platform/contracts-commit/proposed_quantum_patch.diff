@@ -1,0 +1,20 @@
+--- /tmp/ccr/q/echo/quantum/teleportation.py	2026-10-10 00:30:27
++++ /tmp/ccr/qp/echo/quantum/teleportation.py	2026-10-10 00:36:07
+@@ -252,7 +252,7 @@
+ 
+ 
+ def _commit_parameters(seed):
+-    return {"state": TOKEN} if seed is None else {"state": TOKEN, "seed": seed}
++    return {} if seed is None else {"seed": seed}
+ 
+ 
+ def live_commit(seed=None, rng=None):
+@@ -278,7 +278,7 @@
+         circuit_description=(f"prepare the story token on q0; {PROTOCOL}; measure {M0_LABEL}, {M1_LABEL}; "
+                              f"Bob applies X iff {M1_LABEL} = 1, Z iff {M0_LABEL} = 1"),
+         qubits=3,
+-        parameters=_commit_parameters(seed),
++        parameters={"stateId": "story_token", "applyX": rule["applyX"], "applyZ": rule["applyZ"], **_commit_parameters(seed)},
+         probabilities=probs,
+         key_qubits=BRANCH_KEY_QUBITS,
+         measurement_bits={"m0": m0, "m1": m1},

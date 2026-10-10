@@ -1,0 +1,17 @@
+merge-tree main vs land-2:
+f31fe0ef214dfe05a527bb7c0a648e9da39a6ad5
+exit 0
+merge-tree main vs contracts-commit-result:
+exit 1
+diff --stat main...land-2:
+ echo/CONTRACTS.md                  | 27 ++++++++++++++-
+ echo/contracts.js                  | 58 +++++++++++++++++++++++++++----
+ tools/contract-check/check.mjs     | 71 ++++++++++++++++++++++++++++++++++++--
+ tools/contract-check/fixtures.json | 36 +++++++++----------
+ tools/contract-check/sabotage.py   | 65 ++++++++++++++++++++++++----------
+ 5 files changed, 211 insertions(+), 46 deletions(-)
+merge-tree lane/platform/integration vs contracts-commit-result:
+52123017139afb0a671f3f35113a3666cd7a0c03
+exit 0
+merge-tree main vs 32838bc (this branch's base, before any change of mine): conflicts on vault/Map.md, vault/Reports/README.md (pre-existing)
+contract files conflict main vs work branch because main carries them as squash 5a90cdf; contracts-land-2 exists for that reason.

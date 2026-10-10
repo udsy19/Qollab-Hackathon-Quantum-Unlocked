@@ -1,0 +1,19 @@
+INVALID seed=0 bits={"m0":1,"m1":1} F=1 parameters={"state":"token","seed":0}
+    - commit result parameters.stateId must be STORY_TOKEN_ID "story_token", got nothing
+    - commit result parameters.applyX must be the boolean correction the receiver applied, got nothing
+    - commit result parameters.applyZ must be the boolean correction the receiver applied, got nothing
+INVALID seed=1 bits={"m0":0,"m1":0} F=1 parameters={"state":"token","seed":1}
+    - commit result parameters.stateId must be STORY_TOKEN_ID "story_token", got nothing
+    - commit result parameters.applyX must be the boolean correction the receiver applied, got nothing
+    - commit result parameters.applyZ must be the boolean correction the receiver applied, got nothing
+INVALID seed=5 bits={"m0":1,"m1":0} F=1 parameters={"state":"token","seed":5}
+    - commit result parameters.stateId must be STORY_TOKEN_ID "story_token", got nothing
+    - commit result parameters.applyX must be the boolean correction the receiver applied, got nothing
+    - commit result parameters.applyZ must be the boolean correction the receiver applied, got nothing
+INVALID seed=7 bits={"m0":0,"m1":1} F=1 parameters={"state":"token","seed":7}
+    - commit result parameters.stateId must be STORY_TOKEN_ID "story_token", got nothing
+    - commit result parameters.applyX must be the boolean correction the receiver applied, got nothing
+    - commit result parameters.applyZ must be the boolean correction the receiver applied, got nothing
+second live_commit without reset: TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again.
+engine commits: 0/4 valid
+exit 1
