@@ -1,0 +1,5 @@
+# C0 baseline on 1b193c9
+523 passed, 8 warnings in 0.74s
+pytest exit=0
+oracle sabotage.py exit=0
+true oracle pytest exit=0

@@ -1,0 +1,55 @@
+
+## CLONE_INTRO  (cloning/naive_cnot_clone)
+contract: INVALID
+  - unknown field "kind"
+  - unknown field "circuitText"
+  - unknown field "details"
+  - keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+gameplay: want BASIS_DEMO_OK, got null (need a basis-state copy that succeeded)  STUCK
+
+## CLONE_BASIS_PASSED  (cloning/naive_cnot_clone)
+contract: INVALID
+  - unknown field "kind"
+  - unknown field "circuitText"
+  - unknown field "details"
+  - keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+gameplay: want SUPERPOSITION_DEMO_FAILED, got null (need a superposition copy attempt)  STUCK
+
+## RELAY_INTRO  (bell_signalling/receiver_marginal)
+contract: INVALID
+  - unknown field "kind"
+  - unknown field "circuitText"
+  - unknown field "details"
+  - keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+gameplay: want PREPARE_BELL_PAIR, got PREPARE_BELL_PAIR (result shows the lesson)  ADVANCES
+
+## RELAY_BELL_CREATED  (bell_signalling/receiver_marginal)
+contract: INVALID
+  - unknown field "kind"
+  - unknown field "circuitText"
+  - unknown field "details"
+  - keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+gameplay: want ATTEMPT_NO_SIGNALLING, got null (receiver marginal missing)  STUCK
+
+## TELEPORT_DRY_RUN  (teleportation/branch_model)
+contract: INVALID
+  - unknown field "kind"
+  - unknown field "details"
+  - keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+gameplay: want CORRECT_CALIBRATION, got null (corrections do not match m0=1, m1=0)  STUCK
+
+## TELEPORT_DRY_RUN_PASSED  (teleportation/live_commit)
+contract: INVALID
+  - unknown field "kind"
+  - unknown field "details"
+  - keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+gameplay: want COMMIT_TRANSFER, got null (need the story-token transfer)  STUCK
+
+## BACKEND_VERIFICATION  (bell_verification/-)
+contract: INVALID
+  - unknown field "summary"
+  - experiment must be one of cloning|bell_signalling|teleportation, got string "bell_verification"
+  - keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+
+12 of 13 checks failed
+exit=1  (contracts lane/platform/integration@6378677, missionRules lane/gameplay/integration@31a60f2, results lane/quantum/integration@a9edce2)

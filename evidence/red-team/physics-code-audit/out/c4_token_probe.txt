@@ -1,0 +1,8 @@
+live_commit calls that measured the same token: 6; bits per call: [(1, 0), (1, 1), (0, 0), (0, 1), (0, 1), (0, 0)]
+FAIL: no once-guard in quantum.teleportation.live_commit; the token is re-measured on every call
+STATES names: ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']; story-token entries: []
+FAIL: no fixed hidden story-token state (owner ruling: 'story token fixed + hidden'); live_commit accepts any calibration name, so calibration and commit share one namespace
+live_commit parameters: {'state': 'bloch_a'}  (gameplay reads parameters.stateId == 'story_token')
+generic dry-run states available: ['bloch_a', 'bloch_b'] (fixed angles; owner ruling asks for RANDOM generic dry-run states)
+FAIL: no random generic calibration-state generator in quantum.teleportation
+exit=1
