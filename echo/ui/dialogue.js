@@ -7,6 +7,8 @@ import { el, displayKets } from './accessibility.js';
 const MAX_LINES = 2;
 // A word that closes a sentence: . ? ! or …, then any closing quotes or brackets.
 const SENTENCE_END = /[.?!…]["'”’)\]]*$/;
+// Inside a sentence too long for one page, a clause break reads better than an arbitrary word.
+const CLAUSE_END = /[,;:—]["'”’)\]]*$/;
 const REVEAL_CHARS_PER_SECOND = 60;
 
 export function mountDialogue(root) {
@@ -50,8 +52,8 @@ export function mountDialogue(root) {
   }
 
   // Longest run of words from `start` that fits in MAX_LINES of the live text box, pulled back to
-  // the last sentence end inside it when there is one. A single word longer than the box still
-  // gets its own page (CSS breaks it).
+  // the last sentence end inside it when there is one, else to a clause break in its second half
+  // (so a page is never a lone "Rin,"). A single word longer than the box still gets its own page.
   function measurePage(start) {
     let end = start + 1;
     while (end < words.length) {
@@ -62,6 +64,9 @@ export function mountDialogue(root) {
     if (end < words.length && !SENTENCE_END.test(words[end - 1])) {
       for (let k = end - 1; k > start; k -= 1) {
         if (SENTENCE_END.test(words[k - 1])) return k;
+      }
+      for (let k = end - 1; k > start + (end - start) / 2; k -= 1) {
+        if (CLAUSE_END.test(words[k - 1])) return k;
       }
     }
     return end;

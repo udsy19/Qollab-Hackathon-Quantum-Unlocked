@@ -2,7 +2,7 @@
   "url": "http://127.0.0.1:8801/evidence/story-ui/harness/shell.html",
   "provenance": {
     "version": "shell-polish r1",
-    "hash": "9d4d8d006495"
+    "hash": "bd186c0796f7"
   },
   "keys": [
     "Tab",
@@ -197,6 +197,8 @@
     "Enter (skip reveal)",
     "Enter (next)",
     "Enter (skip reveal)",
+    "Enter (next page)",
+    "Enter (skip reveal)",
     "--- reduced motion by keyboard ---",
     "Escape",
     "Tab",
@@ -245,7 +247,7 @@
     {
       "name": "dialogue: reveal was in progress, Enter skipped to the full caption",
       "ok": true,
-      "detail": "4 → 55"
+      "detail": "6 → 55"
     },
     {
       "name": "dialogue 100%: page 1 is ≤2 lines",
@@ -391,6 +393,11 @@
       "name": "hud 200% with tooltip: nothing leaves the viewport, overflows or overlaps",
       "ok": true,
       "detail": ""
+    },
+    {
+      "name": "dialogue 200%: page 2 opens on a new sentence and shows |0⟩ |1⟩ |+⟩",
+      "ok": true,
+      "detail": "{\"lines\":2,\"page\":\"2/3\",\"text\":\"The duplicator matched the basis values for |0⟩ and |1⟩, but for |+⟩ it produced one correlated two-qubit state,\"}"
     },
     {
       "name": "captions always on: setSettings({subtitles:false}) leaves the dialogue displayed",

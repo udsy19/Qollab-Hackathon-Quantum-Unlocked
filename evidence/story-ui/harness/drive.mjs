@@ -125,6 +125,10 @@ const midSentence = (pages, beats) => page.evaluate((pages, beats) => {
   const lh = parseFloat(getComputedStyle(probe).lineHeight);
   const end = /[.?!…]["'”’)\]]*$/;
   const bad = [];
+  // The probe must measure what the live box would: a narrower or smaller-type probe makes every
+  // sentence "longer than 2 lines" and this check vacuous (sabotage S12 found that null).
+  const pf = getComputedStyle(probe).fontSize, lf = getComputedStyle(live).fontSize;
+  if (Math.abs(probe.clientWidth - live.clientWidth) > 1 || pf !== lf) bad.push(`probe ${probe.clientWidth}px/${pf} does not match the live box ${live.clientWidth}px/${lf}`);
   let bi = 0, consumed = 0;
   const beatWords = beats.map((b) => b.text.trim().split(/\s+/));
   for (const p of pages) {
@@ -294,6 +298,13 @@ try {
   check('hud 200% with tooltip: nothing leaves the viewport, overflows or overlaps', gh.length === 0, gh.join('; '));
   await shot('06b-hud-200.png');
   await page.evaluate(() => echoHarness.hud.hideTooltip());
+  // Page 2 of the long beat: the ket sentence, starting where page 1's sentence ended.
+  await press('Enter', 'Enter (next page)');
+  await press('Enter', 'Enter (skip reveal)');
+  await settle();
+  const p2 = await dialogueLines();
+  check('dialogue 200%: page 2 opens on a new sentence and shows |0⟩ |1⟩ |+⟩', /^The duplicator/.test(p2.text) && /\|0⟩.*\|1⟩.*\|\+⟩/.test(p2.text), JSON.stringify(p2));
+  await shot('06c-dialogue-200-ket-page.png');
   // A stale caller that still passes the retired subtitles:false must not hide the story, and
   // the menu reports settings that pass the platform contract.
   await page.evaluate(() => echoHarness.menu.setSettings({ subtitles: false }));

@@ -1,0 +1,13 @@
+echo/index.html:0 entry-index echo/index.html does not exist: index.html + main.js together make a JS project
+echo/main.js:0 entry-main echo/main.js does not exist: without it Qollab has no JS entry point
+  info: echo/data/teachback.js:115 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/ui/menu.js:60 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: backend.run: 0 call site(s) in scanned code
+LIMITATIONS (not covered by any rule above):
+  - backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+  - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
+scanned 11 files (9 code files) under /Users/udsy/agent-org/lanes/story-ui/wt/shell-polish/echo
+RED: 2 failure(s) across 2 rule(s): entry-index, entry-main
