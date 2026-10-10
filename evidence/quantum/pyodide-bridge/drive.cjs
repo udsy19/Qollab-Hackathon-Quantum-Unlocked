@@ -134,7 +134,12 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
   const follows = (c) => { const { x, z } = choiceOf(c); return x === (calBits.m1 === 1) && z === (calBits.m0 === 1); };
   check('dry run: four X/Z choices were tried on one calibration', dry.length === 4 && dry.filter(follows).length === 1, dry.map((c) => c.label));
   check('spy: exactly 1 backend.run attempted, and it completed (stack entered via callPromising)', s.backendRunAttempts === 1 && s.backendRunCompleted === 1, s);
-  check('spy: exactly 1 entry into qollab_job.run_backend_verification_once', s.verificationCalls === 1, s);
+  // The ONE submit site is bridge.js's JS backend.run (owner ruling 2026-10-10). The route is
+  // attributed below the bridge (pb_spy reads the Python stack), and the JS count is cross-checked
+  // against the runner's own counter, which only a JS-side backend.run can move.
+  check('spy: the job came from JS backend.run (JS = 1, Python = 0)', s.backendRunFromJs === 1 && s.backendRunFromPython === 0, { js: s.backendRunFromJs, python: s.backendRunFromPython });
+  check("runner's own JS-side backend.run counter = 1 (independent of the spy)", runner.jobs === 1 && !runner.refused, { jobs: runner.jobs, refused: runner.refused });
+  check('spy: exactly 1 call of qollab_job.interpret_counts (Python reads the counts once)', s.interpretCalls === 1, s);
   check('verify ×2: the second call returns the SAME promise', v.samePromise === true, v.samePromise);
   check('verify after RESTART: still the same promise (one job per run, not per story)', v.afterRestartSamePromise === true, v.afterRestartSamePromise);
   if (scenario === 'fault') {
@@ -188,6 +193,7 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
       const nv = validateExperimentResult(res);
       check('verify: experiment "backend_verification", engine qollab_selected_backend, re-validates in Node', nv.length === 0 && res.experiment === 'backend_verification' && res.engine === 'qollab_selected_backend', { experiment: res.experiment, engine: res.engine, errors: nv });
       const counts = res.counts || {};
+      check('verify: parameters.shots is the 256 requested, parameters.backend is the backend\'s own name', res.parameters?.shots === 256 && res.parameters?.backend === dump.backendName, { parameters: res.parameters, backendName: dump.backendName });
       check('verify: 256 shots, ideal Bell keys only', Object.values(counts).reduce((a, b) => a + b, 0) === 256 && Object.keys(counts).every((k) => k === '00' || k === '11'), counts);
     }
   }

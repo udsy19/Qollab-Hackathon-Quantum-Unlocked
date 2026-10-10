@@ -132,7 +132,7 @@ const vr = r1.result;
 $('verify-line').textContent = `verifySelectedBackendOnce ×2 → ${r1.status}` +
   (vr ? ` · experiment "${vr.experiment}" · engine ${vr.engine} · counts ${JSON.stringify(vr.counts)} · shots ${vr.parameters?.shots} · contract verdict: ${r1Verdict.length ? r1Verdict.join('; ') : 'valid'}` : '') +
   ` · same promise: ${v1 === v2} · after RESTART same promise: ${v3 === v1} · ` +
-  `spy: backend.run attempts ${dump.spy.counts.backendRunAttempts}, completed ${dump.spy.counts.backendRunCompleted}, ` +
-  `qollab_job calls ${dump.spy.counts.verificationCalls}` + (r1.message ? ` · ${r1.name}: ${r1.message}` : '');
+  `spy: backend.run attempts ${dump.spy.counts.backendRunAttempts} (from JS ${dump.spy.counts.backendRunFromJs}, from Python ${dump.spy.counts.backendRunFromPython}), ` +
+  `completed ${dump.spy.counts.backendRunCompleted}, interpret_counts calls ${dump.spy.counts.interpretCalls}` + (r1.message ? ` · ${r1.name}: ${r1.message}` : '');
 $('platform-line').textContent = `Python ${dump.platform.python} on ${dump.platform.sysPlatform} · Qiskit ${dump.platform.qiskit} · main.js body at ${dump.timing.msFrameStartToMainBody} ms`;
 $('status').textContent = 'harness finished';

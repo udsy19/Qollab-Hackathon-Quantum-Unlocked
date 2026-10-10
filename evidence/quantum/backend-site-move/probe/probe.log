@@ -1,0 +1,139 @@
+{
+ "backend": "builtin",
+ "runner": {
+  "status": "done",
+  "error": null,
+  "jobs": 1,
+  "log": [
+   {
+    "kind": "out",
+    "msg": "numpy already loaded from default channel"
+   },
+   {
+    "kind": "out",
+    "msg": "No new packages to load"
+   },
+   {
+    "kind": "system",
+    "msg": "Compiling / initializing runtime..."
+   },
+   {
+    "kind": "system",
+    "msg": "Running..."
+   },
+   {
+    "kind": "runner",
+    "msg": "runner: backend.run #1 on BasicSimulator"
+   },
+   {
+    "kind": "system",
+    "msg": "Circuit panel: 2 qubits"
+   },
+   {
+    "kind": "system",
+    "msg": "Probabilities panel: {\"0x0\":0.44921875,\"0x3\":0.55078125}"
+   },
+   {
+    "kind": "system",
+    "msg": "Done."
+   }
+  ]
+ },
+ "probe": {
+  "backendName": "basic_simulator",
+  "circuitType": "QuantumCircuit",
+  "counts": {
+   "11": 141,
+   "00": 115
+  },
+  "ok": true,
+  "spy": {
+   "counts": {
+    "backendRunAttempts": 1,
+    "backendRunCompleted": 1,
+    "verificationCalls": 0,
+    "commitCalls": 0,
+    "commitsCompleted": 0,
+    "resetCalls": 0,
+    "branchCalls": 0
+   },
+   "events": [
+    "backend.run attempt #1",
+    "backend.run completed #1"
+   ],
+   "networkMock": false,
+   "fault": false,
+   "branchArgs": []
+  }
+ }
+}
+{
+ "backend": "ionq-mock",
+ "runner": {
+  "status": "done",
+  "error": null,
+  "jobs": 1,
+  "log": [
+   {
+    "kind": "out",
+    "msg": "numpy already loaded from default channel"
+   },
+   {
+    "kind": "out",
+    "msg": "No new packages to load"
+   },
+   {
+    "kind": "system",
+    "msg": "Compiling / initializing runtime..."
+   },
+   {
+    "kind": "system",
+    "msg": "Running..."
+   },
+   {
+    "kind": "runner",
+    "msg": "runner: backend.run #1 on IonQ one-job mock (BasicSimulator)"
+   },
+   {
+    "kind": "system",
+    "msg": "Circuit panel: 2 qubits"
+   },
+   {
+    "kind": "system",
+    "msg": "Probabilities panel: {\"0x3\":0.51953125,\"0x0\":0.48046875}"
+   },
+   {
+    "kind": "system",
+    "msg": "Done."
+   }
+  ]
+ },
+ "probe": {
+  "backendName": "basic_simulator",
+  "circuitType": "QuantumCircuit",
+  "counts": {
+   "11": 133,
+   "00": 123
+  },
+  "ok": true,
+  "spy": {
+   "counts": {
+    "backendRunAttempts": 1,
+    "backendRunCompleted": 1,
+    "verificationCalls": 0,
+    "commitCalls": 0,
+    "commitsCompleted": 0,
+    "resetCalls": 0,
+    "branchCalls": 0
+   },
+   "events": [
+    "backend.run attempt #1",
+    "backend.run completed #1"
+   ],
+   "networkMock": true,
+   "fault": false,
+   "branchArgs": []
+  }
+ }
+}
+probe exit 0

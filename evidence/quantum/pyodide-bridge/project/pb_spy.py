@@ -1,9 +1,11 @@
-"""Harness-only spy (never shipped in echo/): counts every selected-backend job, every entry into
-qollab_job.run_backend_verification_once and every story-token commit, from BELOW the bridge.
+"""Harness-only spy (never shipped in echo/): counts every selected-backend job, every call of
+qollab_job.interpret_counts and every story-token commit, from BELOW the bridge.
 
-It wraps BasicSimulator.run at class level, so it sees a job whichever way it is submitted: from
-Python (our path: JS -> callPromising -> qollab_job -> backend.run) or from JS (the runner's
-wrapBackend Proxy, which is the only path the runner's own `backend.run calls` counter can see).
+It wraps BasicSimulator.run at class level, so it sees a job whichever way it is submitted, and
+attributes each one from the Python call stack, not from anything the bridge says: a job with a
+frame from a project `quantum/` module on the stack was submitted by Python; one with none came
+straight from JS (the runner's wrapBackend Proxy, the only path the runner's own counter can see).
+The one allowed route is JS (owner ruling 2026-10-10: one guarded backend.run site, bridge.js).
 
 Under the runner's `ionq-mock` backend it also stands in for the IonQ client's network round trip:
 Qollab's docs say a plain (non-callPromising) call that reaches an IonQ backend stops with an XHR
@@ -14,8 +16,8 @@ here for the same structural reason. It is an emulation of the mechanism, not of
 Assembled with `--fault` (assemble.sh rewrites FAULT below; the runner forwards no URL flag to
 the frame) it also plays a FAULTY engine, so the bridge's validators have something
 to refuse: a dry-run branch reports fidelity 1.0 for a wrong X/Z choice (the success-on-a-wrong-choice
-lie the contract's cross-check exists for), and the backend job comes back under the pre-ruling name
-"bell_verification". The physics underneath is unchanged.
+lie the contract's cross-check exists for), and interpret_counts names the backend job with the
+pre-ruling name "bell_verification". The physics underneath is unchanged.
 """
 import sys
 import time
@@ -34,7 +36,8 @@ IMPORT_SECONDS = time.perf_counter() - _T0
 
 NETWORK_MOCK = "backend=ionq-mock" in str(js.location.search)
 FAULT = False  # assemble.sh --fault sets this True in the disposable copy
-COUNTS = {"backendRunAttempts": 0, "backendRunCompleted": 0, "verificationCalls": 0, "commitCalls": 0,
+COUNTS = {"backendRunAttempts": 0, "backendRunCompleted": 0, "backendRunFromJs": 0, "backendRunFromPython": 0,
+          "interpretCalls": 0, "commitCalls": 0,
           "commitsCompleted": 0, "resetCalls": 0, "branchCalls": 0}
 BRANCH_ARGS = []  # what teleport_branch actually received, so a dropped angle is visible below the bridge
 EVENTS = []
@@ -42,15 +45,27 @@ EVENTS = []
 _original_run = BasicSimulator.run
 # getattr: a pre-hardening engine (the head-old-python control) lacks some of these; the spy must
 # not be the thing that fails, so a missing function is simply not wrapped (and counts stay 0).
-_original_verify = getattr(qollab_job, "run_backend_verification_once", None)
+_original_interpret = getattr(qollab_job, "interpret_counts", None)
 _original_commit = getattr(teleportation, "live_commit", None)
 _original_reset = getattr(teleportation, "reset_story_token", None)
 _original_branch = getattr(teleportation, "teleport_branch", None)
 
 
+def _submitted_by_python():
+    """True if a frame from a project `quantum/` module is on the stack below this backend.run."""
+    frame = sys._getframe(2)
+    while frame is not None:
+        if "/quantum/" in frame.f_code.co_filename.replace("\\", "/"):
+            return True
+        frame = frame.f_back
+    return False
+
+
 def _spied_run(self, *args, **kwargs):
     COUNTS["backendRunAttempts"] += 1
-    EVENTS.append(f"backend.run attempt #{COUNTS['backendRunAttempts']}")
+    route = "Python" if _submitted_by_python() else "Js"
+    COUNTS[f"backendRunFrom{route}"] += 1
+    EVENTS.append(f"backend.run attempt #{COUNTS['backendRunAttempts']} from {route}")
     if NETWORK_MOCK:
         run_sync(js.Promise.resolve(0))  # raises unless the stack was entered via callPromising
     job = _original_run(self, *args, **kwargs)
@@ -59,10 +74,10 @@ def _spied_run(self, *args, **kwargs):
     return job
 
 
-def _spied_verify(*args, **kwargs):
-    COUNTS["verificationCalls"] += 1
-    EVENTS.append(f"run_backend_verification_once call #{COUNTS['verificationCalls']}")
-    result = _original_verify(*args, **kwargs)
+def _spied_interpret(*args, **kwargs):
+    COUNTS["interpretCalls"] += 1
+    EVENTS.append(f"interpret_counts call #{COUNTS['interpretCalls']}")
+    result = _original_interpret(*args, **kwargs)
     if FAULT:
         result["experiment"] = "bell_verification"
     return result
@@ -95,7 +110,7 @@ def _spied_branch(*args, **kwargs):
 
 
 BasicSimulator.run = _spied_run
-for _module, _name, _original, _spied in ((qollab_job, "run_backend_verification_once", _original_verify, _spied_verify),
+for _module, _name, _original, _spied in ((qollab_job, "interpret_counts", _original_interpret, _spied_interpret),
                                           (teleportation, "live_commit", _original_commit, _spied_commit),
                                           (teleportation, "reset_story_token", _original_reset, _spied_reset),
                                           (teleportation, "teleport_branch", _original_branch, _spied_branch)):
