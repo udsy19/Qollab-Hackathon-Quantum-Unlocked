@@ -1,0 +1,8 @@
+== merged (merged: bell_verification renamed in a copy so only the shots rule is graded)
+REJECT interpret_counts(drift255, 'sim', shots_requested=None)
+         backend_verification parameters.shots must be the 256 requested, got number 255
+REJECT interpret_counts(drift255, 'sim', shots_requested=300)
+         backend_verification parameters.shots must be the 256 requested, got number 300
+ok     interpret_counts(drift255, 'sim', shots_requested=256)
+
+| function | calls | rejected | distinct errors (count) |

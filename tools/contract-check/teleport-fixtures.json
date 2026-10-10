@@ -1,0 +1,704 @@
+{
+ "_comment": "Written by tools/contract-check/teleport_oracle.py (Qiskit). Do not edit by hand.",
+ "qiskit": "2.5.2",
+ "pass": 0.999999,
+ "genericMaxWrong": 0.9,
+ "states": [
+  {
+   "name": "test state ry(1.137) rz(0.44)",
+   "theta": 1.137,
+   "phi": 0.44,
+   "rows": [
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.17666765925,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.673959741857,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.149372598893,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.673959741857,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.149372598893,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.17666765925,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.17666765925,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.149372598893,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.673959741857,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.149372598893,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.673959741857,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.17666765925,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    }
+   ]
+  },
+  {
+   "name": "random generic #1",
+   "theta": 1.100159,
+   "phi": 1.018455,
+   "rows": [
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.205620905324,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.218685435893,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.575693658783,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.218685435893,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.575693658783,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.205620905324,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.205620905324,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.575693658783,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.218685435893,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.575693658783,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.218685435893,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.205620905324,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    }
+   ]
+  },
+  {
+   "name": "random generic #2",
+   "theta": 0.807763,
+   "phi": -0.619512,
+   "rows": [
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.477642620369,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.346249607579,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.176107772052,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.346249607579,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.176107772052,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.477642620369,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.477642620369,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.176107772052,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.346249607579,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.176107772052,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.346249607579,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.477642620369,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    }
+   ]
+  },
+  {
+   "name": "random generic #3",
+   "theta": 1.120536,
+   "phi": 0.797883,
+   "rows": [
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.189398978966,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.395181340821,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.415419680214,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.395181340821,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.415419680214,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 0,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.189398978966,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.189398978966,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.415419680214,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 0.395181340821,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": false,
+     "fidelity": 0.415419680214,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": false,
+     "applyZ": true,
+     "fidelity": 0.395181340821,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": false,
+     "fidelity": 0.189398978966,
+     "branchProbability": 0.25
+    },
+    {
+     "m0": 1,
+     "m1": 1,
+     "applyX": true,
+     "applyZ": true,
+     "fidelity": 1.0,
+     "branchProbability": 0.25
+    }
+   ]
+  }
+ ],
+ "example": {
+  "bitsRequest": {
+   "theta": 1.137,
+   "phi": 0.44
+  },
+  "bitsResult": {
+   "experiment": "teleportation",
+   "engine": "exact_qiskit_local",
+   "circuitDescription": "ry(1.137000) then rz(0.440000) on q0; q0 = source, q1 = local Bell half, q2 = receiver; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1",
+   "qubits": 3,
+   "parameters": {
+    "theta": 1.137,
+    "phi": 0.44
+   },
+   "probabilities": {
+    "00": 0.25,
+    "01": 0.25,
+    "10": 0.25,
+    "11": 0.25
+   },
+   "keyQubits": [
+    1,
+    0
+   ],
+   "measurementBits": {
+    "m0": 1,
+    "m1": 0
+   },
+   "facts": [
+    "SOURCE READOUT m0 = 1. LOCAL BELL-HALF READOUT m1 = 0.",
+    "One sample drawn from the exact Qiskit branch probabilities; one sample proves nothing on its own."
+   ]
+  },
+  "corrections": [
+   {
+    "request": {
+     "theta": 1.137,
+     "phi": 0.44,
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": false
+    },
+    "result": {
+     "experiment": "teleportation",
+     "engine": "exact_qiskit_local",
+     "circuitDescription": "ry(1.137000) then rz(0.440000) on q0; q0 = source, q1 = local Bell half, q2 = receiver; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1; project onto m0=1, m1=0; receiver applies no correction",
+     "qubits": 3,
+     "parameters": {
+      "theta": 1.137,
+      "phi": 0.44,
+      "applyX": false,
+      "applyZ": false
+     },
+     "measurementBits": {
+      "m0": 1,
+      "m1": 0
+     },
+     "fidelity": 0.17666765925,
+     "facts": [
+      "Receiver test fidelity 0.176668."
+     ]
+    }
+   },
+   {
+    "request": {
+     "theta": 1.137,
+     "phi": 0.44,
+     "m0": 1,
+     "m1": 0,
+     "applyX": false,
+     "applyZ": true
+    },
+    "result": {
+     "experiment": "teleportation",
+     "engine": "exact_qiskit_local",
+     "circuitDescription": "ry(1.137000) then rz(0.440000) on q0; q0 = source, q1 = local Bell half, q2 = receiver; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1; project onto m0=1, m1=0; receiver applies Z",
+     "qubits": 3,
+     "parameters": {
+      "theta": 1.137,
+      "phi": 0.44,
+      "applyX": false,
+      "applyZ": true
+     },
+     "measurementBits": {
+      "m0": 1,
+      "m1": 0
+     },
+     "fidelity": 1.0,
+     "facts": [
+      "Receiver test fidelity 1.000000."
+     ]
+    }
+   },
+   {
+    "request": {
+     "theta": 1.137,
+     "phi": 0.44,
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": false
+    },
+    "result": {
+     "experiment": "teleportation",
+     "engine": "exact_qiskit_local",
+     "circuitDescription": "ry(1.137000) then rz(0.440000) on q0; q0 = source, q1 = local Bell half, q2 = receiver; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1; project onto m0=1, m1=0; receiver applies X",
+     "qubits": 3,
+     "parameters": {
+      "theta": 1.137,
+      "phi": 0.44,
+      "applyX": true,
+      "applyZ": false
+     },
+     "measurementBits": {
+      "m0": 1,
+      "m1": 0
+     },
+     "fidelity": 0.149372598893,
+     "facts": [
+      "Receiver test fidelity 0.149373."
+     ]
+    }
+   },
+   {
+    "request": {
+     "theta": 1.137,
+     "phi": 0.44,
+     "m0": 1,
+     "m1": 0,
+     "applyX": true,
+     "applyZ": true
+    },
+    "result": {
+     "experiment": "teleportation",
+     "engine": "exact_qiskit_local",
+     "circuitDescription": "ry(1.137000) then rz(0.440000) on q0; q0 = source, q1 = local Bell half, q2 = receiver; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1; project onto m0=1, m1=0; receiver applies X then Z",
+     "qubits": 3,
+     "parameters": {
+      "theta": 1.137,
+      "phi": 0.44,
+      "applyX": true,
+      "applyZ": true
+     },
+     "measurementBits": {
+      "m0": 1,
+      "m1": 0
+     },
+     "fidelity": 0.673959741857,
+     "facts": [
+      "Receiver test fidelity 0.673960."
+     ]
+    }
+   }
+  ]
+ }
+}

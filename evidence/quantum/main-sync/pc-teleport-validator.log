@@ -1,0 +1,8 @@
+plant on a copy of teleport-hardening-2ac6c6c.jsonl: one forged fidelity (bloch_a m0=1 m1=0 Z) and one phase-1 theta swapped (bloch_b)
+| phase | distinct error | count |
+|---|---|---|
+| phase-2 | phase-2 result fidelity <n> disagrees with the physics of this branch and choice (expected <n>) | 1 |
+| phase-1 | phase-1 result parameters.theta number <n> is not the requested <n> | 1 |
+
+35 results graded, 2 rejected
+exit=1

@@ -14,13 +14,17 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (5)
+## Notes here (9)
 
 - [[Reports/contract-conformance|Quantum bridge results vs the platform's ExperimentResult validator]]
+- [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
 - [[Reports/ionq-sim-rehearsal|IonQ simulator rehearsal of the one selected-backend job (off Qollab)]]
 - [[Reports/pyodide-bridge|The quantum bridge running in Pyodide (local runner)]]
+- [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/quantum-engine-g1|Quantum engine G1: cloning, no-signalling and teleportation measured in local Qiskit]]
 - [[Reports/quantum-physics-review|Quantum physics review: the engine's numbers check out, four gaps in what the tests can see]]
+- [[Reports/quantum-vs-contracts-v2|Quantum engine and bridge.js vs contracts v2 and the platform gates]]
+- [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
 ## Below this folder
 

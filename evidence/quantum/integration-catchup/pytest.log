@@ -1,0 +1,44 @@
+................F....................................................... [ 15%]
+........................................................................ [ 31%]
+........................................................................ [ 47%]
+........................................................................ [ 63%]
+........................................................................ [ 79%]
+........................................................................ [ 95%]
+.....................                                                    [100%]
+=================================== FAILURES ===================================
+____________ test_every_bridge_result_passes_the_platform_validator ____________
+
+tmp_path = PosixPath('/private/var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/pytest-of-udsy/pytest-414/test_every_bridge_result_passe0')
+
+    def test_every_bridge_result_passes_the_platform_validator(tmp_path):
+        calls = list(bridge_calls())
+        assert len(calls) == BRIDGE_CALL_COUNT  # zero calls would be a refusal, not a pass
+        labels, results = zip(*[(label, fn()) for label, fn in calls])
+        verdicts = platform_verdicts(list(results), tmp_path)
+        bad = {}
+        for label, result, errors in zip(labels, results, verdicts):
+            if result["experiment"] == "bell_verification":
+                errors = [e for e in errors if e != PENDING_BELL_VERIFICATION]
+            if errors:
+                bad[label] = errors
+>       assert not bad, json.dumps(bad, indent=1)
+E       AssertionError: {
+E          "qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=256)": [
+E           "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"",
+E           "engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\""
+E          ],
+E          "qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=300)": [
+E           "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"",
+E           "engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\""
+E          ],
+E          "qollab_job.run_bell_verification_once(FakeSelectedBackend())": [
+E           "experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string \"bell_verification\"",
+E           "engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string \"bell_verification\""
+E          ]
+E         }
+E       assert not {'qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=256)': ['experiment must be one of cloning|bell_signalling|...d_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification"']}
+
+echo/tests/test_contract_conformance.py:77: AssertionError
+=========================== short test summary info ============================
+FAILED echo/tests/test_contract_conformance.py::test_every_bridge_result_passes_the_platform_validator
+1 failed, 452 passed in 2.23s

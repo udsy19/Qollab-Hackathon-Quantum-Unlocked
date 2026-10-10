@@ -5,7 +5,7 @@ From `ROADMAP_48_HOURS.md` § Team parallelization (owner-approved 2026-10-09). 
 | lane | owns |
 |---|---|
 | platform | `echo/main.js`, `echo/index.html`, shared contracts (event names, `ExperimentResult` schema, interactable ids), `echo/README.md`, the local runner under `tools/`, release files |
-| quantum | `echo/quantum/`, `echo/tests/` (quantum tests) |
+| quantum | `echo/quantum/` (incl. `bridge.js`), `echo/tests/` (quantum tests) |
 | gameplay | `echo/game/` (except `audio.js`), `echo/scene/` (except the art files below) |
 | story-ui | `echo/ui/`, `echo/data/`, `echo/main.css` |
 | art | `echo/assets/`, `echo/scene/{lighting,rain,props,buildings,effects}.js`, `echo/game/audio.js` |
