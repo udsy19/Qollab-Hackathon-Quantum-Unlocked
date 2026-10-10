@@ -1,0 +1,6 @@
+G0. commit requested outside TELEPORT_DRY_RUN_PASSED x3: engine calls=0; commit is not armed in CLONE_BASIS_PASSED
+G. story_token commit request #1 (first result engine-faulted): ok=false latch=measured_refused_awaiting_ruling engine calls so far=1; corrections do not match m0=0, m1=0
+G. story_token commit request #2 (first result engine-faulted): ok=false latch=measured_refused_awaiting_ruling engine calls so far=1; commit already measured_refused_awaiting_ruling
+G. story_token commit request #3 (first result engine-faulted): ok=false latch=measured_refused_awaiting_ruling engine calls so far=1; commit already measured_refused_awaiting_ruling
+H. calibration generic, m0=0 m1=0, no corrections -> {"event":null,"reason":"correct, but bits 00 need no correction: calibrate again on a run that needs X or Z"}
+I. fresh calibration state theta=0.6537 phi=-3.0231, m0=0 m1=0, chose X (wrong): fidelity shown=0.36463649557; verdict={"event":null,"reason":"corrections do not match m0=0, m1=0"}

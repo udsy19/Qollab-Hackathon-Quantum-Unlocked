@@ -1,0 +1,81 @@
+BASELINE (no sabotage): unit pass 0 fail 1 | a2 exit 0
+    A. re-entrant send, order seen by a later subscriber:
+        world sees enter:FREE_ROAM_ALLEY (machine.state=FREE_ROAM_ALLEY)
+        world sees enter:CLONE_INTRO (machine.state=CLONE_INTRO)
+    B. reset inside handler: enter:OPENING delivered while state=OPENING , reset
+    D. stale result from the PREVIOUS session: old name-compare guard would say stale=false; machine.experiment says stale=true; state now CLONE_INTRO
+    E. bits as strings: {"event":null,"reason":"invalid result: engine must be one of exact_qiskit_local|qollab_selected_backend|documented_preview, got nothing; circuitDescription must be a non-empty string, got nothing; qubits must be an integer ≥ 1, got nothing; facts must be a non-empty array of strings, got nothing; measurementBits.m0 must be the number 0 or 1, got string \"0\""}
+    E. parameters null: {"event":null,"reason":"invalid result: engine must be one of exact_qiskit_local|qollab_selected_backend|documented_preview, got nothing; circuitDescription must be a non-empty string, got nothing; qubits must be an integer ≥ 1, got nothing; parameters must be a plain object, got null; facts must be a non-empty array of strings, got nothing"}
+    E. bell: receiver=1 contradicts receiver=0: {"event":null,"reason":"invalid result: probabilities sum to 1.4, not 1 ± 1e-9"}
+    F. fuzz: 1000 runs, 300000 steps, 36881 accepted, 1781 commits, 1781 commit engine calls, 162607 unknown names thrown (nothing emitted), 78485 steps in CREDITS, invariant violations = 0
+    random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.808046
+    distinct calibration states drawn: 400 of 400 attempts
+
+S1 queue removed (nested send/reset delivered immediately)
+   unit pass 0 fail 1 | a2 exit 0
+   changed:     world sees enter:FREE_ROAM_ALLEY (machine.state=CLONE_INTRO)
+   changed: B. reset inside handler: reset , enter:OPENING delivered while state=TITLE
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.804142
+
+S2a epoch removed from the ticket check
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.805292
+
+S2b seq removed from the ticket check
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.806252
+
+S2c epoch AND seq removed (name compare only, the old guard)
+   unit pass 0 fail 1 | a2 exit 0
+   changed: D. stale result from the PREVIOUS session: old name-compare guard would say stale=true; machine.experiment says stale=false; state now CLONE_BASIS_PASSED
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.808641
+
+S2d stale-session check removed from commitTransfer
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.805320
+
+S3 latch: in-flight/committed check removed
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.802754
+
+S4 latch: a measured refusal re-arms COMMIT
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.806804
+
+S5 direct send(COMMIT_TRANSFER) allowed
+   unit pass 0 fail 1 | a2 exit 0
+   changed: F. fuzz: 1000 runs, 300000 steps, 37337 accepted, 1826 commits, 932 commit engine calls, 164349 unknown names thrown (nothing emitted), 78807 steps in CREDITS, invariant violations = 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.805304
+
+S6 F6 validation + try/catch removed from eventForResult
+   unit pass 0 fail 1 | a2 exit 0
+   changed: E. bits as strings: THROWS invalid bits
+   changed: E. parameters null: THROWS Cannot read properties of null (reading 'state')
+   changed: E. bell: receiver=1 contradicts receiver=0: {"event":null,"reason":"receiver marginal 0.5/0.9 is not 1/2, 1/2"}
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.809042
+
+S7 F7 receiver check reduced to P(0) only
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.805369
+
+S8 F8 spec.mjs skips an unparseable row
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.805960
+
+S9 ack gate removed (ruling 13)
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.809584
+
+S10 00 dry run unlocks COMMIT again
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.792566
+
+S11 fake dry run uses a fixed Pauli state (|+>) instead of fresh random generic
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 100, max fidelity shown for a wrong choice 1.000000
+   changed: distinct calibration states drawn: 1 of 400 attempts
+
+S12 fake dry run reuses ONE generic state for every attempt
+   unit pass 0 fail 1 | a2 exit 0
+   changed: random generic calibration (the game path): 400 dry runs, 300 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.673960
+   changed: distinct calibration states drawn: 1 of 400 attempts
