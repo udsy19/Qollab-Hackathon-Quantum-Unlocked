@@ -14,8 +14,9 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-## Notes here (5)
+## Notes here (6)
 
+- [[Reports/contracts-fidelity-band|Fidelity cross-check: tolerance = band, plus a rounding epsilon]]
 - [[Reports/contracts-pin-thresholds|Contract gate pins the owner-ruled constants]]
 - [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
 - [[Reports/g0-runner-smoke|G0 platform smoke and local Qollab-like runner (measured, local runner only)]]
