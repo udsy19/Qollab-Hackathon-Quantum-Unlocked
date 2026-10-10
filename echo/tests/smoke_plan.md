@@ -27,6 +27,11 @@ has been run on Qollab yet.
    adapter must pass `dict_converter`.
 4. **Teleportation.** `teleport_branch.callPromising('bloch_a', 1, 0, false, true)` gives
    `fidelity === 1`. With `(…, 1, 0, false, false)` it gives `fidelity` 0.176668.
+   Two-phase dry run with keyword arguments (Pyodide passes them with `callKwargs`):
+   `bell_measurement.callKwargs('calibration', {theta: 1.137, phi: 0.44})` returns `measurementBits`
+   and no `fidelity`; `teleport_branch.callKwargs('calibration', m0, m1, x, z, {theta: 1.137, phi: 0.44})`
+   returns the fidelity for those bits. `live_commit()` works once; a second call raises
+   `TokenAlreadyConsumed`; `reset_story_token()` re-arms it.
 5. **Timing.** Record the first-call latency (Qiskit import plus the first Statevector) and the
    latency of a warm call. The game must show CALIBRATING while the first call runs.
 6. **No backend.** None of these calls touches `backend`. The single `backend.run` belongs to
