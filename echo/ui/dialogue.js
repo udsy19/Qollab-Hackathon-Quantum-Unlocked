@@ -1,9 +1,12 @@
-// Subtitled dialogue (vision §6.2): speaker name, at most 2 lines per page, optional reveal,
-// immediate skip to the full caption. A beat too long for 2 lines is split into pages at word
-// boundaries, measured in the live layout so it holds at every text scale.
-import { el } from './accessibility.js';
+// Captioned dialogue (vision §6.2): speaker name, at most 2 lines per page, optional reveal,
+// immediate skip to the full caption. A beat too long for 2 lines is split into pages at sentence
+// boundaries, measured in the live layout so it holds at every text scale; only a single sentence
+// longer than 2 lines is split between words.
+import { el, displayKets } from './accessibility.js';
 
 const MAX_LINES = 2;
+// A word that closes a sentence: . ? ! or …, then any closing quotes or brackets.
+const SENTENCE_END = /[.?!…]["'”’)\]]*$/;
 const REVEAL_CHARS_PER_SECOND = 60;
 
 export function mountDialogue(root) {
@@ -46,14 +49,20 @@ export function mountDialogue(root) {
     return Math.round(node.scrollHeight / lh);
   }
 
-  // Longest run of words from `start` that fits in MAX_LINES of the live text box.
-  // A single word longer than the box still gets its own page (CSS breaks it).
+  // Longest run of words from `start` that fits in MAX_LINES of the live text box, pulled back to
+  // the last sentence end inside it when there is one. A single word longer than the box still
+  // gets its own page (CSS breaks it).
   function measurePage(start) {
     let end = start + 1;
     while (end < words.length) {
       text.textContent = words.slice(start, end + 1).join(' ');
       if (linesOf(text) > MAX_LINES) break;
       end += 1;
+    }
+    if (end < words.length && !SENTENCE_END.test(words[end - 1])) {
+      for (let k = end - 1; k > start; k -= 1) {
+        if (SENTENCE_END.test(words[k - 1])) return k;
+      }
     }
     return end;
   }
@@ -110,7 +119,7 @@ export function mountDialogue(root) {
 
   function startBeat(next) {
     beat = next;
-    words = String(beat.text).trim().split(/\s+/).filter(Boolean);
+    words = displayKets(beat.text).trim().split(/\s+/).filter(Boolean);
     pageStart = 0;
     speaker.textContent = beat.speaker;
     box.dataset.speaker = String(beat.speaker).toLowerCase();

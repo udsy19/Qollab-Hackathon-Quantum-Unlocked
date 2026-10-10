@@ -30,7 +30,8 @@
   display: grid;
   grid-template-rows: auto 1fr auto auto;
   grid-template-areas: "top" "middle" "dialogue" "bottom";
-  gap: 0.5em;
+  /* Capped by the viewport height so three row gaps at 200% text do not push the HUD off a short screen. */
+  gap: min(0.5em, 1.2vh);
   padding: clamp(12px, 2.5vh, 32px) clamp(12px, 2.5vw, 40px);
   box-sizing: border-box;
   overflow: hidden;
@@ -284,7 +285,14 @@
   justify-self: center;
   position: relative;
   width: min(44em, 100%);
-  padding: 0.75em 1.1em 0.6em;
+  /* The speaker and the Continue control share the first row, so a page costs two text lines
+     plus one short header: the HUD rows still fit a 1024×640 screen at 200% text. */
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas: "speaker footer" "text text";
+  align-items: center;
+  column-gap: 1em;
+  padding: 0.6em 1.1em 0.75em;
   border-left: 3px solid var(--echo-cyan);
   pointer-events: auto;
   transition: opacity var(--echo-fade), transform var(--echo-fade), visibility 0s;
@@ -295,11 +303,9 @@
   transform: translateY(0.4em);
   transition: opacity var(--echo-fade), transform var(--echo-fade), visibility 0s linear var(--echo-fade);
 }
-.echo-ui[data-subtitles="off"] .echo-dialogue {
-  display: none;
-}
 
 .echo-dialogue__speaker {
+  grid-area: speaker;
   color: var(--echo-cyan);
   font-family: var(--echo-display);
   font-size: 0.85em;
@@ -314,6 +320,7 @@
 
 /* Exactly two lines of room; dialogue.js paginates so the text never needs a third. */
 .echo-dialogue__text {
+  grid-area: text;
   min-height: 2.9em;
   font-size: 1.15em;
   line-height: 1.45em;
@@ -321,11 +328,11 @@
 }
 
 .echo-dialogue__footer {
+  grid-area: footer;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 0.75em;
-  margin-top: 0.35em;
 }
 .echo-dialogue__page {
   color: var(--echo-muted);
@@ -478,7 +485,28 @@
   border-radius: 2px;
   background: rgba(14, 30, 52, 0.95);
   color: var(--echo-text);
+  /* Form controls do not inherit type by default; set the menu's own face on the control and
+     its options (Chrome renders the open list with the option's font). */
   font: inherit;
+  font-family: var(--echo-display);
+  letter-spacing: 0.06em;
+}
+.echo-select option {
+  background: #0e1e34;
+  color: var(--echo-text);
+  font-family: var(--echo-display);
+}
+
+/* Short screens (1024×640, 1280×720) at large text: tighter menu spacing so a whole panel, Back
+   included, fits without scrolling. */
+@media (max-height: 760px) {
+  .echo-menu__panel:not(.echo-title) { padding: 0.9em 1.2em; }
+  .echo-menu__title { margin-bottom: 0.5em; }
+  .echo-settings { gap: 0.5em; margin-bottom: 0.75em; }
+  .echo-title__echo { font-size: min(8em, 15vw, 14vh); }
+  .echo-title__logo { margin-bottom: 0.5em; }
+  .echo-menu__list { gap: 0.45em; }
+  .echo-title__credit { margin-top: 0.8em; }
 }
 
 .echo-controls {
@@ -504,10 +532,6 @@
 }
 .echo-ui[data-opening="on"] .echo-dialogue {
   z-index: 2;
-}
-/* Captions are always on (owner ruling), even if a stale setting says otherwise. */
-.echo-ui[data-opening="on"][data-subtitles="off"] .echo-dialogue {
-  display: block;
 }
 .echo-ui[data-opening="on"] .echo-dialogue[data-auto="true"] .echo-dialogue__next {
   display: none;

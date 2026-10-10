@@ -1,6 +1,7 @@
 // Layer 4 menus (vision §6.1): title, pause, settings, controls. Keyboard alone drives all of it:
 // Tab/Shift+Tab move (trapped inside the open panel), Enter/Space activate, Esc goes back.
 import { applySettings, normalizeSettings, trapTab, focusableIn, el } from './accessibility.js';
+import { CAPTION_STYLES } from '../contracts.js';
 
 export const CONTROLS = [
   ['W A S D', 'Move'],
@@ -14,6 +15,7 @@ export const CONTROLS = [
 ];
 
 const QUALITY_LABELS = { low: 'Low', med: 'Medium', high: 'High' };
+const CAPTION_STYLE_LABELS = { standard: 'Standard', 'high-contrast': 'High contrast' };
 
 function button(label, action) {
   const b = el('button', 'echo-button echo-menu__item', label);
@@ -88,23 +90,28 @@ export function mountMenu(root, { settings, onChange = () => {}, onStart = () =>
     Object.assign(c, { type: 'range', name: key, min, max, step });
     return c;
   }
-  const subtitles = toggle('subtitles');
+  function select(key, values, labels) {
+    const c = el('select', 'echo-select');
+    c.name = key;
+    for (const value of values) {
+      const o = el('option', '', labels[value] || value);
+      o.value = value;
+      c.append(o);
+    }
+    return c;
+  }
+  // Captions are always on (owner ruling); the player picks only how they look.
+  const captionStyle = select('captionStyle', CAPTION_STYLES, CAPTION_STYLE_LABELS);
   const reducedMotion = toggle('reducedMotion');
   const textScale = range('textScale', 100, 200, 25);
   const textScaleOut = el('output', 'echo-settings__value');
-  const quality = el('select', 'echo-select');
-  quality.name = 'quality';
-  for (const [value, label] of Object.entries(QUALITY_LABELS)) {
-    const o = el('option', '', label);
-    o.value = value;
-    quality.append(o);
-  }
+  const quality = select('quality', Object.keys(QUALITY_LABELS), QUALITY_LABELS);
   const volume = range('volume', 0, 100, 5);
   const volumeOut = el('output', 'echo-settings__value');
   textScaleOut.htmlFor = 'echo-set-textScale';
   volumeOut.htmlFor = 'echo-set-volume';
   form.append(
-    row('Subtitles', subtitles, 'echo-set-subtitles'),
+    row('Caption style', captionStyle, 'echo-set-captionStyle'),
     row('Reduced motion', reducedMotion, 'echo-set-reducedMotion'),
     row('Text size', textScale, 'echo-set-textScale', textScaleOut),
     row('Quality', quality, 'echo-set-quality'),
@@ -115,7 +122,7 @@ export function mountMenu(root, { settings, onChange = () => {}, onStart = () =>
   settingsPanel.append(form, settingsNav);
 
   function syncForm() {
-    subtitles.checked = current.subtitles;
+    captionStyle.value = current.captionStyle;
     reducedMotion.checked = current.reducedMotion;
     textScale.value = String(current.textScale);
     textScaleOut.textContent = `${current.textScale}%`;
