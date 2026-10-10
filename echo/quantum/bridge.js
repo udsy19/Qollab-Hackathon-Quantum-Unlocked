@@ -20,6 +20,7 @@ import * as teleportation from 'quantum.teleportation';
 import * as qollabJob from 'quantum.qollab_job';
 import {
   validateExperimentResult, validateTeleportBitsResult, validateTeleportCorrectionResult, makeCorrectionRequest,
+  BACKEND_SHOTS,
 } from '../contracts.js';
 
 export class ScientificModuleError extends Error {
@@ -119,13 +120,33 @@ export async function resetStoryToken() {
   commit = null;
 }
 
-// The one selected-backend job (§8.4, §8.6, §10.7). IonQ accepts one job per run, so the promise
-// is memoised for the life of the page, failure included: Python's guard in qollab_job.py counts a
-// failed submission as spent, and so does this. On failure it rejects with §8.6's wording.
+// The one selected-backend job (§8.4, §8.6, §10.7), and the ONLY `backend.run` in the game (owner
+// ruling 2026-10-10). Python builds the Bell circuit and reads the counts; it never submits. A JS
+// `backend.run` takes the Python-built QuantumCircuit as it is and enters Python through
+// callPromisingKwargs, the stack an IonQ HTTP request needs. IonQ accepts one job per run, so the
+// promise is memoised for the life of the page, failure included (IonQ may already have counted a
+// failed submission). RESTART does not reset it: one job per run, not per story.
+// On failure it rejects with §8.6's wording.
+const VERIFY_UNAVAILABLE = 'Quantum backend verification unavailable; educational circuit validated locally';
 let verification = null;
 export function verifySelectedBackendOnce() {
-  if (!verification) verification = callEngine(
-    'Quantum backend verification unavailable; educational circuit validated locally',
-    qollabJob.run_backend_verification_once, [backend]);
+  if (!verification) verification = submitVerificationJob();
   return verification;
+}
+
+async function submitVerificationJob() {
+  let circuit, result, counts;
+  try {
+    circuit = await qollabJob.build_backend_verification_circuit.callPromising();
+    const job = await backend.run(circuit, { shots: BACKEND_SHOTS });
+    result = await job.result();
+    counts = result.get_counts();
+    // `backend` goes to Python as well, so the result names the backend as it reports itself.
+    return await callEngine(VERIFY_UNAVAILABLE, qollabJob.interpret_counts, [counts, backend, BACKEND_SHOTS]);
+  } catch (err) {
+    if (err instanceof ScientificModuleError) throw err;
+    throw new ScientificModuleError(VERIFY_UNAVAILABLE, [lastLine(err)], err);
+  } finally {
+    for (const proxy of [counts, result, circuit]) proxy?.destroy?.();
+  }
 }

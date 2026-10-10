@@ -31,12 +31,6 @@ def qubit_ones(result):
     return ones
 
 
-@pytest.fixture
-def job_module():
-    """A fresh module per test: the once-only flag is process state, as it is in one Qollab run."""
-    return importlib.reload(qj)
-
-
 # ---------------------------------------------------------------- endianness, hand-written fixtures
 # Qiskit count keys are written c1 c0: the RIGHTMOST character is classical bit 0, which the
 # circuit fills from q0. These dicts were written by hand from that rule, not produced by the module.
@@ -140,48 +134,44 @@ def test_malformed_or_empty_counts_raise(raw):
 # ---------------------------------------------------------------- the once-only guard
 
 class FakeBackend:
-    """Stands in for the injected backend: records every run call, returns BasicSimulator's job."""
+    """Stands in for the injected backend as bridge.js passes it to interpret_counts. It has a `run`
+    so a Python-side submission would be seen; nothing may call it."""
 
-    name = "fake-selected-backend"
-
-    def __init__(self, fail=False):
+    def __init__(self, name="fake-selected-backend", noise_model=None):
+        self.name = name
+        self.options = type("Options", (), {"noise_model": noise_model})()
         self.calls = 0
-        self.fail = fail
 
     def run(self, circuit, shots):
         self.calls += 1
-        if self.fail:
-            raise ConnectionError("remote job failed")
-        return BasicSimulator().run(circuit, shots=shots)
+        raise AssertionError("Python submitted a job; the one backend.run is bridge.js's")
 
 
-def test_second_run_is_refused_without_touching_the_backend(job_module):
-    backend = FakeBackend()
-    first = job_module.run_backend_verification_once(backend, shots=128)
-    assert first["engine"] == "qollab_selected_backend"
-    with pytest.raises(job_module.BackendJobAlreadyUsed, match="[Rr]estart the run"):
-        job_module.run_backend_verification_once(backend, shots=128)
-    assert backend.calls == 1
-
-
-def test_a_failed_job_still_uses_up_the_one_allowed_job(job_module):
-    """IonQ may count a failed submission against the one job per run, so a retry is refused too."""
-    backend = FakeBackend(fail=True)
-    with pytest.raises(ConnectionError):
-        job_module.run_backend_verification_once(backend, shots=128)
-    with pytest.raises(job_module.BackendJobAlreadyUsed):
-        job_module.run_backend_verification_once(backend, shots=128)
-    assert backend.calls == 1
-
-
-def test_runner_result_names_the_backend_and_follows_the_contract(job_module):
-    result = job_module.run_backend_verification_once(FakeBackend(), shots=128)
-    for field in ("experiment", "engine", "circuitDescription", "qubits", "parameters", "counts", "keyQubits", "facts"):
-        assert field in result, field
+def test_bridge_path_circuit_counts_interpret_names_the_backend_and_never_submits():
+    """bridge.js's order: Python builds, the backend runs it (BasicSimulator here, standing in for
+    JS backend.run), Python reads the counts with the backend handed in, never touching its run."""
+    backend = FakeBackend(noise_model="aria-1")
+    raw = BasicSimulator().run(qj.build_backend_verification_circuit(), shots=256, seed_simulator=3).result().get_counts()
+    result = qj.interpret_counts(raw, backend, shots_requested=256)
+    assert backend.calls == 0
+    assert result["experiment"] == "backend_verification" and result["engine"] == "qollab_selected_backend"
+    assert result["parameters"] == {"shots": 256, "backend": "fake-selected-backend (noise model aria-1)"}
+    assert set(result["counts"]) <= {"00", "11"} and sum(result["counts"].values()) == 256
     assert json.loads(json.dumps(result)) == result
-    assert result["qubits"] == 2
-    assert result["parameters"]["shots"] == 128
-    assert any("fake-selected-backend" in f for f in result["facts"])
+
+
+def test_drift_from_the_256_requested_is_kept_and_said():
+    """parameters.shots stays the 256 requested; a total that drifts is stated in facts, not hidden."""
+    result = qj.interpret_counts({"00": 121, "11": 125, "01": 2, "10": 2}, FakeBackend(), shots_requested=256)
+    assert result["parameters"]["shots"] == 256
+    assert sum(result["counts"].values()) == 250
+    assert "The backend returned 250 counts for 256 requested shots." in result["facts"]
+
+
+def test_no_python_submit_site_remains():
+    """The one backend.run is bridge.js's (owner ruling 2026-10-10); qollab_job has no submitter."""
+    for gone in ("run_backend_verification_once", "BackendJobAlreadyUsed", "_job_submitted", "DEFAULT_SHOTS"):
+        assert not hasattr(qj, gone), gone
 
 
 # ---------------------------------------------------------------- honesty (vision §7.5, §10.7)

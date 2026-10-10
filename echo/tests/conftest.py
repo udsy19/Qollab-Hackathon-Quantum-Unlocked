@@ -30,21 +30,9 @@ DRIFTED_COUNTS = {"00": 121, "11": 125, "01": 2, "10": 2}  # 250 counts for 256 
 
 
 class FakeSelectedBackend:
-    """Stands in for Qollab's injected backend: fixed counts, never a real device."""
+    """Stands in for Qollab's injected backend as bridge.js hands it to interpret_counts: a name only.
+    Nothing in Python submits to it (the one backend.run is bridge.js's)."""
     name = "fake_backend_for_conformance"
-
-    def run(self, circuit, shots):
-        counts = dict(FAKE_COUNTS)
-
-        class Result:
-            def get_counts(self):
-                return counts
-
-        class Job:
-            def result(self):
-                return Result()
-
-        return Job()
 
 
 def bridge_calls():
@@ -94,11 +82,9 @@ def bridge_calls():
     yield ("qollab_job.interpret_counts(DRIFTED_COUNTS, shots_requested=256)",  # total drifts from the request
            lambda: qollab_job.interpret_counts(dict(DRIFTED_COUNTS), FakeSelectedBackend.name, shots_requested=256))
 
-    def once():
-        qollab_job._job_submitted = False  # a fresh run: the one job is still available
-        return qollab_job.run_backend_verification_once(FakeSelectedBackend())
-
-    yield "qollab_job.run_backend_verification_once(FakeSelectedBackend())", once
+    # bridge.js's call: the counts JS read from its one backend.run, the injected backend itself, 256.
+    yield ("qollab_job.interpret_counts(FAKE_COUNTS, FakeSelectedBackend(), shots_requested=256)",
+           lambda: qollab_job.interpret_counts(dict(FAKE_COUNTS), FakeSelectedBackend(), shots_requested=256))
 
 
 BRIDGE_CALL_COUNT = 7 + 3 + 7 * (2 + 16 + 4 + 1) + 3 * (1 + 16 + 1 + 1) + 2 + 3  # by hand from the loops above

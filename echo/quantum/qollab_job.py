@@ -1,13 +1,12 @@
 """The one selected-backend job of an ECHO run: a Bell-pair correlation check (vision §8.4, §10.7).
 
-Every puzzle in the game is computed locally with exact Qiskit. This module is the only place
-that touches the `backend` chosen in Qollab's Select QPU dialog, and it does so at most once per
-run: IonQ backends accept one job per run, and a second `backend.run` stops the run
-(https://qollab.xyz/learn/docs/runtime-environment#one-job-per-run-on-ionq).
-
-The backend is never created or named here. In a JS project it is a JS global; main.js passes it
-in, through `.callPromising` — a plain call on an IonQ backend fails with an XHR ConnectionError
-(https://qollab.xyz/learn/docs/js-qiskit-projects).
+Every puzzle in the game is computed locally with exact Qiskit. This module builds the one circuit
+sent to the `backend` chosen in Qollab's Select QPU dialog and reads the counts that come back. It
+never submits anything: the only `backend.run` in the game is `verifySelectedBackendOnce` in
+bridge.js (owner ruling 2026-10-10), memoised once per run, because IonQ backends accept one job per
+run and a second stops the run (https://qollab.xyz/learn/docs/runtime-environment#one-job-per-run-on-ionq).
+A JS `backend.run` accepts the QuantumCircuit built here as it is (https://qollab.xyz/learn/docs/js-qiskit-projects;
+measured in the local runner, evidence/quantum/backend-site-move/probe/).
 
 Bit order: the circuit measures q0 -> clbit 0 and q1 -> clbit 1. Qiskit writes count keys as
 "c1 c0", so the RIGHTMOST character is q0. qiskit-ionq follows the same convention.
@@ -19,7 +18,6 @@ from qiskit import QuantumCircuit
 
 from .formats import experiment_result
 
-DEFAULT_SHOTS = 256
 NUM_QUBITS = 2
 # Explicit register mapping, written once: classical bit i holds the readout of QUBIT_OF_CLBIT[i].
 QUBIT_OF_CLBIT = (0, 1)
@@ -27,13 +25,6 @@ QUBIT_OF_CLBIT = (0, 1)
 # contract's keyQubits so the UI never has to know the convention.
 KEY_QUBITS = [1, 0]
 BACKEND_EXPERIMENT = "backend_verification"  # the owner's value (owner-answers 2026-10-10)
-
-_job_submitted = False
-
-
-class BackendJobAlreadyUsed(RuntimeError):
-    """Raised on a second verification attempt in the same run."""
-
 
 def build_backend_verification_circuit():
     """H on q0, CNOT q0->q1, measure q0->c0 and q1->c1. Gate-only, so every backend accepts it."""
@@ -85,6 +76,10 @@ def _clbit_values(key):
 def interpret_counts(raw_counts, backend_name, shots_requested=None):
     """Raw counts from the selected backend -> ExperimentResult dict (vision §8.4).
 
+    `backend_name` is a name, or the backend itself (bridge.js passes the injected `backend`), in
+    which case the name the backend reports about itself is used. `shots_requested` is what was
+    asked for: it stays in `parameters.shots`, and a total that drifts from it is said in `facts`.
+
     Anything malformed or empty raises ValueError: the UI must show "verification unavailable",
     never an invented or empty success.
     """
@@ -103,6 +98,8 @@ def interpret_counts(raw_counts, backend_name, shots_requested=None):
         canonical = "".join(str(qubit_bit[q]) for q in KEY_QUBITS)
         counts[canonical] = counts.get(canonical, 0) + int(count)
 
+    if not isinstance(backend_name, str):
+        backend_name = _backend_label(backend_name)
     shots = sum(counts.values())
     if shots == 0:
         raise ValueError("the backend returned zero shots")
@@ -152,20 +149,3 @@ def _backend_label(backend):
         label += f" (noise model {noise})"
     return label
 
-
-def run_backend_verification_once(backend, shots=DEFAULT_SHOTS):
-    """Submit the Bell circuit to the injected backend, at most once per run.
-
-    The allowance is spent BEFORE submitting: if the job fails, IonQ may already have counted
-    it, so a retry in the same run is refused too and the player is told to restart the run.
-    """
-    global _job_submitted
-    if _job_submitted:
-        raise BackendJobAlreadyUsed(
-            "The selected backend allows one verification job per run, and it has been used. "
-            "Restart the run to verify again."
-        )
-    _job_submitted = True
-    job = backend.run(build_backend_verification_circuit(), shots=shots)
-    raw = job.result().get_counts()
-    return interpret_counts(raw, _backend_label(backend), shots_requested=shots)

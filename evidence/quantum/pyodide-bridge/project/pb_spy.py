@@ -53,7 +53,7 @@ _original_branch = getattr(teleportation, "teleport_branch", None)
 
 def _submitted_by_python():
     """True if a frame from a project `quantum/` module is on the stack below this backend.run."""
-    frame = sys._getframe(2)
+    frame = sys._getframe(1).f_back  # the caller of _spied_run; None when JS called it directly
     while frame is not None:
         if "/quantum/" in frame.f_code.co_filename.replace("\\", "/"):
             return True
