@@ -1,6 +1,7 @@
 // Headless playthrough of the gameplay harness through REAL input (keyboard + mouse drag), with
 // screenshots. Usage: node dev/gameplay/world-playthrough.mjs [outDir]   (server must be on :8612)
-// Default outDir is a scratch dir; publishing to evidence/gameplay/ is a deliberate, separate act.
+// Default outDir is a scratch dir; --publish (only after a fully green run) copies the record to
+// PUBLISH_DIR, replacing what was there — a deliberate act, never a side effect of grading.
 // Provenance: the expected BUILD token is read from echo/game/app.js bytes on disk, the served one from
 // the page; a mismatch aborts (exit 2). Exit 0 = every check passed, 1 = a check failed.
 import { createRequire } from 'node:module';
@@ -17,6 +18,7 @@ const URL_ = 'http://127.0.0.1:8612/dev/gameplay/world.html';
 fs.mkdirSync(OUT, { recursive: true });
 const expected = /BUILD = '([^']+)'/.exec(fs.readFileSync(path.join(ROOT, 'echo/game/app.js'), 'utf8'))[1];
 
+const PUBLISH_DIR = path.join(ROOT, 'evidence/gameplay/world-controller');
 const results = [];
 const check = (name, ok, detail = '') => { results.push({ name, ok, detail }); console.log(`${ok ? 'PASS' : 'FAIL'}  ${name}  ${detail}`); };
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -328,4 +330,13 @@ fs.writeFileSync(path.join(OUT, 'results.json'), JSON.stringify({ build: served,
 await browser.close();
 const failed = results.filter((r) => !r.ok).length;
 console.log(`${results.length - failed}/${results.length} checks passed`);
+if (process.argv.includes('--publish')) {
+  if (failed) console.log('not publishing: run was not green');
+  else {
+    fs.rmSync(PUBLISH_DIR, { recursive: true, force: true });
+    fs.mkdirSync(PUBLISH_DIR, { recursive: true });
+    for (const f of fs.readdirSync(OUT)) if (/\.(png|mp4|json)$/.test(f)) fs.copyFileSync(path.join(OUT, f), path.join(PUBLISH_DIR, f));
+    console.log(`published → ${PUBLISH_DIR}`);
+  }
+}
 process.exit(failed ? 1 : 0);

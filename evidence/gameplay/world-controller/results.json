@@ -1,7 +1,7 @@
 {
   "build": "wc-0001-h",
   "renderer": "ANGLE (Apple, ANGLE Metal Renderer: Apple M4 Pro, Unspecified Version)",
-  "readout": "build wc-0001-h  fps 24  ms 0.19  calls 95\nstate FREE_ROAM_ALLEY\npos 0.00, 2.00  focus -",
+  "readout": "build wc-0001-h  fps 32  ms 0.34  calls 95\nstate FREE_ROAM_ALLEY\npos 0.00, 2.00  focus -",
   "results": [
     {
       "name": "title shown at TITLE",
@@ -21,12 +21,12 @@
     {
       "name": "prompt at booth when near + facing",
       "ok": true,
-      "detail": "{\"x\":3.7217025232119485,\"z\":-11.49767487864322,\"heading\":-1.4425182929191296,\"speed\":9.66071013855113e-11}"
+      "detail": "{\"x\":3.580866661302252,\"z\":-11.516083495653922,\"heading\":-1.5006434512244486,\"speed\":3.570540877320276e-11}"
     },
     {
       "name": "no prompt behind pylon (in range, facing)",
       "ok": true,
-      "detail": "dist=2.16 heading=-2.37"
+      "detail": "dist=2.32 heading=-2.42"
     },
     {
       "name": "SABOTAGE pylon collider off → same spot now prompts",
@@ -46,12 +46,12 @@
     {
       "name": "SABOTAGE door A collider off → player passes the door line",
       "ok": true,
-      "detail": "z=-28.52"
+      "detail": "z=-28.57"
     },
     {
       "name": "all colliders off → walkable guard still holds the map edge",
       "ok": true,
-      "detail": "x=-2.49 z=-28.61"
+      "detail": "x=-2.50 z=-28.66"
     },
     {
       "name": "E opens booth terminal, quest → CLONE_INTRO",
@@ -96,7 +96,7 @@
     {
       "name": "prompt at relay core",
       "ok": true,
-      "detail": "{\"x\":-0.04087709966248403,\"z\":-47.52801379127318,\"heading\":0.8580549478821469,\"speed\":0.07411691177812746}"
+      "detail": "{\"x\":-0.029941806083798445,\"z\":-47.50917675475599,\"heading\":0.832000305818275,\"speed\":0.04348823834898041}"
     },
     {
       "name": "terminal \"Sender I\" → RELAY_BELL_CREATED",
