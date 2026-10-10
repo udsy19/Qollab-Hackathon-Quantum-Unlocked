@@ -1,0 +1,10 @@
+== lane/platform/contracts-commit-result d6939d5 (git archive extract /tmp/ccr/arch-contracts-commit-result)
+contract-check: GREEN — 1264/1264 checks passed (contracts: /private/tmp/ccr/arch-contracts-commit-result/echo/contracts.js)
+check exit 0
+sabotage: 101 cases (91 expected red, 10 declared nulls), 0 mismatch(es)
+sabotage exit 0
+== lane/platform/contracts-land-2 ae39421 (git archive extract /tmp/ccr/arch-contracts-land-2)
+contract-check: GREEN — 1264/1264 checks passed (contracts: /private/tmp/ccr/arch-contracts-land-2/echo/contracts.js)
+check exit 0
+sabotage: 101 cases (91 expected red, 10 declared nulls), 0 mismatch(es)
+sabotage exit 0

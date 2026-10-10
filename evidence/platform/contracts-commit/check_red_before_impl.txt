@@ -1,0 +1,75 @@
+· states
+· loud failure on a wrong name
+· transitions: vision edges present, nothing unexplained added
+· invalid events are refused, state unchanged
+· happy path, replayed through transition()
+  trace: BOOT → TITLE → OPENING → FREE_ROAM_ALLEY → CLONE_INTRO → CLONE_BASIS_PASSED → CLONE_SUPERPOSITION_FAILED → CLONE_UNDERSTOOD → RELAY_UNLOCKED → RELAY_INTRO → RELAY_BELL_CREATED → RELAY_SEND_FAILED → RELAY_UNDERSTOOD → ROOFTOP_UNLOCKED → LINK_REPAIRED → TELEPORT_DRY_RUN → TELEPORT_DRY_RUN_PASSED → TELEPORT_COMMITTED → ENDING → DECLASSIFIED → CREDITS
+· who fires each quest event (owner 2026-10-10 "13 lane design questions" #6)
+· MOMENT events (overseer relay 2026-10-10): fired by gameplay, consumed by story-ui, never a state change
+· countdown: holds at 00:00, never negative, never a game-over (overseer relay 2026-10-10; vision §1 anti-goals, §9.3)
+· every §9.1 state reachable from BOOT through transition()
+· interactables
+· world changes keyed by the §9.3 states
+· ExperimentResult validator
+· ExperimentResult.marginalProbabilities (the only sanctioned way to read one qubit out of a key)
+· teleport dry run, two phases (owner 2026-10-10 "red-team physics ambiguities" #2: bits first, corrections second)
+· UI root and settings (overseer relay from story-ui, 2026-10-10)
+· owner-ruled values, pinned from the ruling text (never read back from the module)
+· the one story commit (vision §7.4; owner, gameplay consult 3: one atomic local exact call)
+  FAIL  PIN STORY_TOKEN_ID must be "story_token" (supervisor brief consult 11: the commit names its state parameters.stateId === "story_token"); got undefined
+  FAIL  commit with Qiskit's rule-following branch accepted: test state ry(1.137) rz(0.44) m0=0 m1=0 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: test state ry(1.137) rz(0.44) m0=0 m1=1 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: test state ry(1.137) rz(0.44) m0=1 m1=0 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: test state ry(1.137) rz(0.44) m0=1 m1=1 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #1 m0=0 m1=0 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #1 m0=0 m1=1 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #1 m0=1 m1=0 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #1 m0=1 m1=1 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #2 m0=0 m1=0 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #2 m0=0 m1=1 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #2 m0=1 m1=0 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #2 m0=1 m1=1 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #3 m0=0 m1=0 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #3 m0=0 m1=1 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #3 m0=1 m1=0 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with Qiskit's rule-following branch accepted: random generic #3 m0=1 m1=1 F=1 (errors ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with corrections X=false Z=true on m0=0 m1=0 (not the rule) refused at F=1
+  FAIL  commit with corrections X=true Z=false on m0=0 m1=0 (not the rule) refused at F=1
+  FAIL  commit with corrections X=true Z=true on m0=0 m1=0 (not the rule) refused at F=1
+  FAIL  commit with corrections X=false Z=false on m0=0 m1=1 (not the rule) refused at F=1
+  FAIL  commit with corrections X=false Z=true on m0=0 m1=1 (not the rule) refused at F=1
+  FAIL  commit with corrections X=true Z=true on m0=0 m1=1 (not the rule) refused at F=1
+  FAIL  commit with corrections X=false Z=false on m0=1 m1=0 (not the rule) refused at F=1
+  FAIL  commit with corrections X=true Z=false on m0=1 m1=0 (not the rule) refused at F=1
+  FAIL  commit with corrections X=true Z=true on m0=1 m1=0 (not the rule) refused at F=1
+  FAIL  commit with corrections X=false Z=false on m0=1 m1=1 (not the rule) refused at F=1
+  FAIL  commit with corrections X=false Z=true on m0=1 m1=1 (not the rule) refused at F=1
+  FAIL  commit with corrections X=true Z=false on m0=1 m1=1 (not the rule) refused at F=1
+  FAIL  commit with fidelity 0.9 (red-team row fidelity_0_9_commit) refused (an error mentioning "fidelity"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with m0/m1 swapped: bits 1,0 with the corrections of 0,1 (red-team row m0m1_swapped_commit) refused (an error mentioning "rule"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with no story-token marker refused (an error mentioning "stateId"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with the engine's pre-contract marker parameters.state "token" refused (an error mentioning "stateId"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with a calibration marker refused (an error mentioning "stateId"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with counts on an exact result refused (an error mentioning "counts"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with a documented preview refused (an error mentioning "exact_qiskit_local"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with experiment cloning refused (an error mentioning "teleportation"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with no fidelity refused (an error mentioning "fidelity"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with no measurementBits refused (an error mentioning "measurementBits"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with no applied corrections in parameters refused (an error mentioning "applyX"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with applyZ as the number 1 refused (an error mentioning "applyZ"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with the token's angles (the token is never shown) refused (an error mentioning "theta"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with parameters.m0 contradicting measurementBits refused (an error mentioning "parameters.m0"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  commit with an invalid ExperimentResult (empty facts) refused (an error mentioning "facts"; got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  validateCommitResult(null) returns errors, never throws (got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  validateCommitResult(undefined) returns errors, never throws (got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  validateCommitResult("commit") returns errors, never throws (got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  validateCommitResult([]) returns errors, never throws (got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  validateCommitResult(a Map) returns errors, never throws (got ["NOT A LIST: {\"threw\":\"not exported\"}"])
+  FAIL  PIN commit floor FIDELITY_PASS 0.999999 (vision §7.4): rule-following commit at F=1 accepted (got refused)
+  FAIL  PIN commit floor FIDELITY_PASS 0.999999 (vision §7.4): rule-following commit at F=0.999999 accepted (got refused)
+  FAIL  PIN commit floor FIDELITY_PASS 0.999999 (vision §7.4): rule-following commit at F=0.999998999999999 accepted (got refused)
+  FAIL  phase-1 result carrying the story-token marker refused
+  FAIL  phase-2 result carrying the story-token marker refused
+· the export surface is exactly the documented contract
+  FAIL  exports match the contract (extra [], missing ["STORY_TOKEN_ID","validateCommitResult"])
+contract-check: RED — 1209/1264 checks passed (contracts: /Users/udsy/agent-org/lanes/platform/wt/contracts-commit-result/echo/contracts.js)

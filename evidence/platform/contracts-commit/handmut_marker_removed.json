@@ -1,0 +1,162 @@
+{
+ "engine": "echo/quantum/teleportation.py live_commit",
+ "commits": [
+  {
+   "seed": 0,
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
+    "qubits": 3,
+    "parameters": {
+     "applyX": true,
+     "applyZ": true,
+     "seed": 0
+    },
+    "facts": [
+     "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z ON.",
+     "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+     "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+     "The token has been consumed: this commit cannot be repeated in this run.",
+     "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+    ],
+    "probabilities": {
+     "00": 0.25,
+     "01": 0.25,
+     "10": 0.25,
+     "11": 0.25
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "fidelity": 1.0,
+    "observables": {
+     "branchProbability": 0.25
+    },
+    "measurementBits": {
+     "m0": 1,
+     "m1": 1
+    }
+   }
+  },
+  {
+   "seed": 1,
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
+    "qubits": 3,
+    "parameters": {
+     "applyX": false,
+     "applyZ": false,
+     "seed": 1
+    },
+    "facts": [
+     "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
+     "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+     "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+     "The token has been consumed: this commit cannot be repeated in this run.",
+     "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+    ],
+    "probabilities": {
+     "00": 0.25,
+     "01": 0.25,
+     "10": 0.25,
+     "11": 0.25
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "fidelity": 1.0,
+    "observables": {
+     "branchProbability": 0.25
+    },
+    "measurementBits": {
+     "m0": 0,
+     "m1": 0
+    }
+   }
+  },
+  {
+   "seed": 5,
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
+    "qubits": 3,
+    "parameters": {
+     "applyX": false,
+     "applyZ": true,
+     "seed": 5
+    },
+    "facts": [
+     "Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z ON.",
+     "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+     "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+     "The token has been consumed: this commit cannot be repeated in this run.",
+     "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+    ],
+    "probabilities": {
+     "00": 0.25,
+     "01": 0.25,
+     "10": 0.25,
+     "11": 0.25
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "fidelity": 1.0,
+    "observables": {
+     "branchProbability": 0.25
+    },
+    "measurementBits": {
+     "m0": 1,
+     "m1": 0
+    }
+   }
+  },
+  {
+   "seed": 7,
+   "result": {
+    "experiment": "teleportation",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure SOURCE READOUT m0, LOCAL BELL-HALF READOUT m1; Bob applies X iff LOCAL BELL-HALF READOUT m1 = 1, Z iff SOURCE READOUT m0 = 1",
+    "qubits": 3,
+    "parameters": {
+     "applyX": true,
+     "applyZ": false,
+     "seed": 7
+    },
+    "facts": [
+     "Live bits SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1 travelled over the classical link; the receiver applied X ON, Z OFF.",
+     "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.",
+     "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.",
+     "The token has been consumed: this commit cannot be repeated in this run.",
+     "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
+    ],
+    "probabilities": {
+     "00": 0.25,
+     "01": 0.25,
+     "10": 0.25,
+     "11": 0.25
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "fidelity": 1.0,
+    "observables": {
+     "branchProbability": 0.25
+    },
+    "measurementBits": {
+     "m0": 0,
+     "m1": 1
+    }
+   }
+  }
+ ],
+ "secondCallWithoutReset": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
+}
