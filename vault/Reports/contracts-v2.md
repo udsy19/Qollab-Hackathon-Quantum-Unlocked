@@ -31,8 +31,8 @@ consult 3". Branch `lane/platform/contracts-v2`. Measured on commit 340f45d.
   Removing both goes red. This is defence in depth, not a gap.
 - **Fidelity can be cross-checked without Qiskit.** After the player's choice the receiver holds
   `X^(m1 xor applyX) Z^(m0 xor applyZ)|psi>`, so F is 1, x², z² or y² of the Bloch vector. The validator uses this
-  only to refuse an engine's forged number, and Qiskit's value stays the one on screen (§10.6). The oracle's 64 rows
-  agree with it to 1e-12.
+  only to refuse an engine's forged number, and Qiskit's value stays the one on screen (§10.6). On the oracle's 64 rows
+  it differs from Qiskit by at most 4.7e-13 (a node one-liner over `teleport-fixtures.json`, commit 340f45d). The gate's tolerance is 1e-6.
 - **"Generic" needs a number.** A state is generic iff max(x², y², z²) ≤ 0.9. On |0>, |+> or |+i> one wrong choice
   scores exactly 1, so the lesson is fake there. The validator refuses those requests.
 - **A v1 null is closed.** Rebinding `teleport_terminal` to `TELEPORT_DRY_RUN`/`CORRECT_CALIBRATION` is now red,
