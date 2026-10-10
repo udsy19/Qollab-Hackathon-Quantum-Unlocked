@@ -36,7 +36,165 @@ const DEFAULT_ACCENTS = [
   { color: PALETTE.amber, position: [27, 3.5, -46], intensity: 10, distance: 18 },
 ];
 
-export function createLighting({ scene, renderer = null, quality = DEFAULT_SETTINGS.quality, accents = DEFAULT_ACCENTS, fogDensity = 0.013 } = {}) {
+// Interior fill (vision §5.2 "readability first", §11 relay mood). The district's rooms are lit by art,
+// not by gameplay toggles: every preset gets additive light cards (wall washes, floor pools, ceiling
+// strips: three draw calls for all rooms), and med/high add a few real point lights on top. Coordinates
+// are gameplay's room shells (relay.js / rooftop.js, gameplay-world-controller 1a89bfb); if a room moves,
+// move its entry here. Card: { at, normal: '+x'|'-x'|'+z'|'-z'|'up'|'down', size: [w, h], color, k }.
+// Layer 'base' is always on; 'energy' follows the Bell pair (§9.3 cyan_conduit_illuminates) and
+// 'schematic' the amber schematic (amber_schematic_visible), so the fill never flattens either change.
+const COOL = 0x6f8fb8;
+export const INTERIOR_ROOMS = Object.freeze({
+  passage: {
+    // Down-washes from the ceiling strip: each wall card is centred on the ceiling line, so its upper half
+    // hides behind the roof slab and what shows is light falling down the wall.
+    cards: [
+      { at: [0, 4.38, -33.5], normal: 'down', size: [0.35, 13], color: 0xbfe6f2, k: 0.55 },
+      ...[-28.5, -33.5, -38.5].flatMap((z) => [
+        { at: [0, 0.02, z], normal: 'up', size: [5, 6], color: COOL, k: 0.6 },
+        { at: [-2.48, 4.3, z], normal: '+x', size: [6.5, 7], color: COOL, k: 0.6 },
+        { at: [2.48, 4.3, z], normal: '-x', size: [6.5, 7], color: COOL, k: 0.6 },
+      ]),
+    ],
+    lights: [{ at: [0, 3.9, -33.5], color: 0xa9c4e4, intensity: 14, distance: 11, presets: ['med', 'high'] },
+      { at: [0, 3.9, -39], color: 0xa9c4e4, intensity: 8, distance: 7, presets: ['high'] }],
+  },
+  elevator: {
+    cards: [
+      { at: [13.5, 4.38, -50], normal: 'down', size: [6, 0.3], color: 0xbfe6f2, k: 0.55 },
+      { at: [13.5, 0.02, -50], normal: 'up', size: [7, 5], color: COOL, k: 0.4 },
+      ...[11.5, 15.5].flatMap((x) => [
+        { at: [x, 4.3, -52.48], normal: '+z', size: [5, 6.5], color: COOL, k: 0.33 },
+        { at: [x, 4.3, -47.52], normal: '-z', size: [5, 6.5], color: COOL, k: 0.33 },
+      ]),
+    ],
+    lights: [{ at: [13.5, 3.9, -50], color: 0xa9c4e4, intensity: 12, distance: 9, presets: ['med', 'high'] }],
+  },
+  relay: {
+    // Up-washes from work lights at the foot of each wall: cards centred at floor level, so the lower half
+    // hides below the floor and the light climbs the wall and dies out before the top (the shell reads,
+    // the 10 m height stays dark). Overlapping cards make one continuous band, not spots.
+    cards: [
+      ...[-55, -50, -45].flatMap((z) => [
+        { at: [-8.98, 0.2, z], normal: '+x', size: [10, 12], color: COOL, k: 0.14 },
+        { at: [8.98, 0.2, z], normal: '-x', size: [10, 12], color: COOL, k: 0.14 },
+      ]),
+      // The north wall faces the moonlight key already; it gets half the wash, or it outshines the idle rings.
+      ...[-6, 6].map((x) => ({ at: [x, 0.2, -58.98], normal: '+z', size: [11, 12], color: COOL, k: 0.08 })),
+      ...[-6.2, 6.2].map((x) => ({ at: [x, 0.2, -41.62], normal: '-z', size: [9, 12], color: COOL, k: 0.14 })),
+      { at: [0, 0.02, -50], normal: 'up', size: [16, 16], color: 0x3d6b80, k: 0.55 }, // idle core spill
+      { at: [0, 0.37, -50], normal: 'up', size: [7.6, 7.6], color: 0x56e4f2, k: 0.12, layer: 'energy' }, // plinth top
+      { at: [0, 0.03, -50], normal: 'up', size: [15, 15], color: 0x56e4f2, k: 0.2, layer: 'energy' },
+      { at: [-5.3, 0.04, -50], normal: 'up', size: [8.5, 2.2], color: 0x56e4f2, k: 0.35, layer: 'energy' }, // conduit spill
+      { at: [0, 4.5, -58.97], normal: '+z', size: [9, 5.4], color: 0xf3ae62, k: 0.55, layer: 'schematic' }, // display halo
+      { at: [0, 0.035, -56.6], normal: 'up', size: [8, 4.6], color: 0xf3ae62, k: 0.4, layer: 'schematic' },
+    ],
+    lights: [
+      { at: [0, 8, -50], color: 0x8fa9d4, intensity: 30, distance: 24, presets: ['med', 'high'] },
+      // Rim light on the pedestal: cyan from just above the rings, idle at 30% until the Bell pair.
+      { at: [0, 4.4, -50], color: 0x56e4f2, intensity: 15, distance: 13, presets: ['med', 'high'], layer: 'energy', idle: 0.3 },
+      { at: [0, 4.5, -56.8], color: 0xf3ae62, intensity: 10, distance: 9, presets: ['high'], layer: 'schematic', idle: 0 },
+    ],
+  },
+});
+
+// Low has no interior point lights (§12.2), so its cards carry their share: brighter cards, same layout.
+const CARD_GAIN = { low: 1.4, med: 1, high: 1 };
+const CARD_FACE = { up: [-Math.PI / 2, 0], down: [Math.PI / 2, 0], '+x': [0, Math.PI / 2], '-x': [0, -Math.PI / 2], '+z': [0, 0], '-z': [0, Math.PI] };
+let cardTexture = null;
+// A soft elliptical falloff shared by every card: a broad plateau (so a wash lifts the room's middle
+// tones, not a hot spot) and no hard edge for the eye to catch.
+function lightCardTexture() {
+  if (cardTexture) return cardTexture;
+  const c = document.createElement('canvas');
+  c.width = c.height = 64;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(32, 32, 0, 32, 32, 32);
+  for (const [s, a] of [[0, 1], [0.45, 0.8], [0.8, 0.3], [1, 0]]) g.addColorStop(s, `rgba(255,255,255,${a})`);
+  ctx.fillStyle = g;
+  ctx.fillRect(0, 0, 64, 64);
+  cardTexture = new THREE.CanvasTexture(c);
+  return cardTexture;
+}
+
+// One merged additive mesh per layer: vertex colour = card colour × k.
+function buildCardLayer(cards) {
+  const pos = [], uv = [], col = [], idx = [];
+  const e = new THREE.Euler(), m = new THREE.Matrix4(), v = new THREE.Vector3(), c = new THREE.Color();
+  for (const card of cards) {
+    const [rx, ry] = CARD_FACE[card.normal];
+    m.makeRotationFromEuler(e.set(rx, ry, 0, 'YXZ')).setPosition(...card.at);
+    c.set(card.color).multiplyScalar(card.k);
+    const base = pos.length / 3, [w, h] = card.size;
+    for (const [x, y, u, t] of [[-w / 2, -h / 2, 0, 0], [w / 2, -h / 2, 1, 0], [w / 2, h / 2, 1, 1], [-w / 2, h / 2, 0, 1]]) {
+      v.set(x, y, 0).applyMatrix4(m);
+      pos.push(v.x, v.y, v.z); uv.push(u, t); col.push(c.r, c.g, c.b);
+    }
+    idx.push(base, base + 1, base + 2, base, base + 2, base + 3);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  geo.setAttribute('uv', new THREE.Float32BufferAttribute(uv, 2));
+  geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+  geo.setIndex(idx);
+  const mat = new THREE.MeshBasicMaterial({ map: lightCardTexture(), vertexColors: true, transparent: true, blending: THREE.AdditiveBlending,
+    depthWrite: false, side: THREE.DoubleSide, polygonOffset: true, polygonOffsetFactor: -2, polygonOffsetUnits: -2 });
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.matrixAutoUpdate = false;
+  mesh.renderOrder = 1;
+  return mesh;
+}
+
+function createInteriorFill(group, rooms) {
+  const cards = { base: [], energy: [], schematic: [] };
+  const lights = [];
+  for (const [room, spec] of Object.entries(rooms)) {
+    for (const card of spec.cards) cards[card.layer ?? 'base'].push(card);
+    for (const l of spec.lights) {
+      const light = new THREE.PointLight(l.color, l.intensity, l.distance, 2);
+      light.position.fromArray(l.at);
+      light.name = `interior:${room}`;
+      group.add(light);
+      lights.push({ light, spec: l });
+    }
+  }
+  const layers = Object.fromEntries(Object.entries(cards).filter(([, list]) => list.length).map(([name, list]) => {
+    const mesh = buildCardLayer(list);
+    mesh.name = `interior-cards:${name}`;
+    group.add(mesh);
+    return [name, mesh];
+  }));
+  const level = { base: 1, energy: 0, schematic: 0 };
+  let quality = null;
+  function refresh() {
+    for (const [name, mesh] of Object.entries(layers)) {
+      mesh.material.opacity = Math.min(1, level[name] * CARD_GAIN[quality]);
+      mesh.visible = level[name] > 0;
+    }
+    for (const { light, spec } of lights) {
+      const k = spec.layer ? (spec.idle ?? 0) + (1 - (spec.idle ?? 0)) * level[spec.layer] : 1;
+      light.intensity = spec.intensity * k;
+      // Visibility follows the preset only: a light that toggles with the story would recompile every lit
+      // material mid-scene. Intensity 0 costs a few ALU ops, not a shader swap.
+      light.visible = spec.presets.includes(quality);
+    }
+  }
+  return {
+    lights: lights.map((l) => l.light),
+    layers,
+    setQuality(q) { quality = q; refresh(); },
+    // { relayEnergy, schematic } in 0..1; omitted keys keep their value.
+    set({ relayEnergy = level.energy, schematic = level.schematic } = {}) {
+      level.energy = THREE.MathUtils.clamp(relayEnergy, 0, 1);
+      level.schematic = THREE.MathUtils.clamp(schematic, 0, 1);
+      refresh();
+    },
+    get state() { return { relayEnergy: level.energy, schematic: level.schematic }; },
+    dispose() { for (const mesh of Object.values(layers)) { mesh.geometry.dispose(); mesh.material.dispose(); } for (const l of lights) l.light.dispose(); },
+  };
+}
+
+export function createLighting({ scene, renderer = null, quality = DEFAULT_SETTINGS.quality, accents = DEFAULT_ACCENTS, fogDensity = 0.013, rooms = INTERIOR_ROOMS } = {}) {
   if (!scene) throw new TypeError('createLighting: scene is required');
   // Fog is a shade lighter than the sky so silhouettes separate and the map edge dissolves (§5.5).
   const fogColor = new THREE.Color(0x0b1424);
@@ -59,6 +217,7 @@ export function createLighting({ scene, renderer = null, quality = DEFAULT_SETTI
     group.add(l);
     return l;
   });
+  const interior = createInteriorFill(group, rooms);
   scene.add(group);
 
   // Uniforms shared by every wet material, so accents and quality update all floors at once.
@@ -80,6 +239,7 @@ export function createLighting({ scene, renderer = null, quality = DEFAULT_SETTI
     wetUniforms.uStreaks.value = p.streaks;
     wetUniforms.uPuddles.value = p.puddles;
     key.castShadow = p.shadows;
+    interior.setQuality(q);
     if (renderer) {
       renderer.setPixelRatio(Math.min(globalThis.devicePixelRatio || 1, p.dpr));
       if (renderer.shadowMap.enabled !== p.shadows) {
@@ -142,7 +302,7 @@ if (uStreaks > 0.0 && inverseTransformDirection(normal, viewMatrix).y > 0.7) {
   }
 
   return {
-    group, hemi, key, accents: accentLights,
+    group, hemi, key, accents: accentLights, interior,
     get quality() { return current; },
     dprFor: (q) => QUALITY_PRESETS[checkQuality(q)].dpr,
     createWetGroundMaterial,
@@ -163,6 +323,7 @@ if (uStreaks > 0.0 && inverseTransformDirection(normal, viewMatrix).y > 0.7) {
       scene.remove(group);
       for (const l of [key, ...accentLights]) l.dispose();
       hemi.dispose();
+      interior.dispose();
     },
   };
 }

@@ -25,6 +25,7 @@
 import * as THREE from 'three';
 import { WORLD_CHANGES } from '../contracts.js';
 import { PALETTE } from './lighting.js';
+import { createSchematicTexture } from './props.js';
 
 const DIM = 0x1b2433;
 // Not in the §5.3 palette: the contract names this change "green". A cool mint that sits next to cyan.
@@ -45,6 +46,7 @@ export function createEffects({ scene, refs = {}, audio = null, skyline = null, 
   const pulses = [];
   const applied = new Set();
   let restorationSync = false;
+  let schematicTex = null;
 
   const worldPos = (o) => o.getWorldPosition(new THREE.Vector3());
   function own(mesh) {
@@ -114,20 +116,28 @@ export function createEffects({ scene, refs = {}, audio = null, skyline = null, 
       },
     },
     cyan_conduit_illuminates: {
-      need: ['conduit'],
-      run: ({ instant, rm }) => tint(refs.conduit, PALETTE.cyan, rm ? 0.4 : 1.2, instant),
+      need: ['conduit', 'system:lighting'],
+      run: ({ instant, rm }) => {
+        tint(refs.conduit, PALETTE.cyan, rm ? 0.4 : 1.2, instant);
+        // The chamber itself wakes: cyan spill on the floor and pedestal, the rim light comes up.
+        tween(rm ? 0.4 : 1.6, (k) => lighting.interior.set({ relayEnergy: k }), instant);
+      },
     },
     reactor_audio_begins: {
       need: ['system:audio'],
       run: () => audio.play(AUDIO_CUES.reactor_audio_begins),
     },
     amber_schematic_visible: {
-      need: ['schematic'],
+      need: ['schematic', 'system:lighting'],
       run: ({ instant, rm }) => {
+        // A lit display, not a flat card (consult 2 defect 3): the drawn circuit, its halo on the wall
+        // and its spill on the floor fade in together.
         const mat = own(refs.schematic);
+        mat.map = schematicTex ??= createSchematicTexture();
+        mat.color.set(0xffffff);
         mat.transparent = true;
         refs.schematic.visible = true;
-        tween(rm ? 0.4 : 1.4, (k) => { mat.opacity = k; }, instant);
+        tween(rm ? 0.4 : 1.4, (k) => { mat.opacity = k; lighting.interior.set({ schematic: k }); }, instant);
       },
     },
     rooftop_access_unlocked: {
@@ -223,11 +233,14 @@ export function createEffects({ scene, refs = {}, audio = null, skyline = null, 
       mesh.visible = orig.visible;
     }
     owned.clear();
+    schematicTex?.dispose();
+    schematicTex = null;
     for (const o of [...added.children]) { added.remove(o); o.geometry.dispose(); o.material.dispose(); }
     applied.clear();
     restorationSync = false;
     skyline?.setRestoration(0);
     lighting?.setRestoration(0);
+    lighting?.interior.set({ relayEnergy: 0, schematic: 0 });
     rain?.setIntensity(1);
   }
 

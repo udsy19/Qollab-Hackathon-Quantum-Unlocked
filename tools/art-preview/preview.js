@@ -157,5 +157,5 @@ restoration ${skyline.progress.toFixed(2)} ${skyline.playing ? 'playing' : ''}  
 }
 requestAnimationFrame(frame);
 
-window.__art = { THREE, scene, camera, renderer, lighting, rain, skyline, effects, refs, audioLog, stats, setView, setQuality, SHELTERS,
+window.__art = { THREE, scene, camera, renderer, district, lighting, rain, skyline, effects, refs, audioLog, stats, setView, setQuality, SHELTERS,
   setWalk: (w) => { walk = w; }, get elapsed() { return elapsed; } };

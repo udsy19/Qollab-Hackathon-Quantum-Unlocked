@@ -661,6 +661,79 @@ export function createConduit(points, kind = 'cyan', { radius = 0.06 } = {}) {
   };
 }
 
+// ------------------------------------------------------------------ relay schematic
+
+// The amber classical schematic on the relay's north wall (§9.3 amber_schematic_visible, §11): the
+// teleportation circuit drawn as an old service display, so it reads as a lit screen, not a sticker.
+// Physics as §7.4 states it: the source and Bell half A are measured (m0 = source readout, m1 = Bell
+// half A); only TWO CLASSICAL BITS (double lines) reach Bell half B, which applies X if m1 = 1, then Z
+// if m0 = 1. The source wire ends at its meter: it is consumed. 2:1, for gameplay's 6 m × 3 m panel.
+export function createSchematicTexture() {
+  const { canvas, tex } = canvasTexture(1024, 512);
+  const ctx = canvas.getContext('2d');
+  const hot = '#ffd9a3', amber = '#f3ae62', faint = 'rgba(243,174,98,0.16)';
+  ctx.fillStyle = '#1e1006';
+  ctx.fillRect(0, 0, 1024, 512);
+  ctx.strokeStyle = faint;
+  ctx.lineWidth = 1;
+  for (let x = 0; x <= 1024; x += 32) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, 512); ctx.stroke(); }
+  for (let y = 0; y <= 512; y += 32) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(1024, y); ctx.stroke(); }
+  ctx.strokeStyle = amber;
+  ctx.lineWidth = 6;
+  ctx.strokeRect(10, 10, 1004, 492);
+  const font = (s) => `700 ${s}px "Helvetica Neue", Arial, sans-serif`;
+  ctx.fillStyle = hot;
+  ctx.textBaseline = 'middle';
+  ctx.font = font(34);
+  ctx.textAlign = 'center';
+  ctx.fillText('CLASSICAL LINK  ·  2 BITS REQUIRED', 512, 58);
+  const W = [170, 280, 390]; // source, Bell A, Bell B
+  ctx.font = font(26);
+  ctx.textAlign = 'left';
+  ['SOURCE', 'BELL A', 'BELL B'].forEach((t, i) => ctx.fillText(t, 34, W[i]));
+  const line = (x0, y0, x1, y1, w = 5, c = hot) => { ctx.strokeStyle = c; ctx.lineWidth = w; ctx.beginPath(); ctx.moveTo(x0, y0); ctx.lineTo(x1, y1); ctx.stroke(); };
+  const dbl = (x0, y0, x1, y1) => {
+    const horiz = y0 === y1;
+    line(x0 - (horiz ? 0 : 5), y0 - (horiz ? 5 : 0), x1 - (horiz ? 0 : 5), y1 - (horiz ? 5 : 0), 3, amber);
+    line(x0 + (horiz ? 0 : 5), y0 + (horiz ? 5 : 0), x1 + (horiz ? 0 : 5), y1 + (horiz ? 5 : 0), 3, amber);
+  };
+  const box = (x, y, label) => {
+    ctx.fillStyle = '#1e1006'; ctx.fillRect(x - 34, y - 34, 68, 68);
+    ctx.strokeStyle = hot; ctx.lineWidth = 5; ctx.strokeRect(x - 34, y - 34, 68, 68);
+    ctx.fillStyle = hot; ctx.font = font(38); ctx.textAlign = 'center'; ctx.fillText(label, x, y + 2);
+  };
+  const meter = (x, y) => {
+    box(x, y, '');
+    ctx.strokeStyle = hot; ctx.lineWidth = 4;
+    ctx.beginPath(); ctx.arc(x, y + 14, 22, Math.PI * 1.15, Math.PI * 1.85); ctx.stroke();
+    line(x, y + 14, x + 16, y - 16, 4);
+  };
+  line(180, W[0], 560, W[0]);          // source: ends at its meter (consumed)
+  line(180, W[1], 560, W[1]);          // Bell A: ends at its meter
+  line(180, W[2], 990, W[2]);          // Bell B: carries the state on
+  line(230, W[1], 230, W[2], 4, amber); // the shared pair
+  ctx.fillStyle = amber; ctx.font = font(24); ctx.textAlign = 'center'; ctx.fillText('PAIR', 230, (W[1] + W[2]) / 2 + 2);
+  ctx.fillStyle = hot;
+  ctx.beginPath(); ctx.arc(330, W[0], 11, 0, Math.PI * 2); ctx.fill(); // CNOT control
+  line(330, W[0], 330, W[1] + 20);
+  ctx.strokeStyle = hot; ctx.lineWidth = 5; ctx.beginPath(); ctx.arc(330, W[1], 20, 0, Math.PI * 2); ctx.stroke();
+  box(430, W[0], 'H');
+  meter(560, W[0]);
+  meter(560, W[1]);
+  dbl(594, W[1], 760, W[1]); dbl(760, W[1], 760, W[2] - 34); // m1 → X
+  dbl(594, W[0], 880, W[0]); dbl(880, W[0], 880, W[2] - 34); // m0 → Z
+  ctx.fillStyle = amber; ctx.font = font(26);
+  ctx.fillText('m1', 680, W[1] - 26); ctx.fillText('m0', 740, W[0] - 26);
+  box(760, W[2], 'X');
+  box(880, W[2], 'Z');
+  ctx.fillStyle = hot; ctx.font = font(30); ctx.textAlign = 'right';
+  ctx.fillText('ψ', 1000, W[2] - 36);
+  ctx.font = font(22); ctx.textAlign = 'center'; ctx.fillStyle = amber;
+  ctx.fillText('X IF m1 = 1  ·  Z IF m0 = 1  ·  NO BITS, NO STATE', 512, 462);
+  tex.needsUpdate = true;
+  return tex;
+}
+
 // ------------------------------------------------------------------ signs and billboards
 
 // Holographic sign: a thin additive panel of text that flickers like a projection (§5.4 "2 holographic
