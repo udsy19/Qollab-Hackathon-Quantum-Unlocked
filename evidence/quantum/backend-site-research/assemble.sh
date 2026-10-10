@@ -42,7 +42,7 @@ done
   echo "  \"runnerRef\": \"$RUNNER_REF@$(git -C "$REPO" rev-parse --short "$RUNNER_REF")\","
   echo "  \"contractsRef\": \"$CONTRACTS_REF@$(git -C "$REPO" rev-parse --short "$CONTRACTS_REF")\","
   echo "  \"pythonRef\": \"HEAD@$(git -C "$REPO" rev-parse --short HEAD)\","
-  echo "  \"harnessDirty\": $(git -C "$REPO" diff --quiet HEAD -- "$HERE" && echo false || echo true),"
+  echo "  \"harnessDirty\": $(git -C "$REPO" diff --quiet HEAD -- "$HERE" ":(exclude)$HERE/out" && echo false || echo true),"
   echo "  \"sha256\": {"
   (cd "$DEST/echo" && find . -type f | sort | while read -r f; do echo "    \"${f#./}\": \"$(shasum -a 256 "$f" | cut -c1-16)\","; done) | sed '$ s/,$//'
   echo "  }"
