@@ -18,6 +18,11 @@ Measured 2026-10-09: **19 notes** carrying an answer.
 
 <!-- INDEX:PROMOTED-BEGIN — hand-kept by the overseer; carried verbatim -->
 *One line per lesson, newest last: `- YYYY-MM-DD · <lane> · <what was tried, measured or rejected> — evidence: <path>`. Promoted by the overseer from `lanes/*/lane-memory.md`.*
+- 2026-10-10 · On real Qollab (Pyodide py3.14.2, Qiskit 2.5.2) `Statevector`/`DensityMatrix`/`partial_trace`/`state_fidelity` work exactly; cast numpy scalars (`np.str_`, `np.float64`) before returning to JS; the interpreter is fresh every Run. Evidence: `evidence/qollab/pyodide-probe-builtin-2026-10-10.txt`, `evidence/qollab/interpreter-fresh-per-run-2026-10-10.jpg`.
+- 2026-10-10 · G0 on Qollab: Three.js scene and `.callPromising`/`toJs({dict_converter})` bridge pass; an in-page button did not respond to the overseer's browser input (cause unresolved — build in an input diagnostic). Evidence: `evidence/qollab/g0-builtin-*.jpg`.
+- 2026-10-10 · Signed in, Qollab's four IonQ remote simulators are Free; IonQ hardware is "Credits apply" (never used). Evidence: `evidence/qollab/select-qpu-signed-in-2026-10-10.png`.
+- 2026-10-10 · Lane tests green on a fake adapter hid a total integration break (12/13 cross-lane checks red): test against real engine output; one result shape in `echo/contracts.js`. Evidence: red-team `evidence/red-team/physics-code-audit/out/cross_lane_check.txt` (lane/red-team/integration).
+- 2026-10-10 · A teleport test suite on named Pauli states alone misses a dropped X or Z, and a wrong correction can still score F=0.957: use generic/random states and a threshold ≥0.999999. Evidence: red-team `vault/Reports/physics-oracle-audit.md` (lane/red-team/integration).
 <!-- INDEX:PROMOTED-END -->
 
 ## Read these first — they bind
@@ -104,6 +109,36 @@ A plan row can name a symbol that lives only on a branch. An agent that trusts `
 > [!warning] This section is NOT graded by `--check`, and everything above it is.
 > It is derived from git branch state, not from the vault, so it changes when a branch is created or deleted anywhere in the repo. Grading it made the gate report STALE for reasons the vault did not cause. Treat the numbers here as of the last regeneration, not as of now; treat a STALE verdict as a real claim about the vault.
 
-**No `lane/*` branch carries a commit origin/main lacks** (checked 6). Everything in flight has landed.
+**29 of 30 `lane/*` branches carry commits origin/main does not have.**
+
+| branch | commits | touches |
+|---|---|---|
+| `lane/gameplay/integration` | 22 | `dev/gameplay`, `echo/CONTRACTS.md`, `echo/contracts.js`, `echo/game` |
+| `lane/gameplay/gameplay-contracts-migration` | 20 | `dev/gameplay`, `echo/CONTRACTS.md`, `echo/contracts.js`, `echo/game` |
+| `lane/quantum/quantum-hardening` | 18 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/platform/contracts-v2` | 17 | `echo/CONTRACTS.md`, `echo/contracts.js`, `evidence/qollab-caps`, `tools/contract-check` |
+| `lane/quantum/integration` | 16 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/platform/integration-shell` | 14 | `echo/CONTRACTS.md`, `echo/QOLLAB_SMOKE_TEST.md`, `echo/contracts.js`, `echo/index.html` |
+| `lane/quantum/pyodide-bridge` | 14 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/platform/integration` | 12 | `echo/CONTRACTS.md`, `echo/QOLLAB_SMOKE_TEST.md`, `echo/contracts.js`, `echo/index.html` |
+| `lane/red-team/integration` | 12 | `evidence/red-team`, `vault/Map.md`, `vault/Reports`, `vault/Research` |
+| `lane/quantum/contract-conformance` | 11 | `echo/quantum`, `echo/tests`, `evidence/quantum`, `evidence/quantum-core` |
+| `lane/quantum/physics-review` | 10 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/gameplay/gameplay-world-controller` | 9 | `dev/gameplay`, `echo/game`, `echo/scene`, `evidence/gameplay` |
+| `lane/red-team/quest-state-audit` | 9 | `evidence/red-team`, `vault/Map.md`, `vault/Reports`, `vault/Research` |
+| `lane/story-ui/data-fixes` | 9 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
+| `lane/story-ui/integration` | 9 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
+| `lane/story-ui/terminals-c4` | 9 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
+| `lane/gameplay/gameplay-quest-review` | 8 | `dev/gameplay`, `echo/game`, `evidence/gameplay-quest-core`, `evidence/gameplay-quest-review` |
+| `lane/red-team/physics-code-audit` | 7 | `evidence/red-team`, `vault/Map.md`, `vault/Reports`, `vault/Sessions` |
+| `lane/gameplay/gameplay-quest-core` | 5 | `dev/gameplay`, `echo/game`, `evidence/gameplay-quest-core`, `vault/Reports` |
+| `lane/platform/echo-caps-gate` | 5 | `echo/CONTRACTS.md`, `echo/contracts.js`, `evidence/qollab-caps`, `tools/contract-check` |
+| `lane/story-ui/terminals` | 4 | `echo/main.css`, `echo/ui`, `evidence/story-ui`, `vault/Map.md` |
+| `lane/platform/g0-runner-smoke` | 3 | `echo/QOLLAB_SMOKE_TEST.md`, `echo/index.html`, `echo/main.css`, `echo/main.js` |
+| `lane/quantum/quantum-core` | 3 | `echo/quantum`, `echo/tests`, `evidence/quantum-core`, `vault/Design` |
+| `lane/red-team/physics-oracle-audit` | 3 | `evidence/red-team`, `vault/Reports`, `vault/Sessions` |
+| `lane/story-ui/story-data` | 3 | `echo/data`, `evidence/story-ui`, `vault/Reports` |
+
+Search them before you build: `node scripts/where.mjs <symbol> --branches`
 
 <!-- INDEX:VOLATILE-END -->

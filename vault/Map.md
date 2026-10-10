@@ -77,8 +77,9 @@ Mission reports, audits and post-mortems — what a lane measured and what it de
 Folder README: [[Reports/README]]
 
 - [[Reports/README|Reports/]]
-- [[Reports/physics-code-audit|Physics code audit: the oracle graded against ECHO's real quantum code]]
-- [[Reports/physics-oracle-audit|Physics oracle and spec audit — ground truth for ECHO's quantum puzzles]]
+- [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
+- [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
+- [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
 ## `Reports/audits/`
 
@@ -96,7 +97,6 @@ What exists outside this repo — competitor teardowns, library evaluations and 
 Folder README: [[Research/README]]
 
 - [[Research/README|Research/]]
-- [[Research/judging-rubric|Judging rubric: what the Qollab × IonQ judges say they weigh, and what each trait looks like for ECHO]]
 - [[Research/qollab-platform-and-submission|Qollab platform, runtime and hackathon submission: what a judge sees and does]]
 
 ## `Sessions/`
@@ -106,7 +106,7 @@ One note per work session, from `Templates/session.md`: what changed, with commi
 Folder README: [[Sessions/README]]
 
 - [[Sessions/2026-10-09-agent-org-setup|2026-10-09 — agent-org-setup]]
-- [[Sessions/2026-10-09-physics-oracle-audit|2026-10-09 — physics-oracle-audit]]
+- [[Sessions/2026-10-10-contracts-v2|2026-10-10 — contracts-v2]]
 - [[Sessions/README|Sessions/]]
 
 ## `Templates/`

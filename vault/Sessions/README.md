@@ -17,7 +17,7 @@ One note per work session, from `Templates/session.md`: what changed, with commi
 ## Notes here (2)
 
 - [[Sessions/2026-10-09-agent-org-setup|2026-10-09 — agent-org-setup]]
-- [[Sessions/2026-10-09-physics-oracle-audit|2026-10-09 — physics-oracle-audit]]
+- [[Sessions/2026-10-10-contracts-v2|2026-10-10 — contracts-v2]]
 
 ---
 
