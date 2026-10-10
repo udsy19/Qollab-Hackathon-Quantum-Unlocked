@@ -1,0 +1,75 @@
+--- test_qollab_job.base.py	2026-10-10 00:44:38
++++ test_qollab_job.py	2026-10-10 00:44:38
+@@ -31,12 +31,6 @@
+     return ones
+ 
+ 
+-@pytest.fixture
+-def job_module():
+-    """A fresh module per test: the once-only flag is process state, as it is in one Qollab run."""
+-    return importlib.reload(qj)
+-
+-
+ # ---------------------------------------------------------------- endianness, hand-written fixtures
+ # Qiskit count keys are written c1 c0: the RIGHTMOST character is classical bit 0, which the
+ # circuit fills from q0. These dicts were written by hand from that rule, not produced by the module.
+@@ -137,45 +131,29 @@
+         qj.interpret_counts(raw, backend_name="hand-written fixture", shots_requested=None)
+ 
+ 
+-# ---------------------------------------------------------------- the once-only guard
++# ---------------------------------------------------------------- the JS-submitted job
+ 
+ class FakeBackend:
+-    """Stands in for the injected backend: records every run call, returns BasicSimulator's job."""
++    """Stands in for the injected backend: Python may read its name, and must never run it."""
+ 
+     name = "fake-selected-backend"
+ 
+-    def __init__(self, fail=False):
+-        self.calls = 0
+-        self.fail = fail
++    def run(self, *args, **kwargs):
++        raise AssertionError("qollab_job ran the backend; the one backend.run lives in bridge.js")
+ 
+-    def run(self, circuit, shots):
+-        self.calls += 1
+-        if self.fail:
+-            raise ConnectionError("remote job failed")
+-        return BasicSimulator().run(circuit, shots=shots)
+ 
++def test_python_never_submits_a_job():
++    """The owner's one guarded site is bridge.js: no Python code here may call `.run(` (AST, not grep)."""
++    import ast
++    tree = ast.parse((ECHO_ROOT / "quantum" / "qollab_job.py").read_text())
++    runs = [n.lineno for n in ast.walk(tree)
++            if isinstance(n, ast.Call) and isinstance(n.func, ast.Attribute) and n.func.attr == "run"]
++    assert runs == []
+ 
+-def test_second_run_is_refused_without_touching_the_backend(job_module):
+-    backend = FakeBackend()
+-    first = job_module.run_backend_verification_once(backend, shots=128)
+-    assert first["engine"] == "qollab_selected_backend"
+-    with pytest.raises(job_module.BackendJobAlreadyUsed, match="[Rr]estart the run"):
+-        job_module.run_backend_verification_once(backend, shots=128)
+-    assert backend.calls == 1
+ 
+-
+-def test_a_failed_job_still_uses_up_the_one_allowed_job(job_module):
+-    """IonQ may count a failed submission against the one job per run, so a retry is refused too."""
+-    backend = FakeBackend(fail=True)
+-    with pytest.raises(ConnectionError):
+-        job_module.run_backend_verification_once(backend, shots=128)
+-    with pytest.raises(job_module.BackendJobAlreadyUsed):
+-        job_module.run_backend_verification_once(backend, shots=128)
+-    assert backend.calls == 1
+-
+-
+-def test_runner_result_names_the_backend_and_follows_the_contract(job_module):
+-    result = job_module.run_backend_verification_once(FakeBackend(), shots=128)
++def test_counts_of_the_submitted_circuit_name_the_backend_and_follow_the_contract():
++    raw = BasicSimulator().run(qj.build_backend_verification_circuit(), shots=128).result().get_counts()
++    result = qj.interpret_backend_counts(raw, FakeBackend(), shots_requested=128)
+     for field in ("experiment", "engine", "circuitDescription", "qubits", "parameters", "counts", "keyQubits", "facts"):
+         assert field in result, field
+     assert json.loads(json.dumps(result)) == result

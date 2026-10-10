@@ -1,0 +1,20 @@
+mutation                                     pytest   derive
+none (baseline control)                     NULL 595 passed in 10.76s   derive NULL
+swap-correction-gates            RED 100 failed, 495 passed in 15.25s   derive RED
+       FAILED echo/tests/test_contract_conformance.py::test_two_phase_dry_run_passes_the_platform_dry_run_validators
+       FAILED echo/tests/test_rulings.py::test_every_wrong_choice_visibly_fails_on_a_calibration_state[0]
+       FAILED echo/tests/test_rulings.py::test_every_wrong_choice_visibly_fails_on_a_calibration_state[1]
+latch-before-compute               RED 6 failed, 589 passed in 14.42s   derive NULL
+       FAILED echo/tests/test_rulings.py::test_a_commit_that_raises_does_not_consume_the_token[_branch]
+       FAILED echo/tests/test_rulings.py::test_a_commit_that_raises_does_not_consume_the_token[experiment_result]
+       FAILED echo/tests/test_rulings.py::test_a_commit_that_raises_does_not_consume_the_token[_sample]
+dry-run-fixed-state                RED 3 failed, 592 passed in 10.24s   derive NULL
+       FAILED echo/tests/test_rulings.py::test_every_calibration_draw_is_generic_and_fresh
+       FAILED echo/tests/test_rulings.py::test_unseeded_dry_runs_draw_different_states
+       FAILED echo/tests/test_rulings.py::test_calibration_state_is_the_one_passed_in_not_hidden_module_state
+ftl-hyphenated-fact                         NULL 595 passed in 13.36s   derive NULL
+swap-bit-labels                             NULL 595 passed in 11.72s   derive NULL
+commit-rule-bits-swapped           RED 5 failed, 590 passed in 20.37s   derive NULL
+       FAILED echo/tests/test_rulings.py::test_commit_delivers_the_token_on_every_live_branch
+       FAILED echo/tests/test_rulings.py::test_a_commit_that_raises_does_not_consume_the_token[_branch]
+       FAILED echo/tests/test_rulings.py::test_a_commit_that_raises_does_not_consume_the_token[experiment_result]

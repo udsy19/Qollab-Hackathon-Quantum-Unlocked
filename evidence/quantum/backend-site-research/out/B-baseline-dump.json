@@ -1,0 +1,290 @@
+{
+  "assembly": {
+    "token": "bs-B-baseline-20261010T005144-6884",
+    "variant": "B-baseline",
+    "runnerRef": "lane/platform/integration@45a45f2",
+    "contractsRef": "lane/platform/integration@45a45f2",
+    "pythonRef": "HEAD@dd289c4",
+    "harnessDirty": false,
+    "sha256": {
+      "bs_spy.py": "ae8f212ea741901d",
+      "contracts.js": "2398c11391f87fa5",
+      "index.html": "1a8287fcde6865d6",
+      "main.css": "c11007d9e339ed9d",
+      "main.js": "c7eac85e7c46e247",
+      "quantum/__init__.py": "4770b5d0e03c289a",
+      "quantum/bridge.js": "3fc88082eed66aa9",
+      "quantum/cloning.py": "9e50d3aba0104f49",
+      "quantum/entanglement.py": "cafbffa371fda437",
+      "quantum/formats.py": "48a73f0a98817f8a",
+      "quantum/qollab_job.py": "92cbad5b09ad1032",
+      "quantum/teleportation.py": "c7e450cbd63bc0ae"
+    }
+  },
+  "runner": {
+    "status": "done",
+    "error": null,
+    "jobs": 0,
+    "refused": 0,
+    "log": [
+      {
+        "kind": "runner",
+        "msg": "runner: 12 files in /private/tmp/bs-run-kXyATn/echo; backend = ionq-mock"
+      },
+      {
+        "kind": "system",
+        "msg": "Loading packages..."
+      },
+      {
+        "kind": "out",
+        "msg": "Loading micropip"
+      },
+      {
+        "kind": "out",
+        "msg": "Loaded micropip"
+      },
+      {
+        "kind": "out",
+        "msg": "Loading numpy, scipy, typing-extensions"
+      },
+      {
+        "kind": "out",
+        "msg": "Loaded numpy, scipy, typing-extensions"
+      },
+      {
+        "kind": "system",
+        "msg": "Loading project files..."
+      },
+      {
+        "kind": "out",
+        "msg": "numpy already loaded from default channel"
+      },
+      {
+        "kind": "out",
+        "msg": "No new packages to load"
+      },
+      {
+        "kind": "system",
+        "msg": "Compiling / initializing runtime..."
+      },
+      {
+        "kind": "system",
+        "msg": "Running..."
+      },
+      {
+        "kind": "system",
+        "msg": "Circuit panel: 2 qubits"
+      },
+      {
+        "kind": "system",
+        "msg": "Probabilities panel: {\"0x0\":0.47265625,\"0x3\":0.52734375}"
+      },
+      {
+        "kind": "out",
+        "msg": "harness B-baseline: python-side backend.run calls 1"
+      },
+      {
+        "kind": "system",
+        "msg": "Done."
+      }
+    ]
+  },
+  "dump": {
+    "build": "bs-B-baseline-20261010T005144-6884",
+    "variant": "B-baseline",
+    "backendName": "basic_simulator",
+    "samePromise": true,
+    "first": {
+      "status": "verified",
+      "result": {
+        "experiment": "backend_verification",
+        "engine": "qollab_selected_backend",
+        "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
+        "qubits": 2,
+        "parameters": {
+          "shots": 256,
+          "backend": "basic_simulator"
+        },
+        "facts": [
+          "Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.",
+          "Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.",
+          "256 of 256 shots (100.0%) had both qubits agree (00 or 11).",
+          "Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).",
+          "This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.",
+          "The agreement carries no message: on its own, each qubit reads 0 or 1 at random.",
+          "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
+        ],
+        "counts": {
+          "11": 135,
+          "00": 121
+        },
+        "keyQubits": [
+          1,
+          0
+        ]
+      }
+    },
+    "second": {
+      "status": "verified",
+      "result": {
+        "experiment": "backend_verification",
+        "engine": "qollab_selected_backend",
+        "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
+        "qubits": 2,
+        "parameters": {
+          "shots": 256,
+          "backend": "basic_simulator"
+        },
+        "facts": [
+          "Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.",
+          "Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.",
+          "256 of 256 shots (100.0%) had both qubits agree (00 or 11).",
+          "Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).",
+          "This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.",
+          "The agreement carries no message: on its own, each qubit reads 0 or 1 at random.",
+          "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
+        ],
+        "counts": {
+          "11": 135,
+          "00": 121
+        },
+        "keyQubits": [
+          1,
+          0
+        ]
+      }
+    },
+    "spy": {
+      "pythonBackendRunCalls": 1,
+      "jobs": [
+        {
+          "attempt": 1,
+          "circuit": "echo_backend_verification",
+          "ops": [
+            "h",
+            "cx",
+            "measure",
+            "measure"
+          ],
+          "kwargs": {
+            "shots": 256
+          },
+          "rawCounts": {
+            "11": 135,
+            "00": 121
+          }
+        }
+      ],
+      "networkMock": true,
+      "control": false
+    }
+  },
+  "checks": [
+    {
+      "name": "served build token matches the one just written",
+      "ok": true,
+      "detail": "bs-B-baseline-20261010T005144-6884"
+    },
+    {
+      "name": "harness main.js ran to the end without error",
+      "ok": true,
+      "detail": "done"
+    },
+    {
+      "name": "runner's own JS-side counter: exactly 1 backend.run",
+      "ok": false,
+      "detail": {
+        "jobs": 0,
+        "refusedByRunner": 0
+      }
+    },
+    {
+      "name": "runner refused nothing (IonQ one-job mock)",
+      "ok": true,
+      "detail": 0
+    },
+    {
+      "name": "Python-side spy (BasicSimulator.run): exactly 1 job",
+      "ok": true,
+      "detail": 1
+    },
+    {
+      "name": "verify asked twice: the second call is the same promise",
+      "ok": true,
+      "detail": true
+    },
+    {
+      "name": "submitted circuit is the Bell circuit",
+      "ok": true,
+      "detail": {
+        "name": "echo_backend_verification",
+        "ops": [
+          "h",
+          "cx",
+          "measure",
+          "measure"
+        ]
+      }
+    },
+    {
+      "name": "submitted with shots=256",
+      "ok": true,
+      "detail": {
+        "shots": 256
+      }
+    },
+    {
+      "name": "raw keys: only 00/11, all shots",
+      "ok": true,
+      "detail": {
+        "11": 135,
+        "00": 121
+      }
+    },
+    {
+      "name": "verify #1 delivered a result",
+      "ok": true,
+      "detail": "verified"
+    },
+    {
+      "name": "delivered result re-validates in Node from the contract bytes",
+      "ok": true,
+      "detail": []
+    },
+    {
+      "name": "experiment backend_verification · engine qollab_selected_backend",
+      "ok": true,
+      "detail": [
+        "backend_verification",
+        "qollab_selected_backend"
+      ]
+    },
+    {
+      "name": "delivered counts decode to q0 == q1 on every shot, matching the raw readout",
+      "ok": true,
+      "detail": {
+        "counts": {
+          "11": 135,
+          "00": 121
+        },
+        "keyQubits": [
+          1,
+          0
+        ],
+        "ones": {
+          "q0": 135,
+          "q1": 135
+        },
+        "rawQ": {
+          "q0": 135,
+          "q1": 135
+        }
+      }
+    },
+    {
+      "name": "the fact line names the backend the runtime reported",
+      "ok": true,
+      "detail": "basic_simulator"
+    }
+  ]
+}

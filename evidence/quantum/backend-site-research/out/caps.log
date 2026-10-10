@@ -1,0 +1,19 @@
+### head: HEAD 2f103eb echo/, stub main.js + index.html
+echo/quantum/qollab_job.py:169 backend-run-python Python calls backend.run itself; only JS may, unless the owner rules otherwise
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+scanned 21 files (19 code files) under /tmp/bs-v-wsM7/head/echo
+RED: 1 failure(s) across 1 rule(s): backend-run-python
+exit 1
+### proposed: HEAD 2f103eb echo/ + proposed bridge.js/qollab_job.py, stub main.js + index.html
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+scanned 21 files (19 code files) under /tmp/bs-v-wsM7/proposed/echo
+GREEN: no static Qollab rule broken (see LIMITATIONS for what this cannot prove)
+exit 0
+### proposed + platform lane/platform/integration main.js (its game/ui imports are absent here, so import-unresolved also fires)
+echo/main.js:199 backend-run-count backend.run call site 1 of 2 in echo/**/*.js; at most one is allowed (a second job stops the run on IonQ)
+echo/quantum/bridge.js:141 backend-run-count backend.run call site 2 of 2 in echo/**/*.js; at most one is allowed (a second job stops the run on IonQ)
+RED: 8 failure(s) across 2 rule(s): import-unresolved, backend-run-count
