@@ -104,10 +104,11 @@ export const TEACHBACK = Object.freeze([
   },
 ])
 
-// Team names have not been given by the owner (owner-answers 2026-10-09/10). Do not invent them.
+// Team line: owner-answers 2026-10-10 § credit names, wording fixed by the story-ui supervisor
+// (consult 4). No emails.
 export const CREDITS = Object.freeze([
   { role: 'title', text: 'ECHO: ONE OF ONE' },
-  { role: 'team', text: 'TODO_OWNER: team and credit names (not yet given by the owner)' },
+  { role: 'team', text: 'Team The Quantubians (NYU Tandon School of Engineering): Udaya (captain), George, Harman, Epa' },
   { role: 'support', text: 'This effort is supported by Qollab & IonQ' },
   { role: 'license', text: 'Code: MIT License, udsy19 and contributors' },
   { role: 'libraries', text: 'Built with three.js (MIT) and Qiskit (Apache-2.0), running in Pyodide (MPL-2.0) on Qollab.' },
