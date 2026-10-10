@@ -2,12 +2,12 @@
   {
     "name": "main.js (harness) ran to the end without error",
     "ok": true,
-    "detail": "page load → done in 6.9s"
+    "detail": "page load → done in 16.3s"
   },
   {
     "name": "served build token matches the one just written",
     "ok": true,
-    "detail": "pb-sab-bare-toJs-20261010T000111-32408"
+    "detail": "pb-sab-bare-toJs-20261010T003130-23554"
   },
   {
     "name": "Python ran in Pyodide (sys.platform emscripten)",
@@ -17,7 +17,7 @@
       "python": "3.14.2",
       "qiskit": "2.5.2",
       "pyodide": "314.0.7",
-      "coldImportSeconds": 0.003
+      "coldImportSeconds": 0.007
     }
   },
   {
@@ -107,7 +107,7 @@
     }
   },
   {
-    "name": "calibration(bloch_a): delivered value re-validates in Node",
+    "name": "calibration#1: delivered value re-validates in Node",
     "ok": true,
     "detail": {
       "isMap": false,
@@ -116,7 +116,7 @@
     }
   },
   {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=false): delivered value re-validates in Node",
+    "name": "calibration#2: delivered value re-validates in Node",
     "ok": true,
     "detail": {
       "isMap": false,
@@ -125,7 +125,7 @@
     }
   },
   {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=false): delivered value re-validates in Node",
+    "name": "dryRun(calibration#1, X=false, Z=false): delivered value re-validates in Node",
     "ok": true,
     "detail": {
       "isMap": false,
@@ -134,7 +134,7 @@
     }
   },
   {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=true): delivered value re-validates in Node",
+    "name": "dryRun(calibration#1, X=true, Z=false): delivered value re-validates in Node",
     "ok": true,
     "detail": {
       "isMap": false,
@@ -143,7 +143,7 @@
     }
   },
   {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=true): delivered value re-validates in Node",
+    "name": "dryRun(calibration#1, X=false, Z=true): delivered value re-validates in Node",
     "ok": true,
     "detail": {
       "isMap": false,
@@ -152,7 +152,7 @@
     }
   },
   {
-    "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): delivered value re-validates in Node",
+    "name": "dryRun(calibration#1, X=true, Z=true): delivered value re-validates in Node",
     "ok": true,
     "detail": {
       "isMap": false,
@@ -161,7 +161,7 @@
     }
   },
   {
-    "name": "commit#1(bloch_b): delivered value re-validates in Node",
+    "name": "commit#1: delivered value re-validates in Node",
     "ok": true,
     "detail": {
       "isMap": false,
@@ -170,7 +170,7 @@
     }
   },
   {
-    "name": "commit#2(bloch_b): delivered value re-validates in Node",
+    "name": "commit#2: delivered value re-validates in Node",
     "ok": true,
     "detail": {
       "isMap": false,
@@ -188,94 +188,164 @@
     }
   },
   {
-    "name": "cloning(plus): adapter returned a result",
+    "name": "commit#4 after RESTART: delivered value re-validates in Node",
     "ok": true,
-    "detail": "5.5 ms"
+    "detail": {
+      "isMap": false,
+      "factsIsArray": true,
+      "proxyFields": []
+    }
+  },
+  {
+    "name": "spy fault mode is false (the scenario being graded)",
+    "ok": true,
+    "detail": false
+  },
+  {
+    "name": "dry run: four X/Z choices were tried on one calibration",
+    "ok": true,
+    "detail": [
+      "dryRun(calibration#1, X=false, Z=false)",
+      "dryRun(calibration#1, X=true, Z=false)",
+      "dryRun(calibration#1, X=false, Z=true)",
+      "dryRun(calibration#1, X=true, Z=true)"
+    ]
+  },
+  {
+    "name": "spy: exactly 1 backend.run attempted, and it completed (stack entered via callPromising)",
+    "ok": true,
+    "detail": {
+      "backendRunAttempts": 1,
+      "backendRunCompleted": 1,
+      "verificationCalls": 1,
+      "commitCalls": 2,
+      "commitsCompleted": 2,
+      "resetCalls": 1,
+      "branchCalls": 4
+    }
+  },
+  {
+    "name": "spy: exactly 1 entry into qollab_job.run_backend_verification_once",
+    "ok": true,
+    "detail": {
+      "backendRunAttempts": 1,
+      "backendRunCompleted": 1,
+      "verificationCalls": 1,
+      "commitCalls": 2,
+      "commitsCompleted": 2,
+      "resetCalls": 1,
+      "branchCalls": 4
+    }
+  },
+  {
+    "name": "verify ×2: the second call returns the SAME promise",
+    "ok": true,
+    "detail": true
+  },
+  {
+    "name": "verify after RESTART: still the same promise (one job per run, not per story)",
+    "ok": true,
+    "detail": true
   },
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "3.3 ms"
+    "detail": "17.9 ms"
   },
   {
     "name": "cloning(plus): adapter returned a result",
     "ok": true,
-    "detail": "1.7 ms"
+    "detail": "19.4 ms"
+  },
+  {
+    "name": "cloning(plus): adapter returned a result",
+    "ok": true,
+    "detail": "9.4 ms"
   },
   {
     "name": "cloning(zero): adapter returned a result",
     "ok": true,
-    "detail": "1.4 ms"
+    "detail": "15.8 ms"
   },
   {
     "name": "cloning(one): adapter returned a result",
     "ok": true,
-    "detail": "1.3 ms"
+    "detail": "6.4 ms"
   },
   {
     "name": "cloning(bloch_a): adapter returned a result",
     "ok": true,
-    "detail": "1.9 ms"
+    "detail": "7.4 ms"
   },
   {
     "name": "relay(I): adapter returned a result",
     "ok": true,
-    "detail": "2.6 ms"
+    "detail": "15.5 ms"
   },
   {
     "name": "relay(X): adapter returned a result",
     "ok": true,
-    "detail": "1.2 ms"
+    "detail": "3.4 ms"
   },
   {
     "name": "relay(Z): adapter returned a result",
     "ok": true,
-    "detail": "1 ms"
+    "detail": "4.8 ms"
   },
   {
-    "name": "calibration(bloch_a): adapter returned a result",
+    "name": "calibration#1: adapter returned a result",
     "ok": true,
-    "detail": "0.8 ms"
+    "detail": "40.8 ms"
   },
   {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=false): adapter returned a result",
+    "name": "calibration#2: adapter returned a result",
     "ok": true,
-    "detail": "2 ms"
+    "detail": "6.5 ms"
   },
   {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=false): adapter returned a result",
+    "name": "dryRun(calibration#1, X=false, Z=false): adapter returned a result",
     "ok": true,
-    "detail": "2.3 ms"
+    "detail": "4.2 ms"
   },
   {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=true): adapter returned a result",
+    "name": "dryRun(calibration#1, X=true, Z=false): adapter returned a result",
     "ok": true,
-    "detail": "1.7 ms"
+    "detail": "5.3 ms"
   },
   {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=true): adapter returned a result",
+    "name": "dryRun(calibration#1, X=false, Z=true): adapter returned a result",
     "ok": true,
-    "detail": "2.2 ms"
+    "detail": "6.1 ms"
   },
   {
-    "name": "dryRun(bloch_a, m0=1, m1=0, X=false, Z=false): adapter returned a result",
+    "name": "dryRun(calibration#1, X=true, Z=true): adapter returned a result",
     "ok": true,
-    "detail": "1.5 ms"
+    "detail": "5.5 ms"
   },
   {
-    "name": "commit#1(bloch_b): adapter returned a result",
+    "name": "commit#1: adapter returned a result",
     "ok": true,
-    "detail": "2.4 ms"
+    "detail": "3 ms"
   },
   {
-    "name": "commit#2(bloch_b): adapter returned a result",
+    "name": "commit#2: adapter returned a result",
     "ok": true,
-    "detail": "0 ms"
+    "detail": "0.1 ms"
   },
   {
     "name": "commit#3 after settle: adapter returned a result",
     "ok": true,
     "detail": "0 ms"
+  },
+  {
+    "name": "RESTART: resetStoryToken(): adapter returned a result",
+    "ok": true,
+    "detail": "1.4 ms"
+  },
+  {
+    "name": "commit#4 after RESTART: adapter returned a result",
+    "ok": true,
+    "detail": "3.9 ms"
   },
   {
     "name": "cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]",
@@ -334,46 +404,46 @@
     }
   },
   {
-    "name": "calibration: bits m0, m1 each 0 or 1",
+    "name": "calibration: every draw carries finite theta/phi, bits only (no fidelity, no applyX/Z)",
+    "ok": true,
+    "detail": [
+      [
+        1.728391385,
+        -0.3066130816
+      ],
+      [
+        0.8783063911,
+        0.231331225
+      ]
+    ]
+  },
+  {
+    "name": "calibration: every draw is generic (max Bloch component² ≤ 0.9, re-derived here)",
+    "ok": true,
+    "detail": [
+      0.8865,
+      0.5612
+    ]
+  },
+  {
+    "name": "calibration: the draws differ (a fresh random state each time, not a named one)",
+    "ok": true,
+    "detail": [
+      [
+        1.728391385,
+        -0.3066130816
+      ],
+      [
+        0.8783063911,
+        0.231331225
+      ]
+    ]
+  },
+  {
+    "name": "calibration: the graded draw is on a non-00 branch",
     "ok": true,
     "detail": {
-      "m0": 1,
-      "m1": 1
-    }
-  },
-  {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=false): fidelity = 0.149373 (closed form)",
-    "ok": true,
-    "detail": 0.1493725989
-  },
-  {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=false): fidelity = 0.176668 (closed form)",
-    "ok": true,
-    "detail": 0.1766676593
-  },
-  {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=false, Z=true): fidelity = 0.673960 (closed form)",
-    "ok": true,
-    "detail": 0.6739597419
-  },
-  {
-    "name": "dryRun(bloch_a, m0=1, m1=1, X=true, Z=true): fidelity = 1.000000 (closed form)",
-    "ok": true,
-    "detail": 1
-  },
-  {
-    "name": "dryRun(bloch_a,1,0,no correction): fidelity = cos²(1.137)",
-    "ok": true,
-    "detail": {
-      "got": 0.1766676593,
-      "want": 0.17666765925030334
-    }
-  },
-  {
-    "name": "commit: receiver fidelity 1 after the rule on live bits",
-    "ok": true,
-    "detail": {
-      "fidelity": 1,
+      "draw": "calibration#1",
       "bits": {
         "m0": 1,
         "m1": 1
@@ -381,25 +451,258 @@
     }
   },
   {
-    "name": "commit: a second call returns the SAME promise (token consumed once)",
+    "name": "dryRun(calibration#1, X=false, Z=false): theta/phi round-trip exactly from the measurement into the branch",
     "ok": true,
     "detail": {
-      "samePromise": true,
-      "sameObjectAfterSettle": true
+      "got": {
+        "state": "calibration",
+        "theta": 1.728391385,
+        "phi": -0.3066130816,
+        "m0": 1,
+        "m1": 1,
+        "applyX": false,
+        "applyZ": false
+      },
+      "want": {
+        "theta": 1.728391385,
+        "phi": -0.3066130816,
+        "m0": 1,
+        "m1": 1
+      }
     }
   },
   {
-    "name": "commit: a call after it settled returns the same recorded object",
+    "name": "dryRun(calibration#1, X=false, Z=false): fidelity = 0.088858 (closed form on the measured state)",
+    "ok": true,
+    "detail": 0.0888582412
+  },
+  {
+    "name": "dryRun(calibration#1, X=false, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
+    "ok": true,
+    "detail": 0.0888582412
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=false): theta/phi round-trip exactly from the measurement into the branch",
     "ok": true,
     "detail": {
-      "samePromise": true,
-      "sameObjectAfterSettle": true
+      "got": {
+        "state": "calibration",
+        "theta": 1.728391385,
+        "phi": -0.3066130816,
+        "m0": 1,
+        "m1": 1,
+        "applyX": true,
+        "applyZ": false
+      },
+      "want": {
+        "theta": 1.728391385,
+        "phi": -0.3066130816,
+        "m0": 1,
+        "m1": 1
+      }
     }
   },
   {
-    "name": "verify ×2: the second call returns the SAME promise",
+    "name": "dryRun(calibration#1, X=true, Z=false): fidelity = 0.024631 (closed form on the measured state)",
     "ok": true,
-    "detail": true
+    "detail": 0.0246312697
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=false): a wrong X/Z on a non-00 branch scores F < 0.999999",
+    "ok": true,
+    "detail": 0.0246312697
+  },
+  {
+    "name": "dryRun(calibration#1, X=false, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+    "ok": true,
+    "detail": {
+      "got": {
+        "state": "calibration",
+        "theta": 1.728391385,
+        "phi": -0.3066130816,
+        "m0": 1,
+        "m1": 1,
+        "applyX": false,
+        "applyZ": true
+      },
+      "want": {
+        "theta": 1.728391385,
+        "phi": -0.3066130816,
+        "m0": 1,
+        "m1": 1
+      }
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=false, Z=true): fidelity = 0.886510 (closed form on the measured state)",
+    "ok": true,
+    "detail": 0.8865104891
+  },
+  {
+    "name": "dryRun(calibration#1, X=false, Z=true): a wrong X/Z on a non-00 branch scores F < 0.999999",
+    "ok": true,
+    "detail": 0.8865104891
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=true): theta/phi round-trip exactly from the measurement into the branch",
+    "ok": true,
+    "detail": {
+      "got": {
+        "state": "calibration",
+        "theta": 1.728391385,
+        "phi": -0.3066130816,
+        "m0": 1,
+        "m1": 1,
+        "applyX": true,
+        "applyZ": true
+      },
+      "want": {
+        "theta": 1.728391385,
+        "phi": -0.3066130816,
+        "m0": 1,
+        "m1": 1
+      }
+    }
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=true): fidelity = 1.000000 (closed form on the measured state)",
+    "ok": true,
+    "detail": 1
+  },
+  {
+    "name": "dryRun(calibration#1, X=true, Z=true): the rule's choice scores F ≥ 0.999999",
+    "ok": true,
+    "detail": 1
+  },
+  {
+    "name": "spy: Python teleport_branch received the measured theta/phi on every dry run",
+    "ok": true,
+    "detail": [
+      {
+        "state": "calibration",
+        "m0": 1,
+        "m1": 1,
+        "applyX": false,
+        "applyZ": false,
+        "theta": 1.728391385,
+        "phi": -0.3066130816
+      },
+      {
+        "state": "calibration",
+        "m0": 1,
+        "m1": 1,
+        "applyX": true,
+        "applyZ": false,
+        "theta": 1.728391385,
+        "phi": -0.3066130816
+      },
+      {
+        "state": "calibration",
+        "m0": 1,
+        "m1": 1,
+        "applyX": false,
+        "applyZ": true,
+        "theta": 1.728391385,
+        "phi": -0.3066130816
+      },
+      {
+        "state": "calibration",
+        "m0": 1,
+        "m1": 1,
+        "applyX": true,
+        "applyZ": true,
+        "theta": 1.728391385,
+        "phi": -0.3066130816
+      }
+    ]
+  },
+  {
+    "name": "commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)",
+    "ok": true,
+    "detail": {
+      "fidelity": 1,
+      "bits": {
+        "m0": 1,
+        "m1": 1
+      },
+      "parameters": {
+        "state": "token"
+      }
+    }
+  },
+  {
+    "name": "commit: the second and a later call get the SAME recorded result (no second teleport)",
+    "ok": true,
+    "detail": {
+      "sameRecordedObject": true,
+      "pythonSecondCommit": {
+        "refused": true,
+        "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
+      },
+      "afterRestartIsNewObject": true
+    }
+  },
+  {
+    "name": "commit: Python itself refuses a second live_commit (TokenAlreadyConsumed)",
+    "ok": true,
+    "detail": {
+      "refused": true,
+      "error": "TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again."
+    }
+  },
+  {
+    "name": "RESTART: a commit after resetStoryToken succeeds, as a NEW result (fidelity 1)",
+    "ok": true,
+    "detail": {
+      "fidelity": 1
+    }
+  },
+  {
+    "name": "spy: Python saw exactly 2 live_commit calls (one per story) and 1 reset",
+    "ok": true,
+    "detail": {
+      "backendRunAttempts": 1,
+      "backendRunCompleted": 1,
+      "verificationCalls": 1,
+      "commitCalls": 2,
+      "commitsCompleted": 2,
+      "resetCalls": 1,
+      "branchCalls": 4
+    }
+  },
+  {
+    "name": "verify: RESOLVES (not rejected)",
+    "ok": true,
+    "detail": {
+      "status": "verified",
+      "result": {
+        "experiment": "backend_verification",
+        "engine": "qollab_selected_backend",
+        "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
+        "qubits": 2,
+        "parameters": {
+          "shots": 256,
+          "backend": "basic_simulator"
+        },
+        "facts": [
+          "Counts from one job on the backend chosen in Qollab's Select QPU dialog, which reported itself as 'basic_simulator'.",
+          "Circuit: H on q0, CNOT from q0 to q1, then measure both qubits. An ideal simulator gives only 00 and 11; noise or hardware can add 01 and 10.",
+          "256 of 256 shots (100.0%) had both qubits agree (00 or 11).",
+          "Each key reads right to left: the right bit is q0, the left bit is q1 (Qiskit's order).",
+          "This is a Bell-pair correlation check, not teleportation. Teleportation is verified by exact local Qiskit statevector math in the game.",
+          "The agreement carries no message: on its own, each qubit reads 0 or 1 at random.",
+          "If the selected backend is a simulator, these counts are a simulation, not a measurement of a physical quantum device."
+        ],
+        "counts": {
+          "11": 143,
+          "00": 113
+        },
+        "keyQubits": [
+          1,
+          0
+        ]
+      }
+    }
   },
   {
     "name": "verify ×2: both callers get the same value",
@@ -407,42 +710,20 @@
     "detail": true
   },
   {
-    "name": "spy: exactly 1 entry into qollab_job.run_bell_verification_once",
+    "name": "verify: experiment \"backend_verification\", engine qollab_selected_backend, re-validates in Node",
     "ok": true,
     "detail": {
-      "backendRunAttempts": 1,
-      "backendRunCompleted": 1,
-      "verificationCalls": 1
+      "experiment": "backend_verification",
+      "engine": "qollab_selected_backend",
+      "errors": []
     }
   },
   {
-    "name": "spy: exactly 1 backend.run attempted",
+    "name": "verify: 256 shots, ideal Bell keys only",
     "ok": true,
     "detail": {
-      "backendRunAttempts": 1,
-      "backendRunCompleted": 1,
-      "verificationCalls": 1
-    }
-  },
-  {
-    "name": "spy: that backend.run completed (stack entered via callPromising)",
-    "ok": true,
-    "detail": {
-      "backendRunAttempts": 1,
-      "backendRunCompleted": 1,
-      "verificationCalls": 1
-    }
-  },
-  {
-    "name": "rejected: ScientificModuleError with §8.6 wording + reasons, no result passed on",
-    "ok": true,
-    "detail": {
-      "status": "rejected",
-      "name": "ScientificModuleError",
-      "message": "Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\"",
-      "errors": [
-        "experiment must be one of cloning|bell_signalling|teleportation, got string \"bell_verification\""
-      ]
+      "11": 143,
+      "00": 113
     }
   }
 ]

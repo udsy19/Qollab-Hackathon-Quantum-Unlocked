@@ -10,7 +10,7 @@ PORT=${PB_PORT:-5147}; OUT=${PB_OUT:-$HERE/out}
 DEST=$(cd "$(mktemp -d /tmp/pb-run-XXXXXX)" && pwd -P)
 TOKEN="pb-$TAG-$(date +%Y%m%dT%H%M%S)-$RANDOM"
 "$HERE/assemble.sh" "$DEST" "$TOKEN" "$@" || exit 2
-if lsof -iTCP:"$PORT" -sTCP:LISTEN >/dev/null 2>&1; then echo "NO VERDICT: port $PORT is busy" >&2; exit 2; fi
+if (exec 3<>"/dev/tcp/127.0.0.1/$PORT") 2>/dev/null; then echo "NO VERDICT: port $PORT is busy" >&2; exit 2; fi
 node "$DEST/tools/qollab-runner/server.mjs" --port "$PORT" --project "$DEST/echo" > "$DEST/server.log" 2>&1 &
 SRV=$!
 for _ in $(seq 1 120); do grep -q 'LOCAL Qollab-like runner' "$DEST/server.log" && break; sleep 0.5; done
