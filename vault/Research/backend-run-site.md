@@ -77,7 +77,7 @@ Residual risks, for both routes equally:
 ## What it changes in other notes
 
 - [[qollab-backend-from-js-projects]] "What this settles": "`qollab_job.py` … called from `main.js` with `.callPromising(backend)`" is superseded by A. Python now receives `backend` only to read its name.
-- platform's `vault/Research/qollab-js-runtime-internals.md` (on `lane/platform/integration`, not yet here) (platform) is right about `ft()` and `rewriteIonqRequest`. The `main.js:183` comment that cites it draws the wrong conclusion from it.
+- platform's `vault/Research/qollab-js-runtime-internals.md` (on `lane/platform/integration`, not yet here) is right about `ft()` and `rewriteIonqRequest`. The `main.js:183` comment that cites it draws the wrong conclusion from it.
 
 ## Related
 [[qollab-backend-from-js-projects]] · [[qollab-platform-and-submission]] · [[pyodide-bridge]] · [[qollab-caps-gate]] · [[ionq-sim-rehearsal]]
