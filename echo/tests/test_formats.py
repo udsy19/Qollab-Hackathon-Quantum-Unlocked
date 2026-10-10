@@ -50,7 +50,7 @@ def test_every_result_is_plain_and_json_safe(i):
     assert json.loads(json.dumps(r, allow_nan=False)) == r
     assert r["engine"] in ("exact_qiskit_local", "qollab_selected_backend", "documented_preview")
     # Platform's union plus the one pending request (report 0003); test_contract_conformance holds the rest.
-    assert r["experiment"] in ("cloning", "bell_signalling", "teleportation", "bell_verification")
+    assert r["experiment"] in ("cloning", "bell_signalling", "teleportation", "backend_verification")
     assert not ("probabilities" in r and "counts" in r)
     assert r["facts"] and all(type(f) is str for f in r["facts"])
     if "probabilities" in r:
@@ -139,7 +139,7 @@ def test_plain_refuses_what_does_not_survive_the_bridge(bad):
 
 
 def test_counts_allowed_for_selected_backend():
-    r = formats.experiment_result(**base(experiment="bell_verification", engine="qollab_selected_backend", qubits=2,
+    r = formats.experiment_result(**base(experiment="backend_verification", engine="qollab_selected_backend", qubits=2,
                                          counts={"00": np.int64(130), "11": 126}, key_qubits=[1, 0]))
     assert r["counts"] == {"00": 130, "11": 126} and "probabilities" not in r
 

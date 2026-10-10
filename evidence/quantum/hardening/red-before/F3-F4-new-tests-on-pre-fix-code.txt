@@ -1,0 +1,6 @@
+/Users/udsy/agent-org/lanes/quantum/wt/quantum-hardening/echo/tests/test_hardening_findings.py:30: AssertionError: assert 'computed exactly by local Qiskit' in 'm0 = 1 (source readout), m1 = 0 (local Bell-half readout): the rule asks for X OFF, Z ON. Receiver test fidelity: 1.0...0. The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver.'
+=========================== short test summary info ============================
+FAILED echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[zero-0]
+FAILED echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[one-1]
+FAILED echo/tests/test_hardening_findings.py::test_fidelity_text_says_computed_exactly_not_measured
+3 failed, 4 passed in 0.58s

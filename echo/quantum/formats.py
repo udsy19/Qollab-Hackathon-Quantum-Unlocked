@@ -9,10 +9,11 @@ import math
 import numpy as np
 
 ENGINES = ("exact_qiskit_local", "qollab_selected_backend", "documented_preview")
-# Platform's EXPERIMENTS (echo/contracts.js) plus "bell_verification": the selected-backend Bell
-# correlation job is neither the relay puzzle nor teleportation (vision §10.7), and the contract has no
-# honest value for it yet. Requested from platform in lanes/quantum/reports/0003-contract-conformance.md.
-EXPERIMENTS = ("cloning", "bell_signalling", "teleportation", "bell_verification")
+# Platform's EXPERIMENTS (echo/contracts.js) plus "backend_verification", the owner's value for the one
+# selected-backend job (owner-answers 2026-10-10, 13 lane design questions, item 4): a Bell-pair
+# correlation check that is neither the relay puzzle nor teleportation (vision §10.7). Platform has not
+# added it to the contract yet.
+EXPERIMENTS = ("cloning", "bell_signalling", "teleportation", "backend_verification")
 PROBABILITY_TOLERANCE = 1e-9  # the platform validator's tolerance
 DECIMALS = 10
 
@@ -21,8 +22,9 @@ FORBIDDEN_PHRASES = ("certified random", "certified quantum", "instant message",
                      "unhackable", "quantum advantage", "transmits the secret")
 
 
-def plain(value, path="result"):
-    """Recursively convert to JSON-safe plain Python, raising on anything that is not."""
+def plain(value, path="result", decimals=DECIMALS):
+    """Recursively convert to JSON-safe plain Python, raising on anything that is not. Floats are
+    rounded to `decimals` for display; `decimals=None` keeps them exact (echoed inputs)."""
     if value is None or type(value) is str:
         return value
     if isinstance(value, (bool, np.bool_)):
@@ -33,17 +35,18 @@ def plain(value, path="result"):
         f = float(value)
         if not math.isfinite(f):
             raise ValueError(f"{path}: non-finite float {f}")
-        f = round(f, DECIMALS)
+        if decimals is not None:
+            f = round(f, decimals)
         return 0.0 if f == 0 else f  # no -0.0 on screen
     if isinstance(value, dict):
         out = {}
         for k, v in value.items():
             if type(k) is not str:
                 raise TypeError(f"{path}: key {k!r} is not a str")
-            out[k] = plain(v, f"{path}.{k}")
+            out[k] = plain(v, f"{path}.{k}", decimals)
         return out
     if isinstance(value, (list, tuple, np.ndarray)):
-        return [plain(v, f"{path}[{i}]") for i, v in enumerate(list(value))]
+        return [plain(v, f"{path}[{i}]", decimals) for i, v in enumerate(list(value))]
     raise TypeError(f"{path}: {type(value).__name__} is not JSON-safe")
 
 
@@ -74,7 +77,9 @@ def experiment_result(*, experiment, engine, circuit_description, qubits, parame
     if counts is None and engine == "qollab_selected_backend":
         raise ValueError("selected-backend results must carry counts")
 
-    params = plain(parameters, "parameters")
+    # Parameters echo the caller's inputs, so they are never rounded: the game checks that a dry-run
+    # result names exactly the angles it requested (contracts-v2 sameNumber, 1e-12).
+    params = plain(parameters, "parameters", decimals=None)
     for k, v in params.items():
         if type(v) not in (str, int, float, bool):
             raise TypeError(f"parameters.{k} must be a flat str/number/bool, got {type(v).__name__}")

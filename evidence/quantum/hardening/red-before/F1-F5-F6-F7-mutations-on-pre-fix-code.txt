@@ -1,0 +1,60 @@
+## F1 bob-bloch-uncorrected — WITHOUT the new findings tests: exit 1, 64 failed, 389 passed in 2.50s
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpslb2br9z/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-True-0-0-plus]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpslb2br9z/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-True-0-0-minus]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpslb2br9z/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-True-0-0-phase]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpslb2br9z/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-True-0-0-bloch_a]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpslb2br9z/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-True-0-0-bloch_b]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpslb2br9z/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-True-0-1-plus]
+## F1 bob-bloch-uncorrected — WITH the new findings tests: exit 1, 67 failed, 393 passed in 1.85s
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp2wwondc5/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[zero-0]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp2wwondc5/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[one-1]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp2wwondc5/echo/tests/test_hardening_findings.py::test_fidelity_text_says_computed_exactly_not_measured
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp2wwondc5/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-True-0-0-plus]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp2wwondc5/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-True-0-0-minus]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp2wwondc5/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-True-0-0-phase]
+## F1 bloch-y-sign — WITHOUT the new findings tests: exit 1, 48 failed, 405 passed in 1.21s
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpllzji6ln/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-False-0-0-phase]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpllzji6ln/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-False-0-0-bloch_a]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpllzji6ln/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-False-0-0-bloch_b]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpllzji6ln/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-False-0-1-phase]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpllzji6ln/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-False-0-1-bloch_a]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpllzji6ln/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-False-0-1-bloch_b]
+## F1 bloch-y-sign — WITH the new findings tests: exit 1, 51 failed, 409 passed in 1.63s
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpuod7z_kh/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[zero-0]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpuod7z_kh/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[one-1]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpuod7z_kh/echo/tests/test_hardening_findings.py::test_fidelity_text_says_computed_exactly_not_measured
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpuod7z_kh/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-False-0-0-phase]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpuod7z_kh/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-False-0-0-bloch_a]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpuod7z_kh/echo/tests/test_teleportation.py::test_branch_model_fidelity_is_the_true_value[False-False-0-0-bloch_b]
+## F5 sampler-hardcoded-uniform — WITHOUT the new findings tests: exit 0, 453 passed in 1.17s
+## F5 sampler-hardcoded-uniform — WITH the new findings tests: exit 1, 4 failed, 456 passed in 1.63s
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpax9i7q9i/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[zero-0]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpax9i7q9i/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[one-1]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpax9i7q9i/echo/tests/test_hardening_findings.py::test_fidelity_text_says_computed_exactly_not_measured
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpax9i7q9i/echo/tests/test_hardening_findings.py::test_sampler_follows_the_qiskit_branch_table_not_a_hardcoded_quarter
+## F6 clone-by-name-variant — WITHOUT the new findings tests: exit 0, 453 passed in 1.23s
+## F6 clone-by-name-variant — WITH the new findings tests: exit 1, 4 failed, 456 passed in 1.61s
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpx1azske9/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[zero-0]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpx1azske9/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[one-1]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpx1azske9/echo/tests/test_hardening_findings.py::test_fidelity_text_says_computed_exactly_not_measured
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpx1azske9/echo/tests/test_hardening_findings.py::test_copy_verdict_tracks_the_state_for_random_preparations_under_random_names
+## F6 clone-by-name-prefix — WITHOUT the new findings tests: exit 0, 453 passed in 1.19s
+## F6 clone-by-name-prefix — WITH the new findings tests: exit 1, 4 failed, 456 passed in 1.66s
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpn9gqiyxr/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[zero-0]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpn9gqiyxr/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[one-1]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpn9gqiyxr/echo/tests/test_hardening_findings.py::test_fidelity_text_says_computed_exactly_not_measured
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpn9gqiyxr/echo/tests/test_hardening_findings.py::test_copy_verdict_tracks_the_state_for_random_preparations_under_random_names
+## F7 job-hand-built-dict — WITHOUT the new findings tests: exit 1, 13 failed, 440 passed in 1.24s
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpkb7suerc/echo/tests/test_contract_conformance.py::test_every_bridge_result_passes_the_platform_validator
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpkb7suerc/echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw0-100-0]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpkb7suerc/echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw1-0-100]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpkb7suerc/echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw2-100-0]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpkb7suerc/echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw3-0-100]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmpkb7suerc/echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw4-70-70]
+## F7 job-hand-built-dict — WITH the new findings tests: exit 1, 17 failed, 443 passed in 1.62s
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp4gzi4vlz/echo/tests/test_contract_conformance.py::test_every_bridge_result_passes_the_platform_validator
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp4gzi4vlz/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[zero-0]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp4gzi4vlz/echo/tests/test_hardening_findings.py::test_basis_source_fact_names_the_random_readout_not_a_false_cause[one-1]
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp4gzi4vlz/echo/tests/test_hardening_findings.py::test_fidelity_text_says_computed_exactly_not_measured
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp4gzi4vlz/echo/tests/test_hardening_findings.py::test_backend_result_goes_through_the_guarded_builder
+    FAILED ../../var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp4gzi4vlz/echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw0-100-0]

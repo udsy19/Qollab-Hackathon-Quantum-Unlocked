@@ -26,6 +26,7 @@ QUBIT_OF_CLBIT = (0, 1)
 # Count keys returned to the game read q1 then q0, left to right (Qiskit's order), declared as the
 # contract's keyQubits so the UI never has to know the convention.
 KEY_QUBITS = [1, 0]
+BACKEND_EXPERIMENT = "backend_verification"  # the owner's value (owner-answers 2026-10-10)
 
 _job_submitted = False
 
@@ -34,9 +35,9 @@ class BackendJobAlreadyUsed(RuntimeError):
     """Raised on a second verification attempt in the same run."""
 
 
-def build_bell_verification_circuit():
+def build_backend_verification_circuit():
     """H on q0, CNOT q0->q1, measure q0->c0 and q1->c1. Gate-only, so every backend accepts it."""
-    qc = QuantumCircuit(NUM_QUBITS, NUM_QUBITS, name="echo_bell_verification")
+    qc = QuantumCircuit(NUM_QUBITS, NUM_QUBITS, name="echo_backend_verification")
     qc.h(0)
     qc.cx(0, 1)
     for clbit, qubit in enumerate(QUBIT_OF_CLBIT):
@@ -44,9 +45,9 @@ def build_bell_verification_circuit():
     return qc
 
 
-def describe_bell_verification_circuit():
+def describe_backend_verification_circuit():
     """JSON-safe description, derived from the circuit that is actually submitted."""
-    qc = build_bell_verification_circuit()
+    qc = build_backend_verification_circuit()
     operations = [
         {
             "gate": inst.operation.name,
@@ -128,7 +129,7 @@ def interpret_counts(raw_counts, backend_name, shots_requested=None):
 
     # The sampled tallies stay in `counts` and `facts`: `observables` is for exact numbers.
     return experiment_result(
-        experiment="bell_verification",
+        experiment=BACKEND_EXPERIMENT,
         engine="qollab_selected_backend",
         circuit_description="Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
         qubits=NUM_QUBITS,
@@ -152,7 +153,7 @@ def _backend_label(backend):
     return label
 
 
-def run_bell_verification_once(backend, shots=DEFAULT_SHOTS):
+def run_backend_verification_once(backend, shots=DEFAULT_SHOTS):
     """Submit the Bell circuit to the injected backend, at most once per run.
 
     The allowance is spent BEFORE submitting: if the job fails, IonQ may already have counted
@@ -165,6 +166,6 @@ def run_bell_verification_once(backend, shots=DEFAULT_SHOTS):
             "Restart the run to verify again."
         )
     _job_submitted = True
-    job = backend.run(build_bell_verification_circuit(), shots=shots)
+    job = backend.run(build_backend_verification_circuit(), shots=shots)
     raw = job.result().get_counts()
     return interpret_counts(raw, _backend_label(backend), shots_requested=shots)

@@ -7,7 +7,7 @@ independent copies is DERIVED from the computed state, never looked up by state 
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector, partial_trace, state_fidelity
 
-from . import STATES, prepare, probability_table, target_state
+from . import prepare, probability_table, state_gates, target_state
 from .formats import experiment_result
 
 TOL = 1e-9
@@ -15,11 +15,12 @@ TOL = 1e-9
 
 def run_calibration(state_name="plus"):
     """Try to copy prepared state `state_name` (q0 = source) onto a blank qubit (q1 = copy)."""
+    gates, label = state_gates(state_name)
     qc = QuantumCircuit(2)
-    prepare(qc, state_name, 0)
+    prepare(qc, gates, 0)
     qc.cx(0, 1)
     joint = Statevector.from_instruction(qc)
-    psi = target_state(state_name)
+    psi = target_state(gates)
 
     # partial_trace(state, [k]) traces OUT qubit k.
     source = partial_trace(joint, [1])
@@ -51,7 +52,7 @@ def run_calibration(state_name="plus"):
     return experiment_result(
         experiment="cloning",
         engine="exact_qiskit_local",
-        circuit_description=f"prepare {STATES[state_name][1]} on q0 (source); CX(q0 -> q1 blank copy)",
+        circuit_description=f"prepare {label} on q0 (source); CX(q0 -> q1 blank copy)",
         qubits=2,
         parameters={"state": state_name},
         probabilities=probs,
