@@ -1,0 +1,26 @@
+{
+  "mode": "rm",
+  "failed": 0,
+  "checks": [
+    {
+      "name": "h: no transition or animation longer than 0 ms on opening, captions or HUD",
+      "ok": true,
+      "detail": "32 nodes; slow: "
+    },
+    {
+      "name": "h: caption appears whole at once (no reveal)",
+      "ok": true,
+      "detail": "Rin. Backup generator is dying. Did you get it? / Rin. Backup generator is dying. Did you get it?"
+    },
+    {
+      "name": "captionStyle high-contrast: caption is on a solid black panel with white text",
+      "ok": true,
+      "detail": "{\"bg\":\"rgb(0, 0, 0)\",\"border\":\"rgb(255, 255, 255)\",\"color\":\"rgb(255, 255, 255)\"}"
+    },
+    {
+      "name": "no page errors or failed requests",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}
