@@ -1,0 +1,79 @@
+== Mission 2: relay, receiver panel (EXACT partial-trace probabilities, no counts)
+sender I: receiver P = {'0': 0.5, '1': 0.5}  counts present: False
+
+### bell_signalling('I')
+  fact: Receiver alone, EXACT (partial trace, not sampled): P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.
+  fact: Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.
+  fact: Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 1.000000.
+  fact: That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information.
+  json: {"experiment": "bell_signalling", "engine": "exact_qiskit_local", "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies I on q0 (sender), q1 = receiver", "qubits": 2, "parameters": {"senderGate": "I"}, "facts": ["Receiver alone, EXACT (partial trace, not sampled): P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.", "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.", "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 1.000000.", "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."], "probabilities": {"0": 0.5, "1": 0.5}, "keyQubits": [1], "observables": {"receiverPurity": 0.5, "receiverBlochX": 0.0, "receiverBlochY": 0.0, "receiverBlochZ": 0.0, "zBasisAgreement": 1.0, "xBasisAgreement": 1.0}}
+sender X: receiver P = {'0': 0.5, '1': 0.5}  counts present: False
+
+### bell_signalling('X')
+  fact: Receiver alone, EXACT (partial trace, not sampled): P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.
+  fact: Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.
+  fact: Comparing both logs afterwards: Z-basis bits agree with probability 0.000000, X-basis bits with probability 1.000000.
+  fact: That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information.
+  json: {"experiment": "bell_signalling", "engine": "exact_qiskit_local", "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies X on q0 (sender), q1 = receiver", "qubits": 2, "parameters": {"senderGate": "X"}, "facts": ["Receiver alone, EXACT (partial trace, not sampled): P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.", "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.", "Comparing both logs afterwards: Z-basis bits agree with probability 0.000000, X-basis bits with probability 1.000000.", "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."], "probabilities": {"0": 0.5, "1": 0.5}, "keyQubits": [1], "observables": {"receiverPurity": 0.5, "receiverBlochX": 0.0, "receiverBlochY": 0.0, "receiverBlochZ": 0.0, "zBasisAgreement": 0.0, "xBasisAgreement": 1.0}}
+sender Z: receiver P = {'0': 0.5, '1': 0.5}  counts present: False
+
+### bell_signalling('Z')
+  fact: Receiver alone, EXACT (partial trace, not sampled): P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.
+  fact: Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.
+  fact: Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 0.000000.
+  fact: That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information.
+  json: {"experiment": "bell_signalling", "engine": "exact_qiskit_local", "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies Z on q0 (sender), q1 = receiver", "qubits": 2, "parameters": {"senderGate": "Z"}, "facts": ["Receiver alone, EXACT (partial trace, not sampled): P(0) = 0.500000, P(1) = 0.500000, whatever the sender did.", "Entanglement alone sends no message: the receiver's local results look the same for I, X and Z.", "Comparing both logs afterwards: Z-basis bits agree with probability 1.000000, X-basis bits with probability 0.000000.", "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."], "probabilities": {"0": 0.5, "1": 0.5}, "keyQubits": [1], "observables": {"receiverPurity": 0.5, "receiverBlochX": 0.0, "receiverBlochY": 0.0, "receiverBlochZ": 0.0, "zBasisAgreement": 1.0, "xBasisAgreement": 0.0}}
+
+== Mission 3: rooftop dry run
+bits call 1: fresh state theta=2.3909805698, phi=2.1829905511; m0=1, m1=1; fidelity present: False
+
+### bell_measurement('calibration', seed=1)
+  fact: SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1. Choose the receiver's X and Z for these two bits.
+  fact: The calibration state lies away from every axis of the Bloch sphere, so any wrong X/Z choice visibly lowers the receiver's fidelity.
+  fact: One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does.
+  json: {"experiment": "teleportation", "engine": "exact_qiskit_local", "circuitDescription": "prepare RY(2.390981) then RZ(2.182991) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1", "qubits": 3, "parameters": {"state": "calibration", "theta": 2.3909805698, "phi": 2.1829905511, "seed": 1}, "facts": ["SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1. Choose the receiver's X and Z for these two bits.", "The calibration state lies away from every axis of the Bloch sphere, so any wrong X/Z choice visibly lowers the receiver's fidelity.", "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."], "probabilities": {"00": 0.25, "01": 0.25, "10": 0.25, "11": 0.25}, "keyQubits": [1, 0], "observables": {"inputBlochX": -0.3919709387, "inputBlochY": 0.5582121096, "inputBlochZ": -0.7312715118}, "measurementBits": {"m0": 1, "m1": 1}}
+corrections call 1 (player picks wrong): choice X=OFF Z=ON; fidelity 0.153641; FAIL
+
+### teleport_branch(... wrong ...)
+  fact: SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z ON.
+  fact: Receiver fidelity with the test state: 0.153641, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.
+  fact: The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.
+  json: {"experiment": "teleportation", "engine": "exact_qiskit_local", "circuitDescription": "prepare RY(2.390981) then RZ(2.182991) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=1; Bob applies Z", "qubits": 3, "parameters": {"state": "calibration", "theta": 2.3909805698, "phi": 2.1829905511, "m0": 1, "m1": 1, "applyX": false, "applyZ": true}, "facts": ["SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z ON.", "Receiver fidelity with the test state: 0.153641, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.", "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."], "probabilities": {"00": 0.25, "01": 0.25, "10": 0.25, "11": 0.25}, "keyQubits": [1, 0], "fidelity": 0.1536412168, "observables": {"branchProbability": 0.25, "sourceFidelityAfterMeasurement": 0.8656357559, "receiverBlochX": -0.3919709387, "receiverBlochY": -0.5582121096, "receiverBlochZ": 0.7312715118, "inputBlochX": -0.3919709387, "inputBlochY": 0.5582121096, "inputBlochZ": -0.7312715118}, "measurementBits": {"m0": 1, "m1": 1}}
+
+bits call 2 (fresh state, seed 3): theta=2.1224199827, phi=0.2779004185; m0=0, m1=1
+
+### bell_measurement('calibration', seed=3)
+  fact: SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1. Choose the receiver's X and Z for these two bits.
+  fact: The calibration state lies away from every axis of the Bloch sphere, so any wrong X/Z choice visibly lowers the receiver's fidelity.
+  fact: One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does.
+  json: {"experiment": "teleportation", "engine": "exact_qiskit_local", "circuitDescription": "prepare RY(2.122420) then RZ(0.277900) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1", "qubits": 3, "parameters": {"state": "calibration", "theta": 2.1224199827, "phi": 0.2779004185, "seed": 3}, "facts": ["SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1. Choose the receiver's X and Z for these two bits.", "The calibration state lies away from every axis of the Bloch sphere, so any wrong X/Z choice visibly lowers the receiver's fidelity.", "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."], "probabilities": {"00": 0.25, "01": 0.25, "10": 0.25, "11": 0.25}, "keyQubits": [1, 0], "observables": {"inputBlochX": 0.8189989991, "inputBlochY": 0.2336460847, "inputBlochZ": -0.5240707458}, "measurementBits": {"m0": 0, "m1": 1}}
+corrections call 2 (player follows the rule): choice X=ON Z=OFF; fidelity 1.000000; PASS (unlocks COMMIT: bits are not 00)
+
+### teleport_branch(... right ...)
+  fact: SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z OFF.
+  fact: Receiver fidelity with the test state: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.
+  fact: The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.
+  json: {"experiment": "teleportation", "engine": "exact_qiskit_local", "circuitDescription": "prepare RY(2.122420) then RZ(0.277900) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=0, m1=1; Bob applies X", "qubits": 3, "parameters": {"state": "calibration", "theta": 2.1224199827, "phi": 0.2779004185, "m0": 0, "m1": 1, "applyX": true, "applyZ": false}, "facts": ["SOURCE READOUT m0 = 0, LOCAL BELL-HALF READOUT m1 = 1: the rule asks for X ON, Z OFF.", "Receiver fidelity with the test state: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.", "The source qubit was read out as m0 = 0 and left in |0>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver."], "probabilities": {"00": 0.25, "01": 0.25, "10": 0.25, "11": 0.25}, "keyQubits": [1, 0], "fidelity": 1.0, "observables": {"branchProbability": 0.25, "sourceFidelityAfterMeasurement": 0.2379646271, "receiverBlochX": 0.8189989991, "receiverBlochY": 0.2336460847, "receiverBlochZ": -0.5240707458, "inputBlochX": 0.8189989991, "inputBlochY": 0.2336460847, "inputBlochZ": -0.5240707458}, "measurementBits": {"m0": 0, "m1": 1}}
+
+== COMMIT
+live_commit(): bits m0=1, m1=0; fidelity 1.000000; parameters {'state': 'token'}; observables {'branchProbability': 0.25}
+
+### live_commit()
+  fact: Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z ON.
+  fact: Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.
+  fact: The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.
+  fact: The token has been consumed: this commit cannot be repeated in this run.
+  fact: One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does.
+  json: {"experiment": "teleportation", "engine": "exact_qiskit_local", "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure m0, m1; Bob applies X iff m1=1, Z iff m0=1", "qubits": 3, "parameters": {"state": "token"}, "facts": ["Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z ON.", "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.", "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.", "The token has been consumed: this commit cannot be repeated in this run.", "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."], "probabilities": {"00": 0.25, "01": 0.25, "10": 0.25, "11": 0.25}, "keyQubits": [1, 0], "fidelity": 1.0, "observables": {"branchProbability": 0.25}, "measurementBits": {"m0": 1, "m1": 0}}
+
+second live_commit() refused: TokenAlreadyConsumed: The story token was already measured by the final commit in this run. Teleporting it again would mean a second copy existed; restart to play again.
+reset_story_token()  (gameplay RESTART)
+live_commit() after reset: bits m0=1, m1=0; fidelity 1.000000
+
+### live_commit() after reset
+  fact: Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z ON.
+  fact: Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.
+  fact: The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.
+  fact: The token has been consumed: this commit cannot be repeated in this run.
+  fact: One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does.
+  json: {"experiment": "teleportation", "engine": "exact_qiskit_local", "circuitDescription": "prepare the story token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure m0, m1; Bob applies X iff m1=1, Z iff m0=1", "qubits": 3, "parameters": {"state": "token"}, "facts": ["Live bits SOURCE READOUT m0 = 1, LOCAL BELL-HALF READOUT m1 = 0 travelled over the classical link; the receiver applied X OFF, Z ON.", "Receiver fidelity with the token: 1.000000, computed exactly by local Qiskit from the state it prepared; the fidelity of a single unknown qubit cannot be measured.", "The source qubit was read out as m0 = 1 and left in |1>; the readout was random (50/50), so the source no longer holds the state: the only copy is at the receiver.", "The token has been consumed: this commit cannot be repeated in this run.", "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."], "probabilities": {"00": 0.25, "01": 0.25, "10": 0.25, "11": 0.25}, "keyQubits": [1, 0], "fidelity": 1.0, "observables": {"branchProbability": 0.25}, "measurementBits": {"m0": 1, "m1": 0}}

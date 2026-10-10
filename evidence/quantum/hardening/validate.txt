@@ -189,24 +189,24 @@ ok     teleportation.teleport_branch('calibration', 1, 1, True, True, theta=2.39
 ok     teleportation.corrections_withheld('calibration', theta=2.3909805698, phi=2.1829905511)
 ok     teleportation.verify_deferred('calibration', True, True, theta=2.3909805698, phi=2.1829905511)
 ok     teleportation.bell_measurement('calibration', seed=2)
-ok     teleportation.teleport_branch('calibration', 0, 0, False, False, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 0, 0, False, True, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 0, 0, True, False, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 0, 0, True, True, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 0, 1, False, False, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 0, 1, False, True, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 0, 1, True, False, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 0, 1, True, True, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 1, 0, False, False, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 1, 0, False, True, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 1, 0, True, False, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 1, 0, True, True, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 1, 1, False, False, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 1, 1, False, True, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 1, 1, True, False, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.teleport_branch('calibration', 1, 1, True, True, theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.corrections_withheld('calibration', theta=2.661381214, phi=-2.6083261806)
-ok     teleportation.verify_deferred('calibration', True, True, theta=2.661381214, phi=-2.6083261806)
+ok     teleportation.teleport_branch('calibration', 0, 0, False, False, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 0, 0, False, True, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 0, 0, True, False, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 0, 0, True, True, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 0, 1, False, False, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 0, 1, False, True, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 0, 1, True, False, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 0, 1, True, True, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 1, 0, False, False, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 1, 0, False, True, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 1, 0, True, False, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 1, 0, True, True, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 1, 1, False, False, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 1, 1, False, True, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 1, 1, True, False, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.teleport_branch('calibration', 1, 1, True, True, theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.corrections_withheld('calibration', theta=0.4224954713, phi=2.8137830868)
+ok     teleportation.verify_deferred('calibration', True, True, theta=0.4224954713, phi=2.8137830868)
 ok     teleportation.bell_measurement('calibration', seed=3)
 ok     teleportation.teleport_branch('calibration', 0, 0, False, False, theta=2.1224199827, phi=0.2779004185)
 ok     teleportation.teleport_branch('calibration', 0, 0, False, True, theta=2.1224199827, phi=0.2779004185)
@@ -228,12 +228,9 @@ ok     teleportation.corrections_withheld('calibration', theta=2.1224199827, phi
 ok     teleportation.verify_deferred('calibration', True, True, theta=2.1224199827, phi=0.2779004185)
 ok     teleportation.live_commit(seed=11)
 ok     teleportation.live_commit(seed=12)
-REJECT qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=256)
-         experiment must be one of cloning|bell_signalling|teleportation, got string "backend_verification"
-REJECT qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=300)
-         experiment must be one of cloning|bell_signalling|teleportation, got string "backend_verification"
-REJECT qollab_job.run_backend_verification_once(FakeSelectedBackend())
-         experiment must be one of cloning|bell_signalling|teleportation, got string "backend_verification"
+ok     qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=256)
+ok     qollab_job.interpret_counts(DRIFTED_COUNTS, shots_requested=256)
+ok     qollab_job.run_backend_verification_once(FakeSelectedBackend())
 
 | function | calls | rejected | distinct errors (count) |
 |---|---|---|---|
@@ -244,8 +241,8 @@ REJECT qollab_job.run_backend_verification_once(FakeSelectedBackend())
 | `teleportation.verify_deferred` | 31 | 0 | — |
 | `teleportation.corrections_withheld` | 10 | 0 | — |
 | `teleportation.live_commit` | 2 | 0 | — |
-| `qollab_job.interpret_counts` | 2 | 2 | experiment must be one of cloning|bell_signalling|teleportation, got string "backend_verification" (2) |
-| `qollab_job.run_backend_verification_once` | 1 | 1 | experiment must be one of cloning|bell_signalling|teleportation, got string "backend_verification" (1) |
+| `qollab_job.interpret_counts` | 2 | 0 | — |
+| `qollab_job.run_backend_verification_once` | 1 | 0 | — |
 
-233 calls graded, 3 rejected
-exit 1
+233 calls graded, 0 rejected
+exit 0

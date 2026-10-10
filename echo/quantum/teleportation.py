@@ -170,8 +170,8 @@ def _parameters(state, theta, phi, **extra):
 
 SAMPLE_FACT = ("One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch "
                "probabilities. One sample proves nothing about accuracy; the branch table does.")
-CALIBRATION_FACT = ("A fresh random calibration state was prepared for this dry run. It lies away from every "
-                    "axis, so any wrong X/Z choice visibly lowers the receiver's fidelity.")
+CALIBRATION_FACT = ("The calibration state lies away from every axis of the Bloch sphere, so any wrong X/Z "
+                    "choice visibly lowers the receiver's fidelity.")
 
 
 def bell_measurement(state=CALIBRATION, theta=None, phi=None, seed=None, rng=None):
