@@ -54,6 +54,15 @@ def cnot(t, c, tg):
     return out
 
 
+def cz(t, a, b):
+    out = t.copy()
+    idx = [slice(None)] * 3
+    idx[a] = 1
+    idx[b] = 1
+    out[tuple(idx)] *= -1
+    return out
+
+
 def hand_protocol(psi):
     """psi[q0,q1,q2] after H(q1); CX(q1,q2); CX(q0,q1); H(q0)."""
     t = np.einsum("a,b,c->abc", psi, [1, 0], [1, 0]).astype(complex)
@@ -158,6 +167,24 @@ def test_deferred_measurement_verification(name):
     text = " ".join(r["facts"]).lower()
     assert "mathematical verification" in text and "not a physical" in text
     assert "cz" in r["circuitDescription"].lower()
+
+
+@pytest.mark.parametrize("name", list(STATES))
+@pytest.mark.parametrize("cx_on,cz_on", CHOICES)
+def test_deferred_fidelity_is_computed_not_assumed(name, cx_on, cz_on):
+    # Hand: run the coherent corrections (or not) on the numpy tensor, trace out q0 and q1, overlap with psi.
+    psi = STATES[name]
+    t = hand_protocol(psi)
+    if cx_on:
+        t = cnot(t, 1, 2)
+    if cz_on:
+        t = cz(t, 0, 2)
+    rho = np.einsum("abc,abd->cd", t, t.conj())
+    expected = float(np.real(np.conj(psi) @ rho @ psi))
+    r = teleportation.verify_deferred(name, controlled_x=cx_on, controlled_z=cz_on)
+    assert r["fidelity"] == pytest.approx(expected, abs=1e-9)
+    if name in GENERIC and not (cx_on and cz_on):
+        assert r["fidelity"] < 0.99
 
 
 def test_live_commit_is_one_seeded_sample_with_rule_corrections():

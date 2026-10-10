@@ -72,6 +72,19 @@ def test_basis_states_copy_and_superpositions_do_not():
     assert copied == {"zero", "one"}
 
 
+def test_copy_verdict_is_derived_from_the_state_not_its_name(monkeypatch):
+    # The test supplies its own preparations under names the code has never seen: a disguised basis
+    # state must be reported as copied, a disguised superposition as not.
+    import quantum
+
+    monkeypatch.setitem(quantum.STATES, "test_basis", ((("x",), ("z",)), "test"))  # -|1>: a basis state
+    monkeypatch.setitem(quantum.STATES, "test_zero_alias", ((("ry", 0.0),), "test"))  # |0>
+    monkeypatch.setitem(quantum.STATES, "test_tilted", ((("ry", 0.3),), "test"))  # not a basis state
+    assert cloning.run_calibration("test_basis")["details"]["isTwoIndependentCopies"] is True
+    assert cloning.run_calibration("test_zero_alias")["details"]["isTwoIndependentCopies"] is True
+    assert cloning.run_calibration("test_tilted")["details"]["isTwoIndependentCopies"] is False
+
+
 @pytest.mark.parametrize("name", ["plus", "minus", "phase"])
 def test_equal_superpositions_give_maximally_mixed_outputs(name):
     d = cloning.run_calibration(name)["details"]

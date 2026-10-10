@@ -215,21 +215,25 @@ def corrections_withheld(state_name):
     )
 
 
-def verify_deferred(state_name="bloch_a"):
+def verify_deferred(state_name="bloch_a", controlled_x=True, controlled_z=True):
     """Deferred-measurement verification: coherent CX(q1,q2); CZ(q0,q2) replace measure + classical
-    feed-forward. A mathematical equivalence for checking the ideal protocol, NOT a physical link."""
+    feed-forward. A mathematical equivalence for checking the ideal protocol, NOT a physical link.
+    Dropping either controlled correction (Declassified "what if") shows the true, lower fidelity."""
     qc = _protocol(state_name)
-    qc.cx(1, 2)  # stands in for "X if m1 = 1"
-    qc.cz(0, 2)  # stands in for "Z if m0 = 1"
+    if controlled_x:
+        qc.cx(1, 2)  # stands in for "X if m1 = 1"
+    if controlled_z:
+        qc.cz(0, 2)  # stands in for "Z if m0 = 1"
     bob = partial_trace(Statevector.from_instruction(qc), [0, 1])
     fid = float(state_fidelity(bob, target_state(state_name)))
     return experiment_result(
         experiment="teleportation",
         engine="exact_qiskit_local",
         kind="deferred_measurement_verification",
-        circuit_description=f"prepare {STATES[state_name][1]} on q0; {PROTOCOL}; CX(q1,q2); CZ(q0,q2)",
+        circuit_description=(f"prepare {STATES[state_name][1]} on q0; {PROTOCOL}"
+                             + ("; CX(q1,q2)" if controlled_x else "") + ("; CZ(q0,q2)" if controlled_z else "")),
         qubits=3,
-        parameters={"state": state_name},
+        parameters={"state": state_name, "controlledX": bool(controlled_x), "controlledZ": bool(controlled_z)},
         fidelity=fid,
         facts=["Mathematical verification by the deferred-measurement principle: the measurements and classical "
                "corrections are replaced by equivalent controlled gates.",

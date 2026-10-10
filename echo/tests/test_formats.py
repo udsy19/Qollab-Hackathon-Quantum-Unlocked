@@ -2,6 +2,7 @@
 
 The sweep below enumerates its inputs itself; it does not ask the modules which inputs exist."""
 import ast
+import functools
 import json
 import math
 import pathlib
@@ -30,7 +31,13 @@ def every_result():
         yield entanglement.bell_signalling(g)
 
 
-ALL = list(every_result())
+SWEEP_SIZE = 7 * (5 + 16) + 3
+
+
+@functools.cache
+def all_results():
+    # Built lazily so a broken engine fails these tests instead of aborting collection.
+    return list(every_result())
 PLAIN = (dict, list, str, int, float, bool, type(None))
 
 
@@ -51,12 +58,12 @@ def walk(v, path="$"):
 
 
 def test_sweep_size():
-    assert len(ALL) == 7 * (5 + 16) + 3
+    assert len(all_results()) == SWEEP_SIZE
 
 
-@pytest.mark.parametrize("i", range(len(ALL)))
+@pytest.mark.parametrize("i", range(SWEEP_SIZE))
 def test_every_result_is_plain_and_json_safe(i):
-    r = ALL[i]
+    r = all_results()[i]
     list(walk(r))
     assert json.loads(json.dumps(r, allow_nan=False)) == r
     assert r["engine"] in ("exact_qiskit_local", "qollab_selected_backend", "documented_preview")
@@ -74,7 +81,7 @@ FORBIDDEN = ["certified random", "certified quantum", "instant message", "instan
 
 
 def test_no_forbidden_claims_in_any_string():
-    for r in ALL:
+    for r in all_results():
         for path, v in walk(r):
             if type(v) is str:
                 low = v.lower()
