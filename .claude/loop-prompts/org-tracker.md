@@ -37,6 +37,6 @@ interactive sessions are off-limits.
 ECHO specifics:
 - Deadline clock (ET): G1 Sat 04:00 · G2 Sat 17:00 (else one-room cut) · G3 Sun 05:00 · feature freeze Sun 14:00 · submit Sun 19:00. Lane logs are UTC.
 - Start the `art` lane (`lanes.sh /Users/udsy/agent-org start art`) only once G2 graybox has landed on main, or when the owner says so.
-- Owner rule: ask, never assume. Anything the vision docs and rulings do not settle goes to the owner, batched.
+- AUTONOMOUS (owner 2026-10-10): decide design choices from the vision docs yourself and relay them as rulings; interrupt the owner only for spend, access, publishing, accepting terms, or credit names. Supervisors that still ASK_OWNER a design question get it answered by the overseer from the docs.
 - Never claim a Qollab/IonQ run or a publish the owner has not confirmed.
 - `lane-engine` (DSource-Editor) and `/Users/udsy/agent-org-qollab-hackathon` (archived org) are not ours: never touch them.
