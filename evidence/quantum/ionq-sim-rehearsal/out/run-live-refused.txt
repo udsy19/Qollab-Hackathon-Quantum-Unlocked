@@ -1,0 +1,3 @@
+$ zsh run-live.sh
+REFUSED: /Users/udsy/.config/echo/ionq.env missing; the IonQ step does not run (owner ruling)
+exit=2

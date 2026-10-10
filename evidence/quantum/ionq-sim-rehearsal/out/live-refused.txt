@@ -1,0 +1,5 @@
+$ test -f ~/.config/echo/ionq.env
+exit=1
+$ python rehearse.py live --circuit bell --noise ideal --out out/live   (no key loaded)
+REFUSED: no IonQ key in the environment (load ~/.config/echo/ionq.env in the calling shell)
+exit=2
