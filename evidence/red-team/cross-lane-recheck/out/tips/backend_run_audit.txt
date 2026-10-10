@@ -1,0 +1,5 @@
+scanned 21 files under /tmp/clr-tips/echo
+live backend.run call sites: 2
+  SITE    /tmp/clr-tips/echo/main.js:199: const job = await backend.run(circuit, { shots: BACKEND_SHOTS });
+  SITE    /tmp/clr-tips/echo/quantum/qollab_job.py:168: job = backend.run(build_bell_verification_circuit(), shots=shots)
+exit 1

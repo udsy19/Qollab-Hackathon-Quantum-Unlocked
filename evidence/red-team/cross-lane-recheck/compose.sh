@@ -34,8 +34,10 @@ take quantum "$QUANTUM_SHA" tests
 take gameplay "$GAMEPLAY_SHA" game
 take platform "$PLATFORM_SHA" main.js
 take platform "$PLATFORM_SHA" index.html
-take platform "$PLATFORM_SHA" main.css
-take platform "$PLATFORM_SHA" requirements.txt
+# optional shell files: newer platform tips dropped them; their absence is recorded, not refused
+for f in main.css requirements.txt; do
+  if [ -e "$OUT/src/platform/echo/$f" ]; then take platform "$PLATFORM_SHA" "$f"; else printf 'echo/%s\tABSENT@platform@%s\n' "$f" "$PLATFORM_SHA" >> "$OUT/PROVENANCE.tsv"; fi
+done
 # platform also ships echo/quantum/smoke.py (G0 smoke); quantum owns echo/quantum/, so it is added
 # only if quantum does not have it, and recorded so a collision is visible.
 if [ -e "$OUT/src/platform/echo/quantum/smoke.py" ] && [ ! -e "$OUT/echo/quantum/smoke.py" ]; then

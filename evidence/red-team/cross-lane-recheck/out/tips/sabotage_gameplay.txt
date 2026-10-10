@@ -1,0 +1,10 @@
+gameplay sabotage on 7c4741b @ 7c4741b
+| mutation | gameplay's own tests | summary |
+|---|---|---|
+| `control` | GREEN | ℹ pass 56 ℹ fail 0  |
+| `swap_xz_rule` | RED (exit 1) | ℹ pass 44 ℹ fail 12  |
+| `rule_check_removed` | RED (exit 1) | ℹ pass 54 ℹ fail 2  |
+| `threshold_0_9` | GREEN **NULL** | ℹ pass 56 ℹ fail 0  |
+| `fidelity_check_removed` | GREEN **NULL** | ℹ pass 56 ℹ fail 0  |
+| `token_guard_removed` | GREEN **NULL** | ℹ pass 56 ℹ fail 0  |
+exit 0
