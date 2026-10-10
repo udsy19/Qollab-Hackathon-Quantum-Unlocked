@@ -36,7 +36,8 @@ interactive sessions are off-limits.
 
 ECHO specifics:
 - Deadline clock (ET): G1 Sat 04:00 · G2 Sat 17:00 (else one-room cut) · G3 Sun 05:00 · feature freeze Sun 14:00 · submit Sun 19:00. Lane logs are UTC.
-- Start the `art` lane (`lanes.sh /Users/udsy/agent-org start art`) only once G2 graybox has landed on main, or when the owner says so.
+- Owner 2026-10-10: "do not stop until you are done, get it done entirely … spin up as many agents as you need". All six lanes run (caps: platform 3, quantum 3, gameplay 3, story-ui 3, red-team 2, art 2). Scale by editing `lanes/<lane>/lane.json` max_parallel (read live; no restart). If the 15-min load average stays above ~22 on this 14-core Mac, lower the caps of non-critical lanes first (art, red-team).
+- Each tick: after any LAND on main, export `echo/` (git archive main echo), upload it into the Qollab draft https://qollab.xyz/u/udsy/echo-one-of-one (zip → Unpack → Keep and add), run on the Built-in simulator, save evidence to `evidence/qollab/`, and relay results to the lanes. Never publish without the owner's yes.
 - AUTONOMOUS (owner 2026-10-10): decide design choices from the vision docs yourself and relay them as rulings; interrupt the owner only for spend, access, publishing, accepting terms, or credit names. Supervisors that still ASK_OWNER a design question get it answered by the overseer from the docs.
 - Never claim a Qollab/IonQ run or a publish the owner has not confirmed.
 - `lane-engine` (DSource-Editor) and `/Users/udsy/agent-org-qollab-hackathon` (archived org) are not ours: never touch them.
