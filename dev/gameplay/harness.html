@@ -1,5 +1,5 @@
 <!doctype html>
-<!-- DEV-ONLY harness. Serve the repo root (python3 -m http.server 8611) and open /dev/gameplay/harness.html -->
+<!-- DEV-ONLY harness. Serve the repo root on your own port (python3 -m http.server <port>) and open /dev/gameplay/harness.html -->
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -14,17 +14,21 @@
   pre { background: #11151d; padding: 8px; max-height: 260px; overflow: auto; font-size: 12px; }
   #log { font-size: 12px; color: #9fb0c4; }
   .row { margin: 8px 0; }
+  .dt-commit { color: #9fb0c4; }
+  .dt-commit.latched { color: #ff6b6b; font-weight: bold; }
+  .dt-panel { border: 1px solid #ffb84d; padding: 6px; margin: 6px 0; }
 </style>
 </head>
 <body>
 <h1 style="font-size:16px">ECHO quest harness — dev only, fake quantum (documented_preview)</h1>
-<div class="row"><button id="reset">reset()</button> <button id="fail">fail next quantum call</button> <button id="spam">repeat last accepted event 5×</button></div>
+<div class="row"><button id="reset">resetGame()</button> <button id="fail">fail next quantum call</button> <button id="fault">engine fault on next commit</button> <button id="spam">repeat last accepted event 5×</button></div>
 <div id="term"></div>
 <h2 style="font-size:14px">bus log</h2>
 <div id="log"></div>
 <script type="module">
+import { BUS_EVENTS } from '../../echo/contracts.js';
 import { createEventBus } from '../../echo/game/eventBus.js';
-import { createQuestMachine } from '../../echo/game/state.js';
+import { createQuestMachine, worldChangesFor } from '../../echo/game/state.js';
 import { createFakeQuantum } from './fakeQuantum.js';
 import { mountDevTerminal } from './devTerminal.js';
 
@@ -34,11 +38,15 @@ const quantum = createFakeQuantum({ delayMs: 200 });
 const log = document.getElementById('log');
 const write = (t) => { const d = document.createElement('div'); d.textContent = t; log.prepend(d); };
 let lastEvent = null;
-bus.on('quest:transition', (p) => { lastEvent = p.event; write(`quest:transition ${p.from} --${p.event}--> ${p.to}`); });
-bus.on('quest:reset', (p) => write(`quest:reset ${p.from} -> ${p.to}`));
+bus.on(BUS_EVENTS.QUEST_STATE_CHANGED, (p) => {
+  if (p.event) lastEvent = p.event;
+  const world = worldChangesFor(p.to);
+  write(`${BUS_EVENTS.QUEST_STATE_CHANGED} ${p.from} --${p.event ?? 'resetGame()'}--> ${p.to}${world.length ? `  world: ${world.join(', ')}` : ''}`);
+});
 const term = mountDevTerminal(document.getElementById('term'), { machine, bus, quantum });
-document.getElementById('reset').onclick = () => machine.reset();
+document.getElementById('reset').onclick = () => machine.resetGame();
 document.getElementById('fail').onclick = () => { quantum.failNext('injected: bridge timed out'); write('next quantum call will fail'); };
+document.getElementById('fault').onclick = () => { quantum.faultNextCommit(); write('next commit result will come back wrong'); };
 document.getElementById('spam').onclick = () => {
   // Pressing E again after it worked: every repeat must be refused and emit nothing.
   const ev = lastEvent;

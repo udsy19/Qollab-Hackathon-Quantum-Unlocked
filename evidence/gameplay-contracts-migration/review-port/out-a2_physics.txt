@@ -1,0 +1,13 @@
+clone zero   qiskit F=1.000000 purity q0/q1=1.000000/1.000000 | fake F=1 {'purityQ0': 1, 'purityQ1': 1} keyQubits=[1, 0] OK
+clone one    qiskit F=1.000000 purity q0/q1=1.000000/1.000000 | fake F=1 {'purityQ0': 1, 'purityQ1': 1} keyQubits=[1, 0] OK
+clone plus   qiskit F=0.500000 purity q0/q1=0.500000/0.500000 | fake F=0.5 {'purityQ0': 0.5, 'purityQ1': 0.5} keyQubits=[1, 0] OK
+clone phase  qiskit F=0.250000 purity q0/q1=0.500000/0.500000 | fake F=0.25 {'purityQ0': 0.5, 'purityQ1': 0.5} keyQubits=[1, 0] OK
+bell sender=I qiskit marginal(q1)={np.str_('0'): 0.4999999999999999, np.str_('1'): 0.4999999999999999} | fake {'0': 0.5, '1': 0.5} keyQubits=[1] OK
+bell sender=X qiskit marginal(q1)={np.str_('0'): 0.4999999999999999, np.str_('1'): 0.4999999999999999} | fake {'0': 0.5, '1': 0.5} keyQubits=[1] OK
+bell sender=Z qiskit marginal(q1)={np.str_('0'): 0.4999999999999999, np.str_('1'): 0.4999999999999999} | fake {'0': 0.5, '1': 0.5} keyQubits=[1] OK
+random generic calibration (the game path): 2000 dry runs, 1500 wrong choices, WRONG corrections that still score fidelity 1: 0, max fidelity shown for a wrong choice 0.809886
+distinct calibration states drawn: 2000 of 2000 attempts
+POSITIVE CONTROL named Pauli eigenstates passed explicitly: 80 dry runs, 60 wrong choices, WRONG corrections that still score fidelity 1: 20, max fidelity shown for a wrong choice 1.000000
+story-token commits: 20, rule-correct with fidelity 1 and matching Qiskit: 20
+engines seen: ['documented_preview']
+mismatches total 0

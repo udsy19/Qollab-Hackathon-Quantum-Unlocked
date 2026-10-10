@@ -1,0 +1,7 @@
+doc states 21 code states 21 equal-ordered True
+doc edges 20 code edges 25
+in doc not code: []
+in code not doc: [('BOOT', 'BOOTED', 'TITLE'), ('CREDITS', 'OPEN_SCIENCE', 'DECLASSIFIED'), ('CREDITS', 'RESTART', 'TITLE'), ('DECLASSIFIED', 'OPEN_CREDITS', 'CREDITS'), ('DECLASSIFIED', 'RESTART', 'TITLE')]
+unreachable from BOOT: []
+states with no outgoing edge: []
+targets not in state list: []
