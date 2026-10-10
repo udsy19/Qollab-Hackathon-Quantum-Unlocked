@@ -8,9 +8,9 @@ lane: gameplay
 
 # The 3D world on contracts v2: one quest table, WORLD_CHANGES ids, EVENT_SOURCES, the two-phase dry run
 
-Measured on branch `lane/gameplay/gameplay-world-v2-port` (build token `v2p-0006-a`), LOCAL RUNNER only:
+Measured on branch `lane/gameplay/gameplay-world-v2-port` (tip abd0a1a, build token `v2p-0006-b`, main@47a2466 merged), LOCAL RUNNER only:
 `node dev/gameplay/world-playthrough.mjs --port 8647 --falsify --publish` → 92/92, exit 0; unit suite 55/55;
-`tools/contract-check` 1087/1087. Evidence: `evidence/gameplay/world-v2-port/` (README lists every command).
+`tools/contract-check` 1264/1264. Evidence: `evidence/gameplay/world-v2-port/` (README lists every command).
 
 ## What the branch now is
 - Base: world-controller (1a89bfb) + `lane/gameplay/integration` (c49a922, migrated core) + `main` (contracts v2).
@@ -27,6 +27,7 @@ Measured on branch `lane/gameplay/gameplay-world-v2-port` (build token `v2p-0006
   WORLD_CHANGES of every state up to the current one in §9.1 order), so reactions stay idempotent and a reset
   clears them all. Scene files name ids through `changeId()`, which **throws on an unknown id**: a renamed id stops
   the world from booting instead of leaving a door shut forever.
+- **Commit = contracts' `validateCommitResult`** (contracts land 2); the local `STORY_TOKEN_ID` copy is deleted.
 - **Dry run = contracts' `dryRunVerdict(request, result)`.** `missionRules` no longer has its own
   `expectedCorrections`/threshold; `experiment(run, request)` passes the phase-2 request through.
 
