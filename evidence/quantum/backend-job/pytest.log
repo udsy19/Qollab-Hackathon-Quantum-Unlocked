@@ -1,0 +1,39 @@
+============================= test session starts ==============================
+platform darwin -- Python 3.13.0, pytest-9.1.1, pluggy-1.6.0 -- /Users/udsy/PycharmProjects/Qollab-Hackathon-Quantum-Unlocked/.venv/bin/python
+rootdir: /Users/udsy/agent-org/lanes/quantum/wt/backend-job
+collecting ... collected 32 items
+
+echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw0-100-0] PASSED [  3%]
+echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw1-0-100] PASSED [  6%]
+echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw2-100-0] PASSED [  9%]
+echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw3-0-100] PASSED [ 12%]
+echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw4-70-70] PASSED [ 15%]
+echo/tests/test_qollab_job.py::test_hand_written_counts_read_with_q0_rightmost[raw5-40-50] PASSED [ 18%]
+echo/tests/test_qollab_job.py::test_correlated_fraction_counts_only_00_and_11 PASSED [ 21%]
+echo/tests/test_qollab_job.py::test_basic_simulator_output_reads_the_flipped_qubit[0-expected0] PASSED [ 25%]
+echo/tests/test_qollab_job.py::test_basic_simulator_output_reads_the_flipped_qubit[1-expected1] PASSED [ 28%]
+echo/tests/test_qollab_job.py::test_ionq_histogram_mapping_reads_the_flipped_qubit PASSED [ 31%]
+echo/tests/test_qollab_job.py::test_bell_circuit_on_basic_simulator_is_fully_correlated PASSED [ 34%]
+echo/tests/test_qollab_job.py::test_description_is_the_hand_expected_bell_circuit_and_json_safe PASSED [ 37%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[None] PASSED [ 40%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw1] PASSED [ 43%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw2] PASSED [ 46%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[00] PASSED [ 50%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw4] PASSED [ 53%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw5] PASSED [ 56%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw6] PASSED [ 59%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw7] PASSED [ 62%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw8] PASSED [ 65%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw9] PASSED [ 68%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw10] PASSED [ 71%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw11] PASSED [ 75%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw12] PASSED [ 78%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw13] PASSED [ 81%]
+echo/tests/test_qollab_job.py::test_malformed_or_empty_counts_raise[raw14] PASSED [ 84%]
+echo/tests/test_qollab_job.py::test_second_run_is_refused_without_touching_the_backend PASSED [ 87%]
+echo/tests/test_qollab_job.py::test_a_failed_job_still_uses_up_the_one_allowed_job PASSED [ 90%]
+echo/tests/test_qollab_job.py::test_runner_result_names_the_backend_and_follows_the_contract PASSED [ 93%]
+echo/tests/test_qollab_job.py::test_facts_are_honest PASSED              [ 96%]
+echo/tests/test_qollab_job.py::test_module_never_creates_or_names_a_backend PASSED [100%]
+
+============================== 32 passed in 0.20s ==============================
