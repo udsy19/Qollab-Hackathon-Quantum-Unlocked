@@ -20,11 +20,14 @@ import { mountDialogue } from './ui/dialogue.js';
 import { defaultSettings } from './ui/accessibility.js';
 import * as cloning from 'quantum.cloning';
 import * as qollabJob from 'quantum.qollab_job';
+import * as diag from './diag.js';
 
 // Visible provenance token: change it, reload, and read it back from the served page.
-const BUILD = 'shell-2026-10-10c';
+const BUILD = 'integration-shell-diag-1';
 
 const $ = (id) => document.getElementById(id);
+// G0 input diagnostic: mounted first, so it reports even when the world fails to start.
+diag.mount(document.body);
 $('echo-build').textContent = BUILD;
 $('echo-backend').textContent = String(backend.name);
 console.log(`ECHO build ${BUILD} on backend ${backend.name}`);
@@ -179,13 +182,17 @@ if (!booted.ok) throw new Error(`boot: quest machine refused BOOT_COMPLETE (${bo
 
 // ---- one job on the selected backend ----------------------------------------------------------
 // IonQ backends reject a second backend.run in a run, and a rejected job stops the run. The guard
-// is claimed BEFORE the first await, so a double click cannot slip a second job past it.
+// is claimed BEFORE the first await, so a double click cannot slip a second job past it. The
+// button and the auto-send countdown both come through here: one call site, one guard.
 // backend.run is called from JS, not inside Python: Qollab's job accounting and the local runner's
 // counter both sit on the JS backend proxy. The circuit and the reading of its counts are the
 // quantum lane's (quantum/qollab_job.py).
-// TODO(quantum): replace with verifySelectedBackendOnce from quantum/bridge.js once it exists.
+// TODO(quantum): this body becomes a call to verifySelectedBackendOnce from quantum/bridge.js (consult 11).
 let backendJobUsed = false;
-async function verifyOnBackend() {
+let jobSettled;
+const oneJobDone = new Promise((resolve) => (jobSettled = resolve));
+async function verifyOnBackend(trigger) {
+  stopAutoSend(trigger === 'auto' ? null : 'Auto-send stopped: the button was pressed.');
   const status = $('echo-verify-status');
   if (backendJobUsed) {
     status.textContent = 'Refused: this run has already used its one selected-backend job. Press Stop, then Run, to send another.';
@@ -193,25 +200,69 @@ async function verifyOnBackend() {
     return;
   }
   backendJobUsed = true;
-  status.textContent = `Verifying on selected backend ${backend.name}…`;
+  status.textContent = `Verifying on selected backend ${backend.name} (${trigger})…`;
   try {
-    const circuit = await qollabJob.build_bell_verification_circuit.callPromising();
+    const circuit = await qollabJob.build_backend_verification_circuit.callPromising();
     const job = await backend.run(circuit, { shots: BACKEND_SHOTS });
     const counts = (await job.result()).get_counts();
     const result = toPlain(await qollabJob.interpret_counts.callPromising(counts, String(backend.name), BACKEND_SHOTS));
     $('echo-verify-out').textContent = JSON.stringify({ engine: result.engine, counts: result.counts, keyQubits: result.keyQubits }, null, 1);
     const errors = validateExperimentResult(result);
     status.textContent = errors.length
-      ? `1 job done, but its result breaks the shared contract: ${errors.join('; ')}`
-      : `Done: 1 job on ${backend.name}. A second press will be refused.`;
+      ? `1 job done (${trigger}), but its result breaks the shared contract: ${errors.join('; ')}`
+      : `Done: 1 job (${trigger}) on ${backend.name}. A second press will be refused.`;
     $('echo-verify').textContent = 'Verified (1 of 1 job used)';
   } catch (err) {
     // §8.6 step 5: honest unavailability, never an invented result.
     status.textContent = `Quantum backend verification unavailable (${err}); the circuits are still validated locally.`;
     console.error(`backend job failed: ${err}`);
+  } finally {
+    jobSettled();
   }
 }
-$('echo-verify').addEventListener('click', verifyOnBackend);
+
+// G0 auto-send: proves the one job on Qollab even when the tester's input never reaches this
+// frame. A visible countdown presses Verify once, through the same guard; Cancel stops it.
+// Styled inline: index.html is the shell's and main.css is story-ui's.
+const AUTO_SEND_SECONDS = 5;
+let autoTimer = 0;
+const autoStatus = document.createElement('p');
+autoStatus.id = 'echo-autosend-status';
+autoStatus.setAttribute('role', 'status');
+autoStatus.style.cssText = 'margin:0.3em 0 0;color:#ffd166';
+autoStatus.textContent = 'Auto-send starts after the quantum module answers.';
+const autoCancel = document.createElement('button');
+autoCancel.id = 'echo-autosend-cancel';
+autoCancel.type = 'button';
+autoCancel.hidden = true;
+autoCancel.style.cssText = 'margin-top:0.3em;font:inherit';
+autoCancel.textContent = 'Cancel auto-send';
+$('echo-verify').after(autoStatus, autoCancel);
+
+function stopAutoSend(message) {
+  if (!autoTimer) return;
+  clearInterval(autoTimer);
+  autoTimer = 0;
+  autoCancel.hidden = true;
+  if (message) autoStatus.textContent = message;
+}
+
+function startAutoSend() {
+  if (backendJobUsed) return;
+  let left = AUTO_SEND_SECONDS;
+  const show = () => (autoStatus.textContent = `Auto-sending the one job in ${left} s…`);
+  show();
+  autoCancel.hidden = false;
+  autoTimer = setInterval(() => {
+    left -= 1;
+    if (left > 0) return show();
+    stopAutoSend('Auto-send fired.');
+    verifyOnBackend('auto');
+  }, 1000);
+}
+
+$('echo-verify').addEventListener('click', () => verifyOnBackend('button'));
+autoCancel.addEventListener('click', () => stopAutoSend('Auto-send cancelled. Press Verify to send the one job.'));
 $('echo-verify').disabled = false;
 
 // ---- local Qiskit module: calibrate while the world renders (§12.3) ---------------------------
@@ -227,3 +278,10 @@ try {
   $('echo-quantum').textContent = `Scientific module error in quantum.cloning.run_calibration: ${err}`;
   console.error(`bridge failed: ${err}`);
 }
+diag.markBridgeResult();
+startAutoSend();
+// Keep main.js running until the one job settles. When main.js returns, Qollab prints Done., its
+// parent page stops listening to this frame (console, Probabilities panel, credit consent), and
+// the frame stops proxying IonQ requests (jsworker-C6a5_czr.js `self.fetch`, W=false;
+// vault/Research/qollab-js-runtime-internals.md). The game's main.js must never return early.
+await oneJobDone;
