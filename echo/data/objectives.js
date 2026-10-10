@@ -216,7 +216,7 @@ export const TERMINALS = Object.freeze({
     },
     exact: 'EXACT',
     calibrating: { text: 'CALIBRATING', src: '§12.3' },
-    moduleError: 'SCIENTIFIC MODULE ERROR. Nothing was measured and nothing was used up.',
+    moduleError: 'SCIENTIFIC MODULE ERROR. No result came back, so nothing is shown and nothing was used up.',
     refused: 'RESULT REFUSED. The quantum module sent data in the wrong shape, so no numbers are shown.',
     retry: 'RETRY',
     result: 'RESULT',
@@ -290,5 +290,8 @@ export const TERMINALS = Object.freeze({
     receiverRecovered: { text: 'STATE RECOVERED', src: '§4.4' },
     vaultAccepted: 'VAULT: AUTHORIZATION ACCEPTED',
     committing: 'TRANSFER IN PROGRESS',
+    // §7.4: the commit makes its own fresh Bell measurement; the dry-run bits are not reused.
+    liveHeading: 'LIVE TRANSFER: FRESH BITS, SAME RULE',
+    liveFidelity: 'Receiver fidelity with the token',
   },
 })

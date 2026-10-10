@@ -228,7 +228,7 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
   const CLONE_INPUTS = [['zero', '|0>'], ['one', '|1>'], ['plus', '|+>']];
   function jointText(r) {
     // keyQubits [1, 0]: key "10" is q1 = 1, q0 = 0; the ket is written q1 q0, as Qiskit prints it.
-    return Object.entries(r.probabilities).filter(([, p]) => p > 1e-9)
+    return Object.entries(r.probabilities).filter(([, p]) => p > 1e-9).sort(([a], [b]) => (a < b ? -1 : 1))
       .map(([k, p]) => (p > ONE ? `|${k}>` : `${f6(p)} |${k}>`)).join(' + ');
   }
   function marginal(r, qubit) {
@@ -237,14 +237,14 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
   }
   const runClone = (s, state) => call('copy_booth', 'cloneTest', [state], (r) => { s.results[state] = r; s.last = state; });
 
-  function renderBooth(body, s) {
+  function renderBooth(left, right, s) {
     const D = TERMINALS.copy_booth;
     const inputs = section('echo-terminal__inputs');
     inputs.append(el('span', 'echo-terminal__label', D.inputLabel));
     for (const [state, label] of CLONE_INPUTS) {
       inputs.append(btn(`in-${state}`, label, () => { if (!s.busy) { s.selected = state; render(); } }, { pressed: s.selected === state }));
     }
-    body.append(inputs, row(D.inputModeLabel, T(D.inputMode)));
+    left.append(inputs, row(D.inputModeLabel, T(D.inputMode)));
     const actions = section('echo-terminal__actions');
     actions.append(btn('duplicate', D.duplicate, () => runClone(s, s.selected), { disabled: s.busy, cls: 'echo-terminal__primary' }));
     if (!s.results.plus) {
@@ -255,7 +255,7 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
         }
       }, { disabled: s.busy }));
     }
-    body.append(actions, statusBlock(s));
+    left.append(actions, statusBlock(s));
 
     const tested = CLONE_INPUTS.filter(([state]) => s.results[state]);
     if (tested.length) {
@@ -273,14 +273,14 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
         item.append(engineTag(r));
         res.append(item);
       }
-      body.append(res);
+      right.append(res);
     }
     if (s.results.plus) {
       const r = s.results.plus;
       const after = section('echo-terminal__actions');
       after.append(btn('why', D.whyFail, () => { s.why = !s.why; render(); }, { pressed: s.why }),
         btn('another', D.tryAnother, () => { s.focusKey = `in-${s.selected}`; render(); }));
-      body.append(after);
+      left.append(after);
       if (s.why) {
         // §4.2 "two compact mini diagrams": each output on its own, from the engine's numbers.
         const why = section('echo-terminal__why-panel');
@@ -291,40 +291,40 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
           why.append(d);
         }
         why.append(line('echo-terminal__note', D.whyIdeal), engineTag(r));
-        body.append(why);
+        right.append(why);
       }
       const choice = section('echo-terminal__actions');
       choice.append(btn('voltage', D.choiceVoltage, () => { if (s.choice !== 'reroute') s.choice = 'voltage'; s.note = FAILURES.cloning.increase_voltage; render(); }),
         btn('reroute', D.choiceReroute, () => { s.choice = 'reroute'; s.note = T(D.learning); render(); }));
-      body.append(choice);
+      left.append(choice);
     }
   }
 
   // ------------------------------------------------------------------ relay_core (§4.3, §7.3)
 
-  function renderRelay(body, s) {
+  function renderRelay(left, right, s) {
     const D = TERMINALS.relay_core;
     const status = section('echo-terminal__statuses');
     if (s.prepared) status.append(line('echo-terminal__ok', T(D.statusReady)));
     status.append(line('echo-terminal__offline', D.statusClassical));
-    body.append(status);
+    left.append(status);
     const prep = section('echo-terminal__actions');
     prep.append(btn('prepare', D.prepare, () => { if (!s.prepared) { s.prepared = true; s.focusKey = 'gate-I'; render(); } },
       { pressed: s.prepared, cls: s.prepared ? '' : 'echo-terminal__primary' }));
-    body.append(prep);
+    left.append(prep);
     if (!s.prepared) return;
     const gates = section('echo-terminal__inputs');
     gates.append(el('span', 'echo-terminal__label', D.senderLabel));
     for (const g of ['I', 'X', 'Z']) gates.append(btn(`gate-${g}`, g, () => { if (!s.busy) { s.gate = g; render(); } }, { pressed: s.gate === g }));
     gates.append(btn('send', D.send, () => call('relay_core', 'bellSignalling', [s.gate], (r) => { s.result = r; s.view = 'receiver'; }),
       { disabled: s.busy, cls: 'echo-terminal__primary' }));
-    body.append(gates, statusBlock(s));
+    left.append(gates, statusBlock(s));
     if (!s.result) return;
     const r = s.result;
     const tabs = section('echo-terminal__actions');
     tabs.append(btn('view-receiver', D.receiverOnly, () => { s.view = 'receiver'; render(); }, { pressed: s.view === 'receiver' }),
       btn('view-paired', D.compared, () => { s.view = 'paired'; render(); }, { pressed: s.view === 'paired' }));
-    body.append(tabs);
+    left.append(tabs);
     const res = section('echo-terminal__result');
     res.dataset.role = 'result';
     const gate = r.parameters.senderGate;
@@ -341,12 +341,12 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
         line('echo-terminal__why', FAILURES.bell_signalling.classical_missing));
     }
     res.append(engineTag(r));
-    body.append(res);
+    right.append(res);
   }
 
   // ------------------------------------------------------------------ classical_socket (§4.4 Beat 1)
 
-  function renderSocket(body, s) {
+  function renderSocket(left, right, s) {
     const D = TERMINALS.classical_socket;
     const list = section('echo-terminal__junctions');
     for (let n = 1; n <= 3; n++) {
@@ -365,7 +365,8 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
       d.append(b, el('span', 'echo-terminal__value', done ? D.patched : D.dark));
       list.append(d);
     }
-    body.append(list, line(s.patched === 3 ? 'echo-terminal__ok' : 'echo-terminal__offline',
+    left.append(list);
+    right.append(line(s.patched === 3 ? 'echo-terminal__ok' : 'echo-terminal__offline',
       s.patched === 3 ? T(TERMINALS.teleport_terminal.classicalOnline) : TERMINALS.relay_core.statusClassical));
   }
 
@@ -399,7 +400,7 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
     });
   }
 
-  function renderTeleport(body, s) {
+  function renderTeleport(left, right, s) {
     const D = TERMINALS.teleport_terminal;
     const consumed = !!s.committed;
     const status = section('echo-terminal__statuses');
@@ -408,7 +409,7 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
       line('echo-terminal__ok', T(D.bellReady)), line('echo-terminal__ok', T(D.classicalOnline)));
     const slots = section('echo-terminal__slots');
     for (const label of [D.slotSource, D.slotLocal, D.slotRemote]) slots.append(el('div', 'echo-terminal__slot', label));
-    body.append(status, slots);
+    left.append(status, slots);
 
     const locked = consumed || s.busy;
     const measure = section('echo-terminal__actions');
@@ -423,7 +424,7 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
       });
     }, { disabled: locked, cls: s.measurement && !s.dry ? '' : 'echo-terminal__primary' }),
     el('span', 'echo-terminal__label', D.testState));
-    body.append(measure);
+    left.append(measure);
 
     if (s.measurement) {
       const { bits } = s.measurement;
@@ -449,9 +450,10 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
           });
         }, { disabled: !open, cls: open ? 'echo-terminal__primary' : '' }));
       plan.append(toggles);
-      body.append(readout, plan);
+      left.append(readout);
+      right.append(plan);
     }
-    body.append(statusBlock(s));
+    right.append(statusBlock(s));
 
     if (s.dry) {
       const res = section('echo-terminal__result');
@@ -462,21 +464,22 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
       for (const why of dryExplanation(s.dry)) res.append(line('echo-terminal__why', why));
       if (s.dry.pass && s.dry.trivial && !s.qualified) res.append(line('echo-terminal__note', FAILURES.teleportation.trivial_pass));
       res.append(engineTag(s.dry.result));
-      body.append(res);
+      right.append(res);
     }
 
     const fin = section('echo-terminal__actions echo-terminal__commit');
     fin.append(btn('commit', T(D.commit), commit, { disabled: !s.qualified || consumed || s.busy, cls: s.qualified && !consumed ? 'echo-terminal__primary' : '' }));
     if (s.committing && s.status?.kind === 'pending') fin.append(line('echo-terminal__calibrating', D.committing));
-    body.append(fin);
+    right.append(fin);
     if (consumed) {
       const r = s.committed;
       const done = section('echo-terminal__result');
       done.dataset.status = 'complete';
-      done.append(row(D.m0Label, r.measurementBits.m0), row(D.m1Label, r.measurementBits.m1),
-        row(T(D.fidelityLabel), f6(r.fidelity)), line('echo-terminal__ok', T(D.receiverRecovered)),
+      done.append(el('h3', 'echo-terminal__heading', D.liveHeading),
+        row(D.m0Label, r.measurementBits.m0), row(D.m1Label, r.measurementBits.m1),
+        row(D.liveFidelity, f6(r.fidelity)), line('echo-terminal__ok', T(D.receiverRecovered)),
         line('echo-terminal__ok', D.vaultAccepted), engineTag(r));
-      body.append(done);
+      right.append(done);
     }
   }
 
@@ -501,14 +504,20 @@ export function mountTerminal(root, { engine, onEvent = () => {}, getHint } = {}
     tools.append(close);
     head.append(title, tools);
     const body = el('div', 'echo-terminal__body');
+    const left = el('div', 'echo-terminal__col');
+    const right = el('div', 'echo-terminal__col');
+    body.append(left, right);
     panel.append(head, body);
-    if (hint) body.append(line('echo-terminal__hint', hint));
-    RENDER[id](body, s);
-    if (s.note) body.append(line('echo-terminal__note', s.note, 'note'));
+    if (hint) left.prepend(line('echo-terminal__hint', hint));
+    RENDER[id](left, right, s);
+    if (s.note) right.append(line('echo-terminal__note', s.note, 'note'));
     const want = s.focusKey || focusKey;
     s.focusKey = null;
     const target = want ? panel.querySelector(`[data-key="${want}"]`) : null;
     (target || focusableIn(body)[0] || close).focus();
+    // The newest outcome is what the player just asked for: keep it in view inside the panel.
+    const newest = right.lastElementChild;
+    if (newest) newest.scrollIntoView({ block: 'nearest' });
     afterPaint(id);
   }
 

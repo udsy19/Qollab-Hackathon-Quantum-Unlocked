@@ -509,8 +509,10 @@
 
 .echo-terminal__panel {
   margin: auto;
-  width: min(52em, 100%);
-  padding: 1em 1.25em 1.25em;
+  width: min(76em, 100%);
+  max-height: 100%;
+  overflow-y: auto;
+  padding: 0.8em 1.1em 1em;
   background: var(--echo-panel);
   border: 1px solid var(--echo-outline);
   border-top: 3px solid var(--echo-cyan);
@@ -537,7 +539,15 @@
 }
 .echo-terminal__tools { display: flex; gap: 0.5em; margin-left: auto; }
 
-.echo-terminal__body { display: grid; gap: 0.7em; margin-top: 0.8em; }
+.echo-terminal__body {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(24em, 100%), 1fr));
+  gap: 0.8em 1.2em;
+  align-items: start;
+  margin-top: 0.7em;
+}
+.echo-terminal__col { display: grid; gap: 0.6em; min-width: 0; }
+.echo-terminal__col:empty { display: none; }
 .echo-terminal__section { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5em 0.75em; }
 .echo-terminal__result,
 .echo-terminal__why-panel,
@@ -579,7 +589,7 @@
   letter-spacing: 0.12em;
 }
 .echo-terminal__row { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.25em 1em; }
-.echo-terminal__row > .echo-terminal__label { flex: 0 0 auto; min-width: 12em; }
+.echo-terminal__row > .echo-terminal__label { flex: 0 0 auto; min-width: 9em; }
 .echo-terminal__value {
   font-family: var(--echo-mono);
   font-size: 1.05em;
@@ -623,6 +633,7 @@
   padding: 0.6em 0.8em;
   border: 1px solid var(--echo-error);
 }
+.echo-terminal__status .echo-button { justify-self: start; }
 .echo-terminal__error { color: var(--echo-error); font-weight: 700; }
 .echo-terminal__error::before { content: "⚠ "; }
 .echo-terminal__detail { color: var(--echo-muted); font-family: var(--echo-mono); font-size: 0.8em; overflow-wrap: anywhere; }
@@ -633,7 +644,8 @@
   animation: echo-terminal-blink 1.2s steps(2, start) infinite;
 }
 
-.echo-terminal__bar { display: grid; grid-template-columns: minmax(6em, 14em) 1fr auto; align-items: center; gap: 0.75em; }
+.echo-terminal__bar { display: grid; grid-template-columns: minmax(4.5em, max-content) minmax(3em, 1fr) max-content; align-items: center; gap: 0.6em; }
+.echo-terminal__bar > .echo-terminal__value { white-space: nowrap; }
 .echo-terminal__track { height: 0.6em; background: rgba(120, 196, 255, 0.15); border: 1px solid var(--echo-outline); }
 .echo-terminal__fill { display: block; height: 100%; background: var(--echo-cyan); }
 

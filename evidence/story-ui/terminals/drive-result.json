@@ -257,7 +257,7 @@
       "detail": "0,0"
     },
     {
-      "name": "teleport 00 wrong (X ON, Z OFF): displayed fidelity 0.610811 = closed form 0.610811",
+      "name": "teleport 00 wrong (X ON, Z OFF): displayed fidelity 0.123812 = closed form 0.123812",
       "ok": true,
       "detail": ""
     },
@@ -302,7 +302,7 @@
       "detail": "0,1"
     },
     {
-      "name": "teleport 01 wrong (X OFF, Z OFF): displayed fidelity 0.208793 = closed form 0.208793",
+      "name": "teleport 01 wrong (X OFF, Z OFF): displayed fidelity 0.09376 = closed form 0.093760",
       "ok": true,
       "detail": ""
     },
@@ -352,7 +352,7 @@
       "detail": "1,0"
     },
     {
-      "name": "teleport 10 wrong (X OFF, Z OFF): displayed fidelity 0.724245 = closed form 0.724245",
+      "name": "teleport 10 wrong (X OFF, Z OFF): displayed fidelity 0.33674 = closed form 0.336740",
       "ok": true,
       "detail": ""
     },
@@ -392,7 +392,7 @@
       "detail": "1,1"
     },
     {
-      "name": "teleport 11 wrong (X OFF, Z ON): displayed fidelity 0.445217 = closed form 0.445217",
+      "name": "teleport 11 wrong (X OFF, Z ON): displayed fidelity 0.236344 = closed form 0.236344",
       "ok": true,
       "detail": ""
     },
