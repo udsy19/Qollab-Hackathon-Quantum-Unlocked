@@ -1,0 +1,13 @@
+A. re-entrant send, order seen by a later subscriber:
+    world sees enter:FREE_ROAM_ALLEY (machine.state=FREE_ROAM_ALLEY)
+    world sees enter:CLONE_INTRO (machine.state=CLONE_INTRO)
+A2. transition log seen by 2nd subscriber: BOOT->TITLE , TITLE->OPENING , OPENING->FREE_ROAM_ALLEY
+B. reset inside handler: enter:OPENING delivered while state=OPENING , reset
+C. throwing listener: send ok true state TITLE later listener ran 1 errors reported [ 'QUEST_STATE_CHANGED' ]
+D. stale result from the PREVIOUS session: old name-compare guard would say stale=false; machine.experiment says stale=true; state now CLONE_INTRO
+E. bits as strings: {"event":null,"reason":"invalid result: engine must be one of exact_qiskit_local|qollab_selected_backend|documented_preview, got nothing; circuitDescription must be a non-empty string, got nothing; qubits must be an integer ≥ 1, got nothing; facts must be a non-empty array of strings, got nothing; measurementBits.m0 must be the number 0 or 1, got string \"0\""}
+E. parameters null: {"event":null,"reason":"invalid result: engine must be one of exact_qiskit_local|qollab_selected_backend|documented_preview, got nothing; circuitDescription must be a non-empty string, got nothing; qubits must be an integer ≥ 1, got nothing; parameters must be a plain object, got null; facts must be a non-empty array of strings, got nothing"}
+E. no engine field: {"event":null,"reason":"invalid result: engine must be one of exact_qiskit_local|qollab_selected_backend|documented_preview, got nothing; circuitDescription must be a non-empty string, got nothing; qubits must be an integer ≥ 1, got nothing; facts must be a non-empty array of strings, got nothing"}
+E. engine=documented_preview commit: {"event":"COMMIT_TRANSFER","reason":"result shows the lesson"}
+E. bell: receiver=1 contradicts receiver=0: {"event":null,"reason":"invalid result: probabilities sum to 1.4, not 1 ± 1e-9"}
+F. fuzz: 1000 runs, 300000 steps, 36881 accepted, 1781 commits, 1781 commit engine calls, 162607 unknown names thrown (nothing emitted), 78485 steps in CREDITS, invariant violations = 0

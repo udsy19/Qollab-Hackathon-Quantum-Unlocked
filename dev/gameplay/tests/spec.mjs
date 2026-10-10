@@ -1,7 +1,8 @@
 // Ground truth for the quest-machine checks, re-derived from the owner's vision doc bytes
-// (ECHO_MASTER_VISION.md §9.1 and §9.2) plus the edges the gameplay supervisor's brief adds.
-// It never reads echo/game/state.js, so a drifted TRANSITIONS table cannot vouch for itself
-// (gate-independence law 4).
+// (ECHO_MASTER_VISION.md §9.1 and §9.2) plus the owner-accepted additions named below.
+// It never reads echo/contracts.js, so a drifted table cannot vouch for itself
+// (gate-independence law 4). Every line of the §9.2 object must parse: a row this parser cannot
+// read is an error, never a skip (law 8; review F8 went green with an edge silently dropped).
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
@@ -19,31 +20,44 @@ function section(text, heading) {
   return text.slice(body, close);
 }
 
+const ROW = /^([A-Z_]+):\s*\{\s*((?:[A-Z_]+:\s*'[A-Z_]+'\s*,?\s*)*)\},?$/;
+const PAIR = /([A-Z_]+):\s*'([A-Z_]+)'/g;
+
+export function parseTransitions(block) {
+  const lines = block.split('\n');
+  const first = lines.findIndex((l) => /^\s*const transitions = \{\s*$/.test(l));
+  if (first < 0) throw new Error('vision doc §9.2: no "const transitions = {" line');
+  const last = lines.findIndex((l, i) => i > first && /^\s*\};\s*$/.test(l));
+  if (last < 0) throw new Error('vision doc §9.2: transitions object is never closed');
+  const edges = [];
+  for (let i = first + 1; i < last; i++) {
+    const line = lines[i].trim();
+    if (line === '') continue;
+    const m = line.match(ROW);
+    if (!m) throw new Error(`vision doc §9.2 line ${i - first}: cannot parse ${JSON.stringify(lines[i])}`);
+    const pairs = [...m[2].matchAll(PAIR)];
+    if (pairs.length === 0) throw new Error(`vision doc §9.2 line ${i - first}: row ${m[1]} has no edges`);
+    for (const p of pairs) edges.push({ from: m[1], event: p[1], to: p[2] });
+  }
+  return edges;
+}
+
+// Owner-accepted additions (owner-answers 2026-10-10 § 13 lane design questions, item 1), as named
+// by platform's CONTRACTS.md § Additions. The owner also accepted DECLASSIFIED -> ENDING; it has no
+// event name in contracts yet, so it is a platform request, not an edge here.
+export const ACCEPTED_ADDITIONS = Object.freeze([
+  { from: 'BOOT', event: 'BOOT_COMPLETE', to: 'TITLE' },
+  { from: 'DECLASSIFIED', event: 'OPEN_CREDITS', to: 'CREDITS' },
+]);
+
 export function loadSpec(path = VISION_PATH) {
   const text = readFileSync(path, 'utf8');
   const states = section(text, '## 9.1 Required states')
     .split('\n').map((s) => s.trim()).filter(Boolean);
   if (states.length === 0) throw new Error('vision doc §9.1: zero states parsed');
-
-  const edges = [];
-  for (const line of section(text, '## 9.2 Type-safe-ish transition design').split('\n')) {
-    const m = line.match(/^\s{2}([A-Z_]+):\s*\{(.*)\},?\s*$/);
-    if (!m) continue;
-    for (const pair of m[2].matchAll(/([A-Z_]+):\s*'([A-Z_]+)'/g)) {
-      edges.push({ from: m[1], event: pair[1], to: pair[2] });
-    }
-  }
+  const edges = parseTransitions(section(text, '## 9.2 Type-safe-ish transition design'));
   if (edges.length === 0) throw new Error('vision doc §9.2: zero edges parsed');
-
-  // Additions named in the gameplay brief (consult 1), not in §9.2.
-  const BRIEF_EDGES = [
-    { from: 'BOOT', event: 'BOOTED', to: 'TITLE' },
-    { from: 'DECLASSIFIED', event: 'RESTART', to: 'TITLE' },
-    { from: 'CREDITS', event: 'RESTART', to: 'TITLE' },
-    { from: 'DECLASSIFIED', event: 'OPEN_CREDITS', to: 'CREDITS' },
-    { from: 'CREDITS', event: 'OPEN_SCIENCE', to: 'DECLASSIFIED' },
-  ];
-  const all = [...edges, ...BRIEF_EDGES];
+  const all = [...edges, ...ACCEPTED_ADDITIONS];
   const events = [...new Set(all.map((e) => e.event))];
   return { states, edges: all, events, docEdgeCount: edges.length };
 }
