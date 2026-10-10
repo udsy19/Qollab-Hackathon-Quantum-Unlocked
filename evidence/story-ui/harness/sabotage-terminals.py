@@ -1,17 +1,14 @@
-"""Sabotage round for the terminals gates. Each sabotage is applied to a DISPOSABLE copy of the
-worktree's echo/ + harness (never the tracked files), served on its own port, and graded by
-drive-terminals.mjs and copy-check.mjs. A sabotage that leaves both gates green is a NULL and is
-reported as such. Usage (worktree root): python3 evidence/story-ui/harness/sabotage-terminals.py"""
-import os, shutil, socket, subprocess, sys, tempfile, time
-
-def free_port():
-    # A port another worker already holds made a sabotage REFUSE (exit 2) instead of grade: bind 0.
-    with socket.socket() as so:
-        so.bind(('127.0.0.1', 0))
-        return so.getsockname()[1]
+"""Sabotage round for the terminals gates. Each sabotage is applied to a DISPOSABLE detached git
+worktree of HEAD (never the tracked files), served on PORT, and graded by that copy's
+drive-terminals.mjs (run from the copy, so a sabotage of the drive itself is graded too) and
+copy-check.mjs. A sabotage that leaves both gates green is a NULL and is reported as such.
+Commit first: the copy is HEAD, not the working tree.
+Usage (worktree root): python3 evidence/story-ui/harness/sabotage-terminals.py [port]"""
+import os, shutil, subprocess, sys, tempfile, time
 
 ROOT = os.getcwd()
-CONTRACTS = subprocess.run(['git', 'show', 'lane/platform/integration:echo/contracts.js'], capture_output=True, check=True).stdout
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 8791
+DRIVE = 'evidence/story-ui/harness/drive-terminals.mjs'
 T = 'echo/ui/terminal.js'
 STUB = 'evidence/story-ui/harness/stub-engine.js'
 DATA = 'echo/data/objectives.js'
@@ -29,13 +26,21 @@ SABOTAGES = [
     ('S11 acknowledgements flushed as soon as the engine answers, before the result is rendered', T, "    onOk(result);\n    render();", "    onOk(result);\n    if (id === 'relay_core') { s.paintedSend = true; s.paintedReceiver = true; flush(id); }\n    render();", None),
     ('S12 ESC no longer closes (listener removed)', T, "  window.addEventListener('keydown', onKey, true);\n", "", None),
     ('S13 Esc listener on document in the bubble phase (where the pause menu also listens)', T, "  window.addEventListener('keydown', onKey, true);\n", "  document.addEventListener('keydown', onKey);\n", None),
+    # terminals-conform: the 16-case failure lines.
+    ('S14 m0 and m1 swapped in the lookup key', T, "`m0=${bits.m0},m1=${bits.m1}|", "`m0=${bits.m1},m1=${bits.m0}|", None),
+    ('S15 per-switch logic restored (with no_corrections)', T, "    const out = TELEPORT_FAILURE_CASES[`m0=${bits.m0},m1=${bits.m1}|X=${onOff(x)},Z=${onOff(z)}`].map((k) => F[k]);\n",
+     "    const out = [];\n    if (bits.m1 && !x) out.push(F.missing_X);\n    if (!bits.m1 && x) out.push(F.extra_X);\n    if (bits.m0 && !z) out.push(F.missing_Z);\n    if (!bits.m0 && z) out.push(F.extra_Z);\n    if (!x && !z && (bits.m0 || bits.m1)) out.push(F.no_corrections);\n", None),
+    ('S16 per-switch logic restored (no_corrections left out)', T, "    const out = TELEPORT_FAILURE_CASES[`m0=${bits.m0},m1=${bits.m1}|X=${onOff(x)},Z=${onOff(z)}`].map((k) => F[k]);\n",
+     "    const out = [];\n    if (bits.m1 && !x) out.push(F.missing_X);\n    if (!bits.m1 && x) out.push(F.extra_X);\n    if (bits.m0 && !z) out.push(F.missing_Z);\n    if (!bits.m0 && z) out.push(F.extra_Z);\n", None),
+    ('S17 one map entry dropped (a both-wrong case)', DATA, " 'm0=1,m1=1|X=off,Z=off': ['missing_X', 'missing_Z'],", "", None),
+    ('S18 one map entry dropped (a correct case)', DATA, " 'm0=1,m1=0|X=off,Z=on': [],", "", None),
+    ('S19 map entry read in Qiskit c1c0 order (01 shows the 10 line)', DATA, "'m0=0,m1=1|X=off,Z=off': ['missing_X']", "'m0=0,m1=1|X=off,Z=off': ['missing_Z']", None),
+    ('S20 closed form broken in the drive (m0 and m1 swapped)', DRIVE, "const rx = (x ? 1 : 0) ^ m1, rz = (z ? 1 : 0) ^ m0;", "const rx = (x ? 1 : 0) ^ m0, rz = (z ? 1 : 0) ^ m1;", None),
 ]
 
 def run(name, path, old, new, also, port):
-    d = tempfile.mkdtemp(prefix='sab-term-')
-    for sub in ('echo', 'evidence/story-ui/harness'):
-        shutil.copytree(os.path.join(ROOT, sub), os.path.join(d, sub))
-    open(os.path.join(d, 'echo/contracts.js'), 'wb').write(CONTRACTS)
+    d = os.path.join(tempfile.mkdtemp(prefix='sab-term-'), 'wt')
+    subprocess.run(['git', 'worktree', 'add', '--detach', '-q', d, 'HEAD'], check=True)
     edits = [(path, old, new)]
     if also:
         prev = next(s for s in SABOTAGES if s[0].startswith(also))
@@ -50,19 +55,24 @@ def run(name, path, old, new, also, port):
     time.sleep(1.2)
     try:
         out = os.path.join(d, 'out')
-        dr = subprocess.run(['node', os.path.join(ROOT, 'evidence/story-ui/harness/drive-terminals.mjs'), str(port), out], capture_output=True, text=True, timeout=240)
+        dr = subprocess.run(['node', os.path.join(d, DRIVE), str(port), out], capture_output=True, text=True, timeout=300, cwd=d)
         fails = [l for l in dr.stdout.splitlines() if l.startswith('FAIL')]
-        cc = subprocess.run(['node', os.path.join(ROOT, 'evidence/story-ui/harness/copy-check.mjs'), os.path.join(d, T), os.path.join(out, 'drive-result.json')], capture_output=True, text=True)
+        cc = subprocess.run(['node', os.path.join(d, 'evidence/story-ui/harness/copy-check.mjs'), os.path.join(d, T), os.path.join(out, 'drive-result.json')], capture_output=True, text=True, cwd=d)
         cfails = [l for l in cc.stdout.splitlines() if l.startswith('FAIL')]
         return name, f'drive exit {dr.returncode}, copy-check exit {cc.returncode}', fails[:3], cfails[:2]
     except subprocess.TimeoutExpired:
         return name, 'NO VERDICT (drive hung)', [], []
     finally:
         srv.kill()
-        shutil.rmtree(d, ignore_errors=True)
+        srv.wait()
+        subprocess.run(['git', 'worktree', 'remove', '--force', d], check=False)
+        shutil.rmtree(os.path.dirname(d), ignore_errors=True)
 
 print('| sabotage | verdict | first failing checks |\n|---|---|---|')
+only = sys.argv[2:]  # optional sabotage-id prefixes, e.g. S14 S20
 for i, (name, path, old, new, also) in enumerate(SABOTAGES):
-    n, v, f, c = run(name, path, old, new, also, free_port())
+    if only and not any(name.startswith(o + ' ') for o in only):
+        continue
+    n, v, f, c = run(name, path, old, new, also, PORT)
     tag = 'RED — ' if 'exit 1' in v else 'NULL — ' if 'exit 0, copy-check exit 0' in v else 'REFUSED/NO VERDICT — '
     print(f"| {n} | {tag}{v} | {' ; '.join(f + c)[:400]} |", flush=True)

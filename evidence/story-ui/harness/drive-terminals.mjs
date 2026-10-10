@@ -14,7 +14,7 @@ const require = createRequire('/opt/homebrew/lib/node_modules/@modelcontextproto
 const puppeteer = require('puppeteer');
 // The data's own map and line text: the drive checks the map against its closed form below, then
 // the screen against the map.
-const { TELEPORT_FAILURE_CASES, FAILURES } = await import(pathToFileURL(path.resolve('echo/data/objectives.js')).href);
+const { TELEPORT_FAILURE_CASES, FAILURES } = await import(pathToFileURL(path.resolve(path.dirname(new URL(import.meta.url).pathname), '../../../echo/data/objectives.js')).href);
 
 const port = process.argv[2] || '8761';
 const out = process.argv[3] || 'evidence/story-ui/terminals';
