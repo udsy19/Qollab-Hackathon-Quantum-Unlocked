@@ -491,3 +491,80 @@
 .echo-controls dt {
   text-align: right;
 }
+
+/* ==== opening ==== */
+/* Title card, billboard line and Skip over the scene. Captions are the dialogue box (always on). */
+.echo-opening {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+.echo-ui[data-opening="on"] .echo-dialogue {
+  z-index: 2;
+}
+/* Captions are always on (owner ruling), even if a stale setting says otherwise. */
+.echo-ui[data-opening="on"][data-subtitles="off"] .echo-dialogue {
+  display: block;
+}
+.echo-ui[data-opening="on"] .echo-dialogue[data-auto="true"] .echo-dialogue__next {
+  display: none;
+}
+
+.echo-opening__card,
+.echo-opening__billboard {
+  grid-area: 1 / 1;
+  max-width: 90%;
+  margin: 0;
+  text-align: center;
+  font-family: var(--echo-display);
+  text-transform: uppercase;
+  transition: opacity 600ms, visibility 0s;
+}
+.echo-opening__card {
+  align-self: start;
+  justify-self: start;
+  margin: clamp(12px, 3vh, 36px) clamp(12px, 3vw, 48px);
+  padding: 0.4em 0.9em;
+  border-left: 3px solid var(--echo-cyan);
+  background: var(--echo-panel);
+  color: var(--echo-text);
+  font-size: 1.05em;
+  letter-spacing: 0.28em;
+}
+.echo-opening__billboard {
+  color: var(--echo-cyan);
+  font-size: clamp(1.4em, 4.2vw, 3em);
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-shadow: 0 0 0.5em rgba(92, 225, 255, 0.7);
+  overflow-wrap: anywhere;
+}
+.echo-opening__card[data-visible="false"],
+.echo-opening__billboard[data-visible="false"] {
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 600ms, visibility 0s linear 600ms;
+}
+
+.echo-opening__skip {
+  position: absolute;
+  right: clamp(12px, 2.5vw, 40px);
+  bottom: clamp(12px, 2.5vh, 32px);
+  pointer-events: auto;
+  font-size: 0.85em;
+}
+
+/* Reading style for every caption: a solid black panel, white text, white edge. */
+.echo-ui[data-caption-style="high-contrast"] .echo-dialogue {
+  background: #000;
+  border: 2px solid #fff;
+  border-left-width: 6px;
+  color: #fff;
+}
+.echo-ui[data-caption-style="high-contrast"] .echo-dialogue__speaker,
+.echo-ui[data-caption-style="high-contrast"] .echo-dialogue__page {
+  color: #fff;
+}
