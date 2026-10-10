@@ -5,7 +5,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "cloning",
   "engine": "exact_qiskit_local",
-  "kind": "naive_cnot_clone",
   "circuitDescription": "prepare |0> on q0 (source); CX(q0 -> q1 blank copy)",
   "qubits": 2,
   "parameters": {
@@ -17,38 +16,21 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
   ],
   "probabilities": {
-    "source=0,copy=0": 1.0,
-    "source=1,copy=0": 0.0,
-    "source=0,copy=1": 0.0,
-    "source=1,copy=1": 0.0
+    "00": 1.0,
+    "01": 0.0,
+    "10": 0.0,
+    "11": 0.0
   },
-  "circuitText": "          \nq_0: ──■──\n     ┌─┴─┐\nq_1: ┤ X ├\n     └───┘",
-  "details": {
-    "sourcePurity": 1.0,
-    "copyPurity": 1.0,
-    "sourceFidelity": 1.0,
-    "copyFidelity": 1.0,
-    "jointFidelityWithTwoCopies": 1.0,
-    "isTwoIndependentCopies": true,
-    "isEntangled": false,
-    "amplitudes": {
-      "source=0,copy=0": [
-        1.0,
-        0.0
-      ],
-      "source=1,copy=0": [
-        0.0,
-        0.0
-      ],
-      "source=0,copy=1": [
-        0.0,
-        0.0
-      ],
-      "source=1,copy=1": [
-        0.0,
-        0.0
-      ]
-    }
+  "keyQubits": [
+    1,
+    0
+  ],
+  "observables": {
+    "purityQ0": 1.0,
+    "purityQ1": 1.0,
+    "fidelityQ0WithInput": 1.0,
+    "fidelityQ1WithInput": 1.0,
+    "jointFidelityWithTwoCopies": 1.0
   }
 }
 
@@ -56,7 +38,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "cloning",
   "engine": "exact_qiskit_local",
-  "kind": "naive_cnot_clone",
   "circuitDescription": "prepare |+> = (|0>+|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
   "qubits": 2,
   "parameters": {
@@ -69,38 +50,21 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
   ],
   "probabilities": {
-    "source=0,copy=0": 0.5,
-    "source=1,copy=0": 0.0,
-    "source=0,copy=1": 0.0,
-    "source=1,copy=1": 0.5
+    "00": 0.5,
+    "01": 0.0,
+    "10": 0.0,
+    "11": 0.5
   },
-  "circuitText": "     ┌───┐     \nq_0: ┤ H ├──■──\n     └───┘┌─┴─┐\nq_1: ─────┤ X ├\n          └───┘",
-  "details": {
-    "sourcePurity": 0.5,
-    "copyPurity": 0.5,
-    "sourceFidelity": 0.5,
-    "copyFidelity": 0.5,
-    "jointFidelityWithTwoCopies": 0.5,
-    "isTwoIndependentCopies": false,
-    "isEntangled": true,
-    "amplitudes": {
-      "source=0,copy=0": [
-        0.7071067812,
-        0.0
-      ],
-      "source=1,copy=0": [
-        0.0,
-        0.0
-      ],
-      "source=0,copy=1": [
-        0.0,
-        0.0
-      ],
-      "source=1,copy=1": [
-        0.7071067812,
-        0.0
-      ]
-    }
+  "keyQubits": [
+    1,
+    0
+  ],
+  "observables": {
+    "purityQ0": 0.5,
+    "purityQ1": 0.5,
+    "fidelityQ0WithInput": 0.5,
+    "fidelityQ1WithInput": 0.5,
+    "jointFidelityWithTwoCopies": 0.5
   }
 }
 
@@ -108,7 +72,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "cloning",
   "engine": "exact_qiskit_local",
-  "kind": "naive_cnot_clone",
   "circuitDescription": "prepare (|0>+i|1>)/√2 on q0 (source); CX(q0 -> q1 blank copy)",
   "qubits": 2,
   "parameters": {
@@ -121,38 +84,21 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
   ],
   "probabilities": {
-    "source=0,copy=0": 0.5,
-    "source=1,copy=0": 0.0,
-    "source=0,copy=1": 0.0,
-    "source=1,copy=1": 0.5
+    "00": 0.5,
+    "01": 0.0,
+    "10": 0.0,
+    "11": 0.5
   },
-  "circuitText": "     ┌───┐┌───┐     \nq_0: ┤ H ├┤ S ├──■──\n     └───┘└───┘┌─┴─┐\nq_1: ──────────┤ X ├\n               └───┘",
-  "details": {
-    "sourcePurity": 0.5,
-    "copyPurity": 0.5,
-    "sourceFidelity": 0.5,
-    "copyFidelity": 0.5,
-    "jointFidelityWithTwoCopies": 0.25,
-    "isTwoIndependentCopies": false,
-    "isEntangled": true,
-    "amplitudes": {
-      "source=0,copy=0": [
-        0.7071067812,
-        0.0
-      ],
-      "source=1,copy=0": [
-        0.0,
-        0.0
-      ],
-      "source=0,copy=1": [
-        0.0,
-        0.0
-      ],
-      "source=1,copy=1": [
-        0.0,
-        0.7071067812
-      ]
-    }
+  "keyQubits": [
+    1,
+    0
+  ],
+  "observables": {
+    "purityQ0": 0.5,
+    "purityQ1": 0.5,
+    "fidelityQ0WithInput": 0.5,
+    "fidelityQ1WithInput": 0.5,
+    "jointFidelityWithTwoCopies": 0.25
   }
 }
 
@@ -160,7 +106,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "cloning",
   "engine": "exact_qiskit_local",
-  "kind": "naive_cnot_clone",
   "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0 (source); CX(q0 -> q1 blank copy)",
   "qubits": 2,
   "parameters": {
@@ -173,38 +118,21 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "No-cloning: no circuit copies an arbitrary unknown qubit; this booth only uses known calibration states."
   ],
   "probabilities": {
-    "source=0,copy=0": 0.7101592606,
-    "source=1,copy=0": 0.0,
-    "source=0,copy=1": 0.0,
-    "source=1,copy=1": 0.2898407394
+    "00": 0.7101592606,
+    "01": 0.0,
+    "10": 0.0,
+    "11": 0.2898407394
   },
-  "circuitText": "     ┌───────────┐┌──────────┐     \nq_0: ┤ Ry(1.137) ├┤ Rz(0.44) ├──■──\n     └───────────┘└──────────┘┌─┴─┐\nq_1: ─────────────────────────┤ X ├\n                              └───┘",
-  "details": {
-    "sourcePurity": 0.5883338296,
-    "copyPurity": 0.5883338296,
-    "sourceFidelity": 0.5883338296,
-    "copyFidelity": 0.5883338296,
-    "jointFidelityWithTwoCopies": 0.5514795209,
-    "isTwoIndependentCopies": false,
-    "isEntangled": true,
-    "amplitudes": {
-      "source=0,copy=0": [
-        0.822398028,
-        -0.1839041713
-      ],
-      "source=1,copy=0": [
-        0.0,
-        0.0
-      ],
-      "source=0,copy=1": [
-        0.0,
-        0.0
-      ],
-      "source=1,copy=1": [
-        0.5253925344,
-        0.1174879746
-      ]
-    }
+  "keyQubits": [
+    1,
+    0
+  ],
+  "observables": {
+    "purityQ0": 0.5883338296,
+    "purityQ1": 0.5883338296,
+    "fidelityQ0WithInput": 0.5883338296,
+    "fidelityQ1WithInput": 0.5883338296,
+    "jointFidelityWithTwoCopies": 0.5514795209
   }
 }
 
@@ -212,7 +140,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "bell_signalling",
   "engine": "exact_qiskit_local",
-  "kind": "receiver_marginal",
   "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies I on q0 (sender), q1 = receiver",
   "qubits": 2,
   "parameters": {
@@ -225,23 +152,17 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
   ],
   "probabilities": {
-    "sender=0,receiver=0": 0.5,
-    "sender=1,receiver=0": 0.0,
-    "sender=0,receiver=1": 0.0,
-    "sender=1,receiver=1": 0.5
+    "0": 0.5,
+    "1": 0.5
   },
-  "circuitText": "     ┌───┐     \nq_0: ┤ H ├──■──\n     └───┘┌─┴─┐\nq_1: ─────┤ X ├\n          └───┘",
-  "details": {
-    "receiverMarginal": {
-      "0": 0.5,
-      "1": 0.5
-    },
+  "keyQubits": [
+    1
+  ],
+  "observables": {
     "receiverPurity": 0.5,
-    "receiverBlochVector": [
-      0.0,
-      0.0,
-      0.0
-    ],
+    "receiverBlochX": 0.0,
+    "receiverBlochY": 0.0,
+    "receiverBlochZ": 0.0,
     "zBasisAgreement": 1.0,
     "xBasisAgreement": 1.0
   }
@@ -251,7 +172,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "bell_signalling",
   "engine": "exact_qiskit_local",
-  "kind": "receiver_marginal",
   "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies X on q0 (sender), q1 = receiver",
   "qubits": 2,
   "parameters": {
@@ -264,23 +184,17 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
   ],
   "probabilities": {
-    "sender=0,receiver=0": 0.0,
-    "sender=1,receiver=0": 0.5,
-    "sender=0,receiver=1": 0.5,
-    "sender=1,receiver=1": 0.0
+    "0": 0.5,
+    "1": 0.5
   },
-  "circuitText": "     ┌───┐     ┌───┐\nq_0: ┤ H ├──■──┤ X ├\n     └───┘┌─┴─┐└───┘\nq_1: ─────┤ X ├─────\n          └───┘     ",
-  "details": {
-    "receiverMarginal": {
-      "0": 0.5,
-      "1": 0.5
-    },
+  "keyQubits": [
+    1
+  ],
+  "observables": {
     "receiverPurity": 0.5,
-    "receiverBlochVector": [
-      0.0,
-      0.0,
-      0.0
-    ],
+    "receiverBlochX": 0.0,
+    "receiverBlochY": 0.0,
+    "receiverBlochZ": 0.0,
     "zBasisAgreement": 0.0,
     "xBasisAgreement": 1.0
   }
@@ -290,7 +204,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "bell_signalling",
   "engine": "exact_qiskit_local",
-  "kind": "receiver_marginal",
   "circuitDescription": "H(q0); CX(q0 -> q1) Bell pair; sender applies Z on q0 (sender), q1 = receiver",
   "qubits": 2,
   "parameters": {
@@ -303,23 +216,17 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information."
   ],
   "probabilities": {
-    "sender=0,receiver=0": 0.5,
-    "sender=1,receiver=0": 0.0,
-    "sender=0,receiver=1": 0.0,
-    "sender=1,receiver=1": 0.5
+    "0": 0.5,
+    "1": 0.5
   },
-  "circuitText": "     ┌───┐     ┌───┐\nq_0: ┤ H ├──■──┤ Z ├\n     └───┘┌─┴─┐└───┘\nq_1: ─────┤ X ├─────\n          └───┘     ",
-  "details": {
-    "receiverMarginal": {
-      "0": 0.5,
-      "1": 0.5
-    },
+  "keyQubits": [
+    1
+  ],
+  "observables": {
     "receiverPurity": 0.5,
-    "receiverBlochVector": [
-      0.0,
-      0.0,
-      0.0
-    ],
+    "receiverBlochX": 0.0,
+    "receiverBlochY": 0.0,
+    "receiverBlochZ": 0.0,
     "zBasisAgreement": 1.0,
     "xBasisAgreement": 0.0
   }
@@ -329,29 +236,29 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "teleportation",
   "engine": "exact_qiskit_local",
-  "kind": "bell_measurement_sample",
   "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure q0 -> m0, q1 -> m1",
   "qubits": 3,
   "parameters": {
-    "state": "bloch_a"
+    "state": "bloch_a",
+    "seed": 11
   },
   "facts": [
     "m0 = 0 (source readout), m1 = 1 (local Bell-half readout).",
     "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
   ],
   "probabilities": {
-    "m0=0,m1=0": 0.25,
-    "m0=0,m1=1": 0.25,
-    "m0=1,m1=0": 0.25,
-    "m0=1,m1=1": 0.25
+    "00": 0.25,
+    "01": 0.25,
+    "10": 0.25,
+    "11": 0.25
   },
+  "keyQubits": [
+    1,
+    0
+  ],
   "measurementBits": {
     "m0": 0,
     "m1": 1
-  },
-  "details": {
-    "shots": 1,
-    "seed": 11
   }
 }
 
@@ -359,7 +266,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "teleportation",
   "engine": "exact_qiskit_local",
-  "kind": "branch_model",
   "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies no correction",
   "qubits": 3,
   "parameters": {
@@ -375,29 +281,26 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
   ],
   "probabilities": {
-    "m0=0,m1=0": 0.25,
-    "m0=0,m1=1": 0.25,
-    "m0=1,m1=0": 0.25,
-    "m0=1,m1=1": 0.25
+    "00": 0.25,
+    "01": 0.25,
+    "10": 0.25,
+    "11": 0.25
   },
+  "keyQubits": [
+    1,
+    0
+  ],
   "fidelity": 0.1766676593,
+  "observables": {
+    "branchProbability": 0.25,
+    "sourceFidelityAfterMeasurement": 0.2898407394,
+    "receiverBlochX": -0.8209505112,
+    "receiverBlochY": -0.3864875145,
+    "receiverBlochZ": 0.4203185212
+  },
   "measurementBits": {
     "m0": 1,
     "m1": 0
-  },
-  "details": {
-    "branchProbability": 0.25,
-    "expectedCorrections": {
-      "applyX": false,
-      "applyZ": true
-    },
-    "choiceFollowsRule": false,
-    "receiverBlochVector": [
-      -0.8209505112,
-      -0.3864875145,
-      0.4203185212
-    ],
-    "sourceFidelityAfterMeasurement": 0.2898407394
   }
 }
 
@@ -405,7 +308,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "teleportation",
   "engine": "exact_qiskit_local",
-  "kind": "branch_model",
   "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies X",
   "qubits": 3,
   "parameters": {
@@ -421,29 +323,26 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
   ],
   "probabilities": {
-    "m0=0,m1=0": 0.25,
-    "m0=0,m1=1": 0.25,
-    "m0=1,m1=0": 0.25,
-    "m0=1,m1=1": 0.25
+    "00": 0.25,
+    "01": 0.25,
+    "10": 0.25,
+    "11": 0.25
   },
+  "keyQubits": [
+    1,
+    0
+  ],
   "fidelity": 0.1493725989,
+  "observables": {
+    "branchProbability": 0.25,
+    "sourceFidelityAfterMeasurement": 0.2898407394,
+    "receiverBlochX": -0.8209505112,
+    "receiverBlochY": 0.3864875145,
+    "receiverBlochZ": -0.4203185212
+  },
   "measurementBits": {
     "m0": 1,
     "m1": 0
-  },
-  "details": {
-    "branchProbability": 0.25,
-    "expectedCorrections": {
-      "applyX": false,
-      "applyZ": true
-    },
-    "choiceFollowsRule": false,
-    "receiverBlochVector": [
-      -0.8209505112,
-      0.3864875145,
-      -0.4203185212
-    ],
-    "sourceFidelityAfterMeasurement": 0.2898407394
   }
 }
 
@@ -451,7 +350,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "teleportation",
   "engine": "exact_qiskit_local",
-  "kind": "branch_model",
   "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies Z",
   "qubits": 3,
   "parameters": {
@@ -467,29 +365,26 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
   ],
   "probabilities": {
-    "m0=0,m1=0": 0.25,
-    "m0=0,m1=1": 0.25,
-    "m0=1,m1=0": 0.25,
-    "m0=1,m1=1": 0.25
+    "00": 0.25,
+    "01": 0.25,
+    "10": 0.25,
+    "11": 0.25
   },
+  "keyQubits": [
+    1,
+    0
+  ],
   "fidelity": 1.0,
+  "observables": {
+    "branchProbability": 0.25,
+    "sourceFidelityAfterMeasurement": 0.2898407394,
+    "receiverBlochX": 0.8209505112,
+    "receiverBlochY": 0.3864875145,
+    "receiverBlochZ": 0.4203185212
+  },
   "measurementBits": {
     "m0": 1,
     "m1": 0
-  },
-  "details": {
-    "branchProbability": 0.25,
-    "expectedCorrections": {
-      "applyX": false,
-      "applyZ": true
-    },
-    "choiceFollowsRule": true,
-    "receiverBlochVector": [
-      0.8209505112,
-      0.3864875145,
-      0.4203185212
-    ],
-    "sourceFidelityAfterMeasurement": 0.2898407394
   }
 }
 
@@ -497,7 +392,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "teleportation",
   "engine": "exact_qiskit_local",
-  "kind": "branch_model",
   "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); project onto m0=1, m1=0; Bob applies X then Z",
   "qubits": 3,
   "parameters": {
@@ -513,29 +407,26 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "The source qubit was measured and left in |1>: it no longer holds the state, so there is one copy, at the receiver."
   ],
   "probabilities": {
-    "m0=0,m1=0": 0.25,
-    "m0=0,m1=1": 0.25,
-    "m0=1,m1=0": 0.25,
-    "m0=1,m1=1": 0.25
+    "00": 0.25,
+    "01": 0.25,
+    "10": 0.25,
+    "11": 0.25
   },
+  "keyQubits": [
+    1,
+    0
+  ],
   "fidelity": 0.6739597419,
+  "observables": {
+    "branchProbability": 0.25,
+    "sourceFidelityAfterMeasurement": 0.2898407394,
+    "receiverBlochX": 0.8209505112,
+    "receiverBlochY": -0.3864875145,
+    "receiverBlochZ": -0.4203185212
+  },
   "measurementBits": {
     "m0": 1,
     "m1": 0
-  },
-  "details": {
-    "branchProbability": 0.25,
-    "expectedCorrections": {
-      "applyX": false,
-      "applyZ": true
-    },
-    "choiceFollowsRule": false,
-    "receiverBlochVector": [
-      0.8209505112,
-      -0.3864875145,
-      -0.4203185212
-    ],
-    "sourceFidelityAfterMeasurement": 0.2898407394
   }
 }
 
@@ -543,7 +434,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "teleportation",
   "engine": "exact_qiskit_local",
-  "kind": "corrections_withheld",
   "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); bits withheld from Bob",
   "qubits": 3,
   "parameters": {
@@ -555,35 +445,11 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "The quantum half of the link carries no message on its own."
   ],
   "fidelity": 0.5,
-  "details": {
-    "receiverAverageState": {
-      "re": [
-        [
-          0.5,
-          0.0
-        ],
-        [
-          0.0,
-          0.5
-        ]
-      ],
-      "im": [
-        [
-          0.0,
-          0.0
-        ],
-        [
-          0.0,
-          0.0
-        ]
-      ]
-    },
-    "receiverBlochVector": [
-      0.0,
-      0.0,
-      0.0
-    ],
-    "receiverPurity": 0.5
+  "observables": {
+    "receiverPurity": 0.5,
+    "receiverBlochX": 0.0,
+    "receiverBlochY": 0.0,
+    "receiverBlochZ": 0.0
   }
 }
 
@@ -591,7 +457,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "teleportation",
   "engine": "exact_qiskit_local",
-  "kind": "deferred_measurement_verification",
   "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); CX(q1,q2); CZ(q0,q2)",
   "qubits": 3,
   "parameters": {
@@ -605,13 +470,10 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "Bob's reduced state matches the source with fidelity 1.000000."
   ],
   "fidelity": 1.0,
-  "circuitText": "     ┌───────────┐┌──────────┐     ┌───┐   \nq_0: ┤ Ry(1.137) ├┤ Rz(0.44) ├──■──┤ H ├─■─\n     └───┬───┬───┘└──────────┘┌─┴─┐└───┘ │ \nq_1: ────┤ H ├─────────■──────┤ X ├──■───┼─\n         └───┘       ┌─┴─┐    └───┘┌─┴─┐ │ \nq_2: ────────────────┤ X ├─────────┤ X ├─■─\n                     └───┘         └───┘   ",
-  "details": {
-    "receiverBlochVector": [
-      0.8209505112,
-      0.3864875145,
-      0.4203185212
-    ]
+  "observables": {
+    "receiverBlochX": 0.8209505112,
+    "receiverBlochY": 0.3864875145,
+    "receiverBlochZ": 0.4203185212
   }
 }
 
@@ -619,7 +481,6 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "teleportation",
   "engine": "exact_qiskit_local",
-  "kind": "deferred_measurement_verification",
   "circuitDescription": "prepare RY(1.137) then RZ(0.44) on |0> on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); CX(q1,q2)",
   "qubits": 3,
   "parameters": {
@@ -633,13 +494,10 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "Bob's reduced state matches the source with fidelity 0.588334."
   ],
   "fidelity": 0.5883338296,
-  "circuitText": "     ┌───────────┐┌──────────┐     ┌───┐\nq_0: ┤ Ry(1.137) ├┤ Rz(0.44) ├──■──┤ H ├\n     └───┬───┬───┘└──────────┘┌─┴─┐└───┘\nq_1: ────┤ H ├─────────■──────┤ X ├──■──\n         └───┘       ┌─┴─┐    └───┘┌─┴─┐\nq_2: ────────────────┤ X ├─────────┤ X ├\n                     └───┘         └───┘",
-  "details": {
-    "receiverBlochVector": [
-      0.0,
-      0.0,
-      0.4203185212
-    ]
+  "observables": {
+    "receiverBlochX": 0.0,
+    "receiverBlochY": 0.0,
+    "receiverBlochZ": 0.4203185212
   }
 }
 
@@ -647,11 +505,11 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
 {
   "experiment": "teleportation",
   "engine": "exact_qiskit_local",
-  "kind": "live_commit",
   "circuitDescription": "prepare token on q0; q0 = source, q1 = Alice's Bell half, q2 = Bob; H(q1); CX(q1,q2); CX(q0,q1); H(q0); measure m0, m1; Bob applies X iff m1=1, Z iff m0=1",
   "qubits": 3,
   "parameters": {
-    "state": "bloch_b"
+    "state": "bloch_b",
+    "seed": 2026
   },
   "facts": [
     "Live bits m0 = 0, m1 = 0 travelled over the classical link; the receiver applied X OFF, Z OFF.",
@@ -660,25 +518,26 @@ Every value below was computed by local Qiskit (Statevector / partial_trace / st
     "One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch probabilities. One sample proves nothing about accuracy; the branch table does."
   ],
   "probabilities": {
-    "m0=0,m1=0": 0.25,
-    "m0=0,m1=1": 0.25,
-    "m0=1,m1=0": 0.25,
-    "m0=1,m1=1": 0.25
+    "00": 0.25,
+    "01": 0.25,
+    "10": 0.25,
+    "11": 0.25
   },
+  "keyQubits": [
+    1,
+    0
+  ],
   "fidelity": 1.0,
+  "observables": {
+    "branchProbability": 0.25,
+    "sourceFidelityAfterMeasurement": 0.1668619894,
+    "receiverBlochX": -0.2410787151,
+    "receiverBlochY": -0.7056609077,
+    "receiverBlochZ": -0.6662760213
+  },
   "measurementBits": {
     "m0": 0,
     "m1": 0
-  },
-  "details": {
-    "shots": 1,
-    "seed": 2026,
-    "appliedCorrections": {
-      "applyX": false,
-      "applyZ": false
-    },
-    "branchProbability": 0.25,
-    "sourceFidelityAfterMeasurement": 0.1668619894
   }
 }
 

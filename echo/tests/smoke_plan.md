@@ -22,8 +22,8 @@ has been run on Qollab yet.
    `from .formats import`), so `echo/quantum/__init__.py` must be uploaded too.
 2. **Call.** `await cloning.run_calibration.callPromising('plus')` returns a proxy with no error.
 3. **Convert.** `.toJs({dict_converter: Object.fromEntries})` gives a plain object.
-   `details.sourcePurity === 0.5` and `facts` is an Array. A bare `.toJs()` gives a JS `Map` for
-   every dict (that is Pyodide's default), so `result.details` would be undefined. The platform
+   `observables.purityQ0 === 0.5`, `keyQubits` is an Array `[1, 0]` and `facts` is an Array. A bare `.toJs()` gives a JS `Map` for
+   every dict (that is Pyodide's default), so `result.observables` would be undefined. The platform
    adapter must pass `dict_converter`.
 4. **Teleportation.** `teleport_branch.callPromising('bloch_a', 1, 0, false, true)` gives
    `fidelity === 1`. With `(…, 1, 0, false, false)` it gives `fidelity` 0.176668.

@@ -1,6 +1,6 @@
 """ExperimentResult guard (vision §8.4) and the JS-bridge contract across EVERY public experiment call.
 
-The sweep below enumerates its inputs itself; it does not ask the modules which inputs exist."""
+The sweep is conftest.bridge_calls(), which enumerates its inputs itself; it does not ask the modules."""
 import ast
 import functools
 import json
@@ -10,34 +10,16 @@ import pathlib
 import numpy as np
 import pytest
 
-from quantum import cloning, entanglement, formats, teleportation
-
-STATES = ["zero", "one", "plus", "minus", "phase", "bloch_a", "bloch_b"]
-
-
-def every_result():
-    for s in STATES:
-        yield cloning.run_calibration(s)
-        yield teleportation.corrections_withheld(s)
-        yield teleportation.verify_deferred(s)
-        yield teleportation.bell_measurement(s, seed=1)
-        yield teleportation.live_commit(s, seed=2)
-        for m0 in (0, 1):
-            for m1 in (0, 1):
-                for ax in (False, True):
-                    for az in (False, True):
-                        yield teleportation.teleport_branch(s, m0, m1, ax, az)
-    for g in ("I", "X", "Z"):
-        yield entanglement.bell_signalling(g)
-
-
-SWEEP_SIZE = 7 * (5 + 16) + 3
+from conftest import BRIDGE_CALL_COUNT, bridge_calls
+from quantum import formats
 
 
 @functools.cache
 def all_results():
     # Built lazily so a broken engine fails these tests instead of aborting collection.
-    return list(every_result())
+    return [fn() for _, fn in bridge_calls()]
+
+
 PLAIN = (dict, list, str, int, float, bool, type(None))
 
 
@@ -58,16 +40,17 @@ def walk(v, path="$"):
 
 
 def test_sweep_size():
-    assert len(all_results()) == SWEEP_SIZE
+    assert len(all_results()) == BRIDGE_CALL_COUNT
 
 
-@pytest.mark.parametrize("i", range(SWEEP_SIZE))
+@pytest.mark.parametrize("i", range(BRIDGE_CALL_COUNT))
 def test_every_result_is_plain_and_json_safe(i):
     r = all_results()[i]
     list(walk(r))
     assert json.loads(json.dumps(r, allow_nan=False)) == r
     assert r["engine"] in ("exact_qiskit_local", "qollab_selected_backend", "documented_preview")
-    assert r["experiment"] in ("cloning", "bell_signalling", "teleportation")
+    # Platform's union plus the one pending request (report 0003); test_contract_conformance holds the rest.
+    assert r["experiment"] in ("cloning", "bell_signalling", "teleportation", "bell_verification")
     assert not ("probabilities" in r and "counts" in r)
     assert r["facts"] and all(type(f) is str for f in r["facts"])
     if "probabilities" in r:
@@ -90,33 +73,50 @@ def test_no_forbidden_claims_in_any_string():
 
 
 def base(**kw):
-    args = dict(experiment="cloning", engine="exact_qiskit_local", kind="naive_cnot_clone",
+    args = dict(experiment="cloning", engine="exact_qiskit_local",
                 circuit_description="x", qubits=1, parameters={"state": "zero"}, facts=["f"])
     args.update(kw)
     return args
 
 
 def test_builder_converts_numpy_and_rounds():
-    r = formats.experiment_result(**base(fidelity=np.float64(0.12345678901234), details={"n": np.int64(3), "b": np.bool_(True), "v": np.array([0.5, -0.0])}))
+    r = formats.experiment_result(**base(fidelity=np.float64(0.12345678901234),
+                                         parameters={"n": np.int64(3), "b": np.bool_(True)},
+                                         observables={"v": np.float64(-0.0), "w": np.float64(0.5)},
+                                         probabilities={"0": np.float64(1.0), "1": np.float64(0.0)}, key_qubits=[np.int64(0)]))
     assert type(r["fidelity"]) is float and r["fidelity"] == pytest.approx(0.1234567890, abs=1e-10)
-    assert type(r["details"]["n"]) is int and type(r["details"]["b"]) is bool
-    assert r["details"]["v"] == [0.5, 0.0] and all(type(x) is float for x in r["details"]["v"])
+    assert type(r["parameters"]["n"]) is int and type(r["parameters"]["b"]) is bool
+    assert r["observables"] == {"v": 0.0, "w": 0.5} and all(type(x) is float for x in r["observables"].values())
+    assert r["keyQubits"] == [0] and type(r["keyQubits"][0]) is int
 
 
 @pytest.mark.parametrize("bad", [
-    dict(details={"z": 1j}),
-    dict(details={"z": np.complex128(1)}),
-    dict(details={"z": float("nan")}),
-    dict(details={"z": float("inf")}),
-    dict(details={"z": object()}),
-    dict(details={1: 2}),
+    dict(observables={"z": 1j}),
+    dict(observables={"z": np.complex128(1)}),
+    dict(observables={"z": float("nan")}),
+    dict(observables={"z": float("inf")}),
+    dict(observables={"z": object()}),
+    dict(observables={"z": True}),  # a verdict is a fact, not an observable
+    dict(observables={"z": [0.1, 0.2]}),
+    dict(observables={1: 2}),
+    dict(parameters={"nested": {"a": 1}}),  # parameters are flat
+    dict(parameters={"none": None}),
+    dict(probabilities={"0": 1.0}),  # no keyQubits
+    dict(probabilities={"0": 1.0}, key_qubits=[1]),  # qubit 1 does not exist (qubits=1)
+    dict(probabilities={"00": 1.0}, key_qubits=[0]),  # key longer than keyQubits
+    dict(probabilities={"m0=0": 1.0}, key_qubits=[0]),  # labels are not 0/1 keys
+    dict(key_qubits=[0]),  # keyQubits without a table
+    dict(fidelity=1.5),
+    dict(qubits=0),
+    dict(facts=[""]),
     dict(engine="ionq_magic"),
     dict(experiment="matter_transport"),
-    dict(probabilities={"a": 1.0}, counts={"a": 3}),
-    dict(counts={"a": 3}),  # exact engine may not carry shot counts
-    dict(engine="qollab_selected_backend", probabilities={"a": 1.0}),
-    dict(engine="qollab_selected_backend", counts={"a": 2.5}),
-    dict(probabilities={"a": 0.4}),  # does not sum to 1
+    dict(probabilities={"0": 1.0}, counts={"0": 3}, key_qubits=[0]),
+    dict(counts={"0": 3}, key_qubits=[0]),  # exact engine may not carry shot counts
+    dict(engine="qollab_selected_backend", probabilities={"0": 1.0}, key_qubits=[0]),
+    dict(engine="qollab_selected_backend", counts={"0": 2.5}, key_qubits=[0]),
+    dict(engine="qollab_selected_backend"),  # a selected-backend result without counts
+    dict(probabilities={"0": 0.4}, key_qubits=[0]),  # does not sum to 1
     dict(measurementBits={"m0": 2, "m1": 0}),
     dict(facts=["The secret was sent instantly"]),
     dict(facts=[]),
@@ -130,9 +130,17 @@ def test_builder_refuses(bad):
         formats.experiment_result(**kw)
 
 
+@pytest.mark.parametrize("bad", [1j, np.complex128(1), object(), float("nan"), {1: 2}, {"a": [1j]}])
+def test_plain_refuses_what_does_not_survive_the_bridge(bad):
+    # plain() is the first guard; the builder's per-field type checks are a second one, so this is
+    # tested on its own (sabotage formats-allow-complex stayed green without it).
+    with pytest.raises((TypeError, ValueError)):
+        formats.plain(bad)
+
+
 def test_counts_allowed_for_selected_backend():
-    r = formats.experiment_result(**base(experiment="bell_signalling", engine="qollab_selected_backend",
-                                         counts={"00": np.int64(130), "11": 126}))
+    r = formats.experiment_result(**base(experiment="bell_verification", engine="qollab_selected_backend", qubits=2,
+                                         counts={"00": np.int64(130), "11": 126}, key_qubits=[1, 0]))
     assert r["counts"] == {"00": 130, "11": 126} and "probabilities" not in r
 
 

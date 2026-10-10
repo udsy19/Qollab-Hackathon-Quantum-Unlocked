@@ -9,7 +9,11 @@ import math
 import numpy as np
 
 ENGINES = ("exact_qiskit_local", "qollab_selected_backend", "documented_preview")
-EXPERIMENTS = ("cloning", "bell_signalling", "teleportation")
+# Platform's EXPERIMENTS (echo/contracts.js) plus "bell_verification": the selected-backend Bell
+# correlation job is neither the relay puzzle nor teleportation (vision §10.7), and the contract has no
+# honest value for it yet. Requested from platform in lanes/quantum/reports/0003-contract-conformance.md.
+EXPERIMENTS = ("cloning", "bell_signalling", "teleportation", "bell_verification")
+PROBABILITY_TOLERANCE = 1e-9  # the platform validator's tolerance
 DECIMALS = 10
 
 # Vision §2.4 / §7.5: phrases no result string may carry.
@@ -43,23 +47,23 @@ def plain(value, path="result"):
     raise TypeError(f"{path}: {type(value).__name__} is not JSON-safe")
 
 
-def complex_pair(z):
-    """A complex amplitude as [re, im] — complex numbers do not survive .toJs()."""
-    z = complex(z)
-    return [z.real, z.imag]
+def experiment_result(*, experiment, engine, circuit_description, qubits, parameters, facts,
+                      probabilities=None, counts=None, key_qubits=None, fidelity=None, observables=None,
+                      measurement_bits=None, created_at=None):
+    """Build one ExperimentResult in the platform contract's shape (echo/CONTRACTS.md, vision §8.4).
 
-
-def experiment_result(*, experiment, engine, kind, circuit_description, qubits, parameters, facts,
-                      probabilities=None, counts=None, fidelity=None, measurement_bits=None,
-                      circuit_text=None, details=None, created_at=None):
-    """Build one ExperimentResult. Vision field names are used verbatim; `kind`, `circuitText` and
-    `details` are the proposed additions (vault/Design/experiment-result-contract.md)."""
+    `key_qubits` names the qubit behind each character of a probabilities/counts key, left to right
+    (Qiskit keys are little-endian, so a full 2-qubit register is [1, 0]). `observables` holds exact
+    derived numbers (purities, Bloch components, branch probabilities); verdicts go in `facts`."""
     if experiment not in EXPERIMENTS:
         raise ValueError(f"experiment {experiment!r} not in {EXPERIMENTS}")
     if engine not in ENGINES:
         raise ValueError(f"engine {engine!r} not in {ENGINES}")
-    if not facts:
-        raise ValueError("facts must explain the result to the player")
+    if not facts or not all(type(f) is str and f.strip() for f in facts):
+        raise ValueError("facts must be non-empty strings explaining the result to the player")
+    qubits = int(qubits)
+    if qubits < 1:
+        raise ValueError(f"qubits must be >= 1, got {qubits}")
     # Exact probabilities and sampled shot counts are different kinds of evidence; never both.
     if probabilities is not None and counts is not None:
         raise ValueError("a result carries exact probabilities OR shot counts, never both")
@@ -67,21 +71,28 @@ def experiment_result(*, experiment, engine, kind, circuit_description, qubits, 
         raise ValueError("exact_qiskit_local results carry probabilities, not counts")
     if probabilities is not None and engine == "qollab_selected_backend":
         raise ValueError("selected-backend results carry counts, not probabilities")
+    if counts is None and engine == "qollab_selected_backend":
+        raise ValueError("selected-backend results must carry counts")
 
+    params = plain(parameters, "parameters")
+    for k, v in params.items():
+        if type(v) not in (str, int, float, bool):
+            raise TypeError(f"parameters.{k} must be a flat str/number/bool, got {type(v).__name__}")
     result = {
         "experiment": experiment,
         "engine": engine,
-        "kind": str(kind),
         "circuitDescription": str(circuit_description),
-        "qubits": int(qubits),
-        "parameters": plain(parameters, "parameters"),
-        "facts": [str(f) for f in facts],
+        "qubits": qubits,
+        "parameters": params,
+        "facts": list(facts),
     }
+    tables = []
     if probabilities is not None:
         p = plain(probabilities, "probabilities")
-        if any(v < 0 or v > 1 for v in p.values()) or abs(sum(p.values()) - 1) > 1e-6:
+        if any(type(v) is not float or v < 0 or v > 1 for v in p.values()) or abs(sum(p.values()) - 1) > PROBABILITY_TOLERANCE:
             raise ValueError(f"probabilities must lie in [0,1] and sum to 1: {p}")
         result["probabilities"] = p
+        tables.append(("probabilities", p))
     if counts is not None:
         c = {}
         for k, v in counts.items():
@@ -89,17 +100,35 @@ def experiment_result(*, experiment, engine, kind, circuit_description, qubits, 
                 raise TypeError(f"counts[{k!r}] must be a non-negative integer, got {v!r}")
             c[k] = v
         result["counts"] = plain(c, "counts")
+        tables.append(("counts", result["counts"]))
+    if tables:
+        kq = plain(key_qubits, "keyQubits")
+        if (type(kq) is not list or not kq or len(set(kq)) != len(kq)
+                or any(type(q) is not int or not 0 <= q < qubits for q in kq)):
+            raise ValueError(f"keyQubits must list distinct qubit indices in [0, {qubits}), got {kq!r}")
+        for field, table in tables:
+            for key in table:
+                if len(key) != len(kq) or set(key) - {"0", "1"}:
+                    raise ValueError(f"{field} key {key!r} must be {len(kq)} character(s) of 0/1, one per keyQubits entry")
+        result["keyQubits"] = kq
+    elif key_qubits is not None:
+        raise ValueError("keyQubits given without probabilities or counts")
     if fidelity is not None:
-        result["fidelity"] = plain(fidelity, "fidelity")
+        f = plain(fidelity, "fidelity")
+        if type(f) is not float or not 0 <= f <= 1 + PROBABILITY_TOLERANCE:
+            raise ValueError(f"fidelity must be a number in [0, 1], got {f!r}")
+        result["fidelity"] = f
+    if observables is not None:
+        obs = plain(observables, "observables")
+        for k, v in obs.items():
+            if type(v) not in (int, float):
+                raise TypeError(f"observables.{k} must be a finite number, got {type(v).__name__}")
+        result["observables"] = obs
     if measurement_bits is not None:
         bits = plain(measurement_bits, "measurementBits")
         if set(bits) != {"m0", "m1"} or any(b not in (0, 1) or type(b) is not int for b in bits.values()):
             raise ValueError(f"measurementBits must be {{m0: 0|1, m1: 0|1}}, got {bits}")
         result["measurementBits"] = bits
-    if circuit_text is not None:
-        result["circuitText"] = str(circuit_text)
-    if details is not None:
-        result["details"] = plain(details, "details")
     if created_at is not None:
         result["createdAt"] = str(created_at)
 

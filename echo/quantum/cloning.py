@@ -7,8 +7,8 @@ independent copies is DERIVED from the computed state, never looked up by state 
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector, partial_trace, state_fidelity
 
-from . import STATES, prepare, target_state
-from .formats import complex_pair, experiment_result
+from . import STATES, prepare, probability_table, target_state
+from .formats import experiment_result
 
 TOL = 1e-9
 
@@ -31,12 +31,8 @@ def run_calibration(state_name="plus"):
     independent = joint_fid > 1 - TOL
     entangled = source_purity < 1 - TOL
 
-    labels = {}
-    probs = {}
-    for index, amp in enumerate(joint.data):
-        key = f"source={index & 1},copy={(index >> 1) & 1}"
-        labels[key] = complex_pair(amp)
-        probs[key] = abs(amp) ** 2
+    # keyQubits [1, 0]: key "10" means q1 (copy) = 1, q0 (source) = 0.
+    probs, key_qubits = probability_table(joint, [0, 1])
 
     if independent:
         facts = [
@@ -55,21 +51,17 @@ def run_calibration(state_name="plus"):
     return experiment_result(
         experiment="cloning",
         engine="exact_qiskit_local",
-        kind="naive_cnot_clone",
         circuit_description=f"prepare {STATES[state_name][1]} on q0 (source); CX(q0 -> q1 blank copy)",
         qubits=2,
         parameters={"state": state_name},
         probabilities=probs,
+        key_qubits=key_qubits,
         facts=facts,
-        circuit_text=qc.draw(output="text"),
-        details={
-            "sourcePurity": source_purity,
-            "copyPurity": copy_purity,
-            "sourceFidelity": float(state_fidelity(source, psi)),
-            "copyFidelity": float(state_fidelity(copy, psi)),
+        observables={
+            "purityQ0": source_purity,
+            "purityQ1": copy_purity,
+            "fidelityQ0WithInput": float(state_fidelity(source, psi)),
+            "fidelityQ1WithInput": float(state_fidelity(copy, psi)),
             "jointFidelityWithTwoCopies": joint_fid,
-            "isTwoIndependentCopies": independent,
-            "isEntangled": entangled,
-            "amplitudes": labels,
         },
     )
