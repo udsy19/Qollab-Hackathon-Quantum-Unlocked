@@ -1,0 +1,21 @@
+· states
+· loud failure on a wrong name
+· transitions: vision edges present, nothing unexplained added
+· invalid events are refused, state unchanged
+· happy path, replayed through transition()
+  trace: BOOT → TITLE → OPENING → FREE_ROAM_ALLEY → CLONE_INTRO → CLONE_BASIS_PASSED → CLONE_SUPERPOSITION_FAILED → CLONE_UNDERSTOOD → RELAY_UNLOCKED → RELAY_INTRO → RELAY_BELL_CREATED → RELAY_SEND_FAILED → RELAY_UNDERSTOOD → ROOFTOP_UNLOCKED → LINK_REPAIRED → TELEPORT_DRY_RUN → TELEPORT_DRY_RUN_PASSED → TELEPORT_COMMITTED → ENDING → DECLASSIFIED → CREDITS
+· who fires each quest event (owner 2026-10-10 "13 lane design questions" #6)
+· MOMENT events (overseer relay 2026-10-10): fired by gameplay, consumed by story-ui, never a state change
+· countdown: holds at 00:00, never negative, never a game-over (overseer relay 2026-10-10; vision §1 anti-goals, §9.3)
+· every §9.1 state reachable from BOOT through transition()
+· interactables
+· world changes keyed by the §9.3 states
+· ExperimentResult validator
+· ExperimentResult.marginalProbabilities (the only sanctioned way to read one qubit out of a key)
+· teleport dry run, two phases (owner 2026-10-10 "red-team physics ambiguities" #2: bits first, corrections second)
+· UI root and settings (overseer relay from story-ui, 2026-10-10)
+· owner-ruled values, pinned from the ruling text (never read back from the module)
+· the one story commit (vision §7.4; owner, gameplay consult 3: one atomic local exact call)
+· the export surface is exactly the documented contract
+contract-check: GREEN — 1264/1264 checks passed (contracts: /Users/udsy/agent-org/lanes/gameplay/wt/gameplay-world-v2-port/echo/contracts.js)
+exit 0

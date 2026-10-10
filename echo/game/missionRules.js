@@ -8,28 +8,13 @@
 //   cloning:          parameters.state, fidelity = |<psi psi|out>|^2
 //   bell_signalling:  parameters.senderGate, probabilities over keyQubits [1] (receiver marginal)
 //   teleport dry run: the phase-2 request and result, judged by contracts' dryRunVerdict
-//   commit:           parameters.stateId, parameters.applyX/Z, measurementBits {m0, m1}, fidelity
-import { validateExperimentResult, dryRunVerdict, expectedCorrections, FIDELITY_PASS,
+//   commit:           contracts' validateCommitResult (stateId STORY_TOKEN_ID, applyX/Z, bits, fidelity)
+import { validateExperimentResult, dryRunVerdict, validateCommitResult, FIDELITY_PASS, STORY_TOKEN_ID,
   QUEST_STATES as S, QUEST_EVENTS as E } from '../contracts.js';
 
 const MARGINAL_TOL = 1e-6;
-export const STORY_TOKEN_ID = 'story_token';
 
 const none = (reason) => ({ event: null, reason });
-
-// The story-token commit applies the §7.1 rule inside one engine call (owner ruling, gameplay
-// consult 3). Judged by the rule AND the computed fidelity: on |0> a spurious Z is a global phase
-// and still scores 1, so fidelity alone is not enough.
-function correctCommit(r) {
-  const bits = r.measurementBits;
-  if (!bits || typeof r.fidelity !== 'number') return 'no measurement bits or fidelity';
-  const want = expectedCorrections(bits.m0, bits.m1);
-  if (r.parameters.applyX !== want.applyX || r.parameters.applyZ !== want.applyZ) {
-    return `corrections do not match m0=${bits.m0}, m1=${bits.m1}`;
-  }
-  if (r.fidelity < FIDELITY_PASS) return `fidelity ${r.fidelity} below ${FIDELITY_PASS}`;
-  return null;
-}
 
 // The receiver's exact marginal must be 1/2, 1/2 — both outcomes, about the receiver qubit (q1)
 // alone. One number is not enough: P(0)=0.5 beside P(1)=0.9 is a contradiction (review F7).
@@ -66,10 +51,13 @@ const RULES = {
     if (!v.unlocksCommit) return none('correct, but bits 00 need no correction: calibrate again on a run that needs X or Z');
     return E.CORRECT_CALIBRATION;
   },
+  // The story-token commit applies the §7.1 rule inside one engine call (owner ruling, gameplay
+  // consult 3); contracts' validateCommitResult judges the rule AND the fidelity (on |0> a spurious Z
+  // is a global phase and still scores 1, so fidelity alone is not enough).
   [S.TELEPORT_DRY_RUN_PASSED]: (r) => {
     if (r.experiment !== 'teleportation' || r.parameters.stateId !== STORY_TOKEN_ID) return none('need the story-token transfer');
-    const why = correctCommit(r);
-    return why ? none(why) : E.COMMIT_TRANSFER;
+    const errors = validateCommitResult(r);
+    return errors.length ? none(`commit refused: ${errors.join('; ')}`) : E.COMMIT_TRANSFER;
   },
 };
 
