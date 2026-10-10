@@ -1,0 +1,41 @@
+PASS GAME-STATES            [V§9.1]
+FAIL GAME-EDGES             [V§9.2 + R13.1/R13.12]
+       - BOOT --BOOT_COMPLETE--> REFUSED, want TITLE (R13.1)
+       - DECLASSIFIED has no edge to ENDING (R13.1 (event name unspecified))
+FAIL GAME-EXTRA             [V§9.2 transition(): anything else refused]
+       - gameplay state.js: undocumented edge BOOT --BOOTED--> TITLE
+       - gameplay state.js: undocumented edge DECLASSIFIED --RESTART--> TITLE
+       - gameplay state.js: undocumented edge CREDITS --OPEN_SCIENCE--> DECLASSIFIED
+       - gameplay state.js: undocumented edge CREDITS --RESTART--> TITLE
+PASS CONTRACT-STATES        [V§9.1]
+FAIL CONTRACT-EDGES         [V§9.2 + R13.1/R13.12]
+       - DECLASSIFIED has no edge to ENDING (R13.1 (event name unspecified))
+       - ENDING --RESTART--> refused and no reset() on this module (R13.12 + V§9.5 (target unspecified))
+PASS CONTRACT-EXTRA         [V§9.2 transition(): anything else refused]
+FAIL PARITY                 [owner relay "gameplay imports its quest table from echo/contracts.js"]
+       - BOOT --BOOT_COMPLETE--> gameplay REFUSED vs contracts TITLE
+       - BOOT --BOOTED--> gameplay TITLE vs contracts REFUSED
+       - DECLASSIFIED --RESTART--> gameplay TITLE vs contracts REFUSED
+       - CREDITS --OPEN_SCIENCE--> gameplay DECLASSIFIED vs contracts REFUSED
+       - CREDITS --RESTART--> gameplay TITLE vs contracts REFUSED
+PASS GAME-NOSKIP            [V§9.2 chain; CLAUDE.md "Playable"]
+PASS GAME-ENDING-ENTRY      [V§9.2 + R13.1]
+PASS GAME-COMMIT-ONCE       [V§7.4, V§9.3 idempotence]
+PASS CONTRACT-NOSKIP        [V§9.2 chain; CLAUDE.md "Playable"]
+PASS CONTRACT-ENDING-ENTRY  [V§9.2 + R13.1]
+PASS CONTRACT-COMMIT-ONCE   [V§7.4, V§9.3 idempotence]
+PASS TOKEN-ELSEWHERE        [V§7.4: the token is measured only at the final commit]
+FAIL TOKEN-LATCH            [V§7.4 "do not let the player re-run teleportation of the already-measured token"; RG3.1 "latched once recorded"]
+       - after a recorded commit result (F=0.117) in TELEPORT_DRY_RUN_PASSED, a SECOND story-token measurement yields COMMIT_TRANSFER -> token measured twice
+PASS ERR-COMMIT             [RG3.1: an errored commit records nothing; retry allowed]
+PASS DRY-RULE               [V§7.4 + oracle physics; CLAUDE.md "all four conditional correction choices"]
+FAIL DRY-00                 [RG3.2: COMMIT unlocks only after a correct dry run whose bits are NOT 00]
+       - bits m0=0 m1=0 with no corrections (F=1.000000) yields CORRECT_CALIBRATION -> COMMIT unlocked without the player applying X or Z
+FAIL FRESH                  [R13.11: a wrong dry run retries on a FRESH calibration state]
+       - after a wrong dry run on calibration_A, a retry on the SAME state (same stateId, theta, phi) yields CORRECT_CALIBRATION
+FAIL ACK                    [R13.13: acknowledgements advance only after the result panel was shown]
+       - EXPLANATION_READ accepted in CLONE_SUPERPOSITION_FAILED with no result-panel signal of any kind (0 ms after entry)
+       - VIEW_RECEIVER_MARGINAL accepted in RELAY_SEND_FAILED with no result-panel signal of any kind (0 ms after entry)
+PASS PLAYTHROUGH            [V§9.2 legal path, results through missionRules; CLAUDE.md "Playable"]
+
+21 checks: 13 green, 8 red
