@@ -1,0 +1,5 @@
+G. story_token teleport #1: fidelity=0.430028356853 -> rule in TELEPORT_DRY_RUN_PASSED: {"event":null,"reason":"corrections do not match m0=1, m1=1"}; fact: "The source qubit was measured, so the original is gone: one of one."
+G. story_token teleport #2: fidelity=0.430028356853 -> rule in TELEPORT_DRY_RUN_PASSED: {"event":null,"reason":"corrections do not match m0=1, m1=1"}; fact: "The source qubit was measured, so the original is gone: one of one."
+G. story_token teleport #3: fidelity=0.430028356853 -> rule in TELEPORT_DRY_RUN_PASSED: {"event":null,"reason":"corrections do not match m0=1, m1=1"}; fact: "The source qubit was measured, so the original is gone: one of one."
+H. calibration bloch, m0=0 m1=0, no corrections -> {"event":"CORRECT_CALIBRATION","reason":"result shows the lesson"}
+I. calibration plus, m0=0 m1=0, chose X (wrong): fidelity shown=1; verdict={"event":null,"reason":"corrections do not match m0=0, m1=0"}; facts[1]="Receiver state fidelity with the original: 1."
