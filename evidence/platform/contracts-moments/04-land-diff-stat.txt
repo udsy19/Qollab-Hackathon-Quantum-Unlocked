@@ -1,0 +1,5 @@
+ echo/CONTRACTS.md                |  58 ++++++++++-
+ echo/contracts.js                |  45 ++++++++-
+ tools/contract-check/check.mjs   | 204 ++++++++++++++++++++++++++++++++++++++-
+ tools/contract-check/sabotage.py | 108 ++++++++++++++++++++-
+ 4 files changed, 403 insertions(+), 12 deletions(-)
