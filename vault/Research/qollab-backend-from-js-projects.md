@@ -79,6 +79,8 @@ The last two lines also answer what the built-in backend reports as its `name`, 
 
 ## What this settles for ECHO
 
+> [!warning] Outdated (2026-10-10): where `backend.run` is called. The first bullet is superseded by [[backend-run-site]]. JS submits the job in `bridge.js`, and Python only builds the circuit and reads the counts. The bit-order and `dict_converter` bullets still hold.
+
 - `echo/quantum/qollab_job.py` takes `backend` **as an argument** and must be called from `main.js` with `.callPromising(backend)`. It never creates or names a backend; a test greps its code to enforce that.
 - It reads counts through an explicit mapping (`QUBIT_OF_CLBIT = (0, 1)`, rightmost key bit = clbit 0). The endianness tests go red if the order is reversed; the sabotage table is in `lanes/quantum/reports/0001-backend-job.md`.
 - JS must convert its result with `toJs({ dict_converter: Object.fromEntries })`.
