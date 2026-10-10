@@ -55,6 +55,9 @@ const objectives = await load('objectives.js')
 const teachback = await load('teachback.js')
 
 let checks = 0
+const NEG = /\b(not|no|never|cannot|can't|won't|isn't|aren't|doesn't|didn't|nothing|without|neither|nor|none)\b|n't\b/i
+// "no-cloning" is a name, not a negation: strip it before looking for one.
+const NEG_FOR = s => typeof s === 'string' && NEG.test(s.replace(/no[- ]cloning/gi, ''))
 const failures = []
 const fail = (where, msg) => failures.push(`${where}: ${msg}`)
 const check = (ok, where, msg) => { checks++; if (!ok) fail(where, msg) }
@@ -94,6 +97,19 @@ for (const [where, beats] of beatGroups) {
     const lines = wrap(b?.text ?? '')
     check(lines !== null && lines.length <= MAX_LINES, w,
       `does not fit ${MAX_LINES}×${LINE}: ${lines ? lines.length + ' lines' : 'a word longer than ' + LINE} — "${b?.text}"`)
+  })
+}
+
+// A beat that voices a misconception (`misconception: true`) must be corrected by the very next
+// beat, which must carry a negation; only then is it excused from the negatable claim patterns.
+const excusedBeats = new Set()
+for (const [where, beats] of beatGroups) {
+  if (!Array.isArray(beats)) continue
+  beats.forEach((b, i) => {
+    if (b?.misconception !== true) return
+    const next = beats[i + 1]
+    check(next && NEG_FOR(next.text), `${where}[${i}]`, `misconception "${b.text}" is not corrected by a negating next beat`)
+    excusedBeats.add(b)
   })
 }
 
@@ -142,7 +158,6 @@ check(Array.isArray(TB) && TB.length === 3, 'teachback.TEACHBACK', `must hold th
 // Derived from the MEANING of §2.4 and §7.5, not its words. A sentence is the unit; claims that a
 // sentence may legitimately negate ("entanglement alone cannot send a message") are excused only by
 // a negation in the same sentence. Unconditional patterns are never excused.
-const NEG = /\b(not|no|never|cannot|can't|won't|isn't|aren't|doesn't|didn't|nothing|without|neither|nor|none)\b|n't\b/i
 const UNCONDITIONAL = [
   [/faster[- ]than[- ]light|\bftl\b|superluminal/i, 'faster-than-light signalling (§2.4)'],
   [/certif\w*[^.]{0,30}random|\btrue(ly)? random|genuine(ly)? random|physical(ly)? quantum (entropy|random)|quantum[- ]random(ness)? (number|generator|source)|certified quantum/i, 'certified/physical quantum randomness from a simulator (§2.4, §7.5)'],
@@ -162,11 +177,15 @@ const NEGATABLE = [
   // no-cloning stretched to classical information
   [/(no[- ]cloning|physics|quantum)[^.?!]{0,40}\b(prevent\w*|forbid\w*|stop\w*|block\w*|ban\w*)\b[^.?!]{0,30}\b(storage|storing|authenticat\w*|classical|files?|data|bits)\b/i, 'no-cloning stretched to storage/authentication/classical copying (§2.4)'],
 ]
-const strings = []
-function walk(v, path) {
-  if (typeof v === 'string') strings.push([path, v])
-  else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${path}[${i}]`))
-  else if (v && typeof v === 'object') for (const [k, x] of Object.entries(v)) walk(x, `${path}.${k}`)
+const strings = [] // [path, string, owning object]
+const sourced = []  // objects claiming { text, src }: text quoted verbatim from the vision
+function walk(v, path, owner) {
+  if (typeof v === 'string') strings.push([path, v, owner])
+  else if (Array.isArray(v)) v.forEach((x, i) => walk(x, `${path}[${i}]`, v))
+  else if (v && typeof v === 'object') {
+    if ('src' in v) sourced.push([path, v])
+    for (const [k, x] of Object.entries(v)) walk(x, `${path}.${k}`, v)
+  }
 }
 for (const [mod, name] of [[story, 'story'], [objectives, 'objectives'], [teachback, 'teachback']]) {
   for (const [k, v] of Object.entries(mod)) walk(v, `${name}.${k}`)
@@ -174,14 +193,24 @@ for (const [mod, name] of [[story, 'story'], [objectives, 'objectives'], [teachb
 // Strings that QUOTE a misconception so it can be corrected say so, and only they are exempt
 // from the negatable patterns: a field named `misconception` or `wrong` (teach-back distractors).
 const quotesMisconception = p => /\.(misconception|wrong)(\[|$)/.test(p)
-for (const [path, s] of strings) {
+for (const [path, s, owner] of strings) {
+  if (/\.src$/.test(path)) continue
   for (const sentence of s.split(/(?<=[.?!])\s+/)) {
     for (const [re, why] of UNCONDITIONAL) { checks++; if (re.test(sentence)) fail(path, `${why}: "${sentence}"`) }
-    if (quotesMisconception(path)) continue
-    // "no-cloning" is a name, not a negation: strip it before looking for one.
-    const negated = NEG.test(sentence.replace(/no[- ]cloning/gi, ''))
+    if (quotesMisconception(path) || excusedBeats.has(owner)) continue
+    const negated = NEG_FOR(sentence)
     for (const [re, why] of NEGATABLE) { checks++; if (re.test(sentence) && !negated) fail(path, `${why}: "${sentence}"`) }
   }
+}
+
+// ------------------------------------------------------------------ 6. "verbatim" means verbatim
+// A `src` tag claims the text is quoted from the vision doc. Verify it against the doc's bytes
+// (quotes and whitespace normalised), so new text cannot pass itself off as the owner's.
+const norm = t => t.replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/\s+/g, ' ')
+const visionNorm = norm(vision)
+for (const [path, o] of sourced) {
+  const t = o.text ?? o.question
+  check(typeof t === 'string' && visionNorm.includes(norm(t)), path, `claims src ${o.src} but its text is not in the vision verbatim: "${t}"`)
 }
 
 // Placeholders the owner must fill are reported, not failed: they are the honest state.

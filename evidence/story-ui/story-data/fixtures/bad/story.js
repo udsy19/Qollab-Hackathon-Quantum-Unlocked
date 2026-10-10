@@ -5,6 +5,11 @@ export const STORY = {
     { speaker: 'NARRATOR', text: 'Not a cast member.' },
     { speaker: 'VEGA', text: 'The entangled pair sends the secret faster than light.' },
   ],
+  ENDING: [
+    { speaker: 'MICA', text: 'But you still have it, right?', misconception: true },
+    { speaker: 'RIN', text: 'Yes, safe in the capsule.' },
+    { speaker: 'VEGA', text: 'This line was never in the vision.', src: '§4.4' },
+  ],
   NOT_A_STATE: [{ speaker: 'MICA', text: 'Unknown key.' }],
 }
 export const MOMENTS = {
