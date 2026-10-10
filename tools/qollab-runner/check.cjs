@@ -91,6 +91,16 @@ async function waitFor(fn, ms, what) {
     }
     check('backend name rendered from injected backend', (await text('backend-name')) === 'basic_simulator', await text('backend-name'));
 
+    // Runner fidelity: the frame must refuse what Qollab's frame refuses.
+    const sandbox = await frame.evaluate(async () => {
+      let storage = 'allowed';
+      try { window.localStorage.length; } catch { storage = 'blocked'; }
+      let post = 'allowed';
+      try { await fetch(location.href, { method: 'POST' }); } catch { post = 'blocked'; }
+      return { storage, post, websocket: typeof WebSocket, worker: typeof Worker };
+    });
+    check('runner sandbox: localStorage and POST blocked, no WebSocket/Worker', sandbox.storage === 'blocked' && sandbox.post === 'blocked' && sandbox.websocket === 'undefined' && sandbox.worker === 'undefined', sandbox);
+
     // Scene: count lit pixels in the canvas area of the screenshot (delivered pixels, not draw calls).
     await sleep(800);
     const canvasBox = await (await frame.$('#scene')).boundingBox();
@@ -141,6 +151,9 @@ async function waitFor(fn, ms, what) {
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
     check('first press: counts from one job, 256 shots', total === 256, counts);
     check('first press: ideal Bell counts only 00/11', Object.keys(counts).every((k) => k === '00' || k === '11'), Object.keys(counts));
+    // Binomial(256, 0.5): sd = 8, so 88..168 is +-5 sd. Catches a circuit that is
+    // not a Bell pair (all '11', all '00') which the two checks above let through.
+    check('first press: both 00 and 11 present, each 88..168 of 256', counts['00'] >= 88 && counts['00'] <= 168 && counts['11'] >= 88 && counts['11'] <= 168, counts);
     check('runner counted exactly 1 backend.run after first press', (await page.evaluate(() => window.__runner.jobs)) === 1, await page.evaluate(() => window.__runner.jobs));
     await page.screenshot({ path: path.join(out, `${tag}-2-one-job-counts.png`) });
 

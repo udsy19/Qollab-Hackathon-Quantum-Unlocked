@@ -12,7 +12,7 @@ import * as THREE from 'three';
 import * as smoke from 'quantum.smoke';
 
 // Visible provenance token: change it, reload, and read it back from the page.
-const BUILD = 'g0-smoke-2026-10-10a';
+const BUILD = 'g0-smoke-2026-10-10b';
 
 const $ = (id) => document.getElementById(id);
 $('build-token').textContent = BUILD;

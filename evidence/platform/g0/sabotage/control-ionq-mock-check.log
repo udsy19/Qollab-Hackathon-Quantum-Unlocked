@@ -1,0 +1,15 @@
+PASS  main.js ran to the end without error  — ready in 6.6s
+PASS  build token visible  — g0-smoke-2026-10-10b
+PASS  backend name rendered from injected backend  — basic_simulator
+PASS  Three.js canvas shows the cyan cube (pixels)  — {"w":960,"h":660,"cyan":37117,"cyanShare":0.0586}
+PASS  bridge: exact P(00)=P(11)=0.5, nothing else  — {"11":0.5,"00":0.5}
+PASS  bridge: reduced purity of one half = 0.5  — 0.5
+PASS  bridge: ran in Pyodide (sys.platform emscripten)  — emscripten
+PASS  bridge: Qiskit 2.x  — 2.5.2
+PASS  first press: counts from one job, 256 shots  — {"11":125,"00":131}
+PASS  first press: ideal Bell counts only 00/11  — ["11","00"]
+PASS  first press: both 00 and 11 present, each 88..168 of 256  — {"11":125,"00":131}
+PASS  runner counted exactly 1 backend.run after first press  — 1
+PASS  second press: page shows a visible refusal  — Refused: this run has already used its one selected-backend job. Press Stop, then Run, to send another.
+PASS  second press: runner saw no second backend.run  — {"jobs":1,"refused":0}
+14/14 checks passed

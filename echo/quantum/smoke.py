@@ -49,8 +49,12 @@ def bell_measure_circuit():
     """The single circuit sent to the selected backend: a measured Bell pair.
 
     Ideal counts are only '00' and '11', roughly half each; a noise model may
-    add a few '01'/'10'.
+    add a few '01'/'10'. Built exactly like the docs' JS example
+    (QuantumCircuit(2, 2), h, cx, measure) so the IonQ path sees nothing it
+    has not been shown to accept: no barrier, no extra register.
     """
-    qc = _bell_unitary_part()
-    qc.measure_all()
+    qc = QuantumCircuit(2, 2)
+    qc.h(0)
+    qc.cx(0, 1)
+    qc.measure([0, 1], [0, 1])
     return qc

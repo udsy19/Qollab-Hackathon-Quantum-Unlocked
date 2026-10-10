@@ -1,0 +1,92 @@
+[
+  {
+    "name": "main.js ran to the end without error",
+    "ok": true,
+    "detail": "ready in 6.1s"
+  },
+  {
+    "name": "build token visible",
+    "ok": true,
+    "detail": "g0-smoke-2026-10-10b"
+  },
+  {
+    "name": "backend name rendered from injected backend",
+    "ok": true,
+    "detail": "basic_simulator"
+  },
+  {
+    "name": "Three.js canvas shows the cyan cube (pixels)",
+    "ok": true,
+    "detail": {
+      "w": 960,
+      "h": 660,
+      "cyan": 38113,
+      "cyanShare": 0.0602
+    }
+  },
+  {
+    "name": "bridge: exact P(00)=P(11)=0.5, nothing else",
+    "ok": true,
+    "detail": {
+      "11": 0.5,
+      "00": 0.5
+    }
+  },
+  {
+    "name": "bridge: reduced purity of one half = 0.5",
+    "ok": true,
+    "detail": 0.5
+  },
+  {
+    "name": "bridge: ran in Pyodide (sys.platform emscripten)",
+    "ok": true,
+    "detail": "emscripten"
+  },
+  {
+    "name": "bridge: Qiskit 2.x",
+    "ok": true,
+    "detail": "2.5.2"
+  },
+  {
+    "name": "first press: counts from one job, 256 shots",
+    "ok": true,
+    "detail": {
+      "10": 135,
+      "01": 121
+    }
+  },
+  {
+    "name": "first press: ideal Bell counts only 00/11",
+    "ok": false,
+    "detail": [
+      "10",
+      "01"
+    ]
+  },
+  {
+    "name": "first press: both 00 and 11 present, each 88..168 of 256",
+    "ok": false,
+    "detail": {
+      "10": 135,
+      "01": 121
+    }
+  },
+  {
+    "name": "runner counted exactly 1 backend.run after first press",
+    "ok": true,
+    "detail": 1
+  },
+  {
+    "name": "second press: page shows a visible refusal",
+    "ok": true,
+    "detail": "Refused: this run has already used its one selected-backend job. Press Stop, then Run, to send another."
+  },
+  {
+    "name": "second press: runner saw no second backend.run",
+    "ok": true,
+    "detail": {
+      "jobs": 1,
+      "refused": 0
+    }
+  }
+]

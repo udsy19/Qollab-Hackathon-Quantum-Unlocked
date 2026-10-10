@@ -1,0 +1,3 @@
+PASS  main.js ran to the end without error  — ready in 5.3s
+PASS  build token visible  — g0-smoke-2026-10-10b
+ABORT: served build g0-smoke-2026-10-10b is not the expected not-the-served-build
