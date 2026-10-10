@@ -1,0 +1,8 @@
+__future__
+itertools
+math
+numpy
+qiskit
+qiskit.circuit
+qiskit.providers.basic_provider
+qiskit.quantum_info

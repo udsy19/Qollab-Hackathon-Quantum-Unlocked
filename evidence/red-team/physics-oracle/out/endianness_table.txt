@@ -1,0 +1,9 @@
+circuit: q0 -> c0 (m0), q1 -> c1 (m1); key printed by Qiskit BasicSimulator
+m0 m1 | counts key | key[0] key[1] | bits_from_counts_key
+ 0  0 |    '00'    |   0      0    | (0, 0)
+ 0  1 |    '10'    |   1      0    | (0, 1)
+ 1  0 |    '01'    |   0      1    | (1, 0)
+ 1  1 |    '11'    |   1      1    | (1, 1)
+TRAP: key '01' means c1=0, c0=1, i.e. m0=1, m1=0 -> apply Z only (NOT X).
+two registers m0,m1 (m0=1,m1=0): key ['0 1'] -> last-added register printed FIRST
+Statevector.probabilities_dict() uses the same order: X on q0 -> {'01': 1.0}
