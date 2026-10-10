@@ -1,0 +1,133 @@
+{
+  "rows": 226,
+  "v2Shim": {
+    "bits": {
+      "valid": 32,
+      "of": 32,
+      "unlocksCommit": 0
+    },
+    "corr": {
+      "valid": 128,
+      "of": 128,
+      "unlocksCommit": 24
+    }
+  },
+  "commitRows": [
+    {
+      "id": "commit:bloch_a:00",
+      "asBuilt": "measured_refused_awaiting_ruling",
+      "onV2Shim": "committed",
+      "secondRefused": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "commit:bloch_a:01",
+      "asBuilt": "measured_refused_awaiting_ruling",
+      "onV2Shim": "committed",
+      "secondRefused": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "commit:bloch_a:10",
+      "asBuilt": "measured_refused_awaiting_ruling",
+      "onV2Shim": "committed",
+      "secondRefused": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "commit:bloch_a:11",
+      "asBuilt": "measured_refused_awaiting_ruling",
+      "onV2Shim": "committed",
+      "secondRefused": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "commit:gen0:00",
+      "asBuilt": "measured_refused_awaiting_ruling",
+      "onV2Shim": "committed",
+      "secondRefused": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "commit:gen0:01",
+      "asBuilt": "measured_refused_awaiting_ruling",
+      "onV2Shim": "committed",
+      "secondRefused": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "commit:gen0:10",
+      "asBuilt": "measured_refused_awaiting_ruling",
+      "onV2Shim": "committed",
+      "secondRefused": [
+        true,
+        true
+      ]
+    },
+    {
+      "id": "commit:gen0:11",
+      "asBuilt": "measured_refused_awaiting_ruling",
+      "onV2Shim": "committed",
+      "secondRefused": [
+        true,
+        true
+      ]
+    }
+  ],
+  "gradedLines": 236,
+  "v2ValidByMission": {
+    "cloning": {
+      "valid": 7,
+      "of": 7
+    },
+    "bell": {
+      "valid": 3,
+      "of": 3
+    },
+    "teleport_bits": {
+      "valid": 0,
+      "of": 32
+    },
+    "teleport_correction": {
+      "valid": 0,
+      "of": 176
+    },
+    "commit": {
+      "valid": 0,
+      "of": 8
+    }
+  },
+  "asBuilt": {
+    "FAIL-STUCK": 39,
+    "PASS": 196,
+    "UNSETTLED": 1
+  },
+  "onV2": {
+    "FAIL-STUCK": 39,
+    "PASS": 196,
+    "UNSETTLED": 1
+  },
+  "onV2Shim": {
+    "PASS": 223,
+    "FAIL-STUCK": 3,
+    "UNSETTLED": 1,
+    "FAIL-WRONG-ADVANCE": 9
+  },
+  "playthroughs": {
+    "asBuilt": "CLONE_INTRO (commit idle)",
+    "onV2": "CLONE_INTRO (commit idle)",
+    "onV2Shim": "CREDITS (commit committed)"
+  }
+}
