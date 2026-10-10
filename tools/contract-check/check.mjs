@@ -353,6 +353,76 @@ for (const g of [null, 'x', new Map(Object.entries(base))]) {
   ok(e.length > 0 && !String(e[0]).startsWith('NOT A LIST'), `settings garbage ${g instanceof Map ? 'Map' : JSON.stringify(g)} returns errors, never throws`)
 }
 
+console.log('· owner-ruled values, pinned from the ruling text (never read back from the module)')
+// Every expected value below is typed from lanes/platform/owner-answers.md or the vision, with its
+// source. The behavioural checks above cannot see these drift: on generic states the rule and the
+// fidelity floor each imply the other, so FIDELITY_PASS 0.999999 → 0.9 changed no verdict (consult 5).
+const show = v => (typeof v === 'number' ? String(v) : JSON.stringify(v))
+function pin(name, got, want, ruling) {
+  ok(JSON.stringify(got) === JSON.stringify(want), `PIN ${name} must be ${show(want)} (${ruling}); got ${show(got)}`)
+}
+pin('FIDELITY_PASS', C.FIDELITY_PASS, 0.999999,
+  'vision §7.4 "receiver reduced-state fidelity ≥0.999999"; owner-answers § overseer relay: "fidelity threshold is ≥0.999999"')
+pin('BACKEND_SHOTS', C.BACKEND_SHOTS, 256, 'owner-answers § 13 lane design questions #9: "the one backend job uses 256 shots"')
+pin('TELEPORT_TEST_STATE', C.TELEPORT_TEST_STATE, { theta: 1.137, phi: 0.44 },
+  'owner-answers § red-team physics ambiguities (3): "ry(1.137) then rz(0.44) in circuit order (§10.5)"')
+pin('BIT_LABELS.m1', get(C.BIT_LABELS, 'm1'), 'LOCAL BELL-HALF READOUT m1',
+  'owner-answers § red-team physics ambiguities (1): m1 is labelled "LOCAL BELL-HALF READOUT m1" everywhere')
+// m0 has no owner ruling of its own: ruling (1) renamed only m1. Its label is the vision's text, checked present.
+if (!vision.includes('labeled `SOURCE READOUT m0` and')) refuse('vision §7.4 Beat 2 no longer labels m0 "SOURCE READOUT m0"')
+pin('BIT_LABELS.m0', get(C.BIT_LABELS, 'm0'), 'SOURCE READOUT m0',
+  'vision §7.4 Beat 2 "labeled `SOURCE READOUT m0`" (no owner ruling renames m0)')
+pin('BIT_LABELS keys', Object.keys(C.BIT_LABELS || {}).sort(), ['m0', 'm1'], 'exactly the two classical bits of §7.1')
+const RULED_RULE = (m0, m1) => ({ applyX: m1 === 1, applyZ: m0 === 1 })  // CLAUDE.md, §7.1, context.md: X iff m1=1, Z iff m0=1
+for (const [m0, m1] of [[0, 0], [0, 1], [1, 0], [1, 1]]) {
+  if (JSON.stringify(RULE(m0, m1)) !== JSON.stringify(RULED_RULE(m0, m1))) refuse('vision §7.1 rule sentence disagrees with the ruled rule X iff m1=1, Z iff m0=1')
+  pin(`correction rule expectedCorrections(${m0}, ${m1})`, call(C.expectedCorrections, m0, m1), RULED_RULE(m0, m1),
+    'CLAUDE.md + vision §7.1: receiver X iff m1=1, Z iff m0=1')
+}
+pin('EXPERIMENTS.backend_verification', get(C.EXPERIMENTS, 'backend_verification'), 'backend_verification',
+  'owner-answers § 13 lane design questions #4: the selected-backend job is experiment "backend_verification"')
+// Not an owner ruling: a contracts-v2 design value (reports/0003-contracts-v2.md) so that every wrong
+// X/Z choice visibly fails. Its meaning is checked against the Qiskit oracle, not the module.
+pin('GENERIC_MAX_WRONG_FIDELITY', C.GENERIC_MAX_WRONG_FIDELITY, 0.9,
+  'contracts-v2 design value (not owner-ruled): a wrong correction must score ≤ 0.9 on a dry-run state')
+const oracleWorstWrong = Math.max(...T.states.flatMap(st => st.rows.filter(r => r.fidelity < T.pass).map(r => r.fidelity)))
+ok(oracleWorstWrong <= 0.9 && T.pass === 0.999999,
+  `Qiskit oracle: worst wrong choice on the fixture states is ${oracleWorstWrong.toFixed(6)} ≤ 0.9, and its pass is 0.999999 (got pass ${T.pass})`)
+
+// Circuit ORDER of the test state: ry then rz. rz-then-ry would leave |0> rotated only by ry, Bloch
+// (sin θ, 0, cos θ). Hand-derived here; the module's cross-check must accept the ry→rz number from
+// Qiskit and refuse the rz→ry one on the X-error branch (F = x²).
+const ts = T.states.find(st => st.theta === 1.137 && st.phi === 0.44)
+if (!ts) refuse('teleport-fixtures.json has no ry(1.137) rz(0.44) state')
+const dryRes = (bits, choice, f, what) => ({ experiment: 'teleportation', engine: 'exact_qiskit_local', circuitDescription: what, qubits: 3,
+  parameters: { theta: 1.137, phi: 0.44, ...choice }, measurementBits: bits, fidelity: f, facts: [what] })
+const xRow = ts.rows.find(r => r.m0 === 0 && r.m1 === 1 && !r.applyX && !r.applyZ)
+const wrongOrderF = Math.sin(1.137) ** 2
+const orderReq = { theta: 1.137, phi: 0.44, m0: 0, m1: 1, applyX: false, applyZ: false }
+const orderRes = f => dryRes({ m0: 0, m1: 1 }, { applyX: false, applyZ: false }, f, 'order probe')
+ok(Math.abs(xRow.fidelity - wrongOrderF) > 0.1 &&
+  errs(call(C.validateTeleportCorrectionResult, orderReq, orderRes(xRow.fidelity))).length === 0 &&
+  errs(call(C.validateTeleportCorrectionResult, orderReq, orderRes(wrongOrderF))).some(x => x.includes('fidelity')),
+  `PIN TELEPORT_TEST_STATE circuit order is ry then rz (owner-answers § red-team physics ambiguities (3)): Qiskit F=${xRow.fidelity} accepted, rz-then-ry F=${wrongOrderF.toFixed(6)} refused`)
+
+// The verdict's effective floor, probed on a correct, non-00 choice with only the fidelity varied:
+// at and above 1 - 5e-7 it passes; at 0.99999 and 0.9 it must not. Equality at exactly 0.999999 is
+// NOT probed: the 1e-6 cross-check refuses it by 2.9e-17 of rounding (reports/0006), a finding
+// reported to the supervisor, not encoded here as expected behaviour.
+const okRow = ts.rows.find(r => r.m0 === 1 && r.m1 === 1 && r.applyX && r.applyZ)
+const vReq = { theta: 1.137, phi: 0.44, m0: 1, m1: 1, applyX: true, applyZ: true }
+const vRes = f => dryRes({ m0: 1, m1: 1 }, { applyX: true, applyZ: true }, f, 'floor probe')
+for (const [f, want] of [[okRow.fidelity, true], [0.9999995, true], [0.99999, false], [0.9, false]]) {
+  const got = call(C.dryRunVerdict, vReq, vRes(f))?.passed
+  ok(got === want, `PIN verdict floor FIDELITY_PASS 0.999999 (vision §7.4): correct choice at F=${f} ${want ? 'passes' : 'does not pass'} (got ${JSON.stringify(got)})`)
+}
+// The rule half: the right fidelity on the WRONG choice never passes (all 12 wrong choices).
+for (const r of ts.rows.filter(r => JSON.stringify({ applyX: r.applyX, applyZ: r.applyZ }) !== JSON.stringify(RULED_RULE(r.m0, r.m1)))) {
+  const req = { theta: 1.137, phi: 0.44, m0: r.m0, m1: r.m1, applyX: r.applyX, applyZ: r.applyZ }
+  const got = call(C.dryRunVerdict, req, dryRes({ m0: r.m0, m1: r.m1 }, { applyX: r.applyX, applyZ: r.applyZ }, 1, 'rule probe'))?.passed
+  ok(got === false, `PIN verdict requires the ruled correction (X iff m1=1, Z iff m0=1): wrong choice m0=${r.m0} m1=${r.m1} X=${r.applyX} Z=${r.applyZ} at F=1 does not pass (got ${JSON.stringify(got)})`)
+}
+
 const verdict = failures === 0 && checks > 0 ? 'GREEN' : 'RED'
 console.log(`contract-check: ${verdict} — ${checks - failures}/${checks} checks passed (contracts: ${CONTRACTS})`)
 process.exit(verdict === 'GREEN' ? 0 : 1)
