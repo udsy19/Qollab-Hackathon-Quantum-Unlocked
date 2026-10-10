@@ -4,7 +4,7 @@ This harness drives every adapter in `echo/quantum/bridge.js` inside platform's 
 
 | file | what it is |
 |---|---|
-| `assemble.sh` | Builds a disposable copy under `/tmp` with `git archive`, so the shared `.git` is never touched. The copy holds the runner (`lane/platform/g0-runner-smoke`), `contracts.js` (`lane/platform/integration`), `echo/quantum/*.py` from `--python-from <ref>`, this branch's `bridge.js`, and `project/` as the entry. It writes `ASSEMBLY.json`, with every ref, the harness commit and the sha256 of every file. |
+| `assemble.sh` | Builds a disposable copy under `/tmp` with `git archive`, so the shared `.git` is never touched. The copy holds the runner (`lane/platform/integration`), `contracts.js` (`lane/platform/integration`), `echo/quantum/*.py` from `--python-from <ref>`, this branch's `bridge.js`, and `project/` as the entry. It writes `ASSEMBLY.json`, with every ref, the harness commit and the sha256 of every file. |
 | `project/main.js` | The harness entry. It calls every adapter, calls `verifySelectedBackendOnce()` twice and renders the JSON. It grades nothing. |
 | `project/pb_spy.py` | Wraps `BasicSimulator.run` at class level, plus `qollab_job.run_bell_verification_once`, so jobs are counted from below the bridge. Under `ionq-mock` it calls `run_sync`, which needs a stack entered through `callPromising`, the same structural need as IonQ's HTTP call. |
 | `drive.cjs` | Headless driver. It reads only the rendered page and `window.__runner`, re-validates every delivered result in Node from the contract bytes, and re-derives the physics from closed forms. Exit codes: 0 green, 1 red, 2 no verdict. |

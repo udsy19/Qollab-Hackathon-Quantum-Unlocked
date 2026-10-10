@@ -9,7 +9,7 @@ HERE=$(cd "$(dirname "$0")" && pwd)
 REPO=$(git -C "$HERE" rev-parse --show-toplevel)
 DEST=$1; TOKEN=$2; shift 2
 PY_REF=HEAD; BRIDGE="$REPO/echo/quantum/bridge.js"; SAB=none
-RUNNER_REF=lane/platform/g0-runner-smoke; CONTRACTS_REF=lane/platform/integration
+RUNNER_REF=lane/platform/integration; CONTRACTS_REF=lane/platform/integration
 while [ $# -gt 0 ]; do
   case $1 in
     --python-from) PY_REF=$2; shift 2;;

@@ -4,7 +4,8 @@
 // window.__runner counters. Every delivered result is re-validated here, in Node, with the contract
 // file's bytes, and the physics values are re-derived here from closed forms, not read from the
 // engine.
-//   drive.cjs --port N --dest DIR --expect-build TOKEN --scenario conformant|head --out DIR --tag NAME
+//   drive.cjs --port N --dest DIR --expect-build TOKEN --scenario conformant|fault --out DIR --tag NAME
+// `fault`: pb_spy plays a lying engine (pb_fault=1); the bridge must refuse every lie, loudly.
 // Exit: 0 green · 1 red · 2 no verdict.
 const path = require('node:path');
 const fs = require('node:fs');
@@ -20,7 +21,7 @@ const out = path.resolve(arg('--out', '.'));
 const tag = arg('--tag', scenario);
 const shotTo = arg('--shot-to');
 const chrome = process.env.CHROME || '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome';
-if (!port || !dest || !expectBuild) { console.error('usage: drive.cjs --port N --dest DIR --expect-build TOKEN [--scenario conformant|head]'); process.exit(2); }
+if (!port || !dest || !expectBuild) { console.error('usage: drive.cjs --port N --dest DIR --expect-build TOKEN [--scenario conformant|fault]'); process.exit(2); }
 
 function loadPuppeteer() {
   const c = [process.env.PUPPETEER_CORE, 'puppeteer-core'];
@@ -49,8 +50,8 @@ function dryRunFidelity(psi, m0, m1, applyX, applyZ) {
   if (applyZ) s = Z(s);
   return fid(psi, s);
 }
-const BLOCH_A = blochState(1.137, 0.44);
-const BLOCH_B = blochState(2.3, -1.9);
+// Generic: every wrong X/Z must visibly fail, i.e. no Bloch component squared above 0.9 (owner ruling #7).
+const blochMax2 = (theta, phi) => Math.max((Math.sin(theta) * Math.cos(phi)) ** 2, (Math.sin(theta) * Math.sin(phi)) ** 2, Math.cos(theta) ** 2);
 const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= tol;
 
 (async () => {
@@ -71,7 +72,7 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
     const t0 = Date.now();
     // Unconditional fresh load (law 16): no cache, new browser profile every run.
     await page.setCacheEnabled(false);
-    await page.goto(`http://127.0.0.1:${port}/?autorun=1&backend=ionq-mock`, { waitUntil: 'load' });
+    await page.goto(`http://127.0.0.1:${port}/?autorun=1&backend=ionq-mock${scenario === 'fault' ? '&pb_fault=1' : ''}`, { waitUntil: 'load' });
     for (;;) {
       const st = await page.evaluate(() => window.__runner && window.__runner.status).catch(() => null);
       if (st === 'done' || st === 'error') break;
@@ -117,14 +118,31 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
   for (const c of dump.calls) {
     c.nodeVerdict = c.ok ? validateExperimentResult(c.result) : null;
     // Universal invariant: anything handed on must be valid when re-checked from the bytes.
-    if (c.ok) check(`${c.label}: delivered value re-validates in Node`, c.nodeVerdict.length === 0 && !c.shape.isMap && c.shape.factsIsArray && !c.shape.proxyFields.length, c.nodeVerdict.length ? c.nodeVerdict : c.shape);
+    if (c.ok && !c.hook) check(`${c.label}: delivered value re-validates in Node`, c.nodeVerdict.length === 0 && !c.shape.isMap && c.shape.factsIsArray && !c.shape.proxyFields.length, c.nodeVerdict.length ? c.nodeVerdict : c.shape);
   }
   const by = (label) => dump.calls.find((c) => c.label === label);
-  if (scenario === 'head') {
-    for (const c of dump.calls) check(`${c.label}: non-conforming engine output is a LOUD ScientificModuleError`, !c.ok && c.error.name === 'ScientificModuleError' && Array.isArray(c.error.errors) && c.error.errors.length > 0, c.ok ? 'delivered' : c.error);
+  const r = (label) => (by(label) && by(label).ok ? by(label).result : {});
+  const s = dump.spy.counts;
+  const v = dump.verification;
+  const draws = dump.calls.filter((c) => /^calibration#/.test(c.label));
+  const cal = by(dump.dryRun.calibration);
+  const calP = cal?.ok ? cal.result.parameters : {};
+  const calBits = cal?.ok ? cal.result.measurementBits : {};
+  const dry = dump.calls.filter((c) => c.label.startsWith('dryRun('));
+  const choiceOf = (c) => ({ x: /X=true/.test(c.label), z: /Z=true/.test(c.label) });
+  const follows = (c) => { const { x, z } = choiceOf(c); return x === (calBits.m1 === 1) && z === (calBits.m0 === 1); };
+  check('dry run: four X/Z choices were tried on one calibration', dry.length === 4 && dry.filter(follows).length === 1, dry.map((c) => c.label));
+  check('spy: exactly 1 backend.run attempted, and it completed (stack entered via callPromising)', s.backendRunAttempts === 1 && s.backendRunCompleted === 1, s);
+  check('spy: exactly 1 entry into qollab_job.run_backend_verification_once', s.verificationCalls === 1, s);
+  check('verify ×2: the second call returns the SAME promise', v.samePromise === true, v.samePromise);
+  check('verify after RESTART: still the same promise (one job per run, not per story)', v.afterRestartSamePromise === true, v.afterRestartSamePromise);
+  if (scenario === 'fault') {
+    for (const c of dry.filter((c) => !follows(c)))
+      check(`${c.label}: engine claimed F=1 on a wrong choice → LOUD ScientificModuleError naming the physics`, !c.ok && c.error.name === 'ScientificModuleError' && (c.error.errors || []).some((e) => /disagrees with the physics/.test(e)), c.ok ? `delivered F=${c.result.fidelity}` : c.error);
+    for (const c of dry.filter(follows)) check(`${c.label}: the truthful branch is still delivered`, c.ok, c.ok ? c.result.fidelity : c.error);
+    check('verify: old name "bell_verification" → LOUD §8.6 ScientificModuleError, nothing passed on', v.first?.status === 'rejected' && v.first.name === 'ScientificModuleError' && /verification unavailable/.test(v.first.message) && (v.first.errors || []).some((e) => /bell_verification/.test(e)), v.first);
   } else {
     for (const c of dump.calls) check(`${c.label}: adapter returned a result`, c.ok, c.ok ? `${c.ms} ms` : c.error);
-    const r = (label) => (by(label) && by(label).ok ? by(label).result : {});
     const plus = r('cloning(plus)');
     check('cloning(plus): joint P(00)=P(11)=0.5, every other key 0, keyQubits [1,0]', near(plus.probabilities?.['00'], 0.5) && near(plus.probabilities?.['11'], 0.5) && Object.entries(plus.probabilities || {}).every(([k, p]) => k === '00' || k === '11' || p === 0) && JSON.stringify(plus.keyQubits) === '[1,0]', plus.probabilities);
     check('cloning(plus): each output purity 0.5 (entangled, not two copies)', near(plus.observables?.purityQ0, 0.5) && near(plus.observables?.purityQ1, 0.5), plus.observables);
@@ -134,37 +152,43 @@ const near = (a, b, tol = 1e-9) => typeof a === 'number' && Math.abs(a - b) <= t
       const rel = r(`relay(${g})`);
       check(`relay(${g}): receiver marginal exactly 0.5/0.5, keyQubits [1]`, near(rel.probabilities?.['0'], 0.5) && near(rel.probabilities?.['1'], 0.5) && JSON.stringify(rel.keyQubits) === '[1]', rel.probabilities);
     }
-    const cal = r('calibration(bloch_a)');
-    const bits = cal.measurementBits || {};
-    check('calibration: bits m0, m1 each 0 or 1', [0, 1].includes(bits.m0) && [0, 1].includes(bits.m1), bits);
-    for (const [x, z] of [[false, false], [true, false], [false, true], [true, true]]) {
-      const label = `dryRun(bloch_a, m0=${bits.m0}, m1=${bits.m1}, X=${x}, Z=${z})`;
-      const want = dryRunFidelity(BLOCH_A, bits.m0, bits.m1, x, z);
-      check(`${label}: fidelity = ${want.toFixed(6)} (closed form)`, near(r(label).fidelity, want, 1e-6), r(label).fidelity);
+    // ---- Mission 3: bits first, corrections second, on a FRESH generic state ----
+    const angles = draws.filter((d) => d.ok).map((d) => [d.result.parameters?.theta, d.result.parameters?.phi]);
+    check('calibration: every draw carries finite theta/phi, bits only (no fidelity, no applyX/Z)', draws.length >= 2 && draws.every((d) => d.ok && Number.isFinite(d.result.parameters?.theta) && Number.isFinite(d.result.parameters?.phi) && d.result.fidelity === undefined && !('applyX' in d.result.parameters) && [0, 1].includes(d.result.measurementBits?.m0) && [0, 1].includes(d.result.measurementBits?.m1)), angles);
+    check('calibration: every draw is generic (max Bloch component² ≤ 0.9, re-derived here)', angles.length >= 2 && angles.every(([t, p]) => blochMax2(t, p) <= 0.9), angles.map(([t, p]) => +blochMax2(t, p).toFixed(4)));
+    check('calibration: the draws differ (a fresh random state each time, not a named one)', angles.length >= 2 && new Set(angles.map((a) => a.join(','))).size === angles.length, angles);
+    check('calibration: the graded draw is on a non-00 branch', calBits.m0 === 1 || calBits.m1 === 1, { draw: dump.dryRun.calibration, bits: calBits });
+    const psi = blochState(calP.theta, calP.phi);
+    for (const c of dry) {
+      const res = c.ok ? c.result : {};
+      const { x, z } = choiceOf(c);
+      const want = dryRunFidelity(psi, calBits.m0, calBits.m1, x, z);
+      check(`${c.label}: theta/phi round-trip exactly from the measurement into the branch`, res.parameters?.theta === calP.theta && res.parameters?.phi === calP.phi && res.measurementBits?.m0 === calBits.m0 && res.measurementBits?.m1 === calBits.m1, { got: res.parameters, want: { theta: calP.theta, phi: calP.phi, ...calBits } });
+      check(`${c.label}: fidelity = ${want.toFixed(6)} (closed form on the measured state)`, near(res.fidelity, want, 1e-6), res.fidelity);
+      if (follows(c)) check(`${c.label}: the rule's choice scores F ≥ 0.999999`, res.fidelity >= 0.999999, res.fidelity);
+      else check(`${c.label}: a wrong X/Z on a non-00 branch scores F < 0.999999`, typeof res.fidelity === 'number' && res.fidelity < 0.999999, res.fidelity);
     }
-    const fixed = r('dryRun(bloch_a, m0=1, m1=0, X=false, Z=false)');
-    check('dryRun(bloch_a,1,0,no correction): fidelity = cos²(1.137)', near(fixed.fidelity, Math.cos(1.137) ** 2, 1e-6), { got: fixed.fidelity, want: Math.cos(1.137) ** 2 });
-    const c1 = r('commit#1(bloch_b)');
+    const ba = dump.spy.branchArgs || [];
+    check('spy: Python teleport_branch received the measured theta/phi on every dry run', ba.length === dry.length && ba.every((a) => a.theta === calP.theta && a.phi === calP.phi), ba);
+    // ---- the story token ----
+    const c1 = r('commit#1');
     const cb = c1.measurementBits || {};
-    check('commit: receiver fidelity 1 after the rule on live bits', near(c1.fidelity, 1, 1e-9) && near(dryRunFidelity(BLOCH_B, cb.m0, cb.m1, cb.m1 === 1, cb.m0 === 1), 1), { fidelity: c1.fidelity, bits: cb });
-    check('commit: a second call returns the SAME promise (token consumed once)', dump.commit.samePromise === true, dump.commit);
-    check('commit: a call after it settled returns the same recorded object', dump.commit.sameObjectAfterSettle === true, dump.commit);
-  }
-  // ---- the one selected-backend job --------------------------------------------
-  const v = dump.verification;
-  const s = dump.spy.counts;
-  check('verify ×2: the second call returns the SAME promise', v.samePromise === true, v.samePromise);
-  check('verify ×2: both callers get the same value', v.sameValue === true, v.sameValue);
-  check('spy: exactly 1 entry into qollab_job.run_bell_verification_once', s.verificationCalls === 1, s);
-  check('spy: exactly 1 backend.run attempted', s.backendRunAttempts === 1, s);
-  check('spy: that backend.run completed (stack entered via callPromising)', s.backendRunCompleted === 1, s);
-  if (v.first?.status === 'verified') {
-    const nv = validateExperimentResult(v.first.result);
-    const counts = v.first.result.counts || {};
-    check('verified result re-validates in Node', nv.length === 0, nv);
-    check('verified counts: 256 shots, ideal Bell keys only', Object.values(counts).reduce((a, b) => a + b, 0) === 256 && Object.keys(counts).every((k) => k === '00' || k === '11'), counts);
-  } else {
-    check('rejected: ScientificModuleError with §8.6 wording + reasons, no result passed on', v.first?.status === 'rejected' && v.first.name === 'ScientificModuleError' && /verification unavailable/.test(v.first.message) && Array.isArray(v.first.errors) && v.first.errors.length > 0, v.first);
+    check('commit: the hidden token arrives (fidelity 1 after the rule on live bits, no angles leaked)', near(c1.fidelity, 1, 1e-9) && [0, 1].includes(cb.m0) && [0, 1].includes(cb.m1) && c1.parameters?.theta === undefined, { fidelity: c1.fidelity, bits: cb, parameters: c1.parameters });
+    check('commit: the second and a later call get the SAME recorded result (no second teleport)', dump.commit.sameRecordedObject === true, dump.commit);
+    check('commit: Python itself refuses a second live_commit (TokenAlreadyConsumed)', dump.commit.pythonSecondCommit?.refused === true, dump.commit.pythonSecondCommit);
+    const c4 = r('commit#4 after RESTART');
+    check('RESTART: a commit after resetStoryToken succeeds, as a NEW result (fidelity 1)', dump.commit.afterRestartIsNewObject === true && near(c4.fidelity, 1, 1e-9), { fidelity: c4.fidelity, err: by('commit#4 after RESTART')?.error });
+    check('spy: Python saw exactly 2 live_commit calls (one per story) and 1 reset', s.commitCalls === 2 && s.commitsCompleted === 2 && s.resetCalls === 1, s);
+    // ---- the one selected-backend job ----
+    check('verify: RESOLVES (not rejected)', v.first?.status === 'verified', v.first);
+    check('verify ×2: both callers get the same value', v.sameValue === true, v.sameValue);
+    if (v.first?.status === 'verified') {
+      const res = v.first.result;
+      const nv = validateExperimentResult(res);
+      check('verify: experiment "backend_verification", engine qollab_selected_backend, re-validates in Node', nv.length === 0 && res.experiment === 'backend_verification' && res.engine === 'qollab_selected_backend', { experiment: res.experiment, engine: res.engine, errors: nv });
+      const counts = res.counts || {};
+      check('verify: 256 shots, ideal Bell keys only', Object.values(counts).reduce((a, b) => a + b, 0) === 256 && Object.keys(counts).every((k) => k === '00' || k === '11'), counts);
+    }
   }
   const failed = results.filter((x) => !x.ok).length;
   fs.writeFileSync(path.join(out, `${tag}-dump.json`), JSON.stringify({ assembly, runnerCounters: { jobs: runner.jobs, refusedByRunner: runner.refused }, runnerLogTail: runner.log, dump, checks: results }, null, 2));
