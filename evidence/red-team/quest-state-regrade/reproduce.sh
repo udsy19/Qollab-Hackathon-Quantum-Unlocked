@@ -37,14 +37,20 @@ cp "$T/pf/echo/contracts.js" "$T/ship/echo/contracts.js"
 echo "== export $T: gameplay $GP + platform $PF (ship), $GP own contracts, $OLD_GP + $OLD_PF (baseline 0003)"
 
 RESULTS="$OUT/real-results-$QU.json"
+bad=0
 if [ "$REGEN" = 1 ]; then
   git -C "$REPO" cat-file -e "$QU^{commit}" 2>/dev/null || { echo "REFUSED: $QU not in $REPO" >&2; exit 2; }
   ex "$QU" "$T/qu"
   ECHO_ROOT="$T/qu/echo" "$PY" -I "$HERE/dump_regrade.py" > "$T/results.json" || { echo "REFUSED: dump_regrade.py failed" >&2; exit 2; }
-  if cmp -s "$T/results.json" "$RESULTS"; then echo "real results re-dumped from $QU: byte-identical to the committed JSON"; else echo "MISMATCH: re-dumped real results differ from $RESULTS"; RESULTS="$T/results.json"; fi
+  # happy.BACKEND_VERIFICATION is dump_results.py's unseeded 256-shot BasicSimulator sample: its counts
+  # differ run to run, and no check reads them. Everything else must be identical.
+  node -e '
+    const [a, b] = process.argv.slice(1).map((f) => { const j = JSON.parse(require("fs").readFileSync(f, "utf8")); delete j.happy.BACKEND_VERIFICATION.counts; return JSON.stringify(j); });
+    process.exit(a === b ? 0 : 1);' "$T/results.json" "$RESULTS" \
+    && echo "real results re-dumped from $QU: identical to the committed JSON (except the sampled backend counts, unused)" \
+    || { echo "MISMATCH: re-dumped real results differ from $RESULTS; grading the fresh dump"; RESULTS="$T/results.json"; bad=1; }
 fi
 
-bad=0
 grade() { # label game contracts committed-json
   node "$AUDIT/run.mjs" --game "$2" --contracts "$3" --results "$RESULTS" --json "$T/$1.json" > "$T/$1.txt"; local rc=$?
   [ $rc = 2 ] && { echo "REFUSED: run.mjs on $1"; cat "$T/$1.txt"; exit 2; }
