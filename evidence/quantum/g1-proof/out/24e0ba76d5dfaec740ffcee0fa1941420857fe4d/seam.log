@@ -1,0 +1,15 @@
+FAIL  cloning(zero)                      CLONE_INTRO              got null                       want BASIS_DEMO_OK  — need a basis-state copy that succeeded
+FAIL  cloning(one)                       CLONE_INTRO              got null                       want BASIS_DEMO_OK  — need a basis-state copy that succeeded
+FAIL  cloning(plus)                      CLONE_BASIS_PASSED       got null                       want SUPERPOSITION_DEMO_FAILED  — need a superposition copy attempt
+FAIL  cloning(phase)                     CLONE_BASIS_PASSED       got null                       want SUPERPOSITION_DEMO_FAILED  — need a superposition copy attempt
+PASS  relay(I)                           RELAY_INTRO              got PREPARE_BELL_PAIR          want PREPARE_BELL_PAIR  
+PASS  relay(X)                           RELAY_BELL_CREATED       got ATTEMPT_NO_SIGNALLING      want ATTEMPT_NO_SIGNALLING  
+PASS  relay(Z)                           RELAY_BELL_CREATED       got ATTEMPT_NO_SIGNALLING      want ATTEMPT_NO_SIGNALLING  
+PASS  dry m0=1 m1=0 X=false Z=false      TELEPORT_DRY_RUN         got null                       want null  
+FAIL  dry m0=1 m1=0 X=false Z=true       TELEPORT_DRY_RUN         got null                       want CORRECT_CALIBRATION  — corrections do not match m0=1, m1=0
+PASS  dry m0=1 m1=0 X=true Z=false       TELEPORT_DRY_RUN         got null                       want null  
+PASS  dry m0=1 m1=0 X=true Z=true        TELEPORT_DRY_RUN         got null                       want null  
+FAIL  live_commit                        TELEPORT_DRY_RUN_PASSED  got null                       want COMMIT_TRANSFER  — need the story-token transfer
+validateCommitResult(live_commit): REJECTED — commit result parameters.stateId must be STORY_TOKEN_ID "story_token", got nothing | commit result parameters.applyX must be the boolean correction the receiver applied, got nothing | commit result parameters.applyZ must be the boolean correction the receiver applied, got nothing
+commit parameters as emitted: {"state":"token","seed":11}
+13 checks, 7 FAIL

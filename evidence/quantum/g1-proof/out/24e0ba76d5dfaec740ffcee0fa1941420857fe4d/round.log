@@ -1,0 +1,7 @@
+final-1: exit 0 (want 0) OK 81/81 checks passed
+final-2: exit 0 (want 0) OK 87/87 checks passed
+final-3: exit 0 (want 0) OK 81/81 checks passed
+fault: exit 0 (want 0) OK 31/31 checks passed
+head-old-bridge: exit 0 (want 1) NULL 81/81 checks passed
+head-old-python: exit 1 (want 1) OK 37/69 checks passed
+sab-bare-toJs: exit 0 (want 1) NULL 81/81 checks passed

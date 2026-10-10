@@ -1,0 +1,23 @@
+echo/index.html:0 entry-index echo/index.html does not exist: index.html + main.js together make a JS project
+echo/main.js:0 entry-main echo/main.js does not exist: without it Qollab has no JS entry point
+echo/quantum/qollab_job.py:169 backend-run-python Python calls backend.run itself; only JS may, unless the owner rules otherwise
+  info: echo/quantum/qollab_job.py:1 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/quantum/qollab_job.py:157 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:62 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_formats.py:112 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:89 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:93 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:96 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:168 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:210 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: echo/tests/test_qollab_job.py:211 prose string mentions IonQ, not a backend id; allowed (UI/provenance text)
+  info: backend.run: exactly one call site, echo/quantum/qollab_job.py:169
+LIMITATIONS (not covered by any rule above):
+  - backend.run is counted per CALL SITE, not per execution: one site in a loop, or reached through another variable (const b = backend; b.run()), is not caught. The runtime guard is the only proof of "one job".
+  - Code inside Python f-string {expressions} and any string-built access (window["local"+"Storage"]) is not scanned.
+  - Regex-literal vs division is a heuristic; a misread refuses (exit 2) rather than passing.
+  - Only .js .mjs .cjs .py .html are scanned for content; JSON/CSS/other files count toward caps 1-2 only.
+  - Static rules only: this runs nothing on Qollab, so it says nothing about the Qollab run itself.
+scanned 19 files (17 code files) under /private/tmp/prove-24e0ba7-HxKkfB/echo
+RED: 3 failure(s) across 3 rule(s): entry-index, entry-main, backend-run-python
