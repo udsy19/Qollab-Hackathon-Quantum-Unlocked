@@ -9,7 +9,8 @@ import { QUEST_STATES, QUEST_EVENTS, transition, RESET_STATE, EVENT_SOURCES, BUS
          validateExperimentResult, marginalProbabilities, BELL_RECEIVER_QUBIT,
          validateTeleportBitsRequest, validateTeleportBitsResult, makeCorrectionRequest,
          validateTeleportCorrectionResult, dryRunVerdict, randomGenericState, BIT_LABELS,
-         UI_ROOT_ID, UI_HOOKS, DEFAULT_SETTINGS, validateSettings } from './contracts.js'
+         UI_ROOT_ID, UI_HOOKS, DEFAULT_SETTINGS, validateSettings,
+         MOMENT_EVENTS, COUNTDOWN_START_SECONDS, countdownRemaining } from './contracts.js'
 // from echo/main.js; '../contracts.js' from echo/game/
 ```
 
@@ -80,6 +81,25 @@ It also holds every interactable action to gameplay `interactable`. The rest are
 | `interactable` | gameplay | OPEN_CLONE_BOOTH, REACH_RELAY, REPAIR_CLASSICAL_LINK, RUN_DRY_TEST (E at an `INTERACTABLE_BINDINGS` id) |
 | `experiment_result` | gameplay | BASIS_DEMO_OK, SUPERPOSITION_DEMO_FAILED, PREPARE_BELL_PAIR, ATTEMPT_NO_SIGNALLING, CORRECT_CALIBRATION, COMMIT_TRANSFER: read from a validated result, never from a button |
 | `cinematic` | gameplay | ANIMATION_END (the commit sequence finished) |
+| `moment` | gameplay → story-ui | the five moments below except `countdown_zero` |
+| `countdown` | gameplay → story-ui | `countdown_zero` |
+
+### Moments: `MOMENT_EVENTS` (overseer relay, 2026-10-10)
+
+A moment is a story beat that does **not** change the quest state. Gameplay fires it on the bus; story-ui
+plays the lines its `echo/data/story.js` `MOMENTS` keys by the same id. `EVENT_SOURCES[id]` is
+`{ lane: 'gameplay', via, consumer: 'story-ui' }`; quest events carry no `consumer`. `transition()` throws
+on a moment id (it is not a quest event), so a moment can never move the machine.
+
+| id | gameplay fires it when | source |
+|---|---|---|
+| `clone_increase_voltage` | the player picks "increase voltage" after CLONE_SUPERPOSITION_FAILED (§4.2 Beat 3) | relay |
+| `relay_bay_cable` | the amber cable in the relay bay is reconnected (§4.3 Beat 3) | relay |
+| `teleport_commit_locked` | COMMIT is pressed before a dry run unlocked it (§7.4) | relay |
+| `teleport_dry_run_failed` | `dryRunVerdict(...).passed` is false; the next dry run uses a fresh `randomGenericState()` | relay |
+| `teleport_dry_run_00` | `passed` but not `unlocksCommit` (bits 00: no correction was needed) | story-ui `MOMENTS` key |
+| `countdown_zero` | `countdownRemaining()` first returns 0; fire it once | story-ui `MOMENTS` key |
+
 
 ## Bus events and world changes (§8.7, §9.3)
 
@@ -99,6 +119,24 @@ It also holds every interactable action to gameplay `interactable`. The rest are
 | RELAY_UNDERSTOOD | `amber_schematic_visible`, `rooftop_access_unlocked` |
 | LINK_REPAIRED | `amber_light_travels_to_skyline_node` |
 | TELEPORT_COMMITTED | `capsule_source_indicator_off`, `vault_status_green`, `city_lighting_wave`, `music_swell`, `ending_dialogue` |
+
+## Narrative countdown (overseer relay, 2026-10-10)
+
+The HUD's `GRID SHUTDOWN` clock (§6.3) holds at 00:00, is never negative, and is never a game-over (§1
+anti-goals: "no game-over resulting from a non-pausing timer").
+
+- `countdownRemaining(startSeconds, elapsedSeconds)` returns whole seconds in `[0, startSeconds]`. It rounds up,
+  so 00:00 appears only when time is truly out. It is computed from elapsed time and never decremented, so
+  replaying an event cannot drive it negative (§9.3 idempotence). NaN, a non-number or a negative/non-finite
+  start throws; `Infinity` elapsed gives 0.
+- `COUNTDOWN_START_SECONDS = 720` (12:00). This is a platform design value, not owner-ruled, and the gate pins it. §6.3 shows
+  08:42 at the relay (mission 2), so the start must exceed 522 s.
+- At 0, gameplay fires the moment `countdown_zero` once. No quest event comes from the countdown, and §9.1 has no
+  failure state. story-ui's `formatCountdown` turns the seconds into `MM:SS`.
+
+```js
+hud.setCountdown(countdownRemaining(COUNTDOWN_START_SECONDS, elapsed))  // elapsed: gameplay's own clock
+```
 
 ## Interactables (§9.4)
 
@@ -173,6 +211,7 @@ qubit. It throws if that qubit is not in `keyQubits`.
 | cloning (§10.3) | joint output, `[1, 0]` (e.g. `{"00":0.5,"11":0.5}` for plus) | `observables: {"purityQ0", "purityQ1"}`, `parameters: {"state": "plus"}` |
 | bell_signalling (§10.4) | receiver-only marginal, `[1]` | `parameters: {"senderGate": "X"}` |
 | teleportation dry run (§10.5/§10.6) | phase 1 optional (branch table, `[1, 0]`) | two phases, see below |
+| teleportation story commit (§7.4) | optional (branch table, `[1, 0]`) | `parameters: {"stateId": "story_token", "applyX", "applyZ"}`, `measurementBits`, `fidelity`; see § The one story commit |
 | backend_verification (§10.7) | `counts` + `keyQubits`, engine `qollab_selected_backend` | `parameters: {"shots": 256, "backend": <name the backend reports>}` |
 
 Rename §10.3's `circuit` (a text drawing) to `circuitDescription`. `isIndependentCloning` and
@@ -198,15 +237,19 @@ The dry run is therefore two bridge calls. Each one is checked by its own valida
   `GENERIC_MAX_WRONG_FIDELITY` (0.9). On |0> a spurious Z is only a global phase, so a wrong choice would "pass"
   (owner, 13 questions #7). `TELEPORT_TEST_STATE` is the §10.5 state `{theta: 1.137, phi: 0.44}`.
 - **Cross-check, not fabrication.** `validateTeleportCorrectionResult` refuses a fidelity that disagrees by more than
-  1e-6 with the physics of the branch. Bob holds `X^(m1 xor applyX) Z^(m0 xor applyZ)|psi>`, so F is 1, x², z² or y²
+  `FIDELITY_CROSSCHECK_TOLERANCE` (1e-6, the §7.4 band width) + `FIDELITY_EPSILON` (1e-12, float rounding) with the physics of the branch. Bob holds `X^(m1 xor applyX) Z^(m0 xor applyZ)|psi>`, so F is 1, x², z² or y²
   of the Bloch vector. This catches an engine that reports success on a wrong choice. JS never displays the value.
-- `passed` needs the rule **and** `fidelity >= FIDELITY_PASS` (0.999999, §7.4). `unlocksCommit` is a pass on bits
+- `passed` needs the rule **and** `fidelity >= FIDELITY_PASS - FIDELITY_EPSILON` (0.999999, §7.4). A correct F of exactly
+  0.999999 passes; before contracts-fidelity-band the cross-check refused it by 2.9e-17 of rounding.
+  **Migration:** new export `FIDELITY_EPSILON = 1e-12`; no existing value moved. A consumer comparing a fidelity to
+  `FIDELITY_PASS` itself should subtract it too, or better, read `dryRunVerdict().passed`. `unlocksCommit` is a pass on bits
   other than 00, so the player really applied X and/or Z (overseer ruling, gameplay consult 3 #2). Fire
   `CORRECT_CALIBRATION` only when `unlocksCommit`. On a failed or 00 pass, retry on a fresh state (13 questions #11).
 - `validateTeleportCorrectionResult` checks a result against the bits in its **request**. Build every phase-2
   request with `makeCorrectionRequest`, which takes the bits from a validated phase-1 result. Never type the bits in
   by hand. If an engine echoes `m0`/`m1` in `parameters`, they must equal `measurementBits`.
-- The story token never enters a dry run. The single commit is a separate call (overseer ruling, gameplay consult 3 #1).
+- The story token never enters a dry run: a phase-1 or phase-2 result with `parameters.stateId === STORY_TOKEN_ID` is
+  refused. The single commit is a separate call (overseer ruling, gameplay consult 3 #1), below.
 - Python names are the quantum lane's choice. Their inputs and outputs are exactly these shapes.
 
 **Worked example: real Qiskit 2.5.2** (`python3 tools/contract-check/teleport_oracle.py`, state `TELEPORT_TEST_STATE`):
@@ -231,6 +274,28 @@ The dry run is therefore two bridge calls. Each one is checked by its own valida
 Branch probabilities are 1/4 each for any input. The bits alone carry nothing about the state.
 `teleport_oracle.py` checks all 16 (m0, m1, X, Z) combinations on the test state and on three random generic states.
 Fidelity is 1 on exactly the 4 that follow the rule, and at most 0.674 on every other combination.
+
+## The one story commit (§7.4)
+
+One atomic local exact call (owner ruling, gameplay consult 3): fresh live Bell bits on the hidden story token, the
+rule applied to THOSE bits by the engine, Qiskit's fidelity. The token is consumed once; the engine latches it only
+when the call returns, and gameplay marks it consumed only on success.
+
+| JS sends | Python returns | validator |
+|---|---|---|
+| nothing about the state (the token is hidden) | ExperimentResult: `experiment "teleportation"`, `engine "exact_qiskit_local"`, **`parameters {stateId: STORY_TOKEN_ID, applyX, applyZ}`** (the corrections the receiver applied; `seed` allowed), **`measurementBits {m0, m1}`**, **`fidelity`**; no `theta`/`phi`; no `counts` | `validateCommitResult(result)` → error list; empty = committed, fire `COMMIT_TRANSFER` |
+
+- **One marker.** `STORY_TOKEN_ID = 'story_token'`, in `parameters.stateId`. Not `parameters.state`, not `'token'`.
+  Import the constant; do not retype it.
+- **The rule is checked, not trusted.** `applyX`/`applyZ` must equal `expectedCorrections(m0, m1)` (X iff m1=1, Z iff
+  m0=1; m0 = SOURCE READOUT, m1 = LOCAL BELL-HALF READOUT). Bits 1,0 with the corrections of 0,1 are refused.
+- **The band, with no cross-check behind it.** `fidelity >= FIDELITY_PASS - FIDELITY_EPSILON` (0.999999, §7.4). With the
+  rule applied the receiver holds the token whatever it was, so a lower number is a broken engine, not a failed
+  attempt: it is refused, never shown as a success (§12.3). The dry run and the commit share one judge (rule + band).
+- **The token is never shown.** `parameters.theta`/`phi` on a commit are refused.
+- **Real engine, quantum `lane/quantum/integration` c3adf0a:** `live_commit` returns `parameters {state: 'token', seed}`
+  with no `applyX`/`applyZ`, so 0/4 branches validate. With the two fields renamed/added (and nothing else) 4/4
+  validate (`evidence/platform/contracts-commit/`).
 
 ## UI root and settings (overseer relay from story-ui, 2026-10-10)
 
@@ -268,6 +333,17 @@ node --input-type=module -e "import {validateExperimentResult as v} from './echo
 `json.dumps` failing is itself a contract failure (a non-plain value). Good and bad examples of every rule
 are in `tools/contract-check/fixtures.json`.
 
+## Migrations
+
+What changed between contract revisions, so a lane knows what to edit in its own files.
+
+| revision | change | what a consumer does |
+|---|---|---|
+| story commit (consult 11, 2026-10-10) | **added** `STORY_TOKEN_ID = 'story_token'` and `validateCommitResult(result)`; a dry-run result carrying `parameters.stateId === STORY_TOKEN_ID` is now refused. Nothing renamed, removed or moved. | **quantum** (`teleportation.live_commit`): emit `parameters {stateId: "story_token", applyX: rule.applyX, applyZ: rule.applyZ}` (plus `seed` if given) instead of `{state: "token"}`. **gameplay** (`missionRules.js`): import `STORY_TOKEN_ID` and `expectedCorrections` from `contracts.js` and delete the local copies; the `TELEPORT_DRY_RUN_PASSED` rule becomes `validateCommitResult(r).length === 0 → COMMIT_TRANSFER`; read `parameters.applyX/applyZ`, not `correctionX/Z`. |
+| moments + countdown (consult 9, 2026-10-10) | **added** `MOMENT_EVENTS` (6 ids), `EVENT_SOURCES` entries for them with a new `consumer` field, `COUNTDOWN_START_SECONDS = 720` and `countdownRemaining()`. Nothing renamed, removed or moved. `EVENT_SOURCES` now has 29 keys (23 quest events plus 6 moments). | **gameplay:** emit moments with `MOMENT_EVENTS.<id>`, not string literals, and drive the HUD from `countdownRemaining`. **story-ui:** keep `MOMENTS` keys equal to `MOMENT_EVENTS`; no other change. Code that iterates `EVENT_SOURCES` as if it held only quest events filters with `!s.consumer` or uses `QUEST_EVENTS`. |
+| fidelity band (504666f) | **added** `FIDELITY_EPSILON = 1e-12`; nothing moved (see § Teleport dry run) | compare a fidelity to `FIDELITY_PASS - FIDELITY_EPSILON`, or read `dryRunVerdict().passed` |
+| v2 (7f36522, 340f45d) | **added** RESTART / CLOSE_SCIENCE edges, `EVENT_SOURCES`, `backend_verification`, the two-phase dry run, `UI_ROOT_ID` / `UI_HOOKS` / settings | adopt the two-phase dry-run calls; Mission 2 is `exact_qiskit_local` only |
+
 ## Changing a contract
 
 Only the platform lane edits `echo/contracts.js` and this file (`.claude/rules/lane-ownership.md`).
@@ -275,6 +351,7 @@ To change a name, field or transition:
 1. Put the request in your report under "requests to platform": what, why, and the vision § it serves.
 2. Platform changes `contracts.js`, `tools/contract-check/check.mjs` and its fixtures in one commit, and
    runs `node tools/contract-check/check.mjs` (green) and `python3 tools/contract-check/sabotage.py`.
+   A new or removed export also updates the gate's `EXPECTED_EXPORTS` and adds a row to § Migrations.
 3. Every lane is told in its `owner-answers.md`.
 
 Do not shadow a name locally (`const STATES = {...}` in your own file). That is exactly the drift this

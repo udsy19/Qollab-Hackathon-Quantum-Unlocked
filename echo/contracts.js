@@ -72,6 +72,8 @@ export const QUEST_EVENTS = nameTable('QUEST_EVENTS',
 // fire on E (INTERACTABLE_BINDINGS); experiment_result events come from gameplay reading a validated
 // ExperimentResult, never from a button.
 const SOURCE = (lane, via) => Object.freeze({ lane, via })
+// A moment is fired by gameplay and consumed by story-ui, which plays the lines keyed by its id.
+const MOMENT = (via = 'moment') => Object.freeze({ lane: 'gameplay', via, consumer: 'story-ui' })
 export const EVENT_SOURCES = strictTable('EVENT_SOURCES', Object.entries({
   BOOT_COMPLETE: SOURCE('platform', 'boot'),
   START: SOURCE('story-ui', 'menu'),
@@ -96,7 +98,26 @@ export const EVENT_SOURCES = strictTable('EVENT_SOURCES', Object.entries({
   CLOSE_SCIENCE: SOURCE('story-ui', 'menu'),
   OPEN_CREDITS: SOURCE('story-ui', 'menu'),
   RESTART: SOURCE('story-ui', 'menu'),
+  // MOMENT_EVENTS (below): reactions, never transitions.
+  clone_increase_voltage: MOMENT(),
+  relay_bay_cable: MOMENT(),
+  teleport_commit_locked: MOMENT(),
+  teleport_dry_run_failed: MOMENT(),
+  teleport_dry_run_00: MOMENT(),
+  countdown_zero: MOMENT('countdown'),
 }))
+
+// Moments are story beats that do not change the quest state, so transition() rejects them as
+// unknown events. Gameplay fires each on the bus; story-ui keys its lines by the same id
+// (overseer relay 2026-10-10; the last two are the ids story-ui's data/story.js already uses).
+//   clone_increase_voltage   the player picks "increase voltage" after CLONE_SUPERPOSITION_FAILED (§4.2)
+//   relay_bay_cable          the amber cable in the relay bay is reconnected (§4.3)
+//   teleport_commit_locked   COMMIT pressed before a dry run unlocked it (§7.4)
+//   teleport_dry_run_failed  a dry run did not pass; the next one uses a fresh state
+//   teleport_dry_run_00      a dry run passed on bits 00, so COMMIT stays locked (dryRunVerdict.unlocksCommit)
+//   countdown_zero           countdownRemaining() first reaches 0; fired once, nothing ends
+export const MOMENT_EVENTS = nameTable('MOMENT_EVENTS', ['clone_increase_voltage', 'relay_bay_cable',
+  'teleport_commit_locked', 'teleport_dry_run_failed', 'teleport_dry_run_00', 'countdown_zero'])
 
 // A wrong NAME throws (a bug at the call site); a right name at the wrong time is refused
 // with { ok: false } and the state unchanged (gameplay, e.g. pressing E twice).
@@ -128,6 +149,21 @@ export const WORLD_CHANGES = Object.freeze(Object.fromEntries(Object.entries({
   TELEPORT_COMMITTED: ['capsule_source_indicator_off', 'vault_status_green', 'city_lighting_wave',
     'music_swell', 'ending_dialogue'],
 }).map(([s, list]) => [s, Object.freeze(list)])))
+
+// ------------------------------------------------------------------ narrative countdown
+
+// The HUD's GRID SHUTDOWN clock (§6.3). It is narrative only: at 00:00 it holds and story-ui plays
+// countdown_zero; no quest event comes from it, so it can never end the game (§1 anti-goals: no
+// game-over from a non-pausing timer). It is computed from elapsed time, never decremented, so
+// replaying an event cannot drive it below zero (§9.3 idempotence).
+export const COUNTDOWN_START_SECONDS = 720  // 12:00; §6.3 shows 08:42 by the relay, mission 2
+
+// Whole seconds left, in [0, startSeconds]; rounds up so 00:00 shows only once time is truly out.
+export function countdownRemaining(startSeconds, elapsedSeconds) {
+  if (!(isFiniteNumber(startSeconds) && startSeconds >= 0)) throw new TypeError(`countdownRemaining: startSeconds must be a finite number ≥ 0, got ${describe(startSeconds)}`)
+  if (typeof elapsedSeconds !== 'number' || Number.isNaN(elapsedSeconds)) throw new TypeError(`countdownRemaining: elapsedSeconds must be a number, got ${describe(elapsedSeconds)}`)
+  return Math.min(startSeconds, Math.max(0, Math.ceil(startSeconds - elapsedSeconds)))
+}
 
 // ------------------------------------------------------------------ interactables
 
@@ -334,8 +370,16 @@ export function marginalProbabilities(result, qubit) {
 export const TELEPORT_TEST_STATE = Object.freeze({ theta: 1.137, phi: 0.44 })  // §10.5, circuit order
 export const FIDELITY_PASS = 0.999999                 // §7.4 ideal-validation threshold
 export const GENERIC_MAX_WRONG_FIDELITY = 0.9          // every wrong choice must visibly fail
+// The cross-check accepts exactly what the §7.4 band accepts: tolerance = the band width 1 - 0.999999.
+// Every fidelity comparison adds FIDELITY_EPSILON, because in doubles 1 - 0.999999 = 1e-6 + 2.9e-17:
+// without it a correct F = 0.999999 was refused (gate-independence law 12). 1e-12 exceeds the measured
+// analytic/Qiskit disagreement (4.7e-13 over the oracle fixtures) and is 1e6 below the band.
 export const FIDELITY_CROSSCHECK_TOLERANCE = 1e-6
+export const FIDELITY_EPSILON = 1e-12
 export const BIT_LABELS = Object.freeze({ m0: 'SOURCE READOUT m0', m1: 'LOCAL BELL-HALF READOUT m1' })
+// The one name for the story token: a commit result carries parameters.stateId === STORY_TOKEN_ID, and no
+// dry-run result may (§7.4: calibration runs on prepared test states, the token is consumed once).
+export const STORY_TOKEN_ID = 'story_token'
 
 export function expectedCorrections(m0, m1) {
   if ((m0 !== 0 && m0 !== 1) || (m1 !== 0 && m1 !== 1)) throw new TypeError(`expectedCorrections: bits must be 0 or 1, got ${m0}, ${m1}`)
@@ -378,13 +422,18 @@ export function validateTeleportBitsRequest(req) {
   return errors
 }
 
-function checkDryRunResult(req, res, phase, err) {
+// Shared by both dry-run phases and the commit. `req` is the dry-run request whose state the result must
+// echo; the commit passes null, because its state is the hidden token.
+function checkTeleportResult(req, res, phase, err) {
   for (const e of validateExperimentResult(res)) err(`${phase} result: ${e}`)
   if (!isPlainObject(res)) return false
   if (res.experiment !== 'teleportation') err(`${phase} result experiment must be teleportation, got ${describe(res.experiment)}`)
   if (res.engine !== 'exact_qiskit_local') err(`${phase} result engine must be exact_qiskit_local (puzzle feedback is local Qiskit), got ${describe(res.engine)}`)
   const p = isPlainObject(res.parameters) ? res.parameters : {}
-  for (const k of ['theta', 'phi']) if (!sameNumber(p[k], req[k])) err(`${phase} result parameters.${k} ${describe(p[k])} is not the requested ${req[k]}`)
+  if (req) {
+    for (const k of ['theta', 'phi']) if (!sameNumber(p[k], req[k])) err(`${phase} result parameters.${k} ${describe(p[k])} is not the requested ${req[k]}`)
+    if (p.stateId === STORY_TOKEN_ID) err(`${phase} result parameters.stateId is the story token: the token never enters a dry run (§7.4)`)
+  }
   if (!isPlainObject(res.measurementBits)) { err(`${phase} result must carry measurementBits { m0, m1 }`); return false }
   // An engine may echo the bits in parameters; if it does, they must be the same bits.
   for (const k of ['m0', 'm1']) {
@@ -396,7 +445,7 @@ function checkDryRunResult(req, res, phase, err) {
 export function validateTeleportBitsResult(req, res) {
   const errors = validateTeleportBitsRequest(req).map(e => `request: ${e}`)
   const err = m => errors.push(m)
-  checkDryRunResult(req ?? {}, res, 'phase-1', err)
+  checkTeleportResult(req ?? {}, res, 'phase-1', err)
   if (isPlainObject(res)) {
     if (res.fidelity !== undefined) err('phase-1 result must not report fidelity: the player has not chosen corrections yet')
     for (const k of ['applyX', 'applyZ']) if (isPlainObject(res.parameters) && k in res.parameters) err(`phase-1 result parameters.${k} must be absent: corrections come after the bits`)
@@ -427,16 +476,27 @@ export function validateTeleportCorrectionRequest(req) {
 export function validateTeleportCorrectionResult(req, res) {
   const errors = validateTeleportCorrectionRequest(req).map(e => `request: ${e}`)
   const err = m => errors.push(m)
-  if (!checkDryRunResult(req ?? {}, res, 'phase-2', err) || errors.length) return errors
+  if (!checkTeleportResult(req ?? {}, res, 'phase-2', err) || errors.length) return errors
   const mb = res.measurementBits
   if (mb.m0 !== req.m0 || mb.m1 !== req.m1) err(`phase-2 result measurementBits ${JSON.stringify(mb)} are not the requested m0=${req.m0}, m1=${req.m1}`)
   for (const k of ['applyX', 'applyZ']) if (res.parameters[k] !== req[k]) err(`phase-2 result parameters.${k} ${describe(res.parameters[k])} is not the requested ${req[k]}`)
   if (!isFiniteNumber(res.fidelity)) { err('phase-2 result must report fidelity'); return errors }
   const want = expectedFidelity(req)
-  if (Math.abs(res.fidelity - want) > FIDELITY_CROSSCHECK_TOLERANCE) {
+  if (Math.abs(res.fidelity - want) > FIDELITY_CROSSCHECK_TOLERANCE + FIDELITY_EPSILON) {
     err(`phase-2 result fidelity ${res.fidelity} disagrees with the physics of this branch and choice (expected ${want.toFixed(9)})`)
   }
   return errors
+}
+
+// The two halves of a teleport verdict, shared by the dry run and the commit: the corrections follow the
+// rule for THESE bits, and Qiskit's fidelity clears the §7.4 band. Bits must already be valid.
+function judgeCorrections(m0, m1, applyX, applyZ, fidelity) {
+  const expected = expectedCorrections(m0, m1)
+  return {
+    expected,
+    followsRule: expected.applyX === applyX && expected.applyZ === applyZ,
+    clearsPass: fidelity >= FIDELITY_PASS - FIDELITY_EPSILON,
+  }
 }
 
 // passed: the choice follows the rule AND Qiskit's fidelity clears §7.4. unlocksCommit: a pass on
@@ -444,9 +504,36 @@ export function validateTeleportCorrectionResult(req, res) {
 export function dryRunVerdict(req, res) {
   const errors = validateTeleportCorrectionResult(req, res)
   if (errors.length) return { passed: false, unlocksCommit: false, expected: null, errors }
-  const expected = expectedCorrections(req.m0, req.m1)
-  const passed = expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS
+  const { expected, followsRule, clearsPass } = judgeCorrections(req.m0, req.m1, req.applyX, req.applyZ, res.fidelity)
+  const passed = followsRule && clearsPass
   return { passed, unlocksCommit: passed && (req.m0 === 1 || req.m1 === 1), expected, errors }
+}
+
+// ------------------------------------------------------------------ the one story commit
+
+// One atomic local exact call (owner ruling, gameplay consult 3): fresh live Bell bits on the hidden story
+// token, the rule applied to THOSE bits by the engine, Qiskit's fidelity. Empty list = the commit succeeded
+// and the quest may fire COMMIT_TRANSFER. Unlike a dry run, nothing here is the player's choice and there
+// is no cross-check behind it, so a result is refused unless the corrections it reports are the rule's and
+// its fidelity clears §7.4: with the rule applied the receiver holds the token whatever it was, so anything
+// lower is a broken engine, not a failed attempt. The result never carries the token's angles.
+export function validateCommitResult(res) {
+  const errors = []
+  const err = m => errors.push(m)
+  if (!checkTeleportResult(null, res, 'commit', err)) return errors
+  const p = isPlainObject(res.parameters) ? res.parameters : {}
+  if (p.stateId !== STORY_TOKEN_ID) err(`commit result parameters.stateId must be STORY_TOKEN_ID "${STORY_TOKEN_ID}", got ${describe(p.stateId)}`)
+  for (const k of ['theta', 'phi']) if (k in p) err(`commit result parameters.${k} must be absent: the story token's state is never shown`)
+  for (const k of ['applyX', 'applyZ']) if (typeof p[k] !== 'boolean') err(`commit result parameters.${k} must be the boolean correction the receiver applied, got ${describe(p[k])}`)
+  if (!isFiniteNumber(res.fidelity)) err(`commit result must report fidelity, got ${describe(res.fidelity)}`)
+  const { m0, m1 } = res.measurementBits
+  if (errors.length || (m0 !== 0 && m0 !== 1) || (m1 !== 0 && m1 !== 1)) return errors
+  const { expected, followsRule, clearsPass } = judgeCorrections(m0, m1, p.applyX, p.applyZ, res.fidelity)
+  if (!followsRule) {
+    err(`commit result corrections applyX=${p.applyX}, applyZ=${p.applyZ} break the rule for m0=${m0}, m1=${m1} (X iff m1=1, Z iff m0=1: expected applyX=${expected.applyX}, applyZ=${expected.applyZ})`)
+  }
+  if (!clearsPass) err(`commit result fidelity ${res.fidelity} is below FIDELITY_PASS ${FIDELITY_PASS}: a committed receiver must hold the token (§7.4)`)
+  return errors
 }
 
 // A fresh calibration state, uniform on the Bloch sphere, redrawn until generic. `random` is
