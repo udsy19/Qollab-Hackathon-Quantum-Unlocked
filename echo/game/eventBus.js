@@ -12,7 +12,7 @@ export function createEventBus({ onError = (err, type) => console.error(`[eventB
   function emit(type, payload) {
     const set = listeners.get(type);
     if (!set) return;
-    // Snapshot: a listener that unsubscribes (or subscribes) mid-emit does not skip a neighbour.
+    // Snapshot: a listener subscribed mid-emit (e.g. by a quest:enter handler) waits for the next emit.
     for (const fn of [...set]) {
       try { fn(payload); } catch (err) { onError(err, type); }
     }

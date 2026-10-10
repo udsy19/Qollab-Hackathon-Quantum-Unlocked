@@ -45,3 +45,11 @@ test('unsubscribing during emit does not skip the next listener', () => {
 test('emit with no listeners is a no-op', () => {
   assert.doesNotThrow(() => createEventBus().emit('nobody'));
 });
+
+test('a listener subscribed during emit is not called until the next emit', () => {
+  const bus = createEventBus();
+  const seen = [];
+  bus.on('a', () => { seen.push('outer'); bus.on('a', () => seen.push('late')); });
+  bus.emit('a');
+  assert.deepEqual(seen, ['outer']);
+});
