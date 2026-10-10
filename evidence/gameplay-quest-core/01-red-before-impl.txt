@@ -1,0 +1,110 @@
+node:internal/modules/esm/resolve:272
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/echo/game/eventBus.js' imported from /Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/dev/gameplay/tests/eventBus.test.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+    at moduleResolve (node:internal/modules/esm/resolve:879:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33)
+    at ModuleJob.link (node:internal/modules/esm/module_job:389:17) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/echo/game/eventBus.js'
+}
+
+Node.js v26.7.0
+✖ dev/gameplay/tests/eventBus.test.mjs (33.731334ms)
+node:internal/modules/esm/resolve:272
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/dev/gameplay/fakeQuantum.js' imported from /Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/dev/gameplay/tests/fakeQuantum.test.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+    at moduleResolve (node:internal/modules/esm/resolve:879:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33)
+    at ModuleJob.link (node:internal/modules/esm/module_job:389:17) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/dev/gameplay/fakeQuantum.js'
+}
+
+Node.js v26.7.0
+✖ dev/gameplay/tests/fakeQuantum.test.mjs (32.13775ms)
+node:internal/modules/esm/resolve:272
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/echo/game/missionRules.js' imported from /Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/dev/gameplay/tests/missionRules.test.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+    at moduleResolve (node:internal/modules/esm/resolve:879:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33)
+    at ModuleJob.link (node:internal/modules/esm/module_job:389:17) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/echo/game/missionRules.js'
+}
+
+Node.js v26.7.0
+✖ dev/gameplay/tests/missionRules.test.mjs (31.478917ms)
+node:internal/modules/esm/resolve:272
+    throw new ERR_MODULE_NOT_FOUND(
+          ^
+
+Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/echo/game/eventBus.js' imported from /Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/dev/gameplay/tests/state.test.mjs
+    at finalizeResolution (node:internal/modules/esm/resolve:272:11)
+    at moduleResolve (node:internal/modules/esm/resolve:879:10)
+    at defaultResolve (node:internal/modules/esm/resolve:1006:11)
+    at #cachedDefaultResolve (node:internal/modules/esm/loader:708:20)
+    at #resolveAndMaybeBlockOnLoaderThread (node:internal/modules/esm/loader:728:38)
+    at ModuleLoader.resolveSync (node:internal/modules/esm/loader:766:56)
+    at #resolve (node:internal/modules/esm/loader:690:17)
+    at ModuleLoader.getOrCreateModuleJob (node:internal/modules/esm/loader:610:35)
+    at ModuleJob.syncLink (node:internal/modules/esm/module_job:277:33)
+    at ModuleJob.link (node:internal/modules/esm/module_job:389:17) {
+  code: 'ERR_MODULE_NOT_FOUND',
+  url: 'file:///Users/udsy/agent-org/lanes/gameplay/wt/gameplay-quest-core/echo/game/eventBus.js'
+}
+
+Node.js v26.7.0
+✖ dev/gameplay/tests/state.test.mjs (31.168292ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 0
+ℹ fail 4
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 38.423417
+
+✖ failing tests:
+
+test at dev/gameplay/tests/eventBus.test.mjs:1:1
+✖ dev/gameplay/tests/eventBus.test.mjs (33.731334ms)
+  'test failed'
+
+test at dev/gameplay/tests/fakeQuantum.test.mjs:1:1
+✖ dev/gameplay/tests/fakeQuantum.test.mjs (32.13775ms)
+  'test failed'
+
+test at dev/gameplay/tests/missionRules.test.mjs:1:1
+✖ dev/gameplay/tests/missionRules.test.mjs (31.478917ms)
+  'test failed'
+
+test at dev/gameplay/tests/state.test.mjs:1:1
+✖ dev/gameplay/tests/state.test.mjs (31.168292ms)
+  'test failed'
