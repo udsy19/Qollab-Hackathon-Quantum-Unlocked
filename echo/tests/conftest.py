@@ -13,6 +13,17 @@ STATES = ["zero", "one", "plus", "minus", "phase", "bloch_a", "bloch_b"]
 SENDER_GATES = ["I", "X", "Z"]
 BITS = [(0, 0), (0, 1), (1, 0), (1, 1)]
 ON_OFF = [(False, False), (False, True), (True, False), (True, True)]
+CALIBRATION_SEEDS = [1, 2, 3]  # three fresh dry-run states, drawn by the engine from these seeds
+
+
+def calibration_angles(seed):
+    """The angles the bits call reports for `seed`: the spec the corrections call is handed back."""
+    from quantum import teleportation
+
+    p = teleportation.bell_measurement("calibration", seed=seed)["parameters"]
+    return p["theta"], p["phi"]
+
+
 FAKE_COUNTS = {"00": 120, "11": 130, "01": 3, "10": 3}  # 256 shots of a noisy Bell pair, written by hand
 
 
@@ -53,7 +64,29 @@ def bridge_calls():
             yield (f"teleportation.verify_deferred({s!r}, {cx}, {cz})",
                    lambda s=s, cx=cx, cz=cz: teleportation.verify_deferred(s, cx, cz))
         yield f"teleportation.corrections_withheld({s!r})", lambda s=s: teleportation.corrections_withheld(s)
-        yield f"teleportation.live_commit({s!r}, seed=11)", lambda s=s: teleportation.live_commit(s, seed=11)
+    for seed in CALIBRATION_SEEDS:
+        yield (f"teleportation.bell_measurement('calibration', seed={seed})",
+               lambda seed=seed: teleportation.bell_measurement("calibration", seed=seed))
+        theta, phi = calibration_angles(seed)
+        for m0, m1 in BITS:
+            for x, z in ON_OFF:
+                yield (f"teleportation.teleport_branch('calibration', {m0}, {m1}, {x}, {z}, theta={theta}, phi={phi})",
+                       lambda theta=theta, phi=phi, m0=m0, m1=m1, x=x, z=z:
+                       teleportation.teleport_branch("calibration", m0, m1, x, z, theta=theta, phi=phi))
+        yield (f"teleportation.corrections_withheld('calibration', theta={theta}, phi={phi})",
+               lambda theta=theta, phi=phi: teleportation.corrections_withheld("calibration", theta=theta, phi=phi))
+        yield (f"teleportation.verify_deferred('calibration', True, True, theta={theta}, phi={phi})",
+               lambda theta=theta, phi=phi: teleportation.verify_deferred("calibration", True, True, theta=theta, phi=phi))
+
+    def commit(seed):
+        teleportation.reset_story_token()  # a fresh run: the token is still unmeasured
+        try:
+            return teleportation.live_commit(seed=seed)
+        finally:
+            teleportation.reset_story_token()
+
+    for seed in (11, 12):
+        yield f"teleportation.live_commit(seed={seed})", lambda seed=seed: commit(seed)
     yield ("qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=256)",
            lambda: qollab_job.interpret_counts(dict(FAKE_COUNTS), FakeSelectedBackend.name, shots_requested=256))
     yield ("qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=300)",  # total drifts from the request
@@ -61,9 +94,9 @@ def bridge_calls():
 
     def once():
         qollab_job._job_submitted = False  # a fresh run: the one job is still available
-        return qollab_job.run_bell_verification_once(FakeSelectedBackend())
+        return qollab_job.run_backend_verification_once(FakeSelectedBackend())
 
-    yield "qollab_job.run_bell_verification_once(FakeSelectedBackend())", once
+    yield "qollab_job.run_backend_verification_once(FakeSelectedBackend())", once
 
 
-BRIDGE_CALL_COUNT = 7 + 3 + 7 * (2 + 16 + 4 + 1 + 1) + 3  # derived by hand from the loops above
+BRIDGE_CALL_COUNT = 7 + 3 + 7 * (2 + 16 + 4 + 1) + 3 * (1 + 16 + 1 + 1) + 2 + 3  # by hand from the loops above

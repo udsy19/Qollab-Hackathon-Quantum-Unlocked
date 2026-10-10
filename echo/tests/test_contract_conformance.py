@@ -23,8 +23,8 @@ ECHO = pathlib.Path(__file__).resolve().parents[1]
 # The one rejection we expect until platform answers the request in
 # lanes/quantum/reports/0003-contract-conformance.md: the selected-backend Bell check is neither the
 # relay puzzle nor teleportation, and the contract's experiment union has no honest value for it.
-PENDING_BELL_VERIFICATION = ('experiment must be one of cloning|bell_signalling|teleportation, '
-                             'got string "bell_verification"')
+PENDING_BACKEND_VERIFICATION = ('experiment must be one of cloning|bell_signalling|teleportation, '
+                             'got string "backend_verification"')
 
 VALIDATE = """
 const [contracts, results] = process.argv.slice(1)
@@ -70,8 +70,8 @@ def test_every_bridge_result_passes_the_platform_validator(tmp_path):
     verdicts = platform_verdicts(list(results), tmp_path)
     bad = {}
     for label, result, errors in zip(labels, results, verdicts):
-        if result["experiment"] == "bell_verification":
-            errors = [e for e in errors if e != PENDING_BELL_VERIFICATION]
+        if result["experiment"] == "backend_verification":
+            errors = [e for e in errors if e != PENDING_BACKEND_VERIFICATION]
         if errors:
             bad[label] = errors
     assert not bad, json.dumps(bad, indent=1)

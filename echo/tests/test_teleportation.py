@@ -127,7 +127,7 @@ def test_branch_model_fidelity_is_the_true_value(name, m0, m1, ax, az):
     # The rule the player is told comes from (m0, m1) by hand: X iff m1 = 1, Z iff m0 = 1.
     rule = f"X {'ON' if m1 else 'OFF'}, Z {'ON' if m0 else 'OFF'}"
     assert f"the rule asks for {rule}." in r["facts"][0]
-    hidden = "the mistake does not show here" in " ".join(r["facts"])
+    hidden = "This mistake does not show on this state" in " ".join(r["facts"])
     assert hidden is bool(not follows_rule and expected > 0.999999)
     # Bob's corrected state, as a Bloch vector, against the hand-corrected vector.
     _, bob = hand_branch(psi, m0, m1)
@@ -156,7 +156,7 @@ def test_wrong_choice_on_basis_state_is_honestly_harmless():
     r = teleportation.teleport_branch("zero", 0, 0, False, True)
     assert r["fidelity"] == pytest.approx(1.0, abs=1e-9)
     assert "the rule asks for X OFF, Z OFF." in r["facts"][0]  # the player chose Z: not the rule
-    assert "the mistake does not show here" in " ".join(r["facts"])
+    assert "This mistake does not show on this state" in " ".join(r["facts"])
 
 
 @pytest.mark.parametrize("name", list(STATES))
@@ -202,15 +202,19 @@ def test_deferred_fidelity_is_computed_not_assumed(name, cx_on, cz_on):
 
 
 def test_live_commit_is_one_seeded_sample_with_rule_corrections():
-    a = teleportation.live_commit("bloch_a", seed=7)
-    b = teleportation.live_commit("bloch_a", seed=7)
+    teleportation.reset_story_token()
+    a = teleportation.live_commit(seed=7)
+    teleportation.reset_story_token()
+    b = teleportation.live_commit(seed=7)
+    teleportation.reset_story_token()
     assert a == b
-    assert a["parameters"] == {"state": "bloch_a", "seed": 7}
+    assert a["parameters"] == {"state": "token", "seed": 7}
     bits = a["measurementBits"]
     assert bits["m0"] in (0, 1) and bits["m1"] in (0, 1)
     rule = f"X {'ON' if bits['m1'] else 'OFF'}, Z {'ON' if bits['m0'] else 'OFF'}"
     assert f"the receiver applied {rule}." in a["facts"][0]
-    # bloch_a is generic: every wrong correction scores < 0.99, so fidelity 1 proves the rule was applied.
+    # The token is generic (test_story_token.py): every wrong correction scores < 0.99, so fidelity 1
+    # proves the rule was applied to the live bits.
     assert a["fidelity"] >= 0.999999
     assert a["probabilities"] == {f"{b1}{b0}": pytest.approx(0.25, abs=1e-9) for b0, b1 in BRANCHES}
     assert "counts" not in a

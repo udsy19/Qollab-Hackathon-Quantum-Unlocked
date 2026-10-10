@@ -9,10 +9,11 @@ import math
 import numpy as np
 
 ENGINES = ("exact_qiskit_local", "qollab_selected_backend", "documented_preview")
-# Platform's EXPERIMENTS (echo/contracts.js) plus "bell_verification": the selected-backend Bell
-# correlation job is neither the relay puzzle nor teleportation (vision §10.7), and the contract has no
-# honest value for it yet. Requested from platform in lanes/quantum/reports/0003-contract-conformance.md.
-EXPERIMENTS = ("cloning", "bell_signalling", "teleportation", "bell_verification")
+# Platform's EXPERIMENTS (echo/contracts.js) plus "backend_verification", the owner's value for the one
+# selected-backend job (owner-answers 2026-10-10, 13 lane design questions, item 4): a Bell-pair
+# correlation check that is neither the relay puzzle nor teleportation (vision §10.7). Platform has not
+# added it to the contract yet.
+EXPERIMENTS = ("cloning", "bell_signalling", "teleportation", "backend_verification")
 PROBABILITY_TOLERANCE = 1e-9  # the platform validator's tolerance
 DECIMALS = 10
 

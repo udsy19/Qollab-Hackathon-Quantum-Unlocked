@@ -96,7 +96,7 @@ def test_ionq_histogram_mapping_reads_the_flipped_qubit():
 
 
 def test_bell_circuit_on_basic_simulator_is_fully_correlated():
-    qc = qj.build_bell_verification_circuit()
+    qc = qj.build_backend_verification_circuit()
     raw = BasicSimulator().run(qc, shots=512, seed_simulator=7).result().get_counts()
     result = qj.interpret_counts(raw, backend_name="local BasicSimulator", shots_requested=512)
     assert set(result["counts"]) <= {"00", "11"}
@@ -108,7 +108,7 @@ def test_bell_circuit_on_basic_simulator_is_fully_correlated():
 # ---------------------------------------------------------------- the circuit and its description
 
 def test_description_is_the_hand_expected_bell_circuit_and_json_safe():
-    desc = qj.describe_bell_verification_circuit()
+    desc = qj.describe_backend_verification_circuit()
     assert json.loads(json.dumps(desc)) == desc
     assert desc["qubits"] == 2 and desc["clbits"] == 2
     assert desc["operations"] == [
@@ -155,10 +155,10 @@ class FakeBackend:
 
 def test_second_run_is_refused_without_touching_the_backend(job_module):
     backend = FakeBackend()
-    first = job_module.run_bell_verification_once(backend, shots=128)
+    first = job_module.run_backend_verification_once(backend, shots=128)
     assert first["engine"] == "qollab_selected_backend"
     with pytest.raises(job_module.BackendJobAlreadyUsed, match="[Rr]estart the run"):
-        job_module.run_bell_verification_once(backend, shots=128)
+        job_module.run_backend_verification_once(backend, shots=128)
     assert backend.calls == 1
 
 
@@ -166,14 +166,14 @@ def test_a_failed_job_still_uses_up_the_one_allowed_job(job_module):
     """IonQ may count a failed submission against the one job per run, so a retry is refused too."""
     backend = FakeBackend(fail=True)
     with pytest.raises(ConnectionError):
-        job_module.run_bell_verification_once(backend, shots=128)
+        job_module.run_backend_verification_once(backend, shots=128)
     with pytest.raises(job_module.BackendJobAlreadyUsed):
-        job_module.run_bell_verification_once(backend, shots=128)
+        job_module.run_backend_verification_once(backend, shots=128)
     assert backend.calls == 1
 
 
 def test_runner_result_names_the_backend_and_follows_the_contract(job_module):
-    result = job_module.run_bell_verification_once(FakeBackend(), shots=128)
+    result = job_module.run_backend_verification_once(FakeBackend(), shots=128)
     for field in ("experiment", "engine", "circuitDescription", "qubits", "parameters", "counts", "keyQubits", "facts"):
         assert field in result, field
     assert json.loads(json.dumps(result)) == result
