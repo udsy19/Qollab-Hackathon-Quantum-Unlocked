@@ -1,0 +1,11 @@
+
+==================================== ERRORS ====================================
+_ ERROR collecting evidence/red-team/physics-code-audit/test_product_vs_oracle.py _
+evidence/red-team/physics-code-audit/test_product_vs_oracle.py:33: in <module>
+    raise RuntimeError(f"ECHO_ROOT must point at an exported echo/ tree with quantum/; got {ECHO_ROOT!r}")
+E   RuntimeError: ECHO_ROOT must point at an exported echo/ tree with quantum/; got None
+=========================== short test summary info ============================
+ERROR evidence/red-team/physics-code-audit/test_product_vs_oracle.py - Runtim...
+!!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.59s
+exit 2

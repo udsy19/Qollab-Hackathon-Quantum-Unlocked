@@ -1,0 +1,32 @@
+
+## CLONE_INTRO  (cloning/-)
+contract: valid
+gameplay: want BASIS_DEMO_OK, got null (need a basis-state copy that succeeded)  STUCK
+
+## CLONE_BASIS_PASSED  (cloning/-)
+contract: valid
+gameplay: want SUPERPOSITION_DEMO_FAILED, got null (need a superposition copy attempt)  STUCK
+
+## RELAY_INTRO  (bell_signalling/-)
+contract: valid
+gameplay: want PREPARE_BELL_PAIR, got PREPARE_BELL_PAIR (result shows the lesson)  ADVANCES
+
+## RELAY_BELL_CREATED  (bell_signalling/-)
+contract: valid
+gameplay: want ATTEMPT_NO_SIGNALLING, got ATTEMPT_NO_SIGNALLING (result shows the lesson)  ADVANCES
+
+## TELEPORT_DRY_RUN  (teleportation/-)
+contract: valid
+gameplay: want CORRECT_CALIBRATION, got null (corrections do not match m0=1, m1=0)  STUCK
+
+## TELEPORT_DRY_RUN_PASSED  (teleportation/-)
+contract: valid
+gameplay: want COMMIT_TRANSFER, got null (need the story-token transfer)  STUCK
+
+## BACKEND_VERIFICATION  (bell_verification/-)
+contract: INVALID
+  - experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification"
+  - engine qollab_selected_backend is only for experiment backend_verification (the one selected-backend job), not string "bell_verification"
+
+5 of 13 checks failed
+exit 1

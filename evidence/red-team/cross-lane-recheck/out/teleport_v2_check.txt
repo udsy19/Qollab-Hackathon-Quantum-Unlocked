@@ -1,0 +1,39 @@
+## phase 1 (bits) — validateTeleportBitsResult
+bits m0m1=10: as shipped INVALID; renamed valid
+bits m0m1=11: as shipped INVALID; renamed valid
+bits m0m1=00: as shipped INVALID; renamed valid
+bits m0m1=01: as shipped INVALID; renamed valid
+
+## phase 2 (corrections) — validateTeleportCorrectionResult + dryRunVerdict
+| m0 m1 | X Z | engine F | as shipped | renamed: passed / unlocksCommit | expected by rule |
+|---|---|---|---|---|---|
+| 0 0 | 0 0 | 1.000000 | INVALID | true / false | pass |
+| 0 0 | 0 1 | 0.176668 | INVALID | false / false | fail |
+| 0 0 | 1 0 | 0.673960 | INVALID | false / false | fail |
+| 0 0 | 1 1 | 0.149373 | INVALID | false / false | fail |
+| 0 1 | 0 0 | 0.673960 | INVALID | false / false | fail |
+| 0 1 | 0 1 | 0.149373 | INVALID | false / false | fail |
+| 0 1 | 1 0 | 1.000000 | INVALID | true / true | pass |
+| 0 1 | 1 1 | 0.176668 | INVALID | false / false | fail |
+| 1 0 | 0 0 | 0.176668 | INVALID | false / false | fail |
+| 1 0 | 0 1 | 1.000000 | INVALID | true / true | pass |
+| 1 0 | 1 0 | 0.149373 | INVALID | false / false | fail |
+| 1 0 | 1 1 | 0.673960 | INVALID | false / false | fail |
+| 1 1 | 0 0 | 0.149373 | INVALID | false / false | fail |
+| 1 1 | 0 1 | 0.673960 | INVALID | false / false | fail |
+| 1 1 | 1 0 | 0.176668 | INVALID | false / false | fail |
+| 1 1 | 1 1 | 1.000000 | INVALID | true / true | pass |
+
+## as-shipped errors (count × message)
+4 × phase-1 result parameters.theta nothing is not the requested 1.137
+4 × phase-1 result parameters.phi nothing is not the requested 0.44
+16 × phase-2 result parameters.theta nothing is not the requested 1.137
+16 × phase-2 result parameters.phi nothing is not the requested 0.44
+
+## commit: what the engine does with the story token
+live_commit("story_token"): ERROR ValueError: unknown prepared state 'story_token'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']
+live_commit("token"): ERROR ValueError: unknown prepared state 'token'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']
+
+renamed diagnostic (physics vs the contract's own cross-check): 20/20 agree
+22 of 22 as-shipped checks failed
+exit 1

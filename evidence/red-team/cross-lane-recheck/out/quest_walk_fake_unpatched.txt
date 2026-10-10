@@ -1,0 +1,14 @@
+quest walk (fake) on /tmp/clr-merged/echo
+  BOOT -BOOT_COMPLETE-> TITLE
+  TITLE -START-> OPENING
+  OPENING -FINISHED-> FREE_ROAM_ALLEY
+  FREE_ROAM_ALLEY -OPEN_CLONE_BOOTH-> CLONE_INTRO
+  CLONE_INTRO -BASIS_DEMO_OK-> CLONE_BASIS_PASSED
+  CLONE_BASIS_PASSED -SUPERPOSITION_DEMO_FAILED-> CLONE_SUPERPOSITION_FAILED
+  CLONE_SUPERPOSITION_FAILED -EXPLANATION_READ-> CLONE_UNDERSTOOD
+  CLONE_UNDERSTOOD -EXIT_BOOTH-> RELAY_UNLOCKED
+  RELAY_UNLOCKED -REACH_RELAY-> RELAY_INTRO
+STALL at RELAY_INTRO: invalid result: experiment bell_signalling is shown as EXACT and requires engine exact_qiskit_local, got string "documented_preview"
+  contract errors: experiment bell_signalling is shown as EXACT and requires engine exact_qiskit_local, got string "documented_preview"
+1 stall(s); ended in RELAY_INTRO after 9 transitions; commit=idle (walk could not continue)
+exit 1

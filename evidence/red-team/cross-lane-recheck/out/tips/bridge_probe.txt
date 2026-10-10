@@ -1,0 +1,8 @@
+bridge.js runtime probe (Node + stubs replaying recorded real output; NOT Pyodide/Qollab) on /tmp/clr-tips/echo
+PASS  verifySelectedBackendOnce ×3 reaches Python once  — python calls = 1
+FAIL  verifySelectedBackendOnce hands the REAL backend result on  — rejected: Quantum backend verification unavailable; educational circuit validated locally: experiment must be one of cloning|bell_signalling|teleportation|backend_verification, got string "bell_verification"; engine qollab_selecte
+PASS  commitTransfer retries after a failed call  — first rejected, python calls after 2 = 2
+PASS  commitTransfer latches after a returned result  — python calls after 3 = 2, same result object = true
+FAIL  the engine accepts a story-token commit  — live_commit('story_token') → ValueError: unknown prepared state 'story_token'; choose one of ['bloch_a', 'bloch_b', 'minus', 'one', 'phase', 'plus', 'zero']
+2 of 5 expectations failed
+exit 1

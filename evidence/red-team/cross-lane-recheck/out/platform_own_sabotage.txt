@@ -1,0 +1,10 @@
+ok   NULL  (expected NULL,   0 FAIL lines)  rename a §9.3 world-change id
+ok   RED   (expected RED ,   1 FAIL lines)  rebind teleport_terminal to another VALID state/event pair (not in §9.4)
+ok   NULL  (expected NULL,   0 FAIL lines)  drop the Map-specific hint from describe()
+sabotage: 49 cases, 0 mismatch(es)
+contract-check sabotage.py exit 0
+"inside a string literal" tag removed                yes   CAUGHT by: storage
+entry-main/index checks swapped to always-present    yes   CAUGHT by: entry-main-missing
+fetch non-literal method info removed                yes   CAUGHT by: limitations
+37 mutations, 0 null/refused
+qollab-caps sabotage.mjs exit 0

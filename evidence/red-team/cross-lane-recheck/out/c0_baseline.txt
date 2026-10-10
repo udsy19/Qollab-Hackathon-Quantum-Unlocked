@@ -1,0 +1,7 @@
+-- Docs: https://docs.pytest.org/en/stable/how-to/capture-warnings.html
+523 passed, 8 warnings in 1.25s
+pytest exit 0
+sabotage exit 0
+| `scanner_counts_comments` | backend_run_audit: commented-out calls counted as live | red | **RED** (exit 1) | as expected | 1 failed, 509 passed in 1.97s | test_comments_and_lookalikes_are_not_counted |
+| `scanner_misses_member_calls` | backend_run_audit: `this.backend.run` / `selectedBackend.run` missed | red | **RED** (exit 1) | as expected | 1 failed, 509 passed in 2.00s | test_each_call_shape_is_one_site |
+| `counting_backend_allows_two` | CountingBackend lets a second job through | red | **RED** (exit 1) | as expected | 1 failed, 509 passed in 1.98s | test_counting_backend_refuses_second_job |
