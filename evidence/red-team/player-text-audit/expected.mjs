@@ -27,7 +27,7 @@ export const REQUIRED = [
       [/\bX\s*:?\s*\[[^\]\n]*\][^\n]*\bZ\s*:?\s*\[[^\]\n]*\]/] ],
     desc: 'four X/Z choices: labelled set, or independent X and Z switches', cite: 'OA overseer rulings gameplay consult 3; V:419-421; V:427', sev: 'HIGH' },
   // bits first, corrections second (OA:41 (2)): a string that shows m0 and m1 before the X/Z controls
-  { id: 'R-BITS-FIRST', re: /\bm0\b[^\n]*\bm1\b[^\n]*\bX\b[^\n]*\bZ\b/, desc: 'm0, m1 shown before the X/Z choice', cite: 'OA:41 (2); V:413-421', sev: 'HIGH' },
+  { id: 'R-BITS-FIRST', re: /\bm0\b[^\n]*\bm1\b[^\n]*\bX\s*:?\s*\[[^\n]*\bZ\s*:?\s*\[/, desc: 'm0, m1 shown before the X/Z choice', cite: 'OA:41 (2); V:413-421', sev: 'HIGH' },
   // the three teach-back questions (V:286-288)
   { id: 'R-TB-Q1', re: /copy\w*[^?]{0,80}(machine|booth|duplicat)\w*[^?]{0,60}\?|(machine|booth|duplicat)\w*[^?]{0,80}cop(y|ied)\w*[^?]{0,60}\?/i, desc: 'teach-back Q1: why copying failed', cite: 'V:286', sev: 'MED' },
   { id: 'R-TB-Q2', re: /entangl\w*[^?]{0,40}(alone|by itself|on its own)[^?]{0,60}\?/i, desc: 'teach-back Q2: why entanglement alone insufficient', cite: 'V:287', sev: 'MED' },
@@ -77,7 +77,8 @@ export const FORBIDDEN = [
   { id: 'F-EYE', cite: 'V:135 ("never frame measurement as a literal human eye looking at a particle")', sev: 'MED',
     re: [/\b(look(s|ing|ed)?\s+at|watch(es|ing|ed)?|observ\w+|see(s|ing)?|eyes?)\b[^.]{0,25}\b(particle|qubit|photon|state)\b[^.]{0,25}\b(collaps\w+|chang\w+|destroy\w+|break\w*|disturb\w*)/i,
          /\b(by|just)\s+(looking|observing|watching)\b/i, /\bact of (looking|observ\w+|seeing)\b/i] },
-  { id: 'F-NOCLONE-OVERREACH', cite: 'V:135 ("avoid saying the no-cloning theorem prevents storage, authentication, or all forms of copying classical information")', sev: 'MED',
+  // nonegate: an over-reach is itself phrased with a negator ("can never be copied"), so a negator cannot excuse it
+  { id: 'F-NOCLONE-OVERREACH', cite: 'V:135 ("avoid saying the no-cloning theorem prevents storage, authentication, or all forms of copying classical information")', sev: 'MED', nonegate: true,
     re: [/\bno[- ]cloning\b[^.]{0,80}\b(storage|store|stored|authenticat\w*|classical (data|information|bits?|files?)|any (copy|copying)|all (copy|copying|copies)|every copy)/i,
          /\b(can'?t|cannot|never)\s+(be\s+)?(cop(y|ied)|clone\w*|duplicat\w*)\s+(any|anything|data|information|classical)\b/i] },
   { id: 'F-DEFERRED-REMOTE', cite: 'V:503 (deferred circuit "must not be displayed as remote quantum controls")', sev: 'MED',
@@ -108,10 +109,12 @@ export const RULE_SWAP = [
 export const RAW_KEY = /(\bbits?\b|\breadout\b|\bkey\b|\bresult\b)[^.\n]{0,15}['"`]?\b[01]{2}\b['"`]?/i;
 
 // ---- (d) teach-back answers must carry the three truths in plain words (V:286-290; V:225; V:241; V:263) ----
+// Graded only on the literals that FOLLOW the matching question (R-TB-Qn) up to the next question, so a
+// truth elsewhere in the file (journal, Declassified) cannot stand in for the answer. `q` names the question.
 export const TEACHBACK_TRUTHS = [
-  { id: 'TB-A1-NOCLONE', cite: 'V:286; V:225; V:458', all: [/\b(unknown|arbitrary|superposition)\b/i, /\b(cop(y|ied|ies)|clone|duplicat\w*)\b/i, NEG], },
-  { id: 'TB-A2-NOSIGNAL', cite: 'V:287; V:237; V:241', all: [/\b(random|50\s*%|50\/50|correlat\w*|same)\b/i, /\b(message|signal|information|classical)\b/i, NEG] },
-  { id: 'TB-A3-BITS', cite: 'V:288; V:263; V:453', all: [/\b(correction|correct|fix|X)\b/i, /\b(Z)\b/, /\b(two|2|m0|m1|bits?)\b/i] },
+  { id: 'TB-A1-NOCLONE', q: 'R-TB-Q1', cite: 'V:286; V:225; V:458', all: [/\b(unknown|arbitrary|superposition)\b/i, /\b(cop(y|ied|ies)|clone|duplicat\w*)\b/i, NEG], },
+  { id: 'TB-A2-NOSIGNAL', q: 'R-TB-Q2', cite: 'V:287; V:237; V:241', all: [/\b(random|50\s*%|50\/50|correlat\w*|same)\b/i, /\b(message|signal|information|classical)\b/i, NEG] },
+  { id: 'TB-A3-BITS', q: 'R-TB-Q3', cite: 'V:288; V:263; V:453', all: [/\b(correction|correct|fix|X)\b/i, /\b(Z)\b/, /\b(two|2|m0|m1|bits?)\b/i] },
 ];
 
 // ---- byte census: allowed non-ASCII (with reason); everything else is reported ----

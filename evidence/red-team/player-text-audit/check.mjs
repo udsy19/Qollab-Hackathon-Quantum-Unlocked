@@ -99,12 +99,15 @@ for (const f of files.filter((f) => f.endsWith('.css'))) {
     add({ file: f, line: css.slice(0, m.index + m[1].search(/\S/)).split('\n').length, str: m[1].trim() + ' { ' + m[3].trim() + ' }', rule: 'C-CAPTIONS-OFF', why: 'a setting hides the dialogue captions; the owner ruled captions always on (setting = style only)', cite: 'OA:41 "Captions are always on"; V:436', sev: 'HIGH' });
 }
 // (d) teach-back truths: graded on echo/data/teachback.* only if present
-const tb = strings.filter((x) => /teachback/i.test(x.file));
+const qIdx = (id) => { const r = E.REQUIRED.find((q) => q.id === id); return strings.findIndex((x) => r.re.test(x.s)); };
+const qStarts = E.TEACHBACK_TRUTHS.map((T) => qIdx(T.q)).filter((i) => i >= 0);
 const tbResult = [];
 for (const T of E.TEACHBACK_TRUTHS) {
-  const hit = tb.find((x) => T.all.every((re) => re.test(x.s)));
+  const qi = qIdx(T.q); const next = qStarts.filter((i) => i > qi).sort((a, b) => a - b)[0] ?? qi + 13;
+  const span = qi < 0 ? [] : strings.slice(qi + 1, Math.min(next, qi + 13));
+  const hit = span.find((x) => T.all.every((re) => re.test(x.s)));
   tbResult.push({ id: T.id, ok: !!hit, at: hit ? `${hit.file}:${hit.line}` : '' });
-  if (!hit) add({ file: tb[0]?.file || '(no teachback file)', line: 0, str: T.id, rule: `MISSING ${T.id}`, why: 'no single teach-back string carries all the truth markers', cite: T.cite, sev: 'MED' });
+  if (!hit) add({ file: qi < 0 ? '(question absent)' : strings[qi].file, line: qi < 0 ? 0 : strings[qi].line, str: T.id, rule: `MISSING ${T.id}`, why: 'no answer literal after the question carries all the truth markers', cite: T.cite, sev: 'MED' });
 }
 
 for (const f of findings) f.owner = f.file.startsWith('echo/') ? OWNER(f.file) : 'story-ui';
@@ -120,6 +123,7 @@ const summary = { root: ROOT, files, strings: strings.length, nonAscii: census.l
 if (OUT) {
   fs.mkdirSync(OUT, { recursive: true });
   fs.writeFileSync(path.join(OUT, 'findings.md'), table + '\n');
+  fs.writeFileSync(path.join(OUT, 'findings.json'), JSON.stringify(findings, null, 1) + '\n');
   fs.writeFileSync(path.join(OUT, 'summary.json'), JSON.stringify(summary, null, 1) + '\n');
   fs.writeFileSync(path.join(OUT, 'census.tsv'), 'file\tline\tcp\tchar\tclass\n' + census.map((c) => `${c.file}\t${c.line}\t${c.cp}\t${c.ch}\t${c.cls}`).join('\n') + '\n');
   fs.writeFileSync(path.join(OUT, 'negated_ok.tsv'), negatedOk.map((n) => `${n.file}:${n.line}\t${n.id}\t${n.sen.replace(/\s+/g, ' ')}`).join('\n') + '\n');

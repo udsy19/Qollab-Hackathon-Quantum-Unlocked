@@ -1,0 +1,7 @@
+file	line	cp	char	class
+echo/data/story.js	8	U+2010	‐	CONFUSABLE hyphen lookalike
+echo/data/story.js	9	U+2010	‐	CONFUSABLE hyphen lookalike
+echo/ui/hud.js	1	U+0415	Е	CONFUSABLE Cyrillic letter
+echo/ui/hud.js	1	U+0445	х	CONFUSABLE Cyrillic letter
+echo/ui/hud.js	1	U+0430	а	CONFUSABLE Cyrillic letter
+echo/ui/hud.js	1	U+0441	с	CONFUSABLE Cyrillic letter

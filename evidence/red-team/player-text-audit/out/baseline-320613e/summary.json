@@ -1,5 +1,5 @@
 {
- "root": "/tmp/pta-export.6iR9",
+ "root": "/var/folders/m8/w_4jf2z54834ck071hw71p280000gn/T/tmp.hyC1NTpv39",
  "files": [
   "echo/data/objectives.js",
   "echo/data/story.js",
@@ -104,17 +104,17 @@
   {
    "id": "TB-A1-NOCLONE",
    "ok": true,
-   "at": "echo/data/teachback.js:9"
+   "at": "echo/data/teachback.js:78"
   },
   {
    "id": "TB-A2-NOSIGNAL",
    "ok": true,
-   "at": "echo/data/teachback.js:47"
+   "at": "echo/data/teachback.js:90"
   },
   {
    "id": "TB-A3-BITS",
    "ok": true,
-   "at": "echo/data/teachback.js:11"
+   "at": "echo/data/teachback.js:98"
   }
  ],
  "negatedOk": 2
