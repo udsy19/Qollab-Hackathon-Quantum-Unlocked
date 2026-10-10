@@ -1,0 +1,7 @@
+vision: 21 §9.1 states, 15 HUD states, cast RIN/MICA/VEGA/MIRROR
+data: /Users/udsy/agent-org/lanes/story-ui/wt/story-data/echo/data
+counted: 74 beats in 20 groups · 14 hint ladders · 504 strings scanned · 8387 checks
+placeholder (owner to fill): teachback.CREDITS[1].text = "TODO_OWNER: team and credit names (not yet given by the owner)"
+placeholder (owner to fill): teachback.CREDITS[5].text = "TODO_OWNER: third-party assets and their licenses (art lane to list; none yet)"
+GREEN
+exit=0

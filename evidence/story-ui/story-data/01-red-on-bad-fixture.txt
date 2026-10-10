@@ -1,0 +1,48 @@
+vision: 21 §9.1 states, 15 HUD states, cast RIN/MICA/VEGA/MIRROR
+data: /Users/udsy/agent-org/lanes/story-ui/wt/story-data/evidence/story-ui/story-data/fixtures/bad
+counted: 12 beats in 4 groups · 2 hint ladders · 40 strings scanned · 553 checks
+FAIL story.STORY.OPENING[0]: does not fit 2×42: 3 lines — "This line is far too long to ever fit inside two subtitle lines of forty-two characters each, so it must fail."
+FAIL story.STORY.OPENING[1]: speaker "NARRATOR" is not in the §2.2 cast (RIN, MICA, VEGA, MIRROR)
+FAIL story.STORY.ENDING[0]: misconception "But you still have it, right?" is not corrected by a negating next beat
+FAIL story.STORY.NOT_A_STATE: key is not a §9.1 state
+FAIL objectives.OBJECTIVES.CLONE_INTRO: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.CLONE_BASIS_PASSED: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.CLONE_SUPERPOSITION_FAILED: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.CLONE_UNDERSTOOD: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.RELAY_UNLOCKED: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.RELAY_INTRO: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.RELAY_BELL_CREATED: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.RELAY_SEND_FAILED: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.RELAY_UNDERSTOOD: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.ROOFTOP_UNLOCKED: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.LINK_REPAIRED: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.TELEPORT_DRY_RUN: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.TELEPORT_DRY_RUN_PASSED: state the player sees has no objective {number, text}
+FAIL objectives.OBJECTIVES.TELEPORT_COMMITTED: state the player sees has no objective {number, text}
+FAIL objectives.HINTS.short: must have exactly 3 hints, has 2
+FAIL objectives.HINTS.disordered[0]: hint 1 must be kind "inspect", is "operation"
+FAIL objectives.HINTS.disordered[2]: hint 3 must be kind "operation", is "inspect"
+FAIL objectives.HINTS: no hint ladder covers state FREE_ROAM_ALLEY
+FAIL objectives.HINTS: no hint ladder covers state CLONE_BASIS_PASSED
+FAIL objectives.HINTS: no hint ladder covers state CLONE_SUPERPOSITION_FAILED
+FAIL objectives.HINTS: no hint ladder covers state CLONE_UNDERSTOOD
+FAIL objectives.HINTS: no hint ladder covers state RELAY_UNLOCKED
+FAIL objectives.HINTS: no hint ladder covers state RELAY_BELL_CREATED
+FAIL objectives.HINTS: no hint ladder covers state RELAY_SEND_FAILED
+FAIL objectives.HINTS: no hint ladder covers state RELAY_UNDERSTOOD
+FAIL objectives.HINTS: no hint ladder covers state ROOFTOP_UNLOCKED
+FAIL objectives.HINTS: no hint ladder covers state LINK_REPAIRED
+FAIL objectives.HINTS: no hint ladder covers state TELEPORT_DRY_RUN
+FAIL objectives.HINTS: no hint ladder covers state TELEPORT_DRY_RUN_PASSED
+FAIL teachback.TEACHBACK: must hold the 3 §4.5 questions, has 1
+FAIL story.MOMENTS.bad[0].text: swapped correction rule (§7.1: X iff m1=1, Z iff m0=1): "Apply X if m0 = 1."
+FAIL story.MOMENTS.bad[1].text: material teleportation (§2.4): "We teleport Rin to the vault."
+FAIL story.MOMENTS.bad[2].text: an independent copy of an unknown state (§2.4): "So you still have it."
+FAIL story.MOMENTS.bad[3].text: certified/physical quantum randomness from a simulator (§2.4, §7.5): "Certified quantum randomness from the simulator."
+FAIL story.MOMENTS.bad[4].text: entanglement transmits the message (§2.4): "Entanglement delivers the message instantly."
+FAIL story.STORY.OPENING[2].text: faster-than-light signalling (§2.4): "The entangled pair sends the secret faster than light."
+FAIL story.STORY.OPENING[2].text: entanglement transmits the message (§2.4): "The entangled pair sends the secret faster than light."
+FAIL teachback.TEACHBACK[0].answer: no-cloning stretched to storage/authentication/classical copying (§2.4): "No-cloning prevents storing classical data."
+FAIL story.STORY.ENDING[2]: claims src §4.4 but its text is not in the vision verbatim: "This line was never in the vision."
+RED: 43 failure(s)
+exit=1
