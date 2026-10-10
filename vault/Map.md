@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **50 notes** over 10 folders.
+Measured 2026-10-10: **51 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -81,6 +81,7 @@ Folder README: [[Reports/README]]
 - [[Reports/bridge-rewire|The bridge on the hardened engine (local runner)]]
 - [[Reports/contract-conformance|Quantum bridge results vs the platform's ExperimentResult validator]]
 - [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
+- [[Reports/engine-bridge-review|Engine + bridge adversarial review: the physics is true, but two seams stop the game]]
 - [[Reports/ionq-sim-rehearsal|IonQ simulator rehearsal of the one selected-backend job (off Qollab)]]
 - [[Reports/pyodide-bridge|The quantum bridge running in Pyodide (local runner)]]
 - [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
