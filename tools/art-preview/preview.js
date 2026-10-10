@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { QUEST_STATE_LIST, WORLD_CHANGES } from '/echo/contracts.js';
 import { createRenderer } from '/gameplay/echo/scene/renderer.js';
 import { buildDistrict } from '/gameplay/echo/scene/district.js';
+import { createPlayer } from '/gameplay/echo/scene/player.js';
 import { createLighting } from '/echo/scene/lighting.js';
 import { createRain } from '/echo/scene/rain.js';
 import { createSkyline } from '/echo/scene/buildings.js';
@@ -75,6 +76,7 @@ const VIEWS = {
   relay: { position: [6.5, 2.6, -43], target: [-3, 1.2, -56] },
   passage: { position: [0, 1.7, -27.6], target: [0, 1.5, -40] },
   elevator: { position: [16, 1.7, -50], target: [9, 1.5, -50] },
+  follow: { position: [0.9, 2.3, -3.2], target: [0, 1.3, -14] }, // gameplay-like follow cam behind ?player
   rooftop: { position: [19, 2.4, -42], target: [36, 3, -58] },
   finalShot: district.finalShot,
 };
@@ -87,6 +89,8 @@ function setView(name) {
   camera.lookAt(new THREE.Vector3().fromArray(v.target));
 }
 setView(view);
+// ?player puts gameplay's Rin where the follow camera would keep her, to judge her silhouette in rain.
+if (params.has('player')) createPlayer(scene).group.position.set(0.3, 0, -7);
 
 const systems = [lighting, rain, skyline, effects];
 function setQuality(q) { systems.forEach((s) => s.setQuality(q)); $('q').value = q; }
