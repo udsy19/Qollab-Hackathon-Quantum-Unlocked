@@ -19,7 +19,7 @@ import numpy as np
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector, partial_trace, state_fidelity
 
-from . import STATES, bloch_vector, prepare, target_state
+from . import STATES, bloch_vector, prepare, probability_table, target_state
 from .formats import experiment_result
 
 BRANCHES = ((0, 0), (0, 1), (1, 0), (1, 1))  # (m0, m1), the order the sampler walks
@@ -48,9 +48,17 @@ def _protocol(state_name):
 
 
 def _branch_probabilities(state):
-    # probabilities([0, 1]) indexes outcomes as q0 + 2*q1, i.e. m0 + 2*m1.
-    p = state.probabilities([0, 1])
-    return {f"m0={m0},m1={m1}": float(p[m0 + 2 * m1]) for m0, m1 in BRANCHES}
+    """Exact Bell-measurement branch table over (q0, q1), keyed with keyQubits [1, 0]: key "m1m0"."""
+    return probability_table(state, [0, 1])
+
+
+def _key(m0, m1):
+    return f"{m1}{m0}"  # keyQubits [1, 0]: q1 (m1) is the left character, q0 (m0) the right
+
+
+def _bloch(prefix, rho):
+    x, y, z = bloch_vector(rho)
+    return {f"{prefix}BlochX": x, f"{prefix}BlochY": y, f"{prefix}BlochZ": z}
 
 
 def _branch(state_name, m0, m1, apply_x, apply_z):
@@ -78,18 +86,18 @@ def _branch(state_name, m0, m1, apply_x, apply_z):
         "state": state,
         "branchProbability": probability,
         "fidelity": float(state_fidelity(bob, psi)),
-        "bobBlochVector": bloch_vector(bob),
+        "bob": bob,
         "sourceFidelityAfterMeasurement": float(state_fidelity(source_left, psi)),
     }
 
 
 def _sample(state_name, seed, rng):
     """One branch drawn from the exact Qiskit branch probabilities with Python's PRNG."""
-    probs = _branch_probabilities(Statevector.from_instruction(_protocol(state_name)))
+    probs, _ = _branch_probabilities(Statevector.from_instruction(_protocol(state_name)))
     u = (rng or random.Random(seed)).random()
     cumulative = 0.0
     for m0, m1 in BRANCHES:
-        cumulative += probs[f"m0={m0},m1={m1}"]
+        cumulative += probs[_key(m0, m1)]
         if u < cumulative:
             return probs, m0, m1
     return probs, BRANCHES[-1][0], BRANCHES[-1][1]  # u within rounding of 1.0
@@ -102,6 +110,14 @@ def _source_fact(m0, source_fidelity):
             "because it was already a known Z value; an unknown state would be destroyed by the readout.")
 
 
+BRANCH_KEY_QUBITS = [1, 0]
+
+
+def _sample_parameters(state_name, seed):
+    # The seed is an input when the caller fixed one; an unseeded draw has no parameter to report.
+    return {"state": state_name} if seed is None else {"state": state_name, "seed": int(seed)}
+
+
 SAMPLE_FACT = ("One sample, drawn by Python's pseudo-random generator from the exact Qiskit branch "
                "probabilities. One sample proves nothing about accuracy; the branch table does.")
 
@@ -112,14 +128,13 @@ def bell_measurement(state_name="plus", seed=None, rng=None):
     return experiment_result(
         experiment="teleportation",
         engine="exact_qiskit_local",
-        kind="bell_measurement_sample",
         circuit_description=f"prepare {STATES[state_name][1]} on q0; {PROTOCOL}; measure q0 -> m0, q1 -> m1",
         qubits=3,
-        parameters={"state": state_name},
+        parameters=_sample_parameters(state_name, seed),
         probabilities=probs,
+        key_qubits=BRANCH_KEY_QUBITS,
         measurement_bits={"m0": m0, "m1": m1},
         facts=[f"m0 = {m0} (source readout), m1 = {m1} (local Bell-half readout).", SAMPLE_FACT],
-        details={"shots": 1, "seed": seed},
     )
 
 
@@ -139,20 +154,20 @@ def teleport_branch(state_name, m0, m1, apply_x, apply_z):
     return experiment_result(
         experiment="teleportation",
         engine="exact_qiskit_local",
-        kind="branch_model",
         circuit_description=f"prepare {STATES[state_name][1]} on q0; {PROTOCOL}; project onto m0={m0}, m1={m1}; Bob applies {fix}",
         qubits=3,
         parameters={"state": state_name, "m0": m0, "m1": m1, "applyX": bool(apply_x), "applyZ": bool(apply_z)},
-        probabilities=_branch_probabilities(b["state"]),
+        probabilities=_branch_probabilities(b["state"])[0],
+        key_qubits=BRANCH_KEY_QUBITS,
         measurement_bits={"m0": m0, "m1": m1},
         fidelity=b["fidelity"],
         facts=facts,
-        details={
+        # Whether the choice follows the rule is not a quantum output: the UI compares the choice with
+        # the rule itself (vision §10.6 correctionsMatch); the fact above states the rule.
+        observables={
             "branchProbability": b["branchProbability"],
-            "expectedCorrections": rule,
-            "choiceFollowsRule": follows,
-            "receiverBlochVector": b["bobBlochVector"],
             "sourceFidelityAfterMeasurement": b["sourceFidelityAfterMeasurement"],
+            **_bloch("receiver", b["bob"]),
         },
     )
 
@@ -166,11 +181,11 @@ def live_commit(state_name, seed=None, rng=None):
     return experiment_result(
         experiment="teleportation",
         engine="exact_qiskit_local",
-        kind="live_commit",
         circuit_description=f"prepare token on q0; {PROTOCOL}; measure m0, m1; Bob applies X iff m1=1, Z iff m0=1",
         qubits=3,
-        parameters={"state": state_name},
+        parameters=_sample_parameters(state_name, seed),
         probabilities=probs,
+        key_qubits=BRANCH_KEY_QUBITS,
         measurement_bits={"m0": m0, "m1": m1},
         fidelity=b["fidelity"],
         facts=[f"Live bits m0 = {m0}, m1 = {m1} travelled over the classical link; the receiver applied "
@@ -178,12 +193,10 @@ def live_commit(state_name, seed=None, rng=None):
                f"Receiver fidelity with the token: {b['fidelity']:.6f}.",
                _source_fact(m0, b["sourceFidelityAfterMeasurement"]),
                SAMPLE_FACT],
-        details={
-            "shots": 1,
-            "seed": seed,
-            "appliedCorrections": rule,
+        observables={
             "branchProbability": b["branchProbability"],
             "sourceFidelityAfterMeasurement": b["sourceFidelityAfterMeasurement"],
+            **_bloch("receiver", b["bob"]),
         },
     )
 
@@ -199,7 +212,6 @@ def corrections_withheld(state_name):
     return experiment_result(
         experiment="teleportation",
         engine="exact_qiskit_local",
-        kind="corrections_withheld",
         circuit_description=f"prepare {STATES[state_name][1]} on q0; {PROTOCOL}; bits withheld from Bob",
         qubits=3,
         parameters={"state": state_name},
@@ -207,11 +219,8 @@ def corrections_withheld(state_name):
         facts=["Without the two classical bits, Bob's qubit is an even mix (I/2) whatever the source was.",
                f"Its overlap with the source state is {fid:.6f}, the same as a blind guess.",
                "The quantum half of the link carries no message on its own."],
-        details={
-            "receiverAverageState": {"re": np.real(bob.data), "im": np.imag(bob.data)},
-            "receiverBlochVector": bloch_vector(bob),
-            "receiverPurity": float(bob.purity().real),
-        },
+        # A one-qubit density matrix is fully fixed by its Bloch vector: (I + xX + yY + zZ) / 2.
+        observables={"receiverPurity": float(bob.purity().real), **_bloch("receiver", bob)},
     )
 
 
@@ -229,7 +238,6 @@ def verify_deferred(state_name="bloch_a", controlled_x=True, controlled_z=True):
     return experiment_result(
         experiment="teleportation",
         engine="exact_qiskit_local",
-        kind="deferred_measurement_verification",
         circuit_description=(f"prepare {STATES[state_name][1]} on q0; {PROTOCOL}"
                              + ("; CX(q1,q2)" if controlled_x else "") + ("; CZ(q0,q2)" if controlled_z else "")),
         qubits=3,
@@ -239,6 +247,5 @@ def verify_deferred(state_name="bloch_a", controlled_x=True, controlled_z=True):
                "corrections are replaced by equivalent controlled gates.",
                "This is not a physical teleportation link; in the story the corrections travel as two classical bits.",
                f"Bob's reduced state matches the source with fidelity {fid:.6f}."],
-        circuit_text=qc.draw(output="text"),
-        details={"receiverBlochVector": bloch_vector(bob)},
+        observables=_bloch("receiver", bob),
     )

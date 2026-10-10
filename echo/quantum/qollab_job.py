@@ -17,10 +17,15 @@ from numbers import Integral
 
 from qiskit import QuantumCircuit
 
+from .formats import experiment_result
+
 DEFAULT_SHOTS = 256
 NUM_QUBITS = 2
 # Explicit register mapping, written once: classical bit i holds the readout of QUBIT_OF_CLBIT[i].
 QUBIT_OF_CLBIT = (0, 1)
+# Count keys returned to the game read q1 then q0, left to right (Qiskit's order), declared as the
+# contract's keyQubits so the UI never has to know the convention.
+KEY_QUBITS = [1, 0]
 
 _job_submitted = False
 
@@ -87,16 +92,15 @@ def interpret_counts(raw_counts, backend_name, shots_requested=None):
     if not isinstance(raw_counts, dict) or not raw_counts:
         raise ValueError(f"expected a non-empty dict of counts, got {raw_counts!r}")
 
+    # Keys are rewritten so character i (left to right) is the readout of KEY_QUBITS[i].
     counts = {}
-    qubit_ones = [0] * NUM_QUBITS
     for key, count in raw_counts.items():
         if isinstance(count, bool) or not isinstance(count, Integral) or count < 0:
             raise ValueError(f"count for {key!r} is {count!r}, not a non-negative integer")
         clbits = _clbit_values(key)
-        canonical = "".join(str(clbits[c]) for c in reversed(range(NUM_QUBITS)))
+        qubit_bit = {QUBIT_OF_CLBIT[c]: bit for c, bit in enumerate(clbits)}
+        canonical = "".join(str(qubit_bit[q]) for q in KEY_QUBITS)
         counts[canonical] = counts.get(canonical, 0) + int(count)
-        for clbit, bit in enumerate(clbits):
-            qubit_ones[QUBIT_OF_CLBIT[clbit]] += bit * int(count)
 
     shots = sum(counts.values())
     if shots == 0:
@@ -122,22 +126,18 @@ def interpret_counts(raw_counts, backend_name, shots_requested=None):
         # noisy path it rounds probability x shots, so the total can drift from the request.
         facts.append(f"The backend returned {shots} counts for {shots_requested} requested shots.")
 
-    return {
-        "experiment": "bell_verification",
-        "engine": "qollab_selected_backend",
-        "circuitDescription": "Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
-        "qubits": NUM_QUBITS,
-        "parameters": {"shots": shots_requested if shots_requested is not None else shots,
-                       "backend": str(backend_name)},
-        "counts": counts,
-        "summary": {
-            "shots": shots,
-            "correlated": correlated,
-            "correlatedFraction": fraction,
-            "qubitOnes": {f"q{q}": n for q, n in enumerate(qubit_ones)},
-        },
-        "facts": facts,
-    }
+    # The sampled tallies stay in `counts` and `facts`: `observables` is for exact numbers.
+    return experiment_result(
+        experiment="bell_verification",
+        engine="qollab_selected_backend",
+        circuit_description="Bell pair: H on q0, CNOT q0->q1, measure q0->c0 and q1->c1",
+        qubits=NUM_QUBITS,
+        parameters={"shots": shots_requested if shots_requested is not None else shots,
+                    "backend": str(backend_name)},
+        counts=counts,
+        key_qubits=KEY_QUBITS,
+        facts=facts,
+    )
 
 
 def _backend_label(backend):

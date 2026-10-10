@@ -1,0 +1,741 @@
+REJECT cloning.run_calibration('zero')
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT cloning.run_calibration('one')
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT cloning.run_calibration('plus')
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT cloning.run_calibration('minus')
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT cloning.run_calibration('phase')
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT cloning.run_calibration('bloch_a')
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT cloning.run_calibration('bloch_b')
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT entanglement.bell_signalling('I')
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT entanglement.bell_signalling('X')
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT entanglement.bell_signalling('Z')
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('zero', seed=7)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('zero')
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 0, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 0, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 0, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 0, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 0, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 0, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 0, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 0, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 1, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 1, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 1, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 1, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 1, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 1, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 1, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('zero', 1, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.verify_deferred('zero', False, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('zero', False, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('zero', True, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('zero', True, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.corrections_withheld('zero')
+         unknown field "kind"
+         unknown field "details"
+REJECT teleportation.live_commit('zero', seed=11)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('one', seed=7)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('one')
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 0, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 0, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 0, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 0, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 0, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 0, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 0, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 0, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 1, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 1, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 1, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 1, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 1, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 1, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 1, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('one', 1, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.verify_deferred('one', False, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('one', False, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('one', True, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('one', True, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.corrections_withheld('one')
+         unknown field "kind"
+         unknown field "details"
+REJECT teleportation.live_commit('one', seed=11)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('plus', seed=7)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('plus')
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 0, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 0, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 0, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 0, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 0, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 0, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 0, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 0, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 1, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 1, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 1, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 1, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 1, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 1, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 1, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('plus', 1, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.verify_deferred('plus', False, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('plus', False, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('plus', True, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('plus', True, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.corrections_withheld('plus')
+         unknown field "kind"
+         unknown field "details"
+REJECT teleportation.live_commit('plus', seed=11)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('minus', seed=7)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('minus')
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 0, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 0, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 0, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 0, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 0, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 0, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 0, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 0, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 1, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 1, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 1, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 1, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 1, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 1, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 1, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('minus', 1, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.verify_deferred('minus', False, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('minus', False, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('minus', True, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('minus', True, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.corrections_withheld('minus')
+         unknown field "kind"
+         unknown field "details"
+REJECT teleportation.live_commit('minus', seed=11)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('phase', seed=7)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('phase')
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 0, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 0, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 0, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 0, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 0, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 0, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 0, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 0, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 1, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 1, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 1, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 1, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 1, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 1, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 1, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('phase', 1, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.verify_deferred('phase', False, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('phase', False, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('phase', True, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('phase', True, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.corrections_withheld('phase')
+         unknown field "kind"
+         unknown field "details"
+REJECT teleportation.live_commit('phase', seed=11)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('bloch_a', seed=7)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('bloch_a')
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 0, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 0, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 0, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 0, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 0, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 0, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 0, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 0, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 1, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 1, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 1, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 1, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 1, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 1, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 1, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_a', 1, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.verify_deferred('bloch_a', False, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('bloch_a', False, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('bloch_a', True, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('bloch_a', True, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.corrections_withheld('bloch_a')
+         unknown field "kind"
+         unknown field "details"
+REJECT teleportation.live_commit('bloch_a', seed=11)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('bloch_b', seed=7)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.bell_measurement('bloch_b')
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 0, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 0, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 0, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 0, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 0, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 0, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 0, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 0, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 1, 0, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 1, 0, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 1, 0, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 1, 0, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 1, 1, False, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 1, 1, False, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 1, 1, True, False)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.teleport_branch('bloch_b', 1, 1, True, True)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT teleportation.verify_deferred('bloch_b', False, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('bloch_b', False, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('bloch_b', True, False)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.verify_deferred('bloch_b', True, True)
+         unknown field "kind"
+         unknown field "circuitText"
+         unknown field "details"
+REJECT teleportation.corrections_withheld('bloch_b')
+         unknown field "kind"
+         unknown field "details"
+REJECT teleportation.live_commit('bloch_b', seed=11)
+         unknown field "kind"
+         unknown field "details"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=256)
+         unknown field "summary"
+         experiment must be one of cloning|bell_signalling|teleportation, got string "bell_verification"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT qollab_job.interpret_counts(FAKE_COUNTS, shots_requested=300)
+         unknown field "summary"
+         experiment must be one of cloning|bell_signalling|teleportation, got string "bell_verification"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+REJECT qollab_job.run_bell_verification_once(FakeSelectedBackend())
+         unknown field "summary"
+         experiment must be one of cloning|bell_signalling|teleportation, got string "bell_verification"
+         keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing
+
+| function | calls | rejected | distinct errors (count) |
+|---|---|---|---|
+| `cloning.run_calibration` | 7 | 7 | unknown field "kind" (7)<br>unknown field "circuitText" (7)<br>unknown field "details" (7)<br>keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing (7) |
+| `entanglement.bell_signalling` | 3 | 3 | unknown field "kind" (3)<br>unknown field "circuitText" (3)<br>unknown field "details" (3)<br>keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing (3) |
+| `teleportation.bell_measurement` | 14 | 14 | unknown field "kind" (14)<br>unknown field "details" (14)<br>keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing (14) |
+| `teleportation.teleport_branch` | 112 | 112 | unknown field "kind" (112)<br>unknown field "details" (112)<br>keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing (112) |
+| `teleportation.verify_deferred` | 28 | 28 | unknown field "kind" (28)<br>unknown field "circuitText" (28)<br>unknown field "details" (28) |
+| `teleportation.corrections_withheld` | 7 | 7 | unknown field "kind" (7)<br>unknown field "details" (7) |
+| `teleportation.live_commit` | 7 | 7 | unknown field "kind" (7)<br>unknown field "details" (7)<br>keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing (7) |
+| `qollab_job.interpret_counts` | 2 | 2 | unknown field "summary" (2)<br>experiment must be one of cloning|bell_signalling|teleportation, got string "bell_verification" (2)<br>keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing (2) |
+| `qollab_job.run_bell_verification_once` | 1 | 1 | unknown field "summary" (1)<br>experiment must be one of cloning|bell_signalling|teleportation, got string "bell_verification" (1)<br>keyQubits must list distinct qubit indices in [0, qubits) naming each key character left to right, got nothing (1) |
+
+181 calls graded, 181 rejected

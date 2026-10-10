@@ -4,8 +4,8 @@ Imported from JS as `quantum.cloning`, `quantum.entanglement`, `quantum.teleport
 module names). Every public function returns a plain dict built by `formats.experiment_result`.
 
 Qiskit is little-endian: qubit 0 is the RIGHTMOST character of a bitstring label and the least
-significant bit of a statevector index. No code here parses raw bitstrings; outcome keys are built
-from explicit register names ("m0=1,m1=0", "sender=0,receiver=1").
+significant bit of a statevector index. Outcome tables use Qiskit's own keys and always travel with
+`keyQubits` (platform contract), which names the qubit behind each key character, left to right.
 """
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Pauli, Statevector
@@ -41,3 +41,13 @@ def target_state(state_name):
 def bloch_vector(rho):
     """[<X>, <Y>, <Z>] of a one-qubit DensityMatrix; [0,0,0] means maximally mixed."""
     return [float(rho.expectation_value(Pauli(p)).real) for p in "XYZ"]
+
+
+def probability_table(state, qargs):
+    """Exact outcome probabilities over `qargs`, EVERY outcome listed (zeros included, so the UI can
+    show "never 01"). Returns (table, keyQubits). `Statevector.probabilities(qargs)` indexes outcome
+    i with qargs[0] as its least significant bit, so the key, written most significant first, reads
+    qargs reversed."""
+    probs = state.probabilities(list(qargs))
+    n = len(qargs)
+    return {format(i, f"0{n}b"): float(p) for i, p in enumerate(probs)}, list(reversed(qargs))

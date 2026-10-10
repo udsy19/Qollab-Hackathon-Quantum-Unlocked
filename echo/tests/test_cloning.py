@@ -44,31 +44,41 @@ def fid(psi, rho):
     return float(np.real(np.conj(psi) @ rho @ psi))
 
 
+def verdict(r):
+    """The copy verdict as the player reads it: from the facts, the only place the contract carries it."""
+    text = " ".join(r["facts"])
+    copied, not_copied = "Two matching basis values" in text, "Not two independent copies" in text
+    assert copied != not_copied, f"exactly one verdict expected: {r['facts']}"
+    return copied
+
+
 @pytest.mark.parametrize("name", list(INPUTS))
 def test_clone_matches_hand_derivation(name):
     psi = INPUTS[name]
     joint, rho_s, rho_c = hand_clone(psi)
     r = cloning.run_calibration(name)
-    d = r["details"]
+    d = r["observables"]
     assert r["experiment"] == "cloning" and r["engine"] == "exact_qiskit_local" and r["qubits"] == 2
-    assert d["sourcePurity"] == pytest.approx(purity(rho_s), abs=1e-9)
-    assert d["copyPurity"] == pytest.approx(purity(rho_c), abs=1e-9)
-    assert d["sourceFidelity"] == pytest.approx(fid(psi, rho_s), abs=1e-9)
-    assert d["copyFidelity"] == pytest.approx(fid(psi, rho_c), abs=1e-9)
-    # Exact Z-basis probabilities with explicit labels (no raw Qiskit bitstrings).
+    assert d["purityQ0"] == pytest.approx(purity(rho_s), abs=1e-9)  # q0 = source
+    assert d["purityQ1"] == pytest.approx(purity(rho_c), abs=1e-9)  # q1 = copy
+    assert d["fidelityQ0WithInput"] == pytest.approx(fid(psi, rho_s), abs=1e-9)
+    assert d["fidelityQ1WithInput"] == pytest.approx(fid(psi, rho_c), abs=1e-9)
+    # Exact Z-basis probabilities, every outcome listed; keyQubits [1, 0] says key = (copy bit, source bit).
+    assert r["keyQubits"] == [1, 0]
+    assert set(r["probabilities"]) == {"00", "01", "10", "11"}
     for (s, c), amp in joint.items():
-        assert r["probabilities"][f"source={s},copy={c}"] == pytest.approx(abs(amp) ** 2, abs=1e-9)
+        assert r["probabilities"][f"{c}{s}"] == pytest.approx(abs(amp) ** 2, abs=1e-9)
     assert "counts" not in r
     product = np.kron(psi, psi)  # psi ⊗ psi, ordering irrelevant for identical factors
     hand_joint = np.array([joint[(0, 0)], joint[(0, 1)], joint[(1, 0)], joint[(1, 1)]])  # index = 2*s + c
     overlap = abs(np.vdot(product, hand_joint)) ** 2
     assert d["jointFidelityWithTwoCopies"] == pytest.approx(overlap, abs=1e-9)
-    assert d["isTwoIndependentCopies"] is bool(overlap > 1 - 1e-9)
+    assert verdict(r) is bool(overlap > 1 - 1e-9)
 
 
 def test_basis_states_copy_and_superpositions_do_not():
     # The deceptive beginning (§7.2): only the two Z-basis states come out as two copies.
-    copied = {n for n in INPUTS if cloning.run_calibration(n)["details"]["isTwoIndependentCopies"]}
+    copied = {n for n in INPUTS if verdict(cloning.run_calibration(n))}
     assert copied == {"zero", "one"}
 
 
@@ -80,34 +90,56 @@ def test_copy_verdict_is_derived_from_the_state_not_its_name(monkeypatch):
     monkeypatch.setitem(quantum.STATES, "test_basis", ((("x",), ("z",)), "test"))  # -|1>: a basis state
     monkeypatch.setitem(quantum.STATES, "test_zero_alias", ((("ry", 0.0),), "test"))  # |0>
     monkeypatch.setitem(quantum.STATES, "test_tilted", ((("ry", 0.3),), "test"))  # not a basis state
-    assert cloning.run_calibration("test_basis")["details"]["isTwoIndependentCopies"] is True
-    assert cloning.run_calibration("test_zero_alias")["details"]["isTwoIndependentCopies"] is True
-    assert cloning.run_calibration("test_tilted")["details"]["isTwoIndependentCopies"] is False
+    assert verdict(cloning.run_calibration("test_basis")) is True
+    assert verdict(cloning.run_calibration("test_zero_alias")) is True
+    assert verdict(cloning.run_calibration("test_tilted")) is False
 
 
 @pytest.mark.parametrize("name", ["plus", "minus", "phase"])
 def test_equal_superpositions_give_maximally_mixed_outputs(name):
-    d = cloning.run_calibration(name)["details"]
-    assert d["sourcePurity"] == pytest.approx(0.5, abs=1e-9)
-    assert d["copyPurity"] == pytest.approx(0.5, abs=1e-9)
-    assert d["isEntangled"] is True
+    r = cloning.run_calibration(name)
+    d = r["observables"]
+    assert d["purityQ0"] == pytest.approx(0.5, abs=1e-9)
+    assert d["purityQ1"] == pytest.approx(0.5, abs=1e-9)
+    assert "entangled with each other" in " ".join(r["facts"])
     # plus/minus/phase: overlap with psi⊗psi is |a|^4+|b|^4 + 2Re(...)... hand value for |+>: |<++|Φ+>|^2 = 1/2
     if name == "plus":
         assert d["jointFidelityWithTwoCopies"] == pytest.approx(0.5, abs=1e-9)
 
 
-def test_plus_amplitudes_are_bell_pair():
-    # (|00>+|11>)/√2, amplitudes as [re, im] pairs keyed by explicit register names.
-    amps = cloning.run_calibration("plus")["details"]["amplitudes"]
-    assert amps["source=0,copy=0"] == pytest.approx([R, 0], abs=1e-9)
-    assert amps["source=1,copy=1"] == pytest.approx([R, 0], abs=1e-9)
-    assert amps["source=0,copy=1"] == pytest.approx([0, 0], abs=1e-9)
-    assert amps["source=1,copy=0"] == pytest.approx([0, 0], abs=1e-9)
+def test_plus_output_is_the_bell_pair_distribution():
+    # (|00>+|11>)/√2: only matching outcomes, the zeros listed explicitly so the UI can show "never 01".
+    assert cloning.run_calibration("plus")["probabilities"] == pytest.approx(
+        {"00": 0.5, "01": 0.0, "10": 0.0, "11": 0.5}, abs=1e-9)
 
 
-def test_phase_amplitudes_keep_the_i():
-    amps = cloning.run_calibration("phase")["details"]["amplitudes"]
-    assert amps["source=1,copy=1"] == pytest.approx([0, R], abs=1e-9)
+def test_relative_phase_reaches_the_result():
+    # plus, minus and phase have identical probabilities and purities; only the relative phase differs.
+    # Hand: |<ψ⊗ψ | a|00> + b|11>>|² = |conj(a)²·a + conj(b)²·b|²: plus 1/2, minus 0, phase 1/4.
+    # A lost "i" (phase prepared as plus) would read 0.5 here.
+    for name, expected in (("plus", 0.5), ("minus", 0.0), ("phase", 0.25)):
+        a, b = INPUTS[name]
+        hand = abs(np.conj(a) ** 2 * a + np.conj(b) ** 2 * b) ** 2
+        assert hand == pytest.approx(expected, abs=1e-12)
+        got = cloning.run_calibration(name)["observables"]["jointFidelityWithTwoCopies"]
+        assert got == pytest.approx(expected, abs=1e-9)
+
+
+def test_source_and_copy_are_labelled_by_qubit(monkeypatch):
+    # On the real circuit the two outputs are identical (a|00>+b|11> is symmetric under swapping the
+    # qubits), so no output can tell source from copy: tracing out the wrong qubit is invisible there.
+    # A positive control breaks the symmetry: with the duplicator CNOT disabled the joint state is
+    # psi (q0) ⊗ |0> (q1), so the source still holds psi and the blank copy does not.
+    class NoCopyCircuit(cloning.QuantumCircuit):
+        def cx(self, *args, **kwargs):
+            return None
+
+    monkeypatch.setattr(cloning, "QuantumCircuit", NoCopyCircuit)
+    psi = INPUTS["bloch_a"]
+    d = cloning.run_calibration("bloch_a")["observables"]
+    assert d["fidelityQ0WithInput"] == pytest.approx(1.0, abs=1e-9)
+    assert d["fidelityQ1WithInput"] == pytest.approx(abs(psi[0]) ** 2, abs=1e-9)  # <psi|0><0|psi>
+    assert d["fidelityQ1WithInput"] < 0.9
 
 
 def test_unknown_state_rejected():

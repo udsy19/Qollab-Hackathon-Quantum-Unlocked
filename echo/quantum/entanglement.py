@@ -33,11 +33,9 @@ def bell_signalling(sender_gate="I"):
     state = Statevector.from_instruction(qc)
 
     receiver = partial_trace(state, [0])  # trace OUT the sender, keep the receiver
+    # The probability table is the RECEIVER-ONLY view (keyQubits [1]), the one the puzzle shows. The
+    # joint record is invisible at the receiver, so it travels only as the agreement observables.
     marginal = {"0": float(receiver.data[0, 0].real), "1": float(receiver.data[1, 1].real)}
-
-    probs = {}
-    for index, p in enumerate(state.probabilities()):
-        probs[f"sender={index & 1},receiver={(index >> 1) & 1}"] = p
 
     hh = QuantumCircuit(2)
     hh.h([0, 1])
@@ -50,20 +48,21 @@ def bell_signalling(sender_gate="I"):
         f"Comparing both logs afterwards: Z-basis bits agree with probability {z_agree:.6f}, X-basis bits with probability {x_agree:.6f}.",
         "That comparison needs a classical channel; it is the amber link, not the entanglement, that carries information.",
     ]
+    bx, by, bz = bloch_vector(receiver)
     return experiment_result(
         experiment="bell_signalling",
         engine="exact_qiskit_local",
-        kind="receiver_marginal",
         circuit_description=f"H(q0); CX(q0 -> q1) Bell pair; sender applies {sender_gate} on q0 (sender), q1 = receiver",
         qubits=2,
         parameters={"senderGate": sender_gate},
-        probabilities=probs,
+        probabilities=marginal,
+        key_qubits=[1],
         facts=facts,
-        circuit_text=qc.draw(output="text"),
-        details={
-            "receiverMarginal": marginal,
+        observables={
             "receiverPurity": float(receiver.purity().real),
-            "receiverBlochVector": bloch_vector(receiver),
+            "receiverBlochX": bx,
+            "receiverBlochY": by,
+            "receiverBlochZ": bz,
             "zBasisAgreement": z_agree,
             "xBasisAgreement": x_agree,
         },

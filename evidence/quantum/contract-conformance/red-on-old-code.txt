@@ -1,0 +1,4 @@
+FAILED ../../../../../../../tmp/cc-conf/old/echo/tests/test_contract_conformance.py::test_no_result_carries_a_retired_field[details]
+FAILED ../../../../../../../tmp/cc-conf/old/echo/tests/test_contract_conformance.py::test_no_result_carries_a_retired_field[circuitText]
+FAILED ../../../../../../../tmp/cc-conf/old/echo/tests/test_contract_conformance.py::test_no_result_carries_a_retired_field[summary]
+6 failed in 0.41s

@@ -30,30 +30,33 @@ def test_receiver_alone_sees_maximally_mixed_state(gate):
     rho = hand_receiver_rho(hand_joint(gate))
     assert np.allclose(rho, I2 / 2)  # the hand derivation itself says I/2
     r = entanglement.bell_signalling(gate)
-    d = r["details"]
+    d = r["observables"]
     assert r["experiment"] == "bell_signalling" and r["engine"] == "exact_qiskit_local"
-    assert d["receiverMarginal"] == {"0": pytest.approx(0.5, abs=1e-9), "1": pytest.approx(0.5, abs=1e-9)}
+    # The probability table is the receiver-only view: keyQubits [1] = the receiver's qubit alone.
+    assert r["keyQubits"] == [1]
+    assert r["probabilities"] == {"0": pytest.approx(rho[0, 0].real, abs=1e-9), "1": pytest.approx(rho[1, 1].real, abs=1e-9)}
     assert d["receiverPurity"] == pytest.approx(0.5, abs=1e-9)
-    assert d["receiverBlochVector"] == pytest.approx([0, 0, 0], abs=1e-9)
+    assert [d["receiverBlochX"], d["receiverBlochY"], d["receiverBlochZ"]] == pytest.approx([0, 0, 0], abs=1e-9)
 
 
 @pytest.mark.parametrize("gate", ["I", "X", "Z"])
-def test_joint_z_probabilities_match_hand(gate):
+def test_joint_z_record_matches_hand(gate):
+    # The joint record is not in the receiver's table; it reaches the result only as the agreement a
+    # classical comparison of both logs would find.
     psi = hand_joint(gate)
     r = entanglement.bell_signalling(gate)
-    for s in (0, 1):
-        for rb in (0, 1):
-            assert r["probabilities"][f"sender={s},receiver={rb}"] == pytest.approx(abs(psi[s, rb]) ** 2, abs=1e-9)
+    agree = abs(psi[0, 0]) ** 2 + abs(psi[1, 1]) ** 2
+    assert r["observables"]["zBasisAgreement"] == pytest.approx(agree, abs=1e-9)
     assert "counts" not in r
 
 
 def test_i_versus_x_differs_only_in_the_joint_record():
     i, x = entanglement.bell_signalling("I"), entanglement.bell_signalling("X")
     # Receiver-only view identical...
-    assert i["details"]["receiverMarginal"] == x["details"]["receiverMarginal"]
+    assert i["probabilities"] == x["probabilities"]
     # ...but comparing both logs: I gives always-equal Z bits, X always-different (hand: Φ+ vs Ψ+).
-    assert i["details"]["zBasisAgreement"] == pytest.approx(1.0, abs=1e-9)
-    assert x["details"]["zBasisAgreement"] == pytest.approx(0.0, abs=1e-9)
+    assert i["observables"]["zBasisAgreement"] == pytest.approx(1.0, abs=1e-9)
+    assert x["observables"]["zBasisAgreement"] == pytest.approx(0.0, abs=1e-9)
 
 
 def test_z_shows_up_only_in_x_basis_comparison():
@@ -62,10 +65,26 @@ def test_z_shows_up_only_in_x_basis_comparison():
     psi_x = H @ psi @ H.T  # H on both qubits
     agree = abs(psi_x[0, 0]) ** 2 + abs(psi_x[1, 1]) ** 2
     assert agree == pytest.approx(0.0, abs=1e-12)
-    z = entanglement.bell_signalling("Z")["details"]
+    z = entanglement.bell_signalling("Z")["observables"]
     assert z["zBasisAgreement"] == pytest.approx(1.0, abs=1e-9)
     assert z["xBasisAgreement"] == pytest.approx(agree, abs=1e-9)
-    assert entanglement.bell_signalling("I")["details"]["xBasisAgreement"] == pytest.approx(1.0, abs=1e-9)
+    assert entanglement.bell_signalling("I")["observables"]["xBasisAgreement"] == pytest.approx(1.0, abs=1e-9)
+
+
+def test_receiver_is_q1_and_the_gate_acts_on_q0(monkeypatch):
+    # On the Bell pair the two halves are indistinguishable: both marginals are I/2, and X on either
+    # half gives the same state ((X⊗I)Φ+ = (I⊗X)Φ+). A positive control breaks the symmetry: with the
+    # entangling CNOT disabled the state is |+> (q0, sender) ⊗ |0> (q1, receiver). Hand: sender X leaves
+    # |+> unchanged and the receiver reads 0 with certainty; X on the receiver, or the sender's marginal,
+    # would read 1/2 or 1.
+    class NoEntangler(entanglement.QuantumCircuit):
+        def cx(self, *args, **kwargs):
+            return None
+
+    monkeypatch.setattr(entanglement, "QuantumCircuit", NoEntangler)
+    r = entanglement.bell_signalling("X")
+    assert r["probabilities"] == {"0": pytest.approx(1.0, abs=1e-9), "1": pytest.approx(0.0, abs=1e-9)}
+    assert r["observables"]["receiverBlochZ"] == pytest.approx(1.0, abs=1e-9)
 
 
 def test_bad_gate_rejected():

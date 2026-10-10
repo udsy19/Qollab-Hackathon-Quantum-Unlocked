@@ -16,6 +16,7 @@ R = 1 / math.sqrt(2)
 I2 = np.eye(2, dtype=complex)
 X = np.array([[0, 1], [1, 0]], dtype=complex)
 Z = np.array([[1, 0], [0, -1]], dtype=complex)
+Y = np.array([[0, -1j], [1j, 0]], dtype=complex)
 H = np.array([[1, 1], [1, -1]], dtype=complex) * R
 
 
@@ -114,19 +115,31 @@ def test_branch_model_fidelity_is_the_true_value(name, m0, m1, ax, az):
     expected = hand_fidelity(psi, m0, m1, ax, az)
     follows_rule = (ax == (m1 == 1)) and (az == (m0 == 1))
     assert r["experiment"] == "teleportation" and r["engine"] == "exact_qiskit_local"
-    assert r["kind"] == "branch_model"
+    assert r["parameters"] == {"state": name, "m0": m0, "m1": m1, "applyX": ax, "applyZ": az}
     assert r["measurementBits"] == {"m0": m0, "m1": m1}
     assert r["fidelity"] == pytest.approx(expected, abs=1e-9)
     if follows_rule:
         assert r["fidelity"] >= 0.999999
     elif name in GENERIC:
         assert r["fidelity"] < 0.99  # a wrong choice is visibly wrong on a generic state
-    assert r["details"]["branchProbability"] == pytest.approx(0.25, abs=1e-9)
-    assert r["details"]["choiceFollowsRule"] is follows_rule
+    obs = r["observables"]
+    assert obs["branchProbability"] == pytest.approx(0.25, abs=1e-9)
+    # The rule the player is told comes from (m0, m1) by hand: X iff m1 = 1, Z iff m0 = 1.
+    rule = f"X {'ON' if m1 else 'OFF'}, Z {'ON' if m0 else 'OFF'}"
+    assert f"the rule asks for {rule}." in r["facts"][0]
+    hidden = "the mistake does not show here" in " ".join(r["facts"])
+    assert hidden is bool(not follows_rule and expected > 0.999999)
+    # Bob's corrected state, as a Bloch vector, against the hand-corrected vector.
+    _, bob = hand_branch(psi, m0, m1)
+    bob = (Z if az else I2) @ (X if ax else I2) @ bob
+    rho = np.outer(bob, bob.conj())
+    hand_bloch = [float(np.real(np.trace(rho @ P))) for P in (X, Y, Z)]
+    assert [obs["receiverBlochX"], obs["receiverBlochY"], obs["receiverBlochZ"]] == pytest.approx(hand_bloch, abs=1e-9)
     # The original is consumed: q0 is left in |m0>, so it overlaps psi only by |<m0|psi>|^2.
-    assert r["details"]["sourceFidelityAfterMeasurement"] == pytest.approx(abs(psi[m0]) ** 2, abs=1e-9)
-    for b0, b1 in BRANCHES:
-        assert r["probabilities"][f"m0={b0},m1={b1}"] == pytest.approx(0.25, abs=1e-9)
+    assert obs["sourceFidelityAfterMeasurement"] == pytest.approx(abs(psi[m0]) ** 2, abs=1e-9)
+    # Branch table keyed with keyQubits [1, 0]: key "m1 m0".
+    assert r["keyQubits"] == [1, 0]
+    assert r["probabilities"] == {f"{b1}{b0}": pytest.approx(0.25, abs=1e-9) for b0, b1 in BRANCHES}
 
 
 @pytest.mark.parametrize("name", GENERIC + ["plus", "phase"])
@@ -135,14 +148,15 @@ def test_no_second_copy_survives(name):
     for m0, m1 in BRANCHES:
         r = teleportation.teleport_branch(name, m0, m1, m1 == 1, m0 == 1)
         assert r["fidelity"] >= 0.999999
-        assert r["details"]["sourceFidelityAfterMeasurement"] < 0.999
+        assert r["observables"]["sourceFidelityAfterMeasurement"] < 0.999
 
 
 def test_wrong_choice_on_basis_state_is_honestly_harmless():
     # |0> is a Z eigenstate: a wrongly applied Z changes nothing physical. The engine must report 1, not fake a failure.
     r = teleportation.teleport_branch("zero", 0, 0, False, True)
     assert r["fidelity"] == pytest.approx(1.0, abs=1e-9)
-    assert r["details"]["choiceFollowsRule"] is False
+    assert "the rule asks for X OFF, Z OFF." in r["facts"][0]  # the player chose Z: not the rule
+    assert "the mistake does not show here" in " ".join(r["facts"])
 
 
 @pytest.mark.parametrize("name", list(STATES))
@@ -151,18 +165,18 @@ def test_corrections_withheld_bob_sees_i_over_2(name):
     rho = sum(0.25 * np.outer(b, b.conj()) for b in (hand_branch(STATES[name], *br)[1] for br in BRANCHES))
     assert np.allclose(rho, I2 / 2)
     r = teleportation.corrections_withheld(name)
-    d = r["details"]
-    assert r["kind"] == "corrections_withheld"
-    assert np.allclose(np.array(d["receiverAverageState"]["re"]), I2.real / 2, atol=1e-9)
-    assert np.allclose(np.array(d["receiverAverageState"]["im"]), 0, atol=1e-9)
-    assert d["receiverBlochVector"] == pytest.approx([0, 0, 0], abs=1e-9)
+    d = r["observables"]
+    assert r["parameters"] == {"state": name} and "probabilities" not in r
+    # A one-qubit state is fixed by its Bloch vector, so (0, 0, 0) with purity 1/2 IS I/2.
+    assert [d["receiverBlochX"], d["receiverBlochY"], d["receiverBlochZ"]] == pytest.approx([0, 0, 0], abs=1e-9)
+    assert d["receiverPurity"] == pytest.approx(0.5, abs=1e-9)
     assert r["fidelity"] == pytest.approx(0.5, abs=1e-9)  # <psi| I/2 |psi> = 1/2 for any pure psi
 
 
 @pytest.mark.parametrize("name", list(STATES))
 def test_deferred_measurement_verification(name):
     r = teleportation.verify_deferred(name)
-    assert r["kind"] == "deferred_measurement_verification"
+    assert r["parameters"] == {"state": name, "controlledX": True, "controlledZ": True}
     assert r["fidelity"] >= 0.999999
     text = " ".join(r["facts"]).lower()
     assert "mathematical verification" in text and "not a physical" in text
@@ -191,12 +205,14 @@ def test_live_commit_is_one_seeded_sample_with_rule_corrections():
     a = teleportation.live_commit("bloch_a", seed=7)
     b = teleportation.live_commit("bloch_a", seed=7)
     assert a == b
-    assert a["kind"] == "live_commit"
+    assert a["parameters"] == {"state": "bloch_a", "seed": 7}
     bits = a["measurementBits"]
     assert bits["m0"] in (0, 1) and bits["m1"] in (0, 1)
-    assert a["details"]["appliedCorrections"] == {"applyX": bits["m1"] == 1, "applyZ": bits["m0"] == 1}
+    rule = f"X {'ON' if bits['m1'] else 'OFF'}, Z {'ON' if bits['m0'] else 'OFF'}"
+    assert f"the receiver applied {rule}." in a["facts"][0]
+    # bloch_a is generic: every wrong correction scores < 0.99, so fidelity 1 proves the rule was applied.
     assert a["fidelity"] >= 0.999999
-    assert a["details"]["shots"] == 1
+    assert a["probabilities"] == {f"{b1}{b0}": pytest.approx(0.25, abs=1e-9) for b0, b1 in BRANCHES}
     assert "counts" not in a
     assert "one sample" in " ".join(a["facts"]).lower()
 
@@ -214,7 +230,7 @@ def test_sampler_maps_draw_to_labelled_branch(u, bits):
     # Branch order is (m0,m1) = 00, 01, 10, 11, each with exact probability 1/4.
     r = teleportation.bell_measurement("plus", rng=FixedRng(u))
     assert (r["measurementBits"]["m0"], r["measurementBits"]["m1"]) == bits
-    assert r["kind"] == "bell_measurement_sample"
+    assert r["parameters"] == {"state": "plus"}  # unseeded: no seed parameter is invented
 
 
 def test_sampler_is_roughly_uniform():

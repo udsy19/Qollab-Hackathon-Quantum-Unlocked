@@ -22,6 +22,15 @@ from qiskit.providers.basic_provider import BasicSimulator  # noqa: E402
 import quantum.qollab_job as qj  # noqa: E402
 
 
+def qubit_ones(result):
+    """Shots in which each qubit read 1, read through the result's own keyQubits declaration."""
+    ones = {"q0": 0, "q1": 0}
+    for key, n in result["counts"].items():
+        for char, qubit in zip(key, result["keyQubits"], strict=True):
+            ones[f"q{qubit}"] += int(char) * n
+    return ones
+
+
 @pytest.fixture
 def job_module():
     """A fresh module per test: the once-only flag is process state, as it is in one Qollab run."""
@@ -45,15 +54,14 @@ def job_module():
 )
 def test_hand_written_counts_read_with_q0_rightmost(raw, q0_ones, q1_ones):
     result = qj.interpret_counts(raw, backend_name="hand-written fixture", shots_requested=None)
-    assert result["summary"]["qubitOnes"] == {"q0": q0_ones, "q1": q1_ones}
+    assert qubit_ones(result) == {"q0": q0_ones, "q1": q1_ones}
 
 
 def test_correlated_fraction_counts_only_00_and_11():
     result = qj.interpret_counts({"00": 40, "01": 10, "10": 20, "11": 30},
                                  backend_name="hand-written fixture", shots_requested=100)
-    assert result["summary"]["shots"] == 100
-    assert result["summary"]["correlated"] == 70
-    assert result["summary"]["correlatedFraction"] == pytest.approx(0.70)
+    assert sum(result["counts"].values()) == 100
+    assert "70 of 100 shots (70.0%) had both qubits agree (00 or 11)." in result["facts"]
     # hex keys are normalised to the same Qiskit-order bitstrings get_counts() gives
     hexed = qj.interpret_counts({"0x0": 40, "0x1": 10, "0x2": 20, "0x3": 30},
                                 backend_name="hand-written fixture", shots_requested=100)
@@ -74,7 +82,7 @@ def test_basic_simulator_output_reads_the_flipped_qubit(flipped, expected):
     """Qollab's built-in simulator IS Qiskit's BasicSimulator (python-qiskit-projects doc)."""
     raw = BasicSimulator().run(_x_circuit(flipped), shots=64).result().get_counts()
     result = qj.interpret_counts(raw, backend_name="local BasicSimulator", shots_requested=64)
-    assert result["summary"]["qubitOnes"] == expected
+    assert qubit_ones(result) == expected
 
 
 def test_ionq_histogram_mapping_reads_the_flipped_qubit():
@@ -84,7 +92,7 @@ def test_ionq_histogram_mapping_reads_the_flipped_qubit():
 
     counts, _ = _build_counts({"1": 1.0}, num_qubits=2, clbits=[0, 1], shots=50)
     result = qj.interpret_counts(counts, backend_name="qiskit-ionq mapping", shots_requested=50)
-    assert result["summary"]["qubitOnes"] == {"q0": 50, "q1": 0}
+    assert qubit_ones(result) == {"q0": 50, "q1": 0}
 
 
 def test_bell_circuit_on_basic_simulator_is_fully_correlated():
@@ -92,9 +100,9 @@ def test_bell_circuit_on_basic_simulator_is_fully_correlated():
     raw = BasicSimulator().run(qc, shots=512, seed_simulator=7).result().get_counts()
     result = qj.interpret_counts(raw, backend_name="local BasicSimulator", shots_requested=512)
     assert set(result["counts"]) <= {"00", "11"}
-    assert result["summary"]["correlatedFraction"] == 1.0
+    assert set(result["counts"]) <= {"00", "11"}  # the ideal simulator: only correlated outcomes
     # an ideal Bell pair gives each qubit 1 about half the time; 512 shots, 6 sigma ~ 68
-    assert abs(result["summary"]["qubitOnes"]["q0"] - 256) < 68
+    assert abs(qubit_ones(result)["q0"] - 256) < 68
 
 
 # ---------------------------------------------------------------- the circuit and its description
@@ -166,7 +174,7 @@ def test_a_failed_job_still_uses_up_the_one_allowed_job(job_module):
 
 def test_runner_result_names_the_backend_and_follows_the_contract(job_module):
     result = job_module.run_bell_verification_once(FakeBackend(), shots=128)
-    for field in ("experiment", "engine", "circuitDescription", "qubits", "parameters", "counts", "facts"):
+    for field in ("experiment", "engine", "circuitDescription", "qubits", "parameters", "counts", "keyQubits", "facts"):
         assert field in result, field
     assert json.loads(json.dumps(result)) == result
     assert result["qubits"] == 2
