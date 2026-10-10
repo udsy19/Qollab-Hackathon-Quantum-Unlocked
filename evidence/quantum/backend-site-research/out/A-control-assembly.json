@@ -1,0 +1,21 @@
+{
+  "token": "bs-A-control-20261010T004119-20620", "variant": "A-control",
+  "runnerRef": "lane/platform/integration@45a45f2",
+  "contractsRef": "lane/platform/integration@45a45f2",
+  "pythonRef": "HEAD@cfffe4f",
+  "harnessDirty": false,
+  "sha256": {
+    "bs_spy.py": "867bd19e135a3e2e",
+    "contracts.js": "2398c11391f87fa5",
+    "index.html": "1a8287fcde6865d6",
+    "main.css": "c11007d9e339ed9d",
+    "main.js": "653dd6cc7cc628b3",
+    "quantum/__init__.py": "4770b5d0e03c289a",
+    "quantum/bridge.js": "903d3e5309fc42b5",
+    "quantum/cloning.py": "9e50d3aba0104f49",
+    "quantum/entanglement.py": "cafbffa371fda437",
+    "quantum/formats.py": "48a73f0a98817f8a",
+    "quantum/qollab_job.py": "2277aa5b2dfcfc7b",
+    "quantum/teleportation.py": "c7e450cbd63bc0ae"
+  }
+}

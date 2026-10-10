@@ -1,0 +1,21 @@
+{
+  "token": "bs-A-1-20261010T004007-2596", "variant": "A",
+  "runnerRef": "lane/platform/integration@32838bc",
+  "contractsRef": "lane/platform/integration@32838bc",
+  "pythonRef": "HEAD@cfffe4f",
+  "harnessDirty": false,
+  "sha256": {
+    "bs_spy.py": "ae8f212ea741901d",
+    "contracts.js": "4aca6191d2d8218f",
+    "index.html": "1a8287fcde6865d6",
+    "main.css": "c11007d9e339ed9d",
+    "main.js": "b93b23da777ed7bc",
+    "quantum/__init__.py": "4770b5d0e03c289a",
+    "quantum/bridge.js": "903d3e5309fc42b5",
+    "quantum/cloning.py": "9e50d3aba0104f49",
+    "quantum/entanglement.py": "cafbffa371fda437",
+    "quantum/formats.py": "48a73f0a98817f8a",
+    "quantum/qollab_job.py": "2277aa5b2dfcfc7b",
+    "quantum/teleportation.py": "c7e450cbd63bc0ae"
+  }
+}
