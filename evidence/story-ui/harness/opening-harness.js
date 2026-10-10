@@ -26,6 +26,7 @@ const shots = [];
 const stamp = () => Math.round(performance.now() - t0);
 
 const hud = mountHud(root);
+hud.setCountdown('11:59');
 hud.setVisible(false);
 const dialogue = mountDialogue(root);
 const settings = {
@@ -39,7 +40,11 @@ const options = {
   dialogue,
   onShot: (name, t) => { shots.push({ name, t, at: stamp() }); stage.dataset.shot = name; },
   onFinished: () => events.push({ event: 'FINISHED', at: stamp() }),
-  onSkip: () => events.push({ event: 'SKIP', at: stamp() }),
+  onSkip: () => {
+    events.push({ event: 'SKIP', at: stamp() });
+    // reenter=1: a handler that itself asks for skip must not re-fire the event.
+    if (params.get('reenter') === '1') window.echoOpening.opening.skip();
+  },
 };
 const opening = mountOpening(root, options);
 if (params.get('double') === '1') mountOpening(root, options);

@@ -101,7 +101,7 @@ const geometry = (page) => page.evaluate(() => {
     if (r.left < -1 || r.top < -1 || r.right > W + 1 || r.bottom > H + 1) bad.push(`${el.className} out of viewport ${Math.round(r.left)},${Math.round(r.top)},${Math.round(r.right)},${Math.round(r.bottom)}`);
     if (el.clientWidth > 0 && el.scrollWidth > el.clientWidth + 1 && cs.display !== 'contents') bad.push(`${el.className} scrollWidth ${el.scrollWidth} > ${el.clientWidth}`);
   }
-  const boxes = ['.echo-hud__top', '.echo-dialogue', '.echo-hud__bottom', '.echo-opening__skip', '.echo-opening__card'].map((s) => document.querySelector(s))
+  const boxes = ['.echo-hud__objective', '.echo-hud__timer', '.echo-hud__capsule', '.echo-hud__prompt', '.echo-dialogue', '.echo-opening__skip', '.echo-opening__card'].map((s) => document.querySelector(s))
     .filter((e) => e && getComputedStyle(e).visibility !== 'hidden' && !e.closest('[data-visible="false"]') && parseFloat(getComputedStyle(e).opacity) > 0)
     .map((e) => [e.className, e.getBoundingClientRect()]);
   for (let i = 0; i < boxes.length; i++) for (let j = i + 1; j < boxes.length; j++) {
@@ -119,7 +119,8 @@ const skipFocus = (page) => page.evaluate(() => {
 // Every expected beat's text must be reconstructible from the pages the player was given, in order.
 function beatsSeen(seen) {
   const expected = STORY.OPENING.map((b) => `${b.speaker}: ${b.text}`);
-  const texts = seen.map((s) => s.text);
+  // The observer sees a page's text land more than once (child + character mutations); dedupe.
+  const texts = seen.map((s) => s.text).filter((t, i, a) => i === 0 || t !== a[i - 1]);
   const missing = [];
   let cursor = 0;
   for (const beat of expected) {
@@ -154,12 +155,12 @@ try {
     await shot(page, '01-title-card.png');
     // Pin the shots: screenshot well after each shot's first caption has finished revealing.
     await waitUntilMs(page, 6000); await shot(page, '02-shot-a-billboard.png');
-    await waitUntilMs(page, 13000); await shot(page, '03-shot-b-caption.png');
-    await waitUntilMs(page, 26500); await shot(page, '04-shot-c-caption.png');
-    await waitUntilMs(page, 34500); await shot(page, '05-shot-c-misconception.png');
+    await waitUntilMs(page, 13500); await shot(page, '03-shot-b-caption.png');
+    await waitUntilMs(page, 27500); await shot(page, '04-shot-c-caption.png');
+    await waitUntilMs(page, 35500); await shot(page, '05-shot-c-misconception.png');
     await waitUntilMs(page, 44100);
     await shot(page, '06a-hud-fade-start.png');
-    await waitUntilMs(page, 47500);
+    await waitUntilMs(page, 48500);
     await shot(page, '06-shot-d-hud-objective.png');
     const hudNow = await page.evaluate(() => ({ visible: document.querySelector('.echo-hud')?.dataset.visible, obj: document.querySelector('.echo-hud__objtext')?.textContent }));
     check('d: HUD is visible with the FREE_ROAM_ALLEY objective during shot D', hudNow.visible === 'true' && hudNow.obj === OBJECTIVES.FREE_ROAM_ALLEY.text, JSON.stringify(hudNow));
@@ -183,9 +184,10 @@ try {
     for (let i = 0; i < 4; i++) await page.keyboard.press('Escape');
     await page.keyboard.press('Enter'); await page.keyboard.press('Space');
     await page.evaluate(() => document.querySelector('.echo-opening__skip')?.click());
+    await page.evaluate(() => { window.echoOpening.opening.skip(); window.echoOpening.opening.skip(); });
     await sleep(300);
     const e2 = await evts(page);
-    check('f: mashing Skip/Esc/Enter after the end emits nothing more', e2.length === 1, JSON.stringify(e2));
+    check('f: mashing Skip/Esc/Enter and calling skip() after the end emits nothing more', e2.length === 1, JSON.stringify(e2));
   }
 
   if (mode === 'skip') {
@@ -211,6 +213,14 @@ try {
     await sleep(300);
     await page.keyboard.press('Enter');
     check('d: Enter on the focused Skip button skips; double mount still fires once', JSON.stringify(await evts(page)) === '["SKIP"]', JSON.stringify(await evts(page)));
+    await page.close();
+    // A handler that re-enters skip(), and skip() called again afterwards.
+    page = await open('?reenter=1');
+    await sleep(1500);
+    await page.keyboard.press('Escape');
+    await page.evaluate(() => window.echoOpening.opening.skip());
+    await sleep(300);
+    check('d: skip() re-entered from onSkip, then called again, still emits SKIP once', JSON.stringify(await evts(page)) === '["SKIP"]', JSON.stringify(await evts(page)));
     await page.close();
     // Mouse click on the visible control.
     page = await open('');
@@ -248,7 +258,7 @@ try {
     const tag = `${vp.width}x${vp.height}`;
     const page = await open('?scale=200', vp);
     const bad = [];
-    const snap = { 3000: 'card', 34500: 'misconception', 47500: 'hud' };
+    const snap = { 3000: "card", 36000: "misconception", 49000: "hud" };
     for (let ms = 1000; ms <= 62000; ms += 1000) {
       await waitUntilMs(page, ms);
       const g = await geometry(page);
@@ -265,6 +275,9 @@ try {
   }
 
   check('no page errors or failed requests', errors.length === 0, errors.join(' | '));
+} catch (e) {
+  // A crash is a verdict too: an unguarded re-entrant skip overflows the stack inside the page.
+  check('driver: mode ran to completion without throwing', false, String(e.message).split('\n')[0]);
 } finally {
   await browser.close();
 }

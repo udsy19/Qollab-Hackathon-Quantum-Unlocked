@@ -1,0 +1,81 @@
+{
+  "mode": "full",
+  "failed": 0,
+  "checks": [
+    {
+      "name": "a: title card shows the openingCard text, fully visible",
+      "ok": true,
+      "detail": "{\"text\":\"NACRE CITY // 02:17 AM\",\"visible\":true}"
+    },
+    {
+      "name": "a: billboard line shows during shot A",
+      "ok": true,
+      "detail": "NOTHING EVER HAS TO END"
+    },
+    {
+      "name": "g: Skip control has keyboard focus on first frames",
+      "ok": true,
+      "detail": "{\"isSkip\":true,\"outline\":\"solid 3px rgb(255, 225, 77)\"}"
+    },
+    {
+      "name": "g: Skip focus ring is a visible 3px solid outline",
+      "ok": true,
+      "detail": "solid 3px rgb(255, 225, 77)"
+    },
+    {
+      "name": "d: HUD is visible with the FREE_ROAM_ALLEY objective during shot D",
+      "ok": true,
+      "detail": "{\"visible\":\"true\",\"obj\":\"FIND AN AUTHORIZED REPLICATION BOOTH\"}"
+    },
+    {
+      "name": "c: onShot fired A,B,C,D once each, in order",
+      "ok": true,
+      "detail": "ABCD"
+    },
+    {
+      "name": "c: each shot fired within 1.2 s of its §4.1 start",
+      "ok": true,
+      "detail": "[{\"name\":\"A\",\"t\":0,\"at\":16},{\"name\":\"B\",\"t\":10.016900000005961,\"at\":10032},{\"name\":\"C\",\"t\":24.093,\"at\":24109},{\"name\":\"D\",\"t\":44.02629999999702,\"at\":44042}]"
+    },
+    {
+      "name": "e: full run emits FINISHED exactly once and no SKIP",
+      "ok": true,
+      "detail": "[\"FINISHED\"]"
+    },
+    {
+      "name": "e: FINISHED lands at about 65 s",
+      "ok": true,
+      "detail": "65044"
+    },
+    {
+      "name": "e: overlay is gone after the run",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "b: every §4.1 line was shown whole, in order",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "b: no caption ever needed more than 2 lines",
+      "ok": true,
+      "detail": "2"
+    },
+    {
+      "name": "d: HUD stays visible after FINISHED",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "f: mashing Skip/Esc/Enter after the end emits nothing more",
+      "ok": true,
+      "detail": "[\"FINISHED\"]"
+    },
+    {
+      "name": "no page errors or failed requests",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}

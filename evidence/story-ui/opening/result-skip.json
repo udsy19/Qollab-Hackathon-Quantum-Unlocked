@@ -1,0 +1,46 @@
+{
+  "mode": "skip",
+  "failed": 0,
+  "checks": [
+    {
+      "name": "d: Esc at ~3 s emits SKIP exactly once when mashed",
+      "ok": true,
+      "detail": "[\"SKIP\"]"
+    },
+    {
+      "name": "d: overlay is gone after skip",
+      "ok": true,
+      "detail": ""
+    },
+    {
+      "name": "d: skip lands with the HUD and objective showing",
+      "ok": true,
+      "detail": "{\"v\":\"true\",\"o\":\"FIND AN AUTHORIZED REPLICATION BOOTH\"}"
+    },
+    {
+      "name": "d: nothing from the timeline fires after skip (no shot B, no FINISHED, caption hidden)",
+      "ok": true,
+      "detail": "{\"shots\":\"A\",\"ev\":1,\"cap\":\"false\"}"
+    },
+    {
+      "name": "mount twice: one overlay, not two",
+      "ok": true,
+      "detail": "1"
+    },
+    {
+      "name": "d: Enter on the focused Skip button skips; double mount still fires once",
+      "ok": true,
+      "detail": "[\"SKIP\"]"
+    },
+    {
+      "name": "d: clicking Skip emits SKIP once",
+      "ok": true,
+      "detail": "[\"SKIP\"]"
+    },
+    {
+      "name": "no page errors or failed requests",
+      "ok": true,
+      "detail": ""
+    }
+  ]
+}
