@@ -12,7 +12,7 @@ updated: 2026-10-10
 > [!note] Signpost only.
 > Every line is the note's own first sentence, unedited. Nothing here is a new claim; if a line reads oddly, the note says it oddly.
 
-Measured 2026-10-10: **31 notes** carrying an answer.
+Measured 2026-10-10: **38 notes** carrying an answer.
 
 ## Promoted lessons — from the lanes
 
@@ -34,14 +34,19 @@ Decisions are law until superseded. Everything else describes; these DECIDE.
 | [[0001-vault-is-mission-control]] | D-0001 — The vault lives in the repo and is mission control | current |  |
 | [[decision]] | D-XXXX — <title> | proposed |  |
 
-## Reports — what was measured  (10)
+## Reports — what was measured  (15)
 
 | note | title | status | date | gist |
 |---|---|---|---|---|
+| [[tests-caps-clean]] | Quantum tests no longer trip the Qollab caps gate | current | 2026-10-10 | Lane quantum, consult 11, branch `lane/quantum/tests-caps-clean`, commit `ce65a30`. Closes gap rows 4–5 of quantum-vs-co |
 | [[quantum-vs-contracts-v2]] | Quantum engine and bridge.js vs contracts v2 and the platf | current | 2026-10-10 | The merged tree is `lane/quantum/main-sync` @ ab2ea6f, which is `main` 99dfc54 (contracts v2 80d685f) merged into `lane/ |
+| [[quantum-hardening]] | Quantum hardening: random generic dry runs, a hidden story | current | 2026-10-10 | Lane quantum, consult 5, branch `lane/quantum/quantum-hardening`. It implements the owner's quantum rulings and closes t |
 | [[pyodide-bridge]] | The quantum bridge running in Pyodide (local runner) | current | 2026-10-10 | Measured: `echo/quantum/bridge.js` driving the quantum engine inside platform's **local Qollab-like runner**. The runner |
 | [[ionq-sim-rehearsal]] | IonQ simulator rehearsal of the one selected-backend job ( | current | 2026-10-10 | The replay patches only qiskit-ionq's three HTTP methods. Everything between the wire and the game runs for real: the `m |
+| [[engine-bridge-review]] | Engine + bridge adversarial review: the physics is true, b | current | 2026-10-10 | Lane quantum, consult 13, branch `lane/quantum/engine-bridge-review`. The review covers the engine at 2bfc51e. It used h |
 | [[contracts-v2]] | Contracts v2: owner rulings folded into echo/contracts.js, | current | 2026-10-10 | v2 extends the platform-owned `echo/contracts.js` and `echo/CONTRACTS.md` (v1: Reports/shared-contracts). It folds in th |
+| [[bridge-rewire]] | The bridge on the hardened engine (local runner) | current | 2026-10-10 | Measured: `echo/quantum/bridge.js`, rewired to the quantum-hardening API, driven by the pyodide-bridge harness in platfo |
+| [[backend-site-move]] | One backend.run site: bridge.js submits, Python builds and | current | 2026-10-10 | Lane quantum, consult 13, branch `lane/quantum/backend-site-move`. Measured in platform's **local Qollab-like runner** ( |
 | [[shared-contracts]] | Shared contracts: echo/contracts.js, measured | superseded | 2026-10-09 | `echo/contracts.js` (platform lane, branch `lane/platform/shared-contracts`) is the single definition of quest states/tr |
 | [[quantum-physics-review]] | Quantum physics review: the engine's numbers check out, fo | current | 2026-10-09 | This is an outside review of `echo/quantum/` on `lane/quantum/integration` @ a9edce2. I re-derived the physics independe |
 | [[quantum-engine-g1]] | Quantum engine G1: cloning, no-signalling and teleportatio | current | 2026-10-09 | The engine in `echo/quantum/` passes 363 tests whose expected values are derived by hand. Three findings bind the game d |
@@ -65,18 +70,20 @@ Decisions are law until superseded. Everything else describes; these DECIDE.
 | [[mission]] | Mission — <name> | proposed | {{date}} |  |
 | [[echo-hackathon-submission]] | Mission — ECHO: ONE OF ONE — Qollab × IonQ submission | current | 2026-10-09 | The end state in one paragraph, and the NOW item on Home it serves. |
 
-## Research — what exists outside this repo  (2)
+## Research — what exists outside this repo  (3)
 
 | note | title | status | date | gist |
 |---|---|---|---|---|
+| [[backend-run-site]] | Where the one selected-backend `backend.run` lives: JS, in | current | 2026-10-10 | Labels: **DOC** = Qollab docs; **RT** = Qollab's shipped runtime JS, read with GET only; **MEASURED** = local runner or  |
 | [[qollab-platform-and-submission]] | Qollab platform, runtime and hackathon submission: what a  | current | 2026-10-09 | Qollab runs each project **in the judge's browser** (Pyodide, Python 3.14, Qiskit 2.x). It hands the code a pre-made `ba |
 | [[qollab-backend-from-js-projects]] | Reaching Qollab's selected backend from a JS/Qiskit projec | current | 2026-10-09 | In a JS/Qiskit project, Qollab's `backend` is a **JavaScript global**. Python reaches it only when JS **passes it as an  |
 
-## Sessions — what a day did  (3)
+## Sessions — what a day did  (4)
 
 | note | title | status | date | gist |
 |---|---|---|---|---|
 | [[session]] | {{date}} — <slug> | ? | {{date}} |  |
+| [[2026-10-10-quantum-hardening]] | 2026-10-10 — quantum-hardening | ? | 2026-10-10 |  |
 | [[2026-10-10-contracts-v2]] | 2026-10-10 — contracts-v2 | ? | 2026-10-10 |  |
 | [[2026-10-09-agent-org-setup]] | 2026-10-09 — agent-org-setup | ? | 2026-10-09 |  |
 
@@ -121,35 +128,35 @@ A plan row can name a symbol that lives only on a branch. An agent that trusts `
 > [!warning] This section is NOT graded by `--check`, and everything above it is.
 > It is derived from git branch state, not from the vault, so it changes when a branch is created or deleted anywhere in the repo. Grading it made the gate report STALE for reasons the vault did not cause. Treat the numbers here as of the last regeneration, not as of now; treat a STALE verdict as a real claim about the vault.
 
-**40 of 46 `lane/*` branches carry commits origin/main does not have.**
+**65 of 70 `lane/*` branches carry commits origin/main does not have.**
 
 | branch | commits | touches |
 |---|---|---|
-| `lane/quantum/bridge-rewire` | 35 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
-| `lane/gameplay/gameplay-world-v2-port` | 25 | `dev/gameplay`, `echo/game`, `echo/scene`, `evidence/gameplay` |
-| `lane/quantum/integration` | 25 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
-| `lane/quantum/integration-catchup` | 25 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
-| `lane/quantum/quantum-hardening` | 24 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
-| `lane/quantum/ionq-sim-rehearsal` | 23 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
-| `lane/quantum/main-sync` | 23 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
-| `lane/gameplay/integration` | 20 | `dev/gameplay`, `echo/game`, `evidence/gameplay-commit-fault-exit`, `evidence/gameplay-contracts-migration` |
-| `lane/gameplay/gameplay-commit-fault-exit` | 19 | `dev/gameplay`, `echo/game`, `evidence/gameplay-commit-fault-exit`, `evidence/gameplay-contracts-migration` |
-| `lane/gameplay/gameplay-real-engine-seam` | 19 | `dev/gameplay`, `echo/game`, `evidence/gameplay`, `evidence/gameplay-contracts-migration` |
-| `lane/story-ui/opening` | 18 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
-| `lane/red-team/integration` | 17 | `evidence/red-team`, `vault/Map.md`, `vault/Reports`, `vault/Research` |
-| `lane/red-team/player-text-audit` | 17 | `evidence/red-team`, `vault/Map.md`, `vault/Reports`, `vault/Research` |
-| `lane/gameplay/gameplay-contracts-migration` | 16 | `dev/gameplay`, `echo/game`, `evidence/gameplay-contracts-migration`, `evidence/gameplay-quest-core` |
-| `lane/story-ui/integration` | 16 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
-| `lane/quantum/pyodide-bridge` | 15 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
-| `lane/platform/contracts-fidelity-band` | 13 | `echo/QOLLAB_SMOKE_TEST.md`, `echo/index.html`, `echo/main.css`, `echo/main.js` |
-| `lane/platform/integration` | 13 | `echo/QOLLAB_SMOKE_TEST.md`, `echo/index.html`, `echo/main.css`, `echo/main.js` |
-| `lane/red-team/cross-lane-recheck` | 13 | `evidence/red-team`, `vault/Reports`, `vault/Research`, `vault/Sessions` |
-| `lane/story-ui/data-fixes` | 13 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
-| `lane/story-ui/terminals-c4` | 13 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
-| `lane/platform/integration-shell` | 12 | `echo/QOLLAB_SMOKE_TEST.md`, `echo/index.html`, `echo/main.js`, `echo/requirements.txt` |
-| `lane/story-ui/declassified` | 12 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
-| `lane/platform/contracts-pin-thresholds` | 11 | `echo/QOLLAB_SMOKE_TEST.md`, `echo/index.html`, `echo/main.css`, `echo/main.js` |
-| `lane/quantum/contract-conformance` | 11 | `echo/quantum`, `echo/tests`, `evidence/quantum`, `evidence/quantum-core` |
+| `lane/quantum/backend-site-move` | 78 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/quantum/g1-proof-harness` | 72 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/quantum/integration` | 72 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/quantum/commit-seam-fix` | 68 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/quantum/backend-site-research` | 65 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/quantum/engine-bridge-review` | 47 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/quantum/bridge-rewire` | 44 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/quantum/tests-caps-clean` | 44 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/platform/integration` | 42 | `docs/VIDEO_SCRIPT.md`, `echo/CONTRACTS.md`, `echo/QOLLAB_SMOKE_TEST.md`, `echo/README.md` |
+| `lane/platform/caps-backend-run-forms` | 39 | `docs/VIDEO_SCRIPT.md`, `echo/CONTRACTS.md`, `echo/QOLLAB_SMOKE_TEST.md`, `echo/README.md` |
+| `lane/platform/g0-diagnostic-port` | 39 | `docs/VIDEO_SCRIPT.md`, `echo/CONTRACTS.md`, `echo/QOLLAB_SMOKE_TEST.md`, `echo/README.md` |
+| `lane/red-team/integration` | 36 | `evidence/red-team`, `vault/Map.md`, `vault/Reports`, `vault/Research` |
+| `lane/platform/contracts-commit-result` | 35 | `docs/VIDEO_SCRIPT.md`, `echo/CONTRACTS.md`, `echo/QOLLAB_SMOKE_TEST.md`, `echo/README.md` |
+| `lane/gameplay/gameplay-world-v2-port` | 34 | `dev/gameplay`, `echo/game`, `echo/scene`, `evidence/gameplay` |
+| `lane/gameplay/gameplay-port-merge` | 31 | `dev/gameplay`, `echo/game`, `echo/scene`, `evidence/gameplay` |
+| `lane/gameplay/gameplay-qollab-input` | 31 | `dev/gameplay`, `echo/game`, `echo/scene`, `evidence/gameplay` |
+| `lane/platform/release-upload-manifest` | 31 | `docs/VIDEO_SCRIPT.md`, `echo/CONTRACTS.md`, `echo/QOLLAB_SMOKE_TEST.md`, `echo/README.md` |
+| `lane/red-team/shell-boot-smoke` | 29 | `evidence/red-team`, `vault/Map.md`, `vault/Reports`, `vault/Research` |
+| `lane/story-ui/declassified-conform` | 29 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
+| `lane/story-ui/shell-polish` | 29 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
+| `lane/story-ui/terminals-conform` | 29 | `echo/data`, `echo/main.css`, `echo/ui`, `evidence/story-ui` |
+| `lane/platform/contracts-moments-and-land` | 28 | `echo/CONTRACTS.md`, `echo/QOLLAB_SMOKE_TEST.md`, `echo/contracts.js`, `echo/index.html` |
+| `lane/quantum/integration-catchup` | 28 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
+| `lane/gameplay/gameplay-fps-probe` | 27 | `dev/gameplay`, `echo/game`, `echo/scene`, `evidence/gameplay` |
+| `lane/quantum/quantum-hardening` | 27 | `echo/quantum`, `echo/tests`, `evidence/physics-review`, `evidence/quantum` |
 
 Search them before you build: `node scripts/where.mjs <symbol> --branches`
 
