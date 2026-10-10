@@ -165,6 +165,19 @@ export const FAILURES = Object.freeze({
   },
 })
 
+// Which FAILURES.teleportation lines a dry run shows, keyed 'm0m1:XZ': the two measured bits, then
+// the receiver plan's X and Z switches (1 = on). A correct plan shows none. A plan with both
+// corrections wrong shows two lines, one per wrong switch. Each line is worded to be true whatever
+// the other bit and switch are: evidence/story-ui/data-fixes/branch-truth.md checks all 16 in Qiskit.
+// `blind_spot` is not listed: the terminal adds it when a listed failure still scores high
+// fidelity on that particular test state.
+export const TELEPORT_FAILURE_CASES = Object.freeze({
+  '00:00': [], '00:01': ['extra_Z'], '00:10': ['extra_X'], '00:11': ['extra_X', 'extra_Z'],
+  '01:00': ['missing_X'], '01:01': ['missing_X', 'extra_Z'], '01:10': [], '01:11': ['extra_Z'],
+  '10:00': ['missing_Z'], '10:01': [], '10:10': ['extra_X', 'missing_Z'], '10:11': ['extra_X'],
+  '11:00': ['missing_X', 'missing_Z'], '11:01': ['missing_X'], '11:10': ['missing_Z'], '11:11': [],
+})
+
 // Labels that say which column of HUD this lives in follow §6.1/§6.3.
 export const HUD = Object.freeze({
   header: { text: 'ECHO // DISTRICT 09', src: '§6.3' },
