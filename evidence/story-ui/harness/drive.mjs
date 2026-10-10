@@ -1,6 +1,6 @@
 // Drives shell.html with REAL key presses (CDP Input events, so Tab really moves focus) and
 // asserts what the player would see. Exit 0 green · 1 red · 2 refused (harness did not load).
-// Usage: node drive.mjs <port> <outDir>
+// Usage: node drive.mjs <port> <outDir> [WIDTHxHEIGHT]   (default 1280x720)
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -9,6 +9,7 @@ const puppeteer = require('puppeteer');
 
 const port = process.argv[2] || '8742';
 const out = process.argv[3] || 'evidence/story-ui/ui-shell';
+const [vw, vh] = (process.argv[4] || '1280x720').split('x').map(Number);
 fs.mkdirSync(out, { recursive: true });
 const url = `http://127.0.0.1:${port}/evidence/story-ui/harness/shell.html`;
 const keys = [];
@@ -26,7 +27,7 @@ const browser = await puppeteer.launch({
   args: ['--no-first-run', '--force-device-scale-factor=1'],
 });
 const page = await browser.newPage();
-await page.setViewport({ width: 1280, height: 720 });
+await page.setViewport({ width: vw, height: vh });
 const errors = [];
 page.on('pageerror', (e) => errors.push(String(e)));
 page.on('console', (m) => { if (m.type() === 'error' && !/404/.test(m.text())) errors.push(m.text()); });
@@ -78,19 +79,69 @@ const dialogueLines = () => page.evaluate(() => {
   return { lines: Math.round(t.scrollHeight / lh), page: document.querySelector('.echo-dialogue__page').textContent, text: t.textContent };
 });
 
-async function walkBeat(beatKey) {
-  await page.evaluate((k) => { echoHarness.dialogue.play(echoHarness.BEATS[k]); }, beatKey);
+// An ASCII ket on screen (|0>, |+>, |00>) is a defect; the data keeps them, the screen must not.
+const ASCII_KET = /\|[^|<>\s]{1,8}>/;
+
+// Walks beats page by page with real Enter presses and returns what each page showed.
+async function walkBeats(beats) {
+  await page.evaluate((b) => { echoHarness.dialogue.play(b); }, beats);
   const pages = [];
-  for (let i = 0; i < 20; i++) {
-    await press('Enter', 'Enter (skip reveal)');
+  // Enter skips a reveal only while one is running; pressing it on a finished page would advance
+  // and put the walk out of phase. "Finished" = the visible text equals the page's screen-reader
+  // copy (used to steer the walk only; grading compares against the source data).
+  const revealing = () => page.evaluate(() => {
+    const live = document.querySelector('.echo-dialogue .echo-sr-only').textContent;
+    return !live.endsWith(document.querySelector('.echo-dialogue__text').textContent) || document.querySelector('.echo-dialogue__text').textContent === '';
+  });
+  for (let i = 0; i < 400; i++) {
+    if (await revealing()) await press('Enter', 'Enter (skip reveal)');
     const d = await dialogueLines();
+    d.beat = await page.evaluate(() => echoHarness.dialogue.element.querySelector('.echo-dialogue__speaker').textContent);
     pages.push(d);
     await press('Enter', 'Enter (next)');
     if (!(await page.evaluate(() => echoHarness.dialogue.active))) break;
   }
-  const source = await page.evaluate((k) => echoHarness.BEATS[k][0].text, beatKey);
-  return { pages, rejoined: pages.map((p) => p.text).join(' ') === source.trim().split(/\s+/).join(' ') };
+  return pages;
 }
+function grade(pages, beats) {
+  // Rejoin the pages into the script, in order, with kets mapped back to ASCII.
+  const words = pages.map((p) => p.text.replace(/⟩/g, '>')).join(' ').split(/\s+/).filter(Boolean);
+  const source = beats.map((b) => b.text.trim().split(/\s+/)).flat();
+  const asciiOnScreen = pages.filter((p) => ASCII_KET.test(p.text)).map((p) => p.text);
+  const ketsInSource = beats.map((b) => (b.text.match(new RegExp(ASCII_KET, 'g')) || []).length).reduce((a, b) => a + b, 0);
+  const ketsOnScreen = pages.map((p) => (p.text.match(/\|[^|<>\s]{1,8}⟩/g) || []).length).reduce((a, b) => a + b, 0);
+  return { rejoined: words.join(' ') === source.join(' '), asciiOnScreen, ketsInSource, ketsOnScreen,
+    overTwo: pages.filter((p) => !(p.lines >= 1 && p.lines <= 2)) };
+}
+// For every page that ends mid-sentence, render the sentence holding the break ALONE in a clone of
+// the live text box (same width and font) and count its lines. A mid-sentence break is allowed only
+// when that sentence by itself is longer than 2 lines.
+const midSentence = (pages, beats) => page.evaluate((pages, beats) => {
+  const live = document.querySelector('.echo-dialogue__text');
+  const probe = live.cloneNode(false);
+  const r = live.getBoundingClientRect();
+  probe.style.cssText = `position:fixed;left:0;top:0;width:${r.width}px;visibility:hidden;min-height:0`;
+  live.parentNode.append(probe);
+  const lh = parseFloat(getComputedStyle(probe).lineHeight);
+  const end = /[.?!…]["'”’)\]]*$/;
+  const bad = [];
+  let bi = 0, consumed = 0;
+  const beatWords = beats.map((b) => b.text.trim().split(/\s+/));
+  for (const p of pages) {
+    consumed += p.text.split(/\s+/).filter(Boolean).length;
+    const words = beatWords[bi];
+    if (consumed < words.length && !end.test(words[consumed - 1])) {
+      let s = consumed - 1; while (s > 0 && !end.test(words[s - 1])) s -= 1;
+      let e = consumed - 1; while (e < words.length - 1 && !end.test(words[e])) e += 1;
+      probe.textContent = words.slice(s, e + 1).join(' ').replace(/\|([^|<>\s]{1,8})>/g, '|$1⟩');
+      const lines = Math.round(probe.scrollHeight / lh);
+      if (lines <= 2) bad.push(`"${p.text}" breaks mid-sentence, yet "${probe.textContent}" fits in ${lines} line(s)`);
+    }
+    if (consumed >= words.length) { bi += 1; consumed = 0; }
+  }
+  probe.remove();
+  return bad;
+}, pages, beats);
 
 try {
   await page.goto(url, { waitUntil: 'networkidle0' });
@@ -163,7 +214,26 @@ try {
   await press('Enter');
   await settle();
   f = await focused();
-  check('settings: opened from pause, Subtitles focused', f.id === 'echo-set-subtitles', JSON.stringify(f));
+  check('settings: opened from pause, Caption style focused', f.id === 'echo-set-captionStyle', JSON.stringify(f));
+  // Captions are always on (owner ruling): no control in the menu may turn them off, and the
+  // caption-style select offers exactly the contract's styles.
+  const capCtl = await page.evaluate(() => {
+    const labels = [...document.querySelectorAll('.echo-menu label')].map((l) => l.textContent.trim());
+    const toggles = [...document.querySelectorAll('.echo-menu input[type=checkbox]')].map((c) => document.querySelector(`label[for="${c.id}"]`)?.textContent.trim() || c.name);
+    const sel = document.querySelector('.echo-menu select[name="captionStyle"]');
+    return { labels, toggles, options: sel ? [...sel.options].map((o) => o.value) : null, contract: [...echoHarness.CAPTION_STYLES] };
+  });
+  check('settings: no Subtitles/captions on-off control exists', !capCtl.labels.some((l) => /subtit/i.test(l)) && !capCtl.toggles.some((t) => /subtit|caption/i.test(t)), JSON.stringify(capCtl));
+  check('settings: caption-style select offers exactly contracts.CAPTION_STYLES', JSON.stringify(capCtl.options) === JSON.stringify(capCtl.contract), JSON.stringify(capCtl));
+  // Form controls read in the UI's own type, not the system font: the select and its options
+  // compute the same font-family as the settings labels beside them.
+  const fonts = await page.evaluate(() => {
+    const ff = (s) => { const e = document.querySelector(s); return e ? getComputedStyle(e).fontFamily : null; };
+    return { label: ff('.echo-settings__label'), select: ff('.echo-menu select'), option: ff('.echo-menu select option'), button: ff('.echo-menu .echo-button') };
+  });
+  check('settings: select and options use the UI font, not the system font', fonts.select === fonts.label && fonts.option === fonts.label && !/^system-ui/.test(fonts.select || 'system-ui'), JSON.stringify(fonts));
+  check('settings: the focused first control shows a 3px focus ring', /solid 3px/.test(f.outline), f.outline);
+  await shot('05a-settings-caption-style.png');
   await press('Tab'); // reduced motion
   await press('Tab'); // text size
   f = await focused();
@@ -183,9 +253,24 @@ try {
 
   // 5. HUD + dialogue at 200%.
   keys.push('--- walk every page of the long beat at 200% ---');
-  const walk = await walkBeat('long');
-  check('dialogue 200%: every page ≤2 lines', walk.pages.every((p) => p.lines >= 1 && p.lines <= 2), walk.pages.map((p) => `${p.page}:${p.lines}`).join(' '));
+  const longBeats = await page.evaluate(() => echoHarness.BEATS.long);
+  const walkPages = await walkBeats(longBeats);
+  const walk = grade(walkPages, longBeats);
+  check('dialogue 200%: every page ≤2 lines', walk.overTwo.length === 0, walkPages.map((p) => `${p.page}:${p.lines}`).join(' '));
   check('dialogue 200%: pages rejoin to the exact beat text (no word lost)', walk.rejoined);
+  const walkMid = await midSentence(walkPages, longBeats);
+  check('dialogue 200%: a page breaks mid-sentence only when that sentence alone exceeds 2 lines', walkMid.length === 0, walkMid.join(' | '));
+  check('dialogue 200%: no ASCII ket on screen; every |x> shows as |x⟩', walk.asciiOnScreen.length === 0 && walk.ketsOnScreen === walk.ketsInSource && walk.ketsInSource > 0, JSON.stringify({ ascii: walk.asciiOnScreen, inSource: walk.ketsInSource, onScreen: walk.ketsOnScreen }));
+  // Every spoken beat in echo/data/story.js, walked at 200% with real Enter presses.
+  const script = await page.evaluate(() => echoHarness.SCRIPT);
+  const scriptPages = await walkBeats(script);
+  const sg = grade(scriptPages, script);
+  const sMid = await midSentence(scriptPages, script);
+  check(`script 200%: all ${script.length} beats, every page ≤2 lines`, script.length > 50 && sg.overTwo.length === 0, sg.overTwo.map((p) => `${p.lines}: ${p.text}`).join(' | '));
+  check('script 200%: pages rejoin to the exact script (no word lost)', sg.rejoined);
+  check('script 200%: no page breaks mid-sentence unless the sentence alone exceeds 2 lines', sMid.length === 0, sMid.join(' | '));
+  check('script 200%: no ASCII ket on screen', sg.asciiOnScreen.length === 0 && sg.ketsOnScreen === sg.ketsInSource && sg.ketsInSource > 0, JSON.stringify({ ascii: sg.asciiOnScreen, inSource: sg.ketsInSource, onScreen: sg.ketsOnScreen }));
+  fs.writeFileSync(path.join(out, 'script-pages-200.txt'), scriptPages.map((p) => `[${p.beat} ${p.page || '1/1'} · ${p.lines} line(s)] ${p.text}`).join('\n') + '\n');
   const fs200 = await page.evaluate(() => getComputedStyle(document.querySelector('.echo-dialogue__text')).fontSize);
   check('dialogue 200%: caption font is 2× the 100% size (18.4px → 36.8px)', fs200 === '36.8px', fs200);
   await page.evaluate(() => { echoHarness.dialogue.play(echoHarness.BEATS.long); });
@@ -194,6 +279,28 @@ try {
   const g200 = await geometry();
   check('hud+dialogue 200%: nothing leaves the viewport, overflows or overlaps', g200.length === 0, g200.join('; '));
   await shot('06-hud-dialogue-200.png');
+  // HUD kets and row integrity at 200%. The top row holds objective and countdown side by side
+  // (§6.3); if it is allowed to wrap, the countdown drops under the objective and this goes red.
+  await page.evaluate(() => echoHarness.hud.showTooltip('Q-SOURCE HOLDS |ψ> · TEST STATE |+>', { duration: 0 }));
+  await settle();
+  const hudRow = await page.evaluate(() => {
+    const o = document.querySelector('.echo-hud__objective').getBoundingClientRect();
+    const t = document.querySelector('.echo-hud__timer').getBoundingClientRect();
+    return { objTop: Math.round(o.top), timerTop: Math.round(t.top), objRight: Math.round(o.right), timerLeft: Math.round(t.left), tooltip: document.querySelector('.echo-hud__tooltip').textContent };
+  });
+  check('hud 200%: countdown stays on the objective row (top row does not wrap)', Math.abs(hudRow.objTop - hudRow.timerTop) <= 1 && hudRow.timerLeft >= hudRow.objRight, JSON.stringify(hudRow));
+  check('hud: tooltip shows kets as |x⟩, never ASCII', !ASCII_KET.test(hudRow.tooltip) && /\|ψ⟩/.test(hudRow.tooltip), hudRow.tooltip);
+  const gh = await geometry();
+  check('hud 200% with tooltip: nothing leaves the viewport, overflows or overlaps', gh.length === 0, gh.join('; '));
+  await shot('06b-hud-200.png');
+  await page.evaluate(() => echoHarness.hud.hideTooltip());
+  // A stale caller that still passes the retired subtitles:false must not hide the story, and
+  // the menu reports settings that pass the platform contract.
+  await page.evaluate(() => echoHarness.menu.setSettings({ subtitles: false }));
+  const capOn = await page.evaluate(() => ({ display: getComputedStyle(document.querySelector('.echo-dialogue')).display,
+    attr: document.getElementById('ui').dataset.subtitles ?? null, errors: echoHarness.validateSettings(echoHarness.menu.getSettings()) }));
+  check('captions always on: setSettings({subtitles:false}) leaves the dialogue displayed', capOn.display !== 'none' && capOn.attr === null, JSON.stringify(capOn));
+  check('settings: menu.getSettings() passes contracts.validateSettings', capOn.errors.length === 0, capOn.errors.join('; '));
 
   // 6. Reduced motion: transitions measured before (must be non-zero, or the check proves nothing) and after.
   const motion = () => page.evaluate(() => {
