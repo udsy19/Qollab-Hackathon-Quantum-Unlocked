@@ -3,3 +3,42 @@
 2026-10-10 03:21 ASK_OWNER: 1. **G0 needs you on Qollab tonight.** Once `echo/QOLLAB_SMOKE_TEST.md` lands (target: within ~1.5 h), can you upload `echo/` and run it once on the **built-in simulator**? Please paste what you see, 
 2026-10-10 03:21 agent g0-runner-smoke (opus) start on lane/platform/integration
 2026-10-10 03:21 agent shared-contracts (opus) start on lane/platform/integration
+2026-10-10 03:30 agent shared-contracts finished rc=0 report=present
+2026-10-10 03:30 === CONSULT 2: supervisor planning (2 reports, 1 images, 36041 chars)
+2026-10-10 03:31 LEARN: 2026-10-10 consult 2: I merged `shared-contracts` on screenshot evidence. That evidence was a headless Chrome load with the served sha256 matching the file, red
+2026-10-10 03:31 LEARN: 2026-10-10 consult 2: G0 checkpoint finding (to verify in its final report): - Qollab runs Pyodide v314.0.7 with its own Qiskit 2.5.2 wasm wheel from `qollab.xy
+2026-10-10 03:31 ASK_OWNER: Shared contracts are merged into platform integration (`echo/contracts.js`, `echo/CONTRACTS.md`). Proof: [contracts-browser-load.png](renders/shared-contracts/contracts-browser-load.png). Building it 
+2026-10-10 03:31 hubs regenerated after MERGE lane/platform/shared-contracts into lane/platform/integration (consult 2)
+2026-10-10 03:31 MERGE lane/platform/shared-contracts ok
+2026-10-10 03:31 agent echo-caps-gate (sonnet) start on lane/platform/integration
+2026-10-10 03:41 agent echo-caps-gate finished rc=0 report=present
+2026-10-10 03:41 === CONSULT 3: supervisor planning (3 reports, 0 images, 49943 chars)
+2026-10-10 03:42 LEARN: 2026-10-10 consult 3: I merged `echo-caps-gate` after re-running it myself on a temp `git archive` extract: - fixtures exit 0; - branch `echo/` red on the missi
+2026-10-10 03:42 LEARN: 2026-10-10 consult 3: v1 contracts were merged BEFORE the owner answered Q1–Q6 and before the red-team rulings. The teleport dry run must be two-phase: bits fir
+2026-10-10 03:42 LEARN: 2026-10-10 consult 3: quantum's `echo/tests/` ships inside `echo/` and counts toward Qollab's 100-file cap (caps-gate finding). Track the file count at every in
+2026-10-10 03:42 hubs regenerated after MERGE lane/platform/echo-caps-gate into lane/platform/integration (consult 3)
+2026-10-10 03:42 MERGE lane/platform/echo-caps-gate ok
+2026-10-10 03:42 agent contracts-v2 (opus) start on lane/platform/integration
+2026-10-10 03:46 agent g0-runner-smoke finished rc=0 report=present
+2026-10-10 03:46 === CONSULT 4: supervisor planning (4 reports, 4 images, 58464 chars)
+2026-10-10 03:47 LEARN: 2026-10-10 consult 4: I merged `g0-runner-smoke` on four pieces of evidence: - screenshots 1–4: exact 0.5/0.5 from Pyodide py3.14.2 / Qiskit 2.5.2 / emscripten;
+2026-10-10 03:47 LEARN: 2026-10-10 consult 4: lane integration branches were measured with `git ls-tree`: - quantum: 6 py modules + 8 files in `echo/tests`, no `bridge.js`; - gameplay:
+2026-10-10 03:47 LEARN: 2026-10-10 consult 4: I decided `g0-runner-smoke`'s Q3 under autonomous mode. `QOLLAB_SMOKE_TEST.md` may sit in the Qollab draft, but it is excluded from the re
+2026-10-10 03:47 ASK_OWNER: **For the overseer (the only one who drives Qollab): please run the G0 smoke test. This closes plan row 3.**  - After the merge, it is on `lane/platform/integration`. The steps are in `echo/QOLLAB_SMO
+2026-10-10 03:47 hubs regenerated after MERGE lane/platform/g0-runner-smoke into lane/platform/integration (consult 4)
+2026-10-10 03:47 MERGE lane/platform/g0-runner-smoke ok
+2026-10-10 03:47 agent integration-shell (opus) start on lane/platform/integration
+2026-10-10 04:01 agent contracts-v2 finished rc=0 report=present
+2026-10-10 04:01 === CONSULT 5: supervisor planning (5 reports, 1 images, 69015 chars)
+2026-10-10 04:03 LEARN: 2026-10-10 consult 5: I merged and landed `contracts-v2` on these grounds: - my own `check.mjs` run on a `git archive` extract: GREEN 1087/1087; - `merge-tree` 
+2026-10-10 04:03 LEARN: 2026-10-10 consult 5: The overseer's first real Qollab G0 run (built-in sim) passed scene + bridge. Verify-click got NO response at all, so input delivery into 
+2026-10-10 04:03 hubs regenerated after MERGE lane/platform/contracts-v2 into lane/platform/integration (consult 5)
+2026-10-10 04:03 MERGE lane/platform/contracts-v2 ok
+2026-10-10 04:03 hubs regenerated after LAND lane/platform/contracts-v2 on main (consult 5)
+2026-10-10 04:03 LAND lane/platform/contracts-v2 ok (80d685f)
+2026-10-10 04:03 agent g0-input-diagnostic (opus) start on lane/platform/integration
+2026-10-10 04:05 adopted running agent g0-input-diagnostic (pid 48419)
+2026-10-10 04:05 adopted running agent integration-shell (pid 62736)
+2026-10-10 04:05 === CONSULT 6: supervisor planning (5 reports, 0 images, 69798 chars)
+2026-10-10 04:06 LEARN: 2026-10-10 consult 6: The `contracts-pin-thresholds` worker I decided in consult 5 never started. `lane.log` has no start line and there is no branch. The 04:05
+2026-10-10 04:06 agent contracts-pin-thresholds (opus) start on lane/platform/integration

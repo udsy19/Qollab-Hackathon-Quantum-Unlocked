@@ -1,42 +1,55 @@
-**Lane gameplay: plan as of consult 1 (2026-10-09 ~23:20 ET, T+4.5h). G2 is due Sat 2026-10-10 17:00 ET; if we miss it, we cut to the one-room version (vision §13).**
+**Lane gameplay: plan as of consult 4 (2026-10-10 ~00:05 ET).** G2 is due Sat 2026-10-10 17:00 ET. If we miss it, we cut to the one-room version (vision §13).
 
-**Goal (plan row 5, our half):** a playable graybox in a desktop browser. A third-person follow camera, WASD + mouse orbit + Shift sprint + E interact + Esc pause, with pointer lock released for UI. Collision and map bounds. Three connected spaces: Rain Alley with the replication booth, then Relay Chamber, then Rooftop, joined by short connectors (vision §5.1). Interaction by distance and facing, blocked through walls. The quest state machine of vision §9.1/§9.2: every state, no invalid skips, idempotent, `resetGame()` per §9.5. World reactions on named events (§9.3). Puzzle results come from a fake adapter that matches the `ExperimentResult` schema (§8.4) until the quantum lane lands. Primitive geometry only.
+**Goal (plan row 5):** a playable graybox:
+- Third-person follow camera, WASD + mouse + Shift + E + Esc, pointer lock.
+- Collision and bounds.
+- Alley + booth, Relay Chamber, Rooftop.
+- Interaction detection.
+- The §9 quest machine: idempotent, no invalid skips, `resetGame()`.
+- §9.3 world reactions.
+- A fake adapter against `ExperimentResult`. Primitive geometry only.
 
-**Where things stand:** `echo/` does not exist. No sibling lane has any commits yet: platform, quantum, story-ui and art are all empty against main. So we build our modules against stated contracts and drive them from a dev harness that lives outside `echo/`.
+**Done:**
+- `gameplay-quest-core` merged (consult 2).
+- `gameplay-quest-review` merged (consult 3).
+- **`gameplay-contracts-migration` is being MERGED now.** I re-ran it on tip 78a9c9a in `/tmp/sv4`:
+  - `node --test` gives 55 pass, exit 0.
+  - `state.js` imports `TRANSITIONS`/`QUEST_STATES`/`BUS_EVENTS`/`WORLD_CHANGES` from `echo/contracts.js`.
+  - `quest:enter` and `BOOTED` are gone from echo/.
+  - `schema.mjs` is deleted in favour of contracts validation.
+  - The review ports flipped:
+    - A/B: order is correct.
+    - D: the epoch drops a previous-session result.
+    - E: malformed input is refused, not thrown.
+    - F: fuzz found 0 violations.
+    - a2: 0 of 1500 wrong corrections show fidelity 1 on random generic states, and the positive control still shows 20/60.
+  - Sabotage S8–S12 all go red.
+  - I looked at 13 harness PNGs. The worker died before writing its final report. The safety-net commit only touches the sabotage output.
 
-**Boundaries:**
-- We own `echo/game/` (except `audio.js`) and `echo/scene/` (except lighting/rain/props/buildings/effects).
-- `echo/main.js` belongs to platform. We expose a single entry, `startGame({ root, quantum, ui })`, from `echo/game/app.js`, and platform's `main.js` will call it.
-- Terminal and dialogue UI belong to story-ui. We emit `OPEN_TERMINAL {id}` and similar events. The graybox harness carries a throwaway dev terminal outside `echo/`.
-- The fake quantum adapter is dev-only and lives outside `echo/`. It is labelled engine `documented_preview` and must never be presented as Qiskit output.
-- Interactable positions are tied to the geometry, so gameplay owns them in `scene/district.js` (anchor ids). `data/` (story-ui) refers to them by id.
+**Defect found while judging (fix dispatched):**
+- Today a commit result that comes back but is refused latches as `measured_refused_awaiting_ruling`. The quest then stays in TELEPORT_DRY_RUN_PASSED with COMMIT disabled and nothing else to do. That is a soft-lock (PNG 11).
+- My ruling, from the docs:
+  - §7.4 l.507: at commit the calibrated receiver applies X/Z from the live bits. So a refusal can only be an engine fault after measurement. It cannot be a player mistake.
+  - §12.3: no fabricated success.
+  - §7.4: the token is never re-measured.
+  - Therefore: show the honest scientific-module error, say the token was consumed, and offer RESTART (`resetGame()`, §9.5) as the only way forward.
+  - Rename the latch status to drop "awaiting_ruling".
+- Worker: `gameplay-commit-fault-exit`.
 
-**The harness:**
-- `dev/gameplay/harness.html` plus a fake adapter and a dev terminal.
-- It is served from the repo root on each worker's own port.
-- An importmap maps `three` to jsdelivr 0.186.1, which matches Qollab's by-name import.
+**Running:**
+- `gameplay-world-controller` (checkpoint 1 at 2b1f131, plus 45cfe3c which merged the OLD quest-core). The graybox walks alley→relay→rooftop→commit→city lights→restart (PNGs 02–16).
+- Merge condition: rebase or merge onto the new `lane/gameplay/integration`, which carries contracts.js. Use the `QUEST_STATE_CHANGED`/`WORLD_CHANGES` names from contracts.js. `grep quest:enter` must return zero. Use the contract world-change ids that the bus log now emits (e.g. `corridor_door_opens`, `rooftop_access_unlocked`).
+- If it finishes without doing this, I dispatch a short rebase worker.
 
-**Workers (cap 2, both running in parallel now):**
-1. `gameplay-quest-core`: `echo/game/eventBus.js`, `echo/game/state.js` (the full §9.1 machine, guards, idempotency, reset hooks), `echo/game/objectives.js` (only if story-ui has nothing), the fake adapter and the dev terminal under `dev/gameplay/`, and Node-run transition checks. Small and fast.
-2. `gameplay-world-controller`:
-   - Scene and renderer, plus the three-space graybox in district, alley, relay, rooftop and player.
-   - Input, camera and controller with collision, and interactions.
-   - `app.js` with `startGame`, plus the harness page.
-   - Event-driven world reactions.
-   - It codes against the eventBus/state API frozen below and merges worker 1's branch when that lands.
-
-**Frozen API both workers obey:**
-- `eventBus.js`: `createEventBus()` returns `{on(type, fn) → off, emit(type, payload)}`.
-- `state.js`:
-  - `QUEST_STATES` and `TRANSITIONS` follow §9.2, extended so BOOT→TITLE is `BOOTED`, TITLE START, and so on.
-  - `createQuestMachine(bus)` returns `{state, send(event) → {ok, state, reason}, can(event), reset()}`.
-  - On a successful transition it emits `quest:transition {from, to, event}` and `quest:enter:<STATE>`.
-  - A repeated or invalid event returns `ok:false`, emits nothing and changes nothing.
-
-**Next, after both land:** a full run in the harness from title to credits, recorded as screenshots and a video. Then a reviewer pass, then MERGE. Then hand the integration contract to platform and story-ui, and swap in the real quantum adapter once the quantum lane ships.
+**Next:**
+1. Judge world-controller after its rebase: walk video plus PNGs through the real input path, then merge.
+2. Merge commit-fault-exit.
+3. Integration playthrough worker: 3 consecutive title→credits runs with reset, through the 3D world, on its own port, recorded. Include an FPS reading in a non-headless browser.
+4. Swap in the real quantum adapter when `lane/quantum` conforms to contracts.js and red-team's cross_lane_check passes. Gameplay tests then run on real-engine fixtures (`dump_results.py`). Fidelity threshold ≥ 0.999999.
+5. Story-ui seams: the 4 MOMENT events (`clone_increase_voltage`, `relay_bay_cable`, `teleport_commit_locked`, `teleport_dry_run_failed`) and a countdown that holds at 00:00. These wait on platform adding them to contracts.js. Then a gameplay worker fires them from world triggers and terminals.
 
 **Risks:**
-- The 2 h worker budget against the size of worker 2's task. Mitigation: a checkpoint report within 1 h, and alley + relay first if it runs late.
-- The `main.js` and data ownership seams. Mitigation: the frozen contract, reported in each report's requests section.
-- A deadline miss. Mitigation: the one-room cut at Sat 17:00.
-- Pointer lock in headless capture: verify behaviour through the synthetic-event path, and the owner checks real lock by looking.
+- Headless FPS reads 15–24 in the world-controller PNGs. That is not a laptop measurement, but it needs a real reading before G3.
+- World-controller rebase cost.
+- The quantum contract is not settled yet (red-team blocker), so we cannot judge the real-adapter swap before platform and quantum conform.
+- Nothing lands on main until cross_lane_check passes (owner ruling).

@@ -3,3 +3,32 @@
 2026-10-10 03:21 LEARN: The worker model key is assumed to be "opus" (the context did not name the keys). If a dispatch fails on the model key, check the loop's accepted keys before re
 2026-10-10 03:21 agent gameplay-quest-core (opus) start on lane/gameplay/integration
 2026-10-10 03:21 agent gameplay-world-controller (opus) start on lane/gameplay/integration
+2026-10-10 03:31 agent gameplay-quest-core finished rc=0 report=present
+2026-10-10 03:31 === CONSULT 2: supervisor planning (1 reports, 3 images, 36321 chars)
+2026-10-10 03:32 LEARN: 2026-10-10 consult 2: I merged gameplay-quest-core after re-running its suite myself in a scratch worktree off the branch tip 934b8c2 (36 pass, exit 0) and look
+2026-10-10 03:32 LEARN: 2026-10-10 consult 2: The quest table (QUEST_STATES/TRANSITIONS) now lives in `echo/game/state.js`. The owner has ruled that shared contracts live in platform's
+2026-10-10 03:32 ASK_OWNER: Gameplay lane has three small questions. They come from the quest-core worker and the vision docs do not settle them. The build continues with the current behaviour in the meantime.  1. **Teleport dry
+2026-10-10 03:32 hubs regenerated after MERGE lane/gameplay/gameplay-quest-core into lane/gameplay/integration (consult 2)
+2026-10-10 03:32 MERGE lane/gameplay/gameplay-quest-core ok
+2026-10-10 03:32 agent gameplay-quest-review (opus) start on lane/gameplay/integration
+2026-10-10 03:39 agent gameplay-quest-review finished rc=0 report=present
+2026-10-10 03:39 === CONSULT 3: supervisor planning (2 reports, 0 images, 48525 chars)
+2026-10-10 03:40 LEARN: 2026-10-10 consult 3: The quest-core review found that platform's `echo/contracts.js` (lane/platform/integration @ 6378677) and gameplay's `state.js` defined tw
+2026-10-10 03:40 LEARN: 2026-10-10 consult 3: The dev fake's calibration states included Pauli eigenstates (|0>, |+>, …). On those, 20 of 80 wrong corrections still show fidelity 1, wh
+2026-10-10 03:40 LEARN: 2026-10-10 consult 3: World-controller was briefed before the contracts migration, so it subscribes to `quest:enter:*`. Merge rule: it must rebase onto the post
+2026-10-10 03:40 ASK_OWNER: Two quest choices that the vision docs do not settle. They come from the gameplay adversarial review (`vault/Reports/quest-core-adversarial-review.md`). Building continues meanwhile.  1. **What happen
+2026-10-10 03:40 hubs regenerated after MERGE lane/gameplay/gameplay-quest-review into lane/gameplay/integration (consult 3)
+2026-10-10 03:40 MERGE lane/gameplay/gameplay-quest-review ok
+2026-10-10 03:40 agent gameplay-contracts-migration (opus) start on lane/gameplay/integration
+2026-10-10 04:00 agent gameplay-contracts-migration finished rc=0 report=present
+2026-10-10 04:00 === CONSULT 4: supervisor planning (4 reports, 12 images, 56979 chars)
+2026-10-10 04:01 LEARN: 2026-10-10 consult 4: I merged gameplay-contracts-migration even though its worker died before writing a final report (only a checkpoint and a safety-net commit
+2026-10-10 04:01 LEARN: 2026-10-10 consult 4, decided from the docs. §7.4 l.507 says the final commit applies X/Z from the LIVE bits through the calibrated rule, so the player picks no
+2026-10-10 04:01 LEARN: 2026-10-10 consult 4: The world-controller PNGs show headless FPS of 15–24 on ANGLE Metal. That is not a laptop measurement, but it is under the ≥30 FPS bar (§1
+2026-10-10 04:01 hubs regenerated after MERGE lane/gameplay/gameplay-contracts-migration into lane/gameplay/integration (consult 4)
+2026-10-10 04:01 MERGE lane/gameplay/gameplay-contracts-migration ok
+2026-10-10 04:01 agent gameplay-commit-fault-exit (opus) start on lane/gameplay/integration
+2026-10-10 04:04 agent gameplay-world-controller finished rc=0 report=present
+2026-10-10 04:04 === CONSULT 5: supervisor planning (4 reports, 0 images, 62805 chars)
+2026-10-10 04:05 adopted running agent gameplay-commit-fault-exit (pid 32587)
+2026-10-10 04:05 === CONSULT 6: supervisor planning (4 reports, 0 images, 61848 chars)

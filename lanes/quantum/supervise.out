@@ -2,3 +2,42 @@
 2026-10-10 03:21 LEARN: Lane setup (consult 1): the worker model key is `opus` (org.json `worker_models`; `sonnet` also exists), and the lane's parallel cap is 2. The vision's §10.3 se
 2026-10-10 03:21 agent quantum-core (opus) start on lane/quantum/integration
 2026-10-10 03:21 agent backend-job (opus) start on lane/quantum/integration
+2026-10-10 03:29 agent backend-job finished rc=0 report=present
+2026-10-10 03:29 === CONSULT 2: supervisor planning (2 reports, 0 images, 34707 chars)
+2026-10-10 03:29 LEARN: 2026-10-10 consult 2: I merged backend-job after re-running its tests myself on a disposable `--detach` worktree: `git worktree add --detach /tmp/x <branch>`. A
+2026-10-10 03:29 ASK_OWNER: Two checks only Qollab can settle. Per your ruling, the overseer runs these in your Chrome on the free Built-in simulator; no IonQ and no publish.  1. **Pyodide Qiskit probe (top risk for G1).** Run t
+2026-10-10 03:29 hubs regenerated after MERGE lane/quantum/backend-job into lane/quantum/integration (consult 2)
+2026-10-10 03:29 MERGE lane/quantum/backend-job ok
+2026-10-10 03:32 agent quantum-core finished rc=0 report=present
+2026-10-10 03:32 === CONSULT 3: supervisor planning (2 reports, 0 images, 42147 chars)
+2026-10-10 03:33 LEARN: 2026-10-10 consult 3: I merged quantum-core after re-running it on a disposable detached worktree (363 passed, exit 0, merge-tree clean) and checking two things
+2026-10-10 03:33 ASK_OWNER: 1. **Rooftop calibration states.** On the named states |0>, |1>, |+>, |−> and phase, some WRONG X/Z correction still scores fidelity 1.000000. The evidence is the table in `evidence/quantum-core/trans
+2026-10-10 03:33 hubs regenerated after MERGE lane/quantum/quantum-core into lane/quantum/integration (consult 3)
+2026-10-10 03:34 MERGE lane/quantum/quantum-core ok
+2026-10-10 03:34 agent contract-conformance (opus) start on lane/quantum/integration
+2026-10-10 03:34 agent physics-review (opus) start on lane/quantum/integration
+2026-10-10 03:41 agent physics-review finished rc=0 report=present
+2026-10-10 03:41 === CONSULT 4: supervisor planning (4 reports, 0 images, 56170 chars)
+2026-10-10 03:42 LEARN: 2026-10-10 consult 4: I merged physics-review after re-running `evidence/physics-review/derive.py` myself: 81 OK, worst 4.99e-11, exit 0. **Gotcha:** the script
+2026-10-10 03:42 LEARN: Decision (autonomous mode, CLAUDE.md "story token is consumed ONCE at final commit" and vision §7.4/§7.5): the engine itself refuses a second `live_commit` with
+2026-10-10 03:42 LEARN: Sequencing: contract-conformance and the upcoming quantum-hardening worker both edit `echo/quantum/*.py`, so they must run one after the other, never in paralle
+2026-10-10 03:42 hubs regenerated after MERGE lane/quantum/physics-review into lane/quantum/integration (consult 4)
+2026-10-10 03:42 MERGE lane/quantum/physics-review ok
+2026-10-10 03:42 agent pyodide-bridge (opus) start on lane/quantum/integration
+2026-10-10 03:46 agent contract-conformance finished rc=0 report=present
+2026-10-10 03:46 === CONSULT 5: supervisor planning (4 reports, 0 images, 64694 chars)
+2026-10-10 03:47 LEARN: 2026-10-10 consult 5: I merged contract-conformance after re-running it on disposable worktree `/tmp/q5cc`: 453 passed, exit 0, merge-tree clean. It still emits
+2026-10-10 03:47 hubs regenerated after MERGE lane/quantum/contract-conformance into lane/quantum/integration (consult 5)
+2026-10-10 03:47 MERGE lane/quantum/contract-conformance ok
+2026-10-10 03:47 agent quantum-hardening (opus) start on lane/quantum/integration
+2026-10-10 04:03 agent pyodide-bridge finished rc=0 report=present
+2026-10-10 04:03 === CONSULT 6: supervisor planning (6 reports, 2 images, 71901 chars)
+2026-10-10 04:05 LEARN: 2026-10-10 consult 6: I merged pyodide-bridge after re-running it myself on disposable worktree `/tmp/q6pb`, port 5193 (set `PB_PORT`/`PB_OUT` so it never colli
+2026-10-10 04:05 hubs regenerated after MERGE lane/quantum/pyodide-bridge into lane/quantum/integration (consult 6)
+2026-10-10 04:05 MERGE lane/quantum/pyodide-bridge ok
+2026-10-10 04:05 agent ionq-sim-rehearsal (opus) start on lane/quantum/integration
+2026-10-10 04:05 adopted running agent ionq-sim-rehearsal (pid 52782)
+2026-10-10 04:05 adopted running agent quantum-hardening (pid 61986)
+2026-10-10 04:05 === CONSULT 7: supervisor planning (6 reports, 0 images, 73005 chars)
+2026-10-10 04:06 LEARN: 2026-10-10 consult 7: Lane integration was 10 commits behind main, including contracts v2 at 80d685f. A `merge-tree` of main into integration conflicts only in 
+2026-10-10 04:06 agent main-sync (opus) start on lane/quantum/integration

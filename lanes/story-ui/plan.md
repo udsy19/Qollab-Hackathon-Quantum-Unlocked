@@ -1,31 +1,49 @@
-**Lane story-ui: plan as of consult 1 (Fri 2026-10-09 ~23:20 ET, T+4.5h)**
+**Lane story-ui plan, consult 5 (Sat 2026-10-10 ~00:05 ET / 04:05 UTC, T+5h)**
 
-**Goal:** the story and interface from vision §4 and §6. That means a skippable opening, dialogue with subtitles (2 lines max), the HUD, and three terminals (copy booth, relay, teleport console) wired to the §8.4 quantum adapter with honest error states. It also means progressive hints, Declassified mode with the teach-back, pause and settings menus, keyboard navigation, visible focus, reduced motion and text scaling. This covers Plan rows 5 (G2, shared with gameplay) and 6 (G3, shared with art).
+**Goal:** the story and interface from vision §4 and §6:
+- a skippable opening
+- 2-line subtitles
+- the HUD
+- three terminals (copy_booth, relay_core, teleport_terminal) wired to the §8.4 adapter, with honest error states
+- progressive hints
+- Declassified mode with the teach-back, plus credits
+- pause and settings menus
+- keyboard navigation, visible focus, reduced motion and text scaling
 
-**State:** `echo/` does not exist yet. No other lane has landed anything. The platform lane owns `main.js`, `index.html`, the event bus and the shared contracts, and none of these exist yet. This lane must therefore build in a way that does not depend on them.
+This is Plan rows 5 (G2, Sat 17:00 ET) and 6 (G3, Sun 05:00 ET).
 
-**Approach (decoupled vertical slices):**
-- Every UI module in `echo/ui/` is a plain ES module with named exports. Each one creates its own DOM inside a root element passed in (`mount(root, deps)`), because `index.html` belongs to platform and `<script>` does not run on Qollab. Each one talks to the rest of the game through callbacks and injected dependencies, not globals. When platform's eventBus lands, the wiring is a few lines in `main.js` (platform's job).
-- Names come verbatim from the vision: §9.1/§9.2 for quest states and events, §8.4 for `ExperimentResult`/`QuantumEngine`, §9.4 for interactable ids. Any naming the vision leaves open goes to platform as a contract request in the worker's report.
-- Story data lives in `echo/data/*.js` as JS modules, not JSON, because JS cannot read project files on Qollab.
-- All CSS goes in `echo/main.css`, because it is the only stylesheet Qollab loads. Each worker writes inside its own delimited section.
-- The dev harness lives outside `echo/` at `evidence/story-ui/harness/`, so it never counts toward the 100-file limit. Each worker serves it on its own port.
-- Terminals run against the §8.4 interface. Until the quantum lane ships its adapter, the harness passes in a stub labelled `documented_preview` that returns only textbook-exact values. The UI always shows the engine label and never presents preview data as a measurement.
+**State, checked from git this consult:**
+- **main has contracts v2** (`2133d8a`/`80d685f`), but `lane/story-ui/integration` does NOT yet contain main (`merge-base --is-ancestor` → 1; 74 files behind). → I am merging main into the lane integration branch now, and every new worker is based on it.
+- `terminals-c4` is running. It has 1 commit (`ac82f4a`: data copy, harness, stub engine, drive gate red on the skeleton). It is based on the pre-v2 integration branch, so it must conform to v2 before I merge it: the two-phase teleport dry run (bits first, then corrections), the `ExperimentResult` shape from `echo/contracts.js`, and the UI root/settings. Its report will be judged on that.
+- `data-fixes` is running. It has 3 commits (`b52954b` → `8cf12cb` → `9127f62`): a branch-truth gate run in Qiskit over all 16 (bits, plan) cases, the ruled credits, the bit labels, the test-rig dry run, the 00:00 hold and the 00 dry-run beat. Sabotage: 48 cases, 43 red, 4 old nulls, 1 refused. The final report is pending; I judge it when it arrives.
+- The cap is now 3, with 1 free slot. I am using it for `declassified`.
 
-**In flight (consult 1):**
-1. `ui-shell`: `main.css` tokens (§6.2), `ui/hud.js`, `ui/dialogue.js`, `ui/menu.js` (title/pause/settings), `ui/accessibility.js`.
-2. `story-data`: `data/story.js`, `data/objectives.js` (all §4 beats as subtitle-sized lines, hint ladders for §6.6, teach-back questions), plus a physics-claims check against §2.4/§7.
-3. `terminals`: `ui/terminal.js` (the three terminals from §6.4/§6.5 and §4.2–4.4), with honest error, loading and fallback states and idempotent commit-once.
+**Approach (unchanged):**
+- `echo/ui/` modules use `mount(root, deps)`, and data ships as JS in `echo/data/`.
+- Each CSS area gets a delimited section of `main.css`. Harnesses live in `evidence/story-ui/harness/`, with one port per worker.
+- Contracts are imported from `echo/contracts.js` (v2 on main).
+- Kets are ASCII in the data and become ⟩ at display time.
+- The engine label is always visible.
 
-**Next (consult 2+):**
-- Merge ui-shell first; terminals then rebases for `main.css`.
-- Then `ui/declassified.js` and teach-back, `ui/credits.js` (blocked on owner credit names), and the opening sequence player (Shot A–D captions, skippable), which needs gameplay's camera hooks.
-- Then an a11y pass: keyboard-only playthrough of every panel, 200% text, reduced motion, contrast audit with accesslint.
-- Then integration with platform's `main.js` and gameplay's state machine, followed by a full graybox run in the local runner.
+**Done:**
+- ui-shell (merged, consult 2)
+- story-data (merged, consult 3)
+
+**In flight:**
+- `terminals-c4` (G2 critical path)
+- `data-fixes`
+- `declassified` (new: journal, Declassified tabs, teach-back, credits screen; port 8771)
+
+**Next, in order, as slots free:**
+1. `shell-polish`: sentence-boundary pages, ⟩ at display time, the select font, the 1024/1366 @200% null. It goes after the terminals merge, because of the `main.css` hot spot.
+2. `opening`: a skippable Shot A–D caption player.
+3. `integration`: mount into platform `main.js` / gameplay, swap the stub for `echo/quantum/bridge.js` once quantum lands it, and play a graybox in the local runner. Target about Sat 12:00 ET.
+4. An a11y pass at 3 viewports × 200%, with accesslint.
 
 **Risks:**
-- Contract drift with platform/gameplay. Mitigation: verbatim vision names, contract requests filed early.
-- `main.css` merge conflicts. Mitigation: delimited sections and merge order.
-- Physics wording errors in dialogue. Mitigation: story-data self-audits against §2.4/§7, and the red-team lane reviews later.
-- G2 Sat 17:00: by Sat ~12:00 the UI must be integrated, or the lane falls back to one-room (§13).
-- Credits blocked on owner names.
+- `terminals-c4` was built on pre-v2 contracts and may need a rebase/conform round.
+- `bridge.js` is not landed (quantum).
+- Every worker appends to `main.css`. Each section is delimited, and I merge in order: data-fixes → terminals → declassified.
+- G2 is Sat 17:00.
+
+**Per-consult check (from LEARN c4):** compare the in-flight list with the running list and each branch's commits, and re-dispatch anything that is missing.

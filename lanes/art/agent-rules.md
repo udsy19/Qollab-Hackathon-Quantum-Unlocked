@@ -57,7 +57,7 @@ first: the product, the owner's rulings and what has NOT worked.
   - what you changed (commits);
   - evidence paths;
   - what you did NOT do or could not verify;
-  - `## Questions for the owner` — anything the vision docs do not settle (owner rule: ask, never assume);
+  - `## Decisions inferred from the docs` — each choice the docs did not settle explicitly, with the doc section you inferred it from (autonomous mode; ask the owner only about spend, access, publishing or credit names);
   - what the supervisor should do next (LAST, so it is in the tail the supervisor reads).
 
 - **Lane ownership.** You edit only this lane's files: art: `echo/assets/`, `echo/scene/{lighting,rain,props,buildings,effects}.js`, `echo/game/audio.js`. Anything else is a request in your report.

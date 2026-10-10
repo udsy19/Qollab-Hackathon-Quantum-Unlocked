@@ -1,28 +1,41 @@
-**Lane goal (G1, due Sat 2026-10-10 04:00 ET; plan row 4).** Build `echo/quantum/{__init__,cloning,entanglement,teleportation,formats,qollab_job}.py` to match vision §7 and §10.3–10.7. Every function returns JSON-safe dicts for the JS bridge (`callPromising(...).toJs()`). Tests go in `echo/tests/` and cover:
-- basis states copy; |+>, |−> and phase states do not (reduced purity 0.5, and the output is not ψ⊗ψ);
-- receiver marginal stays 50/50 for sender I/X/Z (partial_trace gives I/2), and I vs X shows a joint-correlation difference;
-- teleportation for 6+ states × all 4 branches at fidelity ≥ 0.999999, plus the "no corrections" average that is independent of the source;
-- an endianness fixture;
-- the deferred-measurement circuit labelled as a verification, not a link;
-- the one selected-backend Bell verification.
+**Lane goal (G1, due Sat 2026-10-10 04:00 ET, plan row 4; it is now Sat 00:06 ET, so about 4 h left).** Build `echo/quantum/{__init__,cloning,entanglement,teleportation,formats,qollab_job}.py` plus the quantum-owned `echo/quantum/bridge.js`. Every result is JSON-safe and passes platform's `validateExperimentResult` under **contracts v2, now on main at 80d685f**. Tests go in `echo/tests/`, per vision §7 and §10.3–10.7. Everything has to be proven in Pyodide through the local runner, and on Qollab by the overseer.
 
-**Approach: two workers in parallel (cap 2), with no file overlap.**
-1. `quantum-core` owns `cloning.py`, `entanglement.py`, `teleportation.py`, `formats.py`, `__init__.py`, `tests/test_{cloning,entanglement,teleportation}.py`, and the proposed `ExperimentResult` contract note in the vault.
-2. `backend-job` owns `qollab_job.py`, `tests/test_qollab_job.py` (endianness fixture and counts parsing), and a research note on how a JS/Qiskit project reaches `backend`: from JS (§10.7) or from a Python module. It also checks whether our Qiskit calls run under Pyodide (Py 3.14, qiskit ≥2.5.2). It uses the §8.4 field names verbatim so `formats.py` can absorb them when I merge.
+**Done**
+- **backend-job** (consult 2)
+- **quantum-core** (consult 3)
+- **physics-review** (consult 4)
+- **contract-conformance** (consult 5)
+- **pyodide-bridge** (consult 6): 61/61 in the local runner; the no-memo sabotage goes red.
 
-**Contract with the platform lane.** Platform owns the shared `ExperimentResult` schema. We propose it as `vault/Design/experiment-result-contract.md` (status: proposed), taking vision §8.4 verbatim and adding fields only with a stated reason. Platform rules on it. Likely split: `backend.run` lives in `main.js`, which platform owns. Quantum supplies the circuit spec and the counts→result interpretation.
+**Running**
+- **quantum-hardening**, the only `.py` worker. It has 3 commits so far:
+  - 4d57f0e: tests written first, with the red run captured;
+  - f8e335b: random generic dry runs, the hidden token, and the once-only atomic commit;
+  - 0893403: conforms to v2.
+  - Its final report is still pending.
+- **ionq-sim-rehearsal**: the off-Qollab IonQ simulator rehearsal. No commits yet.
+- **main-sync** (dispatched now). Lane integration is behind main by 10 commits, including contracts v2 and the `tools/contract-check` and `tools/qollab-caps` gates. The overseer asked that main be merged before the next dispatch, and `merge-tree` shows conflicts only in the generated hubs (`vault/Map.md`, `vault/Reports/README.md`). This worker:
+  - merges main;
+  - regenerates the hubs;
+  - runs both platform gates against the integration engine;
+  - reports the exact gap list, so hardening's merge and the bridge rewire land on an up-to-date base.
 
-**Done:** nothing yet. Fresh start; no `echo/` directory exists.
+  It touches no `echo/quantum/*.py`, so it can run in parallel with hardening.
 
-**Next:** judge both reports. Merge core first, then backend-job, reconciling it onto `formats.py`. Then send a red-team or reviewer pass covering:
-- gate independence: expected values come from hand-derived amplitudes, not from the code under test;
-- a sabotage round: swap the m0/m1 correction mapping, drop the H, flip endianness. Each must turn the tests red.
+**Next**
+1. Judge quantum-hardening: re-run pytest and its sabotage on a detached worktree. Merge it **after** main-sync, and resolve conflicts against the v2 base.
+2. Dispatch **bridge-rewire** to move `bridge.js` onto hardening's API:
+   - `bell_measurement("calibration")` returns theta/phi;
+   - `teleport_branch(…, theta, phi)`;
+   - `live_commit()` on the hidden token;
+   - a `reset_story_token` hook.
 
-Then a Pyodide smoke test through the local runner, coordinated with the platform lane.
+   It then re-runs `round.sh`. The expected outcome is that `verifySelectedBackendOnce` **resolves** as a valid `backend_verification`. That run is the G1 proof screenshot.
+3. Fix the caps-gate fixture strings in `echo/tests` (`ionq_simulator`, `api_key`), plus anything else main-sync's caps run lists. This happens after hardening merges, because it touches `echo/tests`.
+4. Run `contract-check` and `qollab-caps` green on integration, then propose row 4 done.
+5. A reviewer pass on the hardened engine.
 
-**Risks:**
-- Pyodide's Qiskit API may differ from local qiskit 2.5.
-- Ambiguity over whether `backend` is reachable from Python in JS projects.
-- Bitstring endianness.
-- Schema drift with platform.
-- Over-claiming: never say "ran on IonQ/Qollab" without the owner's confirmation.
+**Risks**
+- The bridge has to be rewired after hardening.
+- Two platform-runner requests are still pending: a Python `backend.run` counter, and the caps exemption for `qollab_job.py`.
+- G1 cutoffs: if hardening runs past 02:30 ET, merge what is green. The bridge rewire is the last G1 item, with a cutoff at 03:30.

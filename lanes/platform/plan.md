@@ -1,25 +1,32 @@
-**Lane goal:** platform. G0 first: a Qollab-shaped `echo/` (body-fragment `index.html`, `main.js`, `main.css`). It renders a Three.js scene, calls a Qiskit Python module through `.callPromising` and `.toJs()`, and makes exactly one `backend.run`. Alongside it: a local Qollab-like runner in `tools/` and `echo/QOLLAB_SMOKE_TEST.md` for the owner. After G0, platform owns `main.js`, `index.html` and the shared contracts (event names, `ExperimentResult`, interactable ids). It also integrates every lane after each merge, runs full playthroughs, keeps `echo/` within Qollab's caps, and writes the README/project page, the 2:40 video script and the release. Plan rows 3, 7 and 8.
+**Lane goal:** platform. G0 comes first: a Qollab-shaped `echo/` (body-fragment `index.html`, `main.js`, `main.css`) that renders Three.js, calls Qiskit through `.callPromising` + `.toJs()`, and makes exactly one `backend.run`. It ships with a local Qollab-like runner in `tools/` and `echo/QOLLAB_SMOKE_TEST.md`. After G0, platform owns `main.js`, `index.html` and the shared contracts. It integrates every lane, runs full playthroughs, keeps `echo/` within the caps, and writes the README/project page, the 2:40 video script and the release. Plan rows 3, 7 and 8.
 
-**Clock (ET):** now about Fri 23:20, and G0 is overdue. G1 is Sat 04:00, G2 Sat 17:00, G3 Sun 05:00, freeze Sun 14:00, submit Sun 19:00.
+**Clock (ET):** about Sat 00:05. G1 Sat 04:00 · G2 Sat 17:00 (else the one-room cut) · G3 Sun 05:00 · freeze Sun 14:00 · submit Sun 19:00.
 
-**Approach, in order:**
-1. **G0 vertical slice (worker `g0-runner-smoke`):**
-   - `echo/` minimal: a Three.js scene, a Python module under `echo/quantum/` called through `.callPromising` + `.toJs()`, and one guarded `backend.run` behind a button.
-   - `tools/qollab-runner/`: a local runner that copies the documented Qollab JS-project contract as closely as it can, built from the live docs and the earlier org's research.
-   - The smoke-test doc for the owner.
-   - Evidence is screenshots from the local runner. Nothing gets called a "Qollab run" until the owner confirms one.
-2. **Shared contracts in parallel (worker `shared-contracts`):**
-   - The vision §8.4 `ExperimentResult` as a guarded JS validator, plus the Python-side shape documented for the quantum lane.
-   - §9.1 quest states and the §9.2 transition table as frozen data, plus the event names (§9.3) and the interactable ids (§9.4).
-   - One platform-owned file, so the other lanes can build against it tonight.
-3. **After both merge:** brief every lane through owner-answers on the contract location. Then `main.js` becomes the integration point that boots the gameplay, scene, ui and quantum modules, starting with an empty-room playable shell.
-4. **Later (rows 7, 8):** a caps-check script (≤100 files, ≤2 MB) written red-first; the README as the Qollab write-up (one paragraph per line, YouTube embed); the video script; three consecutive full runs.
+**Done:**
+- `shared-contracts` (c2), `echo-caps-gate` (c3), `g0-runner-smoke` (c4).
+- `contracts-v2` (c5), merged and landed on main as 80d685f. Grounds: 1087/1087 on my own extract, merge-tree clean, screenshot 04 showing the two-phase dry run.
+- G0 on real Qollab (overseer run, built-in sim): steps 1–5 PASS. Steps 6–7 (Verify click) NOT CONFIRMED, cause unknown. `g0-input-diagnostic` covers it.
 
-**Done:** nothing yet (fresh lane).
+**In flight:**
+- `integration-shell` (adopted after the loop restart at 04:05). Checkpoint 1: the assembler works, and it is RED on the `main.css` and `quantum/smoke.py` ownership conflicts, as predicted. It is now building the real `main.js`/`index.html` on contracts v2.
+- `g0-input-diagnostic` (adopted). Build `10c` adds on-page input counters, an auto-send countdown for the one job through the same guard, and iframe sandbox/allow facts from Qollab's runtime source.
+- **`contracts-pin-thresholds` (dispatched now).** I decided it in consult 5, but it never started: there is no branch and no lane.log start line. The consult-5 dispatch was lost at the 04:05 restart, or before it. It pins the owner-ruled constants so that changing any of them turns the gate red.
+
+**Relay (overseer → lanes):** the contracts-v2 migration table in `reports/0003-contracts-v2.md`:
+- quantum first: `bell_verification` → `backend_verification`, and `{theta, phi}` two-phase entry points;
+- gameplay: `marginalProbabilities` / `dryRunVerdict`; delete its local constants;
+- story-ui: `captionStyle`, `QUALITY_LEVELS`, `BIT_LABELS`, the two-phase terminal.
+
+**Next:**
+1. The overseer re-runs G0 with build `10c`. That closes steps 6–7 or names the input cause, and it decides the controls design (pointer lock or click-to-focus/drag).
+2. Judge `integration-shell` on runner screenshots plus my own caps and contract runs. Once merged, run assemble + caps + contract check after every lane landing.
+3. Merge `contracts-pin-thresholds` after my own sabotage: `FIDELITY_PASS` 0.999999 → 0.9 must go red.
+4. Integrated product code waits on red-team's `cross_lane_check`.
+5. First playthrough once gameplay has a controller and scene. Then the README/project page, the video script, and 3 consecutive full runs (row 8).
 
 **Risks:**
-- **Running Qiskit in a local runner.** Stock Pyodide may not ship Qiskit (it has Rust extensions). Qollab must use its own build, maybe fetchable by GET from its CDN. The fallback is a dev-only CPython bridge, and it must be labelled honestly as "local runner (CPython)", not "Pyodide".
-- **The JS→Python import mechanism** (`import * as m from 'quantum.mod'`) has to be copied exactly. A wrong copy hides a G0 failure until the owner runs it on Qollab.
-- **The IonQ "Credits apply" label** is still unresolved.
-- **The owner's Qollab run is the only real G0 proof**, and it needs their time tonight.
-- **Contract location:** `echo/contracts.js` is my reversible choice; the question is sent to the owner.
+- **Iframe input on Qollab** (top G2 risk).
+- Lane restarts drop dispatches: verify every new AGENT block shows a "start" line in lane.log at the next consult.
+- Contract churn while lanes migrate.
+- `echo/tests/` counts toward the 100-file cap.
+- The puppeteer dependency is borrowed from the MCP install.

@@ -1,0 +1,1 @@
+You were interrupted — your process exits whenever you end your turn. Continue your brief from where you stopped, running every command in the FOREGROUND. Do not stop until /Users/udsy/agent-org/lanes/quantum/reports/0007-main-sync.md is written.

@@ -1,6 +1,6 @@
 {
   "name": "gameplay",
   "branch_prefix": "lane/gameplay",
-  "max_parallel": 2,
+  "max_parallel": 3,
   "may_land": true
 }

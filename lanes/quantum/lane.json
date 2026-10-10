@@ -1,6 +1,6 @@
 {
   "name": "quantum",
   "branch_prefix": "lane/quantum",
-  "max_parallel": 2,
+  "max_parallel": 3,
   "may_land": true
 }

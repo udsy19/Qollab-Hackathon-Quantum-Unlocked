@@ -16,10 +16,10 @@ ECHO: ONE OF ONE — a playable, ~10-minute third-person cyberpunk adventure, bu
 - **Vault first.** Know what the project already knows, and write findings back.
 - **Ask, don't guess, on what only the owner can decide.** Anything the product can expose as a user
   setting is a setting with sensible defaults, not an owner question.
-- **Ask, never assume** (owner, 2026-10-09, verbatim: "ask me if you have any questions going forward. do not assume anything. if you need anything, or if you're not sure of something, ask me"). Anything the vision docs do not settle → `## Questions for the owner` in your report / `=== ASK_OWNER ===`. Keep building what IS settled meanwhile. `.claude/rules/ask-the-owner.md`.
+- **Autonomous mode** (owner, 2026-10-10: "keep going - do not keep stopping the progress, as of now, this is an autonomous loop, infer from the docs i gave you"). Decide design choices from the vision docs and cite them; `ASK_OWNER` only for spend, access, publishing, credit names, or a conflict between owner docs. `.claude/rules/ask-the-owner.md`.
 - **The vision docs are owner-only** (`ECHO_MASTER_VISION.md`, `ROADMAP_48_HOURS.md`, `QOLLAB_DEPLOYMENT.md`, `CLAUDE_CODE_PROMPTS.md`). Propose changes in a report; never edit them.
 - **Qollab is the target; `echo/` is its root** (`.claude/rules/qollab-runtime.md`): ≤100 files, ≤2 MB each, body-fragment `index.html`, `main.js` entry, no storage/POST/WebSocket/workers, injected `backend`, **at most one `backend.run` per run**, all puzzle math from local Qiskit.
-- **Only the owner runs or publishes on Qollab.** Never claim a Qollab run, an IonQ run, or a publish the owner has not confirmed in `owner-answers.md`. Local runner results are labelled "local runner".
+- **Only the overseer touches Qollab** (owner's Chrome: one draft, free sims, never publish). Never claim a Qollab run, an IonQ run, or a publish not recorded in `owner-answers.md`. Local runner results are labelled "local runner".
 - **Truthful physics** (vision §2.4, §7.5): no FTL messages, no cloned unknown states, no "certified quantum random", no matter teleportation; m0 = source readout, m1 = Alice's Bell half; receiver X iff m1=1, Z iff m0=1; story token consumed once.
 - **Lane ownership** (`.claude/rules/lane-ownership.md`): edit only your lane's files; shared contracts change only through the platform lane.
 - **The clock (ET)** (`.claude/rules/deadline-gates.md`): G1 Sat 04:00 · G2 Sat 17:00 (else one-room cut) · G3 Sun 05:00 · **feature freeze Sun 14:00** · submit Sun 19:00.

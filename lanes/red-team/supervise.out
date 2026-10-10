@@ -1,3 +1,32 @@
 2026-10-10 03:19 === CONSULT 1: supervisor planning (0 reports, 0 images, 22678 chars)
 2026-10-10 03:20 LEARN: Consult 1 (Fri 23:19 ET): `echo/` does not exist yet, so a code audit or playtest now would audit nothing. The red-team's first move is to build an independent 
 2026-10-10 03:20 agent physics-oracle-audit (opus) start on lane/red-team/integration
+2026-10-10 03:36 agent rubric-research (sonnet) start on lane/red-team/integration
+2026-10-10 03:36 agent physics-oracle-audit finished rc=0 report=present
+2026-10-10 03:36 === CONSULT 2: supervisor planning (1 reports, 0 images, 38406 chars)
+2026-10-10 03:38 LEARN: 2026-10-10 consult 2: I verified the oracle independently before merging: `git archive` of lane/red-team/physics-oracle-audit into a temp dir gave 523 passed an
+2026-10-10 03:38 LEARN: 2026-10-10 consult 2: Quantum code landed on `lane/quantum/integration` (a9edce2) about 20 min after the oracle finished. Building the oracle before the code ex
+2026-10-10 03:38 ASK_OWNER: Our red-team physics audit of the vision docs found no physics errors, but four ambiguities change what the player sees or a shared contract. I need your ruling on each. My recommendation comes first:
+2026-10-10 03:38 hubs regenerated after MERGE lane/red-team/physics-oracle-audit into lane/red-team/integration (consult 2)
+2026-10-10 03:38 MERGE lane/red-team/physics-oracle-audit ok
+2026-10-10 03:40 agent physics-code-audit (opus) start on lane/red-team/integration
+2026-10-10 03:40 agent rubric-research finished rc=0 report=present
+2026-10-10 03:40 === CONSULT 3: supervisor planning (2 reports, 0 images, 46430 chars)
+2026-10-10 03:41 LEARN: 2026-10-10 consult 3: The rubric-research note is MERGED. Qollab publishes only the four trait names, with no weights. The novelty bar can zero both Novelty and
+2026-10-10 03:41 LEARN: 2026-10-10 consult 3: Workers must not regenerate or commit hubs, Map or Index; the loop does that after a merge. A worker's `vault-hubs --check` showing STALE 
+2026-10-10 03:41 LEARN: 2026-10-10 consult 3: At 03:40 UTC no integration branch has a runnable game. Platform has contracts only, gameplay has logic only, story-ui has the UI shell on
+2026-10-10 03:41 ASK_OWNER: These come from the rubric research (`vault/Research/judging-rubric.md`, merged). The page copy depends on them.  1. **Theme:** which theme does ECHO declare at submission? Options: **Quantum Unlocked
+2026-10-10 03:41 hubs regenerated after MERGE lane/red-team/rubric-research into lane/red-team/integration (consult 3)
+2026-10-10 03:41 MERGE lane/red-team/rubric-research ok
+2026-10-10 03:52 agent quest-state-audit (opus) start on lane/red-team/integration
+2026-10-10 03:52 agent physics-code-audit finished rc=0 report=present
+2026-10-10 03:52 === CONSULT 4: supervisor planning (3 reports, 0 images, 56308 chars)
+2026-10-10 03:53 LEARN: 2026-10-10 consult 4: I MERGED physics-code-audit (0002) after checking it on a `git archive` export: the oracle gives 523 passed and the sabotage and cross-lan
+2026-10-10 03:53 LEARN: 2026-10-10 consult 4: Platform's `echo/main.js` + `index.html` (939a57d) is only the G0 smoke: a Three.js scene, `quantum.smoke` and one `backend.run`. It is NO
+2026-10-10 03:53 hubs regenerated after MERGE lane/red-team/physics-code-audit into lane/red-team/integration (consult 4)
+2026-10-10 03:53 MERGE lane/red-team/physics-code-audit ok
+2026-10-10 04:05 adopted running agent quest-state-audit (pid 71082)
+2026-10-10 04:05 === CONSULT 5: supervisor planning (4 reports, 0 images, 60774 chars)
+2026-10-10 04:06 LEARN: 2026-10-10 consult 5: Platform shipped its own `tools/contract-check/`, with fixtures and a teleport oracle written by the contract's author. Its pass verdict i
+2026-10-10 04:06 LEARN: 2026-10-10 consult 5: At 04:05 UTC `echo/` on main holds only `contracts.js` and `CONTRACTS.md`, and no branch has a scene wired to the quest. The playtest trig
+2026-10-10 04:06 agent cross-lane-recheck (opus) start on lane/red-team/integration

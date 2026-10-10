@@ -3,3 +3,33 @@
 2026-10-10 03:21 LEARN: Until the quantum lane ships its §8.4 adapter, terminal work uses a harness stub with `engine: 'documented_preview'` that returns only textbook-exact values. Th
 2026-10-10 03:21 ASK_OWNER: 1. **Credit names:** whose names should appear in the in-game credits and the README team credits, and in what form (real names, handles, roles)? Workers will leave a marked placeholder until you answ
 2026-10-10 03:21 agent ui-shell (opus) start on lane/story-ui/integration
+2026-10-10 03:36 agent story-data (opus) start on lane/story-ui/integration
+2026-10-10 03:36 agent ui-shell finished rc=0 report=present
+2026-10-10 03:36 === CONSULT 2: supervisor planning (1 reports, 8 images, 40083 chars)
+2026-10-10 03:38 LEARN: 2026-10-10 consult 2: I merged ui-shell after looking at the 8 renders myself.  The worker's driver passed 30 of 30, but my own look still found three defects t
+2026-10-10 03:38 LEARN: 2026-10-10 consult 2: The vision already settles two questions the ui-shell worker raised, so they did not go to the owner.  1. **Subtitles toggle.** Line 436 s
+2026-10-10 03:38 ASK_OWNER: Please relay this to the platform supervisor. These are contract requests from story-ui's merged ui-shell, and they are not owner decisions: 1. `index.html` needs a single `<div id="echo-ui">` over th
+2026-10-10 03:38 hubs regenerated after MERGE lane/story-ui/ui-shell into lane/story-ui/integration (consult 2)
+2026-10-10 03:38 MERGE lane/story-ui/ui-shell ok
+2026-10-10 03:49 agent terminals (opus) start on lane/story-ui/integration
+2026-10-10 03:49 agent story-data finished rc=0 report=present
+2026-10-10 03:49 === CONSULT 3: supervisor planning (2 reports, 0 images, 50261 chars)
+2026-10-10 03:50 LEARN: 2026-10-10 consult 3: I merged story-data after my own physics read of `script.md`. The phrase-gate's 4 nulls show that it cannot judge physics. A human read fo
+2026-10-10 03:50 LEARN: 2026-10-10 consult 3: Kets stay ASCII `|x>` in `echo/data/`. The vision itself uses ASCII (0 occurrences of ⟩), and the story-data gate checks verbatim lines by
+2026-10-10 03:50 LEARN: 2026-10-10 consult 3: I settled the story-data worker's 7 owner questions from the vision and rulings, without asking: 1. **VEGA:** a maintenance voice at the b
+2026-10-10 03:50 ASK_OWNER: 1. **Lane setup.** `lane.json` sets `max_parallel: 1` for story-ui. Five worker-sized tasks are queued or running (terminals, shell-polish, data-fixes, declassified, then the opening). G2 is Sat 17:00
+2026-10-10 03:50 hubs regenerated after MERGE lane/story-ui/story-data into lane/story-ui/integration (consult 3)
+2026-10-10 03:50 MERGE lane/story-ui/story-data ok
+2026-10-10 03:51 === CONSULT 4: supervisor planning (2 reports, 0 images, 51981 chars)
+2026-10-10 03:53 LEARN: 2026-10-10 consult 4: The lane restarted at 03:51 UTC and silently lost both the running worker and the queued worker briefs. Evidence: - `lane.log`: `terminals
+2026-10-10 03:53 LEARN: 2026-10-10 consult 4: The platform contract renamed the rooftop console id. Use `teleport_terminal` (`lane/platform/integration:echo/contracts.js` BINDINGS), no
+2026-10-10 03:53 agent terminals-c4 (opus) start on lane/story-ui/integration
+2026-10-10 03:53 agent data-fixes (opus) start on lane/story-ui/integration
+2026-10-10 04:05 adopted running agent terminals-c4 (pid 72543)
+2026-10-10 04:05 adopted running agent data-fixes (pid 72556)
+2026-10-10 04:05 === CONSULT 5: supervisor planning (4 reports, 0 images, 54815 chars)
+2026-10-10 04:06 LEARN: 2026-10-10 consult 5: On the overseer's notice that "contracts v2 is on main", check with `git merge-base --is-ancestor main lane/story-ui/integration`. Do not 
+2026-10-10 04:06 MERGE main into lane/story-ui/integration (consult 5): conflict only in 2 generated hub file(s) — resolved by regeneration
+2026-10-10 04:06 hubs regenerated after MERGE main into lane/story-ui/integration (consult 5)
+2026-10-10 04:06 MERGE main ok
+2026-10-10 04:06 agent declassified (opus) start on lane/story-ui/integration
