@@ -17,7 +17,7 @@ bytes of each note, and fails if it stops being true.
 > next reader can find it. Delete it and nothing but navigation is lost; regenerate it
 > with `node scripts/vault-hubs.mjs`.
 
-Measured 2026-10-10: **41 notes** over 10 folders.
+Measured 2026-10-10: **42 notes** over 10 folders.
 
 
 ## Start here — the vault root
@@ -81,6 +81,7 @@ Folder README: [[Reports/README]]
 - [[Reports/contracts-pin-thresholds|Contract gate pins the owner-ruled constants]]
 - [[Reports/contracts-v2|Contracts v2: owner rulings folded into echo/contracts.js, measured]]
 - [[Reports/g0-runner-smoke|G0 platform smoke and local Qollab-like runner (measured, local runner only)]]
+- [[Reports/integration-shell|Integration shell: one echo/ tree assembled from every lane, run on the local runner]]
 - [[Reports/qollab-caps-gate|Qollab static-caps gate: tools/qollab-caps/check.mjs]]
 - [[Reports/shared-contracts|Shared contracts: echo/contracts.js, measured]]
 
