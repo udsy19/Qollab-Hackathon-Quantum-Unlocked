@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- DEV-ONLY preview of echo/scene/props.js and echo/game/audio.js. Never uploaded (outside echo/).
+     Serve the repo root, open /tools/art-preview-props/. URL params: see preview.js. -->
+<html lang="en">
+<head>
+<meta charset="utf-8"><link rel="icon" href="data:,">
+<title>ECHO props + audio preview</title>
+<script type="importmap">{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.186.1/build/three.module.js" } }</script>
+<style>
+  html, body { margin: 0; height: 100%; background: #070b12; color: #eaf3f6; font: 13px/1.4 ui-monospace, Menlo, monospace; overflow: hidden; }
+  #root { position: fixed; inset: 0; }
+  #ui { position: fixed; top: 10px; left: 10px; background: rgba(7, 11, 18, 0.85); border: 1px solid #2b3d55; padding: 10px; max-width: 360px; }
+  #ui button, #ui select, #ui input { font: inherit; background: #132035; color: #eaf3f6; border: 1px solid #56e4f2; margin: 2px; padding: 3px 7px; }
+  #ui button:focus-visible, #ui select:focus-visible, #ui input:focus-visible { outline: 2px solid #f3ae62; outline-offset: 2px; }
+  #ui h2 { font-size: 12px; margin: 8px 0 2px; color: #56e4f2; }
+  #stats { color: #f3ae62; white-space: pre; }
+  #unlock { border-color: #f3ae62 !important; font-weight: 700; }
+  body.shot #ui { display: none; }
+  #out { display: none; }
+</style>
+</head>
+<body>
+<div id="root"></div>
+<div id="ui">
+  <div id="stats">…</div>
+  <h2>Quality</h2>
+  <select id="quality" aria-label="quality"><option>low</option><option selected>med</option><option>high</option></select>
+  <button id="world">Apply world changes</button>
+  <button id="reset">Reset world</button>
+  <h2>Audio</h2>
+  <button id="unlock">Click to enable audio</button>
+  <label>Volume <input id="volume" type="range" min="0" max="100" step="1" value="80"></label>
+  <div id="zones"></div>
+  <div id="cues"></div>
+  <div id="caption" aria-live="polite"></div>
+</div>
+<pre id="out"></pre>
+<script type="module" src="./preview.js"></script>
+</body>
+</html>
