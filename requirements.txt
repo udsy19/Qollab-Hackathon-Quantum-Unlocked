@@ -1,0 +1,2 @@
+qiskit>=2.0
+qiskit-ionq>=1.1
