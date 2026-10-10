@@ -203,6 +203,9 @@ The dry run is therefore two bridge calls. Each one is checked by its own valida
 - `passed` needs the rule **and** `fidelity >= FIDELITY_PASS` (0.999999, §7.4). `unlocksCommit` is a pass on bits
   other than 00, so the player really applied X and/or Z (overseer ruling, gameplay consult 3 #2). Fire
   `CORRECT_CALIBRATION` only when `unlocksCommit`. On a failed or 00 pass, retry on a fresh state (13 questions #11).
+- `validateTeleportCorrectionResult` checks a result against the bits in its **request**. Build every phase-2
+  request with `makeCorrectionRequest`, which takes the bits from a validated phase-1 result. Never type the bits in
+  by hand. If an engine echoes `m0`/`m1` in `parameters`, they must equal `measurementBits`.
 - The story token never enters a dry run. The single commit is a separate call (overseer ruling, gameplay consult 3 #1).
 - Python names are the quantum lane's choice. Their inputs and outputs are exactly these shapes.
 

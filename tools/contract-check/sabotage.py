@@ -82,6 +82,12 @@ CASES = [
     ("a captions on/off setting accepted",
      "    if (!SETTING_KEYS.includes(k)) err(", "    if (!SETTING_KEYS.includes(k) && k !== 'subtitles') err(", "RED"),
     ("textScale may reach 250", "s.textScale <= 200", "s.textScale <= 250", "RED"),
+    ("engine enum checked with `in` (inherited names pass)",
+     "Object.hasOwn(ENGINE_KINDS, obj.engine)", "obj.engine in ENGINE_KINDS", "RED"),
+    ("transition() event checked with `in` (inherited names refused, not thrown)",
+     "!Object.hasOwn(QUEST_EVENTS, event)", "!(event in QUEST_EVENTS)", "RED"),
+    ("dry-run parameters.m0/m1 may contradict measurementBits",
+     "    if (k in p && p[k] !== res.measurementBits[k]) err(", "    if (false) err(", "RED"),
     # The verdict's two guards (rule AND fidelity) are redundant by design: each null below, both RED.
     ("verdict ignores the rule AND passes at fidelity 0.5",
      [("expected.applyX === req.applyX && expected.applyZ === req.applyZ && res.fidelity >= FIDELITY_PASS", "res.fidelity >= FIDELITY_PASS"),

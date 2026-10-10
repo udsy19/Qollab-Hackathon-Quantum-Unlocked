@@ -104,7 +104,7 @@ export function transition(state, event) {
   if (!Object.hasOwn(TRANSITIONS, state)) {
     throw new TypeError(`transition: unknown quest state ${JSON.stringify(state)}`)
   }
-  if (typeof event !== 'string' || !(event in QUEST_EVENTS)) {
+  if (typeof event !== 'string' || !Object.hasOwn(QUEST_EVENTS, event)) {
     throw new TypeError(`transition: unknown quest event ${JSON.stringify(event)}`)
   }
   const next = Object.hasOwn(TRANSITIONS[state], event) ? TRANSITIONS[state][event] : undefined
@@ -182,10 +182,10 @@ export function validateExperimentResult(obj) {
 
   for (const k of Object.keys(obj)) if (!RESULT_FIELDS.has(k)) err(`unknown field "${k}"`)
 
-  if (!(typeof obj.experiment === 'string' && obj.experiment in EXPERIMENTS)) {
+  if (!(typeof obj.experiment === 'string' && Object.hasOwn(EXPERIMENTS, obj.experiment))) {
     err(`experiment must be one of ${Object.keys(EXPERIMENTS).join('|')}, got ${describe(obj.experiment)}`)
   }
-  if (!(typeof obj.engine === 'string' && obj.engine in ENGINE_KINDS)) {
+  if (!(typeof obj.engine === 'string' && Object.hasOwn(ENGINE_KINDS, obj.engine))) {
     err(`engine must be one of ${Object.keys(ENGINE_KINDS).join('|')}, got ${describe(obj.engine)}`)
   }
   if (typeof obj.circuitDescription !== 'string' || obj.circuitDescription.trim() === '') {
@@ -386,6 +386,10 @@ function checkDryRunResult(req, res, phase, err) {
   const p = isPlainObject(res.parameters) ? res.parameters : {}
   for (const k of ['theta', 'phi']) if (!sameNumber(p[k], req[k])) err(`${phase} result parameters.${k} ${describe(p[k])} is not the requested ${req[k]}`)
   if (!isPlainObject(res.measurementBits)) { err(`${phase} result must carry measurementBits { m0, m1 }`); return false }
+  // An engine may echo the bits in parameters; if it does, they must be the same bits.
+  for (const k of ['m0', 'm1']) {
+    if (k in p && p[k] !== res.measurementBits[k]) err(`${phase} result parameters.${k} ${describe(p[k])} contradicts measurementBits.${k} ${describe(res.measurementBits[k])}`)
+  }
   return true
 }
 

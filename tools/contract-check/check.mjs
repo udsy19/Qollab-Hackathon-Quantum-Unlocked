@@ -114,7 +114,7 @@ for (const s of VISION_STATES) for (const ev of EXPECTED_EVENTS) {
 }
 ok(refusals === 21 * EXPECTED_EVENTS.length - EXPECTED_EDGES.length, `refusal grid covered (${refusals})`)
 for (const [st, ev, what] of [['TITLE', 'STRAT', 'misspelt event'], ['TITEL', 'START', 'misspelt state'],
-  ['TITLE', undefined, 'missing event']]) {
+  ['TITLE', undefined, 'missing event'], ['TITLE', 'constructor', 'inherited property name as event']]) {
   let threw = false
   try { tr(st, ev) } catch { threw = true }
   ok(threw, `transition(${st}, ${ev}) throws (${what})`)
@@ -237,7 +237,7 @@ const skew = { probabilities: { '01': 0.7, '10': 0.3 }, keyQubits: [1, 0] }
 const mq = (r, q) => { try { return M(r, q) } catch (e) { return { threw: e.message } } }
 ok(JSON.stringify(mq(skew, 0)) === JSON.stringify({ 0: 0.3, 1: 0.7 }), `marginal of q0 reads the right-hand character (got ${JSON.stringify(mq(skew, 0))})`)
 ok(JSON.stringify(mq(skew, 1)) === JSON.stringify({ 0: 0.7, 1: 0.3 }), `marginal of q1 reads the left-hand character (got ${JSON.stringify(mq(skew, 1))})`)
-ok(mq(skew, 2).threw !== undefined, 'marginal of a qubit not in keyQubits throws')
+ok(typeof M === 'function' && mq(skew, 2).threw !== undefined, 'marginal of a qubit not in keyQubits throws')
 
 console.log('· teleport dry run, two phases (owner 2026-10-10 "red-team physics ambiguities" #2: bits first, corrections second)')
 // Ground truth 1: the rule, parsed from the words of §7.1 — not from the module.
@@ -253,7 +253,7 @@ for (const [m0, m1] of [[0, 0], [0, 1], [1, 0], [1, 1]]) {
   ok(JSON.stringify(call(C.expectedCorrections, m0, m1)) === JSON.stringify(RULE(m0, m1)),
     `expectedCorrections(${m0}, ${m1}) = §7.1 ${JSON.stringify(RULE(m0, m1))} (got ${JSON.stringify(call(C.expectedCorrections, m0, m1))})`)
 }
-ok(call(C.expectedCorrections, 2, 0).threw !== undefined, 'expectedCorrections(2, 0) throws')
+ok(typeof C.expectedCorrections === 'function' && call(C.expectedCorrections, 2, 0).threw !== undefined, 'expectedCorrections(2, 0) throws')
 ok(C.TELEPORT_TEST_STATE?.theta === 1.137 && C.TELEPORT_TEST_STATE?.phi === 0.44, 'TELEPORT_TEST_STATE is ry(1.137) then rz(0.44)')
 
 let passesSeen = 0
@@ -292,6 +292,7 @@ for (const [what, mutate, needle] of [
   ['a different state than requested', r => ({ ...r, parameters: { ...r.parameters, theta: 0.5 } }), 'theta'],
   ['a documented preview', r => ({ ...r, engine: 'documented_preview' }), 'exact_qiskit_local'],
   ['an invalid ExperimentResult', r => ({ ...r, facts: [] }), 'facts'],
+  ['parameters.m0/m1 contradicting measurementBits', r => ({ ...r, parameters: { ...r.parameters, m0: 1 - r.measurementBits.m0, m1: r.measurementBits.m1 } }), 'parameters.m0'],
 ]) {
   ok(errs(call(C.validateTeleportBitsResult, ex.bitsRequest, mutate(ex.bitsResult))).some(x => x.includes(needle)),
     `phase-1 result with ${what} refused (an error mentioning "${needle}")`)
@@ -301,13 +302,14 @@ for (const c of ex.corrections) {
   ok(JSON.stringify(built) === JSON.stringify(c.request), `makeCorrectionRequest builds phase 2 from phase 1's bits (got ${JSON.stringify(built)})`)
   ok(errs(call(C.validateTeleportCorrectionResult, c.request, c.result)).length === 0, `worked example phase 2 X=${c.request.applyX} Z=${c.request.applyZ} accepted`)
 }
-ok(call(C.makeCorrectionRequest, ex.bitsRequest, { ...ex.bitsResult, measurementBits: undefined }, { applyX: true, applyZ: false }).threw !== undefined,
+ok(typeof C.makeCorrectionRequest === 'function' && call(C.makeCorrectionRequest, ex.bitsRequest, { ...ex.bitsResult, measurementBits: undefined }, { applyX: true, applyZ: false }).threw !== undefined,
   'makeCorrectionRequest throws without phase-1 bits (no corrections before bits)')
 const c0 = ex.corrections[0]
 for (const [what, req, res, needle] of [
   ['bits that differ from the request', c0.request, { ...c0.result, measurementBits: { m0: 1 - c0.request.m0, m1: c0.request.m1 } }, 'measurementBits'],
   ['a correction that differs from the request', c0.request, { ...c0.result, parameters: { ...c0.result.parameters, applyX: !c0.request.applyX } }, 'applyX'],
   ['no fidelity', c0.request, (({ fidelity, ...r }) => r)(c0.result), 'fidelity'],
+  ['parameters.m1 contradicting measurementBits', c0.request, { ...c0.result, parameters: { ...c0.result.parameters, m0: c0.request.m0, m1: 1 - c0.request.m1 } }, 'parameters.m1'],
 ]) ok(errs(call(C.validateTeleportCorrectionResult, req, res)).some(x => x.includes(needle)), `phase-2 result with ${what} refused`)
 for (const [what, req, needle] of [
   ['applyX as a string', { ...c0.request, applyX: 'yes' }, 'applyX'],
@@ -318,7 +320,7 @@ for (const [what, req, needle] of [
 // A non-generic state lets a wrong choice score 1 (on |0> a spurious Z is a global phase), so the lesson would be fake.
 for (const [what, req] of [['|0>', { theta: 0, phi: 0 }], ['|+>', { theta: Math.PI / 2, phi: 0 }], ['|+i>', { theta: Math.PI / 2, phi: Math.PI / 2 }],
   ['NaN', { theta: NaN, phi: 0 }], ['an extra field', { theta: 1.137, phi: 0.44, stateId: 'plus' }]]) {
-  ok(errs(call(C.validateTeleportBitsRequest, req)).length > 0, `phase-1 request on ${what} refused`)
+  ok(typeof C.validateTeleportBitsRequest === 'function' && errs(call(C.validateTeleportBitsRequest, req)).length > 0, `phase-1 request on ${what} refused`)
 }
 // Fresh random generic states: every draw valid, and draws differ.
 let seed = 12345

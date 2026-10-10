@@ -1023,6 +1023,64 @@
      "Sampled on the selected backend; counts, not exact probabilities."
     ]
    }
+  },
+  {
+   "name": "engine \"constructor\" (an inherited property name, not a table entry)",
+   "expectError": "engine",
+   "result": {
+    "experiment": "cloning",
+    "engine": "constructor",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   }
+  },
+  {
+   "name": "experiment \"toString\" (an inherited property name)",
+   "expectError": "experiment",
+   "result": {
+    "experiment": "toString",
+    "engine": "exact_qiskit_local",
+    "circuitDescription": "H(q0); CX(q0,q1)",
+    "qubits": 2,
+    "parameters": {
+     "state": "plus"
+    },
+    "probabilities": {
+     "00": 0.5,
+     "11": 0.5
+    },
+    "keyQubits": [
+     1,
+     0
+    ],
+    "observables": {
+     "purityQ0": 0.5,
+     "purityQ1": 0.5
+    },
+    "facts": [
+     "Two-qubit output is a Bell pair, not two independent copies."
+    ],
+    "createdAt": "2026-10-10T03:00:00Z"
+   }
   }
  ]
 }
