@@ -20,7 +20,7 @@ Labels: **DOC** = Qollab docs; **RT** = Qollab's shipped runtime JS, read with G
 ## Sources (fetched 2026-10-10, ~00:30 ET)
 
 - https://qollab.xyz/learn/docs/js-qiskit-projects, /runtime-environment, /run-your-code, fetched with `curl` and converted to text.
-- `https://qollab.xyz/_nuxt/jsworker-C6a5_czr.js`, 41,255 bytes, sha256 `9c0cf2815c9f…9b7752b`. This is the same chunk [[qollab-js-runtime-internals]] read on 2026-10-09, and it still returns 200. Nobody re-checked that the live site still loads this chunk: the project page is a client-rendered shell.
+- `https://qollab.xyz/_nuxt/jsworker-C6a5_czr.js`, 41,255 bytes, sha256 `9c0cf2815c9f…9b7752b`. This is the same chunk platform's `vault/Research/qollab-js-runtime-internals.md` (on `lane/platform/integration`, not yet here) read on 2026-10-09, and it still returns 200. Nobody re-checked that the live site still loads this chunk: the project page is a client-rendered shell.
 - Platform's runner at `lane/platform/integration` f08dd0b, `tools/qollab-runner/frame.js`.
 - Harness and results: `evidence/quantum/backend-site-research/` (README, `out/SUMMARY.md`).
 
@@ -77,7 +77,7 @@ Residual risks, for both routes equally:
 ## What it changes in other notes
 
 - [[qollab-backend-from-js-projects]] "What this settles": "`qollab_job.py` … called from `main.js` with `.callPromising(backend)`" is superseded by A. Python now receives `backend` only to read its name.
-- [[qollab-js-runtime-internals]] (platform) is right about `ft()` and `rewriteIonqRequest`. The `main.js:183` comment that cites it draws the wrong conclusion from it.
+- platform's `vault/Research/qollab-js-runtime-internals.md` (on `lane/platform/integration`, not yet here) (platform) is right about `ft()` and `rewriteIonqRequest`. The `main.js:183` comment that cites it draws the wrong conclusion from it.
 
 ## Related
 [[qollab-backend-from-js-projects]] · [[qollab-platform-and-submission]] · [[pyodide-bridge]] · [[qollab-caps-gate]] · [[ionq-sim-rehearsal]]
