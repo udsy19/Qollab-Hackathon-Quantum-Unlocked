@@ -30,7 +30,7 @@ def summary(root):
     code, out = run(['node', '--test', 'dev/gameplay/tests/*.test.mjs'], root)
     m = re.search(r'ℹ pass (\d+)[\s\S]*?ℹ fail (\d+)', out)
     unit = f'unit pass {m.group(1)} fail {m.group(2)}' if m else f'unit NO VERDICT (exit {code})'
-    fails = sorted(set(re.findall(r'^not ok \d+ - (.+)$', out, re.M)))
+    fails = sorted({f for f in re.findall(r'^\s*✖ (.+?) \([\d.]+ms\)$', out, re.M) if not f.startswith('dev/')})
     a3 = run(['node', os.path.join(PORT, 'a3_robust.mjs'), root], root)[1]
     a2c, a2 = run([PY, os.path.join(PORT, 'a2_physics.py'), root, '400'], root)
     a2 = re.sub(r', max fidelity shown for a wrong choice [0-9.]+', '', a2)  # random per run; the count is the verdict
